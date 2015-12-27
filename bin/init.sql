@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS zenra;
+CREATE DATABASE zenra CHARACTER SET utf8;
+use zenra;

@@ -1,0 +1,22 @@
+#bin/bash
+APPDIR="/home/vagrant/core_project"
+cd $APPDIR
+command="$1"
+
+if [ "$command" = "run" ]; then
+	bundle exec unicorn --port 8080
+elif [ "$command" = "mysql" ]; then
+	mysql -u root --password=zenra zenra
+elif [ "$command" = "init_db" ]; then
+	mysql -u root --password=zenra zenra -e "source bin/init.sql"
+elif [ "$command" = "ci" ]; then
+	cd $APPDIR/spec/assist
+	zenra init_db
+	./insert_test_records
+	cd $APPDIR
+	bundle exec rspec
+	cp -r coverage app/public/
+	rm -rf coverage
+else
+	echo "Not found such command"
+fi
