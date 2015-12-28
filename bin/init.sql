@@ -15,10 +15,10 @@ use march;
 DROP TABLE IF EXISTS `product`;
 
 CREATE TABLE `product` (
-  `id` INTEGER NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `brand` VARCHAR(16) NOT NULL COMMENT 'JOYSOUND/DAM',
   `product` VARCHAR(16) NOT NULL COMMENT 'LiveDAM/PremiaDAM/f1など',
-  `created_at` TIMESTAMP NOT NULL ,
+  `created_at` TIMESTAMP NOT NULL COMMENT '備考',
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケ機種';
 
@@ -30,10 +30,10 @@ CREATE TABLE `product` (
 DROP TABLE IF EXISTS `score_type`;
 
 CREATE TABLE `score_type` (
-  `id` INTEGER NULL AUTO_INCREMENT,
-  `product` INTEGER NULL COMMENT '機種番号',
-  `name` MEDIUMTEXT NULL COMMENT '採点モードの名前',
-  `created_at` TIMESTAMP NOT NULL ,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `product` INTEGER NOT NULL COMMENT '機種番号',
+  `name` MEDIUMTEXT NULL DEFAULT NULL COMMENT '採点モードの名前',
+  `created_at` TIMESTAMP NOT NULL COMMENT '採点モードの名前',
   PRIMARY KEY (`id`)
 ) COMMENT '採点モード';
 
@@ -61,7 +61,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `artist`;
 
 CREATE TABLE `artist` (
-  `id` INTEGER NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` MEDIUMTEXT NOT NULL COMMENT '歌手名',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
@@ -75,11 +75,11 @@ CREATE TABLE `artist` (
 DROP TABLE IF EXISTS `store`;
 
 CREATE TABLE `store` (
-  `id` INTEGER NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` MEDIUMTEXT NOT NULL COMMENT '店名',
-  `branch` MEDIUMTEXT NULL COMMENT '店舗名',
-  `url` MEDIUMTEXT NULL COMMENT '店舗のURL',
-  `memo` MEDIUMTEXT NULL COMMENT '備考',
+  `branch` MEDIUMTEXT NULL DEFAULT NULL COMMENT '店舗名',
+  `url` MEDIUMTEXT NULL DEFAULT NULL COMMENT '店舗のURL',
+  `memo` MEDIUMTEXT NULL DEFAULT NULL COMMENT '備考',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT '店舗情報';
@@ -92,12 +92,13 @@ CREATE TABLE `store` (
 DROP TABLE IF EXISTS `karaoke`;
 
 CREATE TABLE `karaoke` (
-  `id` INTEGER NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `datetime` DATETIME NULL DEFAULT NULL COMMENT '入店日時',
   `plan` INTEGER NULL DEFAULT NULL COMMENT '滞在時間',
-  `store` INTEGER NULL COMMENT '利用店舗',
-  `product` INTEGER NULL COMMENT '機種',
-  `memo` MEDIUMTEXT NULL COMMENT '備考',
+  `store` INTEGER NOT NULL COMMENT '利用店舗',
+  `product` INTEGER NOT NULL COMMENT '機種',
+  `price` INTEGER NULL DEFAULT 0 COMMENT '一人あたりの料金',
+  `memo` MEDIUMTEXT NULL DEFAULT NULL COMMENT '備考',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケデータ';
@@ -125,16 +126,29 @@ CREATE TABLE `song` (
 DROP TABLE IF EXISTS `history`;
 
 CREATE TABLE `history` (
-  `id` INTEGER NULL AUTO_INCREMENT,
-  `user` INTEGER NOT NULL COMMENT 'ユーザ番号',
-  `karaoke` INTEGER NOT NULL COMMENT 'カラオケ番号',
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `attend` INTEGER NOT NULL COMMENT '参加番号',
   `song` INTEGER NOT NULL COMMENT '曲番号',
   `key` INTEGER NULL DEFAULT 0 COMMENT 'キー設定',
-  `score_type` INTEGER NULL COMMENT '採点モード',
+  `score_type` INTEGER NOT NULL COMMENT '採点モード',
   `score` INTEGER NULL DEFAULT NULL COMMENT '点数',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT '歌唱履歴';
+
+-- ---
+-- Table 'attend'
+-- カラオケへの参加記録
+-- ---
+
+DROP TABLE IF EXISTS `attend`;
+
+CREATE TABLE `attend` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `user` INTEGER NOT NULL COMMENT '参加ユーザのID',
+  `karaoke` INTEGER NOT NULL COMMENT '参加したカラオケ',
+  PRIMARY KEY (`id`)
+) COMMENT 'カラオケへの参加記録';
 
 -- ---
 -- Foreign Keys
@@ -144,7 +158,8 @@ ALTER TABLE `score_type` ADD FOREIGN KEY (product) REFERENCES `product` (`id`);
 ALTER TABLE `karaoke` ADD FOREIGN KEY (store) REFERENCES `store` (`id`);
 ALTER TABLE `karaoke` ADD FOREIGN KEY (product) REFERENCES `product` (`id`);
 ALTER TABLE `song` ADD FOREIGN KEY (artist) REFERENCES `artist` (`id`);
-ALTER TABLE `history` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
-ALTER TABLE `history` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
+ALTER TABLE `history` ADD FOREIGN KEY (attend) REFERENCES `attend` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (song) REFERENCES `song` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (score_type) REFERENCES `score_type` (`id`);
+ALTER TABLE `attend` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
+ALTER TABLE `attend` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
