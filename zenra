@@ -10,7 +10,7 @@ elif [ "$command" = "mysql" ]; then
 	mysql -u root --password=zenra march
 elif [ "$command" = "init_db" ]; then
 	mysql -u root --password=zenra -e "source bin/init.sql"
-	if [ "$subcommand" = "s" ]; then
+	if [ "$subcommand" = "--withsample" ]; then
 		mysql -u root --password=zenra -e "source bin/insert_sample_rows.sql"
 	fi
 elif [ "$command" = "ci" ]; then
