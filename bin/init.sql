@@ -147,6 +147,7 @@ CREATE TABLE `attendance` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `user` INTEGER NOT NULL COMMENT '参加ユーザのID',
   `karaoke` INTEGER NOT NULL COMMENT '参加したカラオケ',
+  `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケへの参加記録';
 
