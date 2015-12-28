@@ -6,9 +6,9 @@ command="$1"
 if [ "$command" = "run" ]; then
 	bundle exec unicorn --port 8080
 elif [ "$command" = "mysql" ]; then
-	mysql -u root --password=zenra zenra
+	mysql -u root --password=zenra march
 elif [ "$command" = "init_db" ]; then
-	mysql -u root --password=zenra zenra -e "source bin/init.sql"
+	mysql -u root --password=zenra -e "source bin/init.sql"
 elif [ "$command" = "ci" ]; then
 	cd $APPDIR/spec/assist
 	zenra init_db
