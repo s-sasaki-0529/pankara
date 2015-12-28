@@ -2,6 +2,7 @@
 APPDIR="/home/vagrant/March"
 cd $APPDIR
 command="$1"
+subcommand="$2"
 
 if [ "$command" = "run" ]; then
 	bundle exec unicorn --port 8080
@@ -9,6 +10,9 @@ elif [ "$command" = "mysql" ]; then
 	mysql -u root --password=zenra march
 elif [ "$command" = "init_db" ]; then
 	mysql -u root --password=zenra -e "source bin/init.sql"
+	if [ "$subcommand" = "s" ]; then
+		mysql -u root --password=zenra -e "source bin/insert_sample_rows.sql"
+	fi
 elif [ "$command" = "ci" ]; then
 	cd $APPDIR/spec/assist
 	zenra init_db
