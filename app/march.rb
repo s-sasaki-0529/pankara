@@ -5,7 +5,7 @@
 require 'sinatra/base'
 require_relative 'public/scripts/util'
 
-class Core < Sinatra::Base
+class March < Sinatra::Base
 
 	# configure - サーバ起動時の初期設定
 	#---------------------------------------------------------------------
@@ -31,7 +31,7 @@ class Core < Sinatra::Base
 	# get '/' - トップページへのアクセス
 	#---------------------------------------------------------------------
 	get '/' do
-		'Hello,Zenra'
+		'Hello,March'
 	end
 
 end

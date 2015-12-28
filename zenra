@@ -1,5 +1,5 @@
 #bin/bash
-APPDIR="/home/vagrant/core_project"
+APPDIR="/home/vagrant/March"
 cd $APPDIR
 command="$1"
 
