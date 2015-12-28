@@ -18,7 +18,7 @@ CREATE TABLE `product` (
   `id` INTEGER NULL AUTO_INCREMENT,
   `brand` VARCHAR(16) NOT NULL COMMENT 'JOYSOUND/DAM',
   `product` VARCHAR(16) NOT NULL COMMENT 'LiveDAM/PremiaDAM/f1など',
-  `created_at` TIMESTAMP NOT NULL COMMENT '備考',
+	`created_at` TIMESTAMP NOT NULL ,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケ機種';
 
@@ -32,7 +32,8 @@ DROP TABLE IF EXISTS `score_type`;
 CREATE TABLE `score_type` (
   `id` INTEGER NULL AUTO_INCREMENT,
   `product` INTEGER NULL COMMENT '機種番号',
-  `created_at` TIMESTAMP NOT NULL COMMENT '採点モードの名前',
+	`name` MEDIUMTEXT NULL COMMENT '採点モードの名前',
+  `created_at` TIMESTAMP NOT NULL ,
   PRIMARY KEY (`id`)
 ) COMMENT '採点モード';
 
@@ -78,8 +79,8 @@ CREATE TABLE `store` (
   `name` MEDIUMTEXT NOT NULL COMMENT '店名',
   `branch` MEDIUMTEXT NULL COMMENT '店舗名',
   `url` MEDIUMTEXT NULL COMMENT '店舗のURL',
-  `created_at` TIMESTAMP NOT NULL,
   `memo` MEDIUMTEXT NULL COMMENT '備考',
+  `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT '店舗情報';
 
