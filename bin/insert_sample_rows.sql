@@ -48,8 +48,8 @@ INSERT INTO karaoke ( datetime , plan , store , product , price , memo ) VALUES
 ('2015-12-01 13:00:00' , 4 , 1 , 4 , 1200 , 'with ちゃら、へたれ ワンドリンク') ,
 ('2015-11-13 10:30:00' , 7 , 3 , 3 , 1500 , 'with さっちゃん ドリンクバー付き');
 
--- attend
-INSERT INTO attend ( user , karaoke) VALUES
+-- attendance
+INSERT INTO attendance ( user , karaoke) VALUES
 (1 , 1) ,
 (1 , 2) ,
 (2 , 1) ,
@@ -57,7 +57,7 @@ INSERT INTO attend ( user , karaoke) VALUES
 (4 , 2);
 
 -- history
-INSERT INTO history ( attend , song , songkey , score_type , score ) VALUES
+INSERT INTO history ( attendance , song , songkey , score_type , score ) VALUES
 (1 , 1 , 0 , 1 , 88) ,
 (1 , 2 , -2 , 1 , 90) ,
 (1 , 3 , -2 , 1 , 84) ,
