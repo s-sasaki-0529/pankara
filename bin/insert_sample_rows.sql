@@ -63,4 +63,5 @@ INSERT INTO history ( attend , song , songkey , score_type , score ) VALUES
 (1 , 3 , -2 , 1 , 84) ,
 (1 , 4 , -3 , 1 , 87) ,
 (2 , 5 , 5 , 1 , 90) ,
-(2 , 6 , 4 , 1 , 99);
+(2 , 6 , 4 , 1 , 99) ,
+(3 , 1 , 0 , 1 , 100);
