@@ -34,4 +34,10 @@ class March < Sinatra::Base
 		erb :index
 	end
 
+	# history '/history/:username - ユーザの歌唱履歴を表示
+	#---------------------------------------------------------------------
+	get '/history/:username' do
+		@username = params[:username]
+		erb :history
+	end
 end
