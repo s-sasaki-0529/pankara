@@ -3,6 +3,8 @@
 #----------------------------------------------------------------------
 
 require 'sinatra/base'
+require_relative 'models/db'
+require_relative 'models/user'
 require_relative 'public/scripts/util'
 
 class March < Sinatra::Base
@@ -10,7 +12,8 @@ class March < Sinatra::Base
 	# configure - サーバ起動時の初期設定
 	#---------------------------------------------------------------------
 	configure do
-    enable :sessions
+		DB.init
+		enable :sessions
 	end
 
 	# helpers - コントローラを補佐するメソッドを定義
@@ -37,7 +40,7 @@ class March < Sinatra::Base
 	# history '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
-		@username = params[:username]
+		@user = User.new(username: params[:username])
 		erb :history
 	end
 end
