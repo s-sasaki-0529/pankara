@@ -31,7 +31,7 @@ class March < Sinatra::Base
 	# get '/' - トップページへのアクセス
 	#---------------------------------------------------------------------
 	get '/' do
-		'Hello,March'
+		erb :index
 	end
 
 end
