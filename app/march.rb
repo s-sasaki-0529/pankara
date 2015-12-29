@@ -41,6 +41,7 @@ class March < Sinatra::Base
 	#---------------------------------------------------------------------
 	get '/history/:username' do
 		@user = User.new(username: params[:username])
+		@histories = @user.histories
 		erb :history
 	end
 end

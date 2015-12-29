@@ -1,4 +1,22 @@
-<p><%= @user.params['id'] %></p>
-<p><%= @user.params['username'] %></p>
-<p><%= @user.params['screenname'] %></p>
+<h1><%= @user.params['screenname'] %>さんの歌唱履歴</h1>
+<table border="1">
+	<thead>
+		<tr>
+			<th>日時</th>
+			<th>歌手名</th>
+			<th>曲名</th>
+			<th>キー設定</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @histories.each do |history| %>
+		<tr>
+			<td><%= history['datetime'] %></td>
+			<td><%= history['artist_name'] %></td>
+			<td><%= history['song_name'] %></td>
+			<td><%= history['songkey'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
 
