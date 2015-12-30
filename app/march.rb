@@ -48,6 +48,13 @@ class March < Sinatra::Base
 		erb :login
 	end
 
+	# get '/logout' - ログアウトする
+	#---------------------------------------------------------------------
+	get '/logout' do
+		session[:logined] = nil
+		redirect '/login'
+	end
+
 	# history '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
