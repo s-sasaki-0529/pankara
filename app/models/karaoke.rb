@@ -18,7 +18,7 @@ class Karaoke
 							store.name as store_name , store.branch as branch_name ,
 							product.brand as brand_name , product.product as product_name
 			 FROM (karaoke JOIN store ON karaoke.store = store.id)
-			 JOIN product on karaoke.product = product.id;",[]
+			 JOIN product on karaoke.product = product.id;"
 		)
 	end
 
