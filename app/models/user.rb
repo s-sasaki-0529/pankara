@@ -22,8 +22,8 @@ class User
 	# histories - 歌唱履歴を取得
 	#---------------------------------------------------------------------
 	def histories
-		histories = DB.sql_all("
-			SELECT datetime , history.song , history.songkey
+		histories = DB.sql_all(
+			"SELECT datetime , history.song , history.songkey
 			FROM ( history JOIN attendance ON history.attendance = attendance.id)
 			JOIN karaoke ON karaoke.id = attendance.karaoke
 			WHERE attendance.user = ?" , [@params['id']]
