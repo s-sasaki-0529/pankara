@@ -82,11 +82,19 @@ class March < Sinatra::Base
 	post '/login' do
 		auth = User.authenticate(@params[:username] , @params[:password])
 		if auth
-			session[:logined] = auth['username']
+			session[:logined] = User.new(username: @params[:username])
 			redirect '/'
 		else
 			redirect '/login'
 		end
+	end
+
+	# post '/karaoke/create' - カラオケ記録追加をリクエスト
+	#---------------------------------------------------------------------
+	post '/karaoke/create' do
+		user = session[:logined]
+		user.create_karaoke_log(@params)
+		redirect '/karaoke'
 	end
 
 end
