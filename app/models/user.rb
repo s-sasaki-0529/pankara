@@ -20,7 +20,8 @@ class User
 			"SELECT datetime , history.song , history.songkey
 			FROM ( history JOIN attendance ON history.attendance = attendance.id)
 			JOIN karaoke ON karaoke.id = attendance.karaoke
-			WHERE attendance.user = ?" , [@params['id']]
+			WHERE attendance.user = ?
+			ORDER BY datetime DESC;" , [@params['id']]
 		)
 		histories.each do | history |
 			song = Song.new(history['song'])
