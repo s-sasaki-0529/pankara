@@ -1,0 +1,26 @@
+<h1>カラオケ記録一覧</h1>
+<table border="1">
+	<thead>
+		<tr>
+			<th>日時</th>
+			<th>時間</th>
+			<th>お店</th>
+			<th>機種</th>
+			<th>値段</th>
+			<th>備考</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @karaoke_list.each do |karaoke| %>
+		<tr>
+			<td><%= karaoke['datetime'] %></td>
+			<td><%= karaoke['plan'] %></td>
+			<td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
+			<td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+			<td><%= karaoke['price'] %></td>
+			<td><%= karaoke['memo'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+

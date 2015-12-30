@@ -5,6 +5,7 @@
 require 'sinatra/base'
 require_relative 'models/db'
 require_relative 'models/user'
+require_relative 'models/karaoke'
 require_relative 'public/scripts/util'
 
 class March < Sinatra::Base
@@ -53,6 +54,13 @@ class March < Sinatra::Base
 	get '/logout' do
 		session[:logined] = nil
 		redirect '/login'
+	end
+
+	# get '/karaoke' - カラオケ記録を一覧表示
+	#---------------------------------------------------------------------
+	get '/karaoke' do
+		@karaoke_list = Karaoke.list_all
+		erb :karaoke_list
 	end
 
 	# get '/karaoke/create' - カラオケ記録追加ページヘのアクセス

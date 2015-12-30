@@ -11,7 +11,7 @@ def random_date
 	year = 2000 + rand(15)
 	month = rand(12) + 1
 	day = rand(27) + 1
-	hour = rand(25)
+	hour = rand(24)
 	min = rand(60)
 	sec = rand(60)
 	"#{year}-#{month}-#{day} #{hour}:#{min}:#{sec}"
@@ -71,7 +71,7 @@ def insert_song(n)
 end
 
 def insert_karaoke(n)
-	puts "INSERT INTO karaoke ( datetime , plan , store , product , price ) VALUES"
+	puts "INSERT INTO karaoke ( datetime , plan , store , product , price , memo ) VALUES"
 	insert = []
 	n.times do |i|
 		datetime = random_date
@@ -79,7 +79,8 @@ def insert_karaoke(n)
 		store = rand(STORES) + 1
 		product = rand(PRODUCTS) + 1
 		price = rand(1000) + 1000
-		insert.push "('#{datetime}' , #{plan} , #{store} , #{product} , #{price})"
+		memo = ['楽しかった' , '気まずかった' , '気持ちよかった' , 'クソだった'].sample
+		insert.push "('#{datetime}' , #{plan} , #{store} , #{product} , #{price} , '#{memo}')"
 	end
 	print insert.join(",\n")
 	puts ";"
