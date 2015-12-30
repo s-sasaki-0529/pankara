@@ -29,12 +29,23 @@ class March < Sinatra::Base
 	# before - 全てのURLにおいて初めに実行される
 	#---------------------------------------------------------------------
 	before do
+		logined = session[:logined]
+		path = request.path_info
+		unless logined || path == '/login'
+			redirect '/login'
+		end
 	end
 
 	# get '/' - トップページへのアクセス
 	#---------------------------------------------------------------------
 	get '/' do
 		erb :index
+	end
+
+	# get '/login' - ログイン画面へのアクセス
+	#---------------------------------------------------------------------
+	get '/login' do
+		erb :login
 	end
 
 	# history '/history/:username - ユーザの歌唱履歴を表示
@@ -44,4 +55,17 @@ class March < Sinatra::Base
 		@histories = @user.histories
 		erb :history
 	end
+
+	# post '/login' - ログインリクエスト
+	#---------------------------------------------------------------------
+	post '/login' do
+		auth = User.authenticate(@params[:username] , @params[:password])
+		if auth
+			session[:logined] = auth['username']
+			redirect '/'
+		else
+			redirect '/login'
+		end
+	end
+
 end
