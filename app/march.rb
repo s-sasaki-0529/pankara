@@ -55,6 +55,12 @@ class March < Sinatra::Base
 		redirect '/login'
 	end
 
+	# get '/karaoke/create' - カラオケ記録追加ページヘのアクセス
+	#---------------------------------------------------------------------
+	get '/karaoke/create' do
+		erb :create_karaoke
+	end
+
 	# history '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
