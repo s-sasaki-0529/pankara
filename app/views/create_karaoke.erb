@@ -1,7 +1,7 @@
 <h4>カラオケを記録する</h4>
-<form method='POST' action=''>
+<form method='POST' action='/karaoke/create'>
 	<p>日時</p> 
-	<p><input type="datetime" required></p>
+	<p><input type="datetime" name="datetime" required></p>
 	<p>時間</p>
 	<p>
 		<select name="plan">
@@ -31,6 +31,8 @@
 			<option value="12">12時間00分</option>
 		</select>
 	</p>
+	<p>お店</p>
+	<p><input type="text" name="store"></p>
 	<p>機種</p>
 	<p>
 		<select name="product">
@@ -43,6 +45,8 @@
 		</select>
 	</p>
 	<p>料金</p>
-	<p><input type="text"></p>
+	<p><input type="text" name="price"></p>
+	<p>備考</p>
+	<p><textarea name="memo"></textarea>
 	<p><input type="submit" value="登録"></p>
 </form>

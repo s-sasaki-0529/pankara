@@ -31,6 +31,13 @@ class DB
 		return result
 	end
 
+	# sql_insert_id - SQLを実行し、insert_idを戻す
+	#--------------------------------------------------------------------
+	def self.sql_insert_id(sql , params)
+		st = self.sql(sql , params)
+		st.insert_id
+	end
+
 	# sql - SQLを実行
 	#---------------------------------------------------------------------
 	def self.sql(sql , params)
