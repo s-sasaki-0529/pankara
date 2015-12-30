@@ -36,4 +36,10 @@ class User
 		return histories
 	end
 
+	# authenticate - ユーザのIDとパスワードを検証する(クラスメソッド)
+	#---------------------------------------------------------------------
+	def self.authenticate(name , pw)
+		DB.sql_row("SELECT * FROM user WHERE username = ? and password = ?" , [name , pw])
+	end
+
 end
