@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------
 require_relative 'db'
 require_relative 'store'
+require_relative 'product'
 class Karaoke
 
 	attr_reader :params , :histories
@@ -12,11 +13,8 @@ class Karaoke
 	def initialize(id)
 		@params = DB.sql_row("SELECT * FROM karaoke WHERE id = ?" , [id])
 
-		product_info = DB.sql_row(
-			"SELECT brand , product FROM product WHERE id = ?" ,
-			[@params['product']]
-		)
-		@params['product_name'] = "#{product_info['brand']}(#{product_info['product']})"
+		product = Product.new(@params['product'])
+		@params['product_name'] = "#{product.params['brand']}(#{product.params['product']})"
 
 		store = Store.new(@params['store'])
 		@params['store_name'] = "#{store.params['name']} #{store.params['branch']}"
