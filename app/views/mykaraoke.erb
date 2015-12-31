@@ -11,7 +11,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% @karaoke_list.each do |karaoke| %>
+		<% @user.params['karaoke'].each do |karaoke| %>
 		<tr>
 			<td><%= karaoke['datetime'] %></td>
 			<td><%= karaoke['plan'] %></td>

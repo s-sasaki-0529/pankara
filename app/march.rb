@@ -59,8 +59,9 @@ class March < Sinatra::Base
 	# get '/karaoke' - カラオケ記録を一覧表示
 	#---------------------------------------------------------------------
 	get '/karaoke' do
-		@karaoke_list = Karaoke.list_all
-		erb :karaoke_list
+		@user = session[:logined]
+		@user.get_karaoke
+		erb :mykaraoke
 	end
 
 	# get '/karaoke/detail/:id' - カラオケ記録の詳細表示

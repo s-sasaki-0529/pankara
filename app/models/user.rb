@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------
 require_relative 'db'
 require_relative 'song'
+require_relative 'karaoke'
 class User
 
 	attr_reader :params
@@ -29,6 +30,21 @@ class User
 			history['artist_name'] = song.artist_name
 		end
 		return histories
+	end
+
+	# get_karaoke
+	#---------------------------------------------------------------------
+	def get_karaoke
+		attended_id_list = DB.sql_all(
+			"SELECT karaoke FROM attendance WHERE user = ?" ,
+			[@params['id']]
+		).collect {|info| info['karaoke']}
+
+		all_karaoke_info = Karaoke.list_all
+		attended_karaoke_info = all_karaoke_info.select do |karaoke|
+			attended_id_list.include?(karaoke['id'])
+		end
+		@params['karaoke'] = attended_karaoke_info
 	end
 
 	# create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける
