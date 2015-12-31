@@ -1,0 +1,44 @@
+<h4>カラオケ概要</h4>
+<table border="1">
+	<thead>
+		<tr>
+			<th>日時</th>
+			<th>時間</th>
+			<th>お店</th>
+			<th>機種</th>
+			<th>メンバー</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><%= @karaoke.params['datetime'] %></td>
+			<td><%= @karaoke.params['plan'] %></td>
+			<td><%= @karaoke.params['store_name'] %></td>
+			<td><%= @karaoke.params['brand_name'] %>(<%= @karaoke.params['product_name'] %>)</td>
+			<td><%= @karaoke.params['members'] %></td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>歌唱履歴</h4>
+<table border="1">
+	<thead>
+		<tr>
+			<th>ユーザー</th>
+			<th>歌手名</th>
+			<th>曲名</th>
+			<th>キー設定</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @karaoke.histories.each do |history| %>
+		<tr>
+			<td><%= history['userinfo']['username'] %></td>
+			<td><%= history['artist_name'] %></td>
+			<td><%= history['song_name'] %></td>
+			<td><%= history['songkey'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+

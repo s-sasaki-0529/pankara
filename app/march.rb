@@ -63,6 +63,14 @@ class March < Sinatra::Base
 		erb :karaoke_list
 	end
 
+	# get '/karaoke/detail/:id' - カラオケ記録の詳細表示
+	#---------------------------------------------------------------------
+	get '/karaoke/detail/:id' do
+		@karaoke = Karaoke.new(params[:id])
+		@karaoke.get_history
+		erb :karaoke_detail
+	end
+
 	# get '/karaoke/create' - カラオケ記録追加ページヘのアクセス
 	#---------------------------------------------------------------------
 	get '/karaoke/create' do
