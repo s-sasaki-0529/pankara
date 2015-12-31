@@ -2,6 +2,7 @@
 # Karaoke - カラオケ記録に関する情報を操作
 #----------------------------------------------------------------------
 require_relative 'db'
+require_relative 'store'
 class Karaoke
 
 	attr_reader :params , :histories
@@ -15,14 +16,10 @@ class Karaoke
 			"SELECT brand , product FROM product WHERE id = ?" ,
 			[@params['product']]
 		)
-		@params['brand_name'] = product_info['brand']
-		@params['product_name'] = product_info['product']
+		@params['product_name'] = "#{product_info['brand']}(#{product_info['product']})"
 
-		store_info = DB.sql_row(
-			"SELECT * FROM store WHERE id = ?" ,
-			[@params['store']]
-		)
-		@params['store_name'] = "#{store_info['name']} #{store_info['branch']}"
+		store = Store.new(@params['store'])
+		@params['store_name'] = "#{store.params['name']} #{store.params['branch']}"
 	end
 
 	# list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
