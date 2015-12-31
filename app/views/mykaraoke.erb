@@ -1,5 +1,5 @@
 <h1>カラオケ記録一覧</h1>
-<table border="1" class="table table-hover">
+<table border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
 			<th>日時</th>
@@ -12,7 +12,7 @@
 	</thead>
 	<tbody>
 		<% @user.params['karaoke'].each do |karaoke| %>
-		<tr>
+		<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
 			<td><%= karaoke['datetime'] %></td>
 			<td><%= karaoke['plan'] %></td>
 			<td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
