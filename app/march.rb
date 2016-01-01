@@ -96,6 +96,14 @@ class March < Sinatra::Base
 		erb :song_ranking
 	end
 
+	# get '/history - ログイン中のユーザの歌唱履歴を表示
+	#---------------------------------------------------------------------
+	get '/history' do
+		@user = session[:logined]
+		@histories = @user.histories
+		erb :history
+	end
+
 	# get '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
