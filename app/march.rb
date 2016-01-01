@@ -35,6 +35,8 @@ class March < Sinatra::Base
 		path = request.path_info
 		unless logined || path == '/login'
 			redirect '/login'
+		else
+			@current_user = logined
 		end
 	end
 
@@ -57,11 +59,19 @@ class March < Sinatra::Base
 		redirect '/login'
 	end
 
+	# get '/song/:id' - 曲情報を表示
+	#---------------------------------------------------------------------
+	get '/song/:id' do
+		@song = Song.new(params[:id])
+		@song.count_all
+		@my_sangcount = @song.count_as(@current_user.params['id'])
+		erb :song_detail
+	end
+
 	# get '/karaoke' - カラオケ記録を一覧表示
 	#---------------------------------------------------------------------
 	get '/karaoke' do
-		@user = session[:logined]
-		@karaoke_list = @user.get_karaoke
+		@karaoke_list = @current_user.get_karaoke
 		erb :mykaraoke
 	end
 
@@ -89,7 +99,7 @@ class March < Sinatra::Base
 	# get '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
-		@user = User.new(username: params[:username])
+		@user = User.new(params[:username])
 		@histories = @user.histories
 		erb :history
 	end
@@ -99,7 +109,7 @@ class March < Sinatra::Base
 	post '/login' do
 		auth = User.authenticate(@params[:username] , @params[:password])
 		if auth
-			session[:logined] = User.new(username: @params[:username])
+			session[:logined] = User.new(@params[:username])
 			redirect '/'
 		else
 			redirect '/login'
@@ -109,8 +119,7 @@ class March < Sinatra::Base
 	# post '/karaoke/create' - カラオケ記録追加をリクエスト
 	#---------------------------------------------------------------------
 	post '/karaoke/create' do
-		user = session[:logined]
-		user.create_karaoke_log(@params)
+		@current_user.create_karaoke_log(@params)
 		redirect '/karaoke'
 	end
 

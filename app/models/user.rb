@@ -10,7 +10,7 @@ class User
 
 	# initialize(username:) - usernameを指定してインスタンスを生成
 	#---------------------------------------------------------------------
-	def initialize(username:)
+	def initialize(username)
 		@params = DB.sql_row("SELECT id , username , screenname FROM user WHERE username = ?" , [username])
 	end
 

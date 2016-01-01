@@ -17,4 +17,25 @@ class Song
 		)['name']
 	end
 
+	# count_all - 全歌唱回数を取得
+	#---------------------------------------------------------------------
+	def count_all
+		count = DB.sql_column("
+			SELECT COUNT(*) as count FROM history WHERE song = ?" , [@params['id']]
+		)
+		@params['sangcount'] = (count.nil?) ? 0 : count
+	end
+
+	# count_as - 対象ユーザの歌唱回数を取得
+	#---------------------------------------------------------------------
+	def count_as(userid)
+		count = DB.sql_column("
+			SELECT COUNT(*) AS count from history
+			JOIN attendance ON history.attendance = attendance.id
+			WHERE attendance.user = ? and history.song = ?
+			GROUP BY history.song ORDER BY count DESC;" , [userid , @params['id']]
+		)
+		return (count.nil?) ? 0 : count
+	end
+
 end

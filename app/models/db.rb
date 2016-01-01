@@ -13,6 +13,15 @@ class DB
 		@@db.charset = 'utf8'
 	end
 
+	# sql_column - SQLを実行し、先頭行先頭列の値のみ戻す
+	#---------------------------------------------------------------------
+	def self.sql_column(sql , params = [])
+		st = self.sql(sql , params)
+		result = st.fetch_hash
+		return nil if result.nil?
+		return result.values.to_a[0]
+	end
+
 	# sql_row - SQLを実行し、先頭行をハッシュ形式で取得
 	#---------------------------------------------------------------------
 	def self.sql_row(sql , params = [])

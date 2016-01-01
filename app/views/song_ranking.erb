@@ -10,10 +10,10 @@
 	</thead>
 	<tbody>
 		<% @songs.each_with_index do |song , rank| %>
-		<tr onclick="location.href='/song/<%= song['song_id'] %>'">
+		<tr>
 			<td><%= rank %></td>
 			<td><%= song['artist_name'] %></td>
-			<td><%= song['song_name'] %></td>
+			<td><a href="/song/<%= song['song_id'] %>"><%= song['song_name'] %></a></td>
 			<td><%= song['count'] %></td>
 		</tr>
 		<% end %>
