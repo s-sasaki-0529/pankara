@@ -27,7 +27,7 @@ class User
 		histories.each do | history |
 			song = Song.new(history['song'])
 			history['song_name'] = song.params['name']
-			history['artist_name'] = song.artist_name
+			history['artist_name'] = song.params['artist_name']
 		end
 		return histories
 	end

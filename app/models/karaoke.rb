@@ -55,7 +55,7 @@ class Karaoke
 		@histories.each do | history |
 			song = Song.new(history['song'])
 			history['song_name'] = song.params['name']
-			history['artist_name'] = song.artist_name
+			history['artist_name'] = song.params['artist_name']
 			history['userinfo'] = users_info.find { |user| user['attendanceid'] == history['attendance'] }
 		end
 	end
