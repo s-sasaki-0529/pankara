@@ -38,4 +38,22 @@ class Song
 		return (count.nil?) ? 0 : count
 	end
 
+	# score_all - 全ユーザの採点結果を取得、集計する
+	#---------------------------------------------------------------------
+	def score_all(score_type)
+		result = DB.sql_row("
+			select MAX(score) as score_max , MIN(score) as score_min , AVG(score) as score_avg
+			from history where song = ? and score_type = ?" , [@params['id'] , score_type]
+		)
+		result.each do |key , value|
+			result[key] = sprintf "%.2f" , value.to_f
+		end
+		@params.merge! result
+	end
+
+	# score_all - 対象ユーザの採点結果を取得、集計する
+	#---------------------------------------------------------------------
+	def score_as(score_type , userid)
+	end
+
 end

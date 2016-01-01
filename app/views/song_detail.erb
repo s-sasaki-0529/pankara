@@ -1,2 +1,11 @@
-<p> all=<%= @song.params['sangcount'] %></p>
-<p> user <%= @my_sangcount %></p>
+<h3>この曲が歌われた回数</h3>
+<p>みんな: <%= @song.params['sangcount'] %></p>
+<p>あなた: <%= @my_sangcount %></p>
+
+<h3>この曲のみんなの採点結果(全国採点オンライン２)</h3>
+<p>最高: <%= @song.params['score_max'] %></p>
+<p>最低: <%= @song.params['score_min'] %></p>
+<p>平均: <%= @song.params['score_avg'] %></p>
+
+<h3>この曲のあなたの採点結果(全国採点オンライン２)</h3>
+<p>Comming soon...</p>
