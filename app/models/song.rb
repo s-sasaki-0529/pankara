@@ -45,15 +45,28 @@ class Song
 			select MAX(score) as score_max , MIN(score) as score_min , AVG(score) as score_avg
 			from history where song = ? and score_type = ?" , [@params['id'] , score_type]
 		)
-		result.each do |key , value|
-			result[key] = sprintf "%.2f" , value.to_f
-		end
+		transcate_score(result)
 		@params.merge! result
 	end
 
 	# score_all - 対象ユーザの採点結果を取得、集計する
 	#---------------------------------------------------------------------
 	def score_as(score_type , userid)
+		result = DB.sql_row("
+			SELECT MAX(score) AS score_max , MIN(score) AS score_min , AVG(score) AS score_avg
+			FROM history JOIN attendance ON history.attendance = attendance.id
+			WHERE song = ? and score_type = ? and user = ?" , [@params['id'] , score_type , userid]
+		)
+		transcate_score(result)
+		return result
 	end
 
+	# transcate_score - (プライベートメソッド) 集計したスコアの桁数を合わせる
+	#---------------------------------------------------------------------
+	private
+	def transcate_score(hash)
+		hash.each do |key , value|
+			hash[key] = sprintf "%.2f" , value.to_f
+		end
+	end
 end
