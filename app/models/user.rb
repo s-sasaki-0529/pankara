@@ -44,7 +44,7 @@ class User
 		attended_karaoke_info = all_karaoke_info.select do |karaoke|
 			attended_id_list.include?(karaoke['id'])
 		end
-		@params['karaoke'] = attended_karaoke_info
+		return attended_karaoke_info
 	end
 
 	# create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける

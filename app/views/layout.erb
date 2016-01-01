@@ -2,13 +2,30 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css">
-	<link rel="stylesheet" href="/css/march.css" type="text/css">
+	<link rel="stylesheet" href="/css/march.css?<%= Time.new.to_i %>" type="text/css">
 	<title>カラオケ情報統合管理サービス(仮)</title>
 </head>
 <body>
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand">カラオケ情報統合管理サービス(仮)</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li><a href="/">TOP</a></li>
+			<li><a href="/karaoke">カラオケ履歴</a></li>
+			<li><a href="/history">歌唱履歴</a></li>
+			<li><a href="/logout">ログアウト</a></li>
+		</ul>
+		<form class="navbar-form">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="曲を検索">
+			</div>
+			<button type="submit" class="btn btn-info">検索</button>
+		</form>
+	</div>
+</nav>
 	<%= yield %>
-	<hr>
-	<a href="/">TOPへ</a>
 </body>
  <script src="/bootstrap/js/bootstrap.min.js"></script>
 </html>

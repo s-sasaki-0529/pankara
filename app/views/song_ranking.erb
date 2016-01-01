@@ -1,0 +1,22 @@
+<h1>歌唱回数ランキング</h1>
+<table border="1" class="table table-hover linkcursor">
+	<thead>
+		<tr>
+			<th>順位</th>
+			<th>歌手名</th>
+			<th>曲名</th>
+			<th>回数</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @songs.each_with_index do |song , rank| %>
+		<tr onclick="location.href='/song/<%= song['song_id'] %>'">
+			<td><%= rank %></td>
+			<td><%= song['artist_name'] %></td>
+			<td><%= song['song_name'] %></td>
+			<td><%= song['count'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+

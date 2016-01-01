@@ -6,6 +6,7 @@ require 'sinatra/base'
 require_relative 'models/db'
 require_relative 'models/user'
 require_relative 'models/karaoke'
+require_relative 'models/history'
 require_relative 'public/scripts/util'
 
 class March < Sinatra::Base
@@ -60,7 +61,7 @@ class March < Sinatra::Base
 	#---------------------------------------------------------------------
 	get '/karaoke' do
 		@user = session[:logined]
-		@user.get_karaoke
+		@karaoke_list = @user.get_karaoke
 		erb :mykaraoke
 	end
 
@@ -78,7 +79,14 @@ class March < Sinatra::Base
 		erb :create_karaoke
 	end
 
-	# history '/history/:username - ユーザの歌唱履歴を表示
+	# get '/ranking/song' - 楽曲の歌唱回数ランキングを表示
+	#---------------------------------------------------------------------
+	get '/ranking/song' do
+		@songs = History.song_ranking
+		erb :song_ranking
+	end
+
+	# get '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history/:username' do
 		@user = User.new(username: params[:username])

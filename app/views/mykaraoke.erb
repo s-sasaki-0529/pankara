@@ -11,7 +11,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% @user.params['karaoke'].each do |karaoke| %>
+		<% @karaoke_list.each do |karaoke| %>
 		<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
 			<td><%= karaoke['datetime'] %></td>
 			<td><%= karaoke['plan'] %></td>
