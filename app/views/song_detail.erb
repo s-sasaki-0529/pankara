@@ -1,13 +1,15 @@
-<h3>この曲が歌われた回数</h3>
+<h2><%= @song.params['name'] %> / <%= @song.params['artist_name'] %></h2>
+
+<h4>この曲が歌われた回数</h4>
 <p>みんな: <%= @song.params['sangcount'] %></p>
 <p>あなた: <%= @my_sangcount %></p>
 
-<h3>この曲のみんなの採点結果(全国採点オンライン２)</h3>
+<h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
 <p>最高: <%= @song.params['score_max'] %></p>
 <p>最低: <%= @song.params['score_min'] %></p>
 <p>平均: <%= @song.params['score_avg'] %></p>
 
-<h3>この曲のあなたの採点結果(全国採点オンライン２)</h3>
+<h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
 <p>最高: <%= @my_score['score_max'] %></p>
 <p>最低: <%= @my_score['score_min'] %></p>
 <p>平均: <%= @my_score['score_avg'] %></p>
