@@ -13,6 +13,7 @@ class DB
 		@from = ''
 		@join = ''
 		@where = ''
+		@insert = ''
 		@option = ''
 		@params = []
 	end
@@ -67,6 +68,14 @@ class DB
 		@join = sql.join(' ')
 	end
 
+	# insert - INSERT文を作成する
+	#---------------------------------------------------------------------
+	def insert(table , column_list)
+		columns = column_list.join(',')
+		questions = ('?' * column_list.size).split('').join(',') 
+		@insert = "INSERT INTO #{table} (#{columns}) VALUES (#{questions})"
+	end
+
 	# option - ORDER BY / LIMIT などその他の構文を作成
 	#---------------------------------------------------------------------
 	def option(*params)
@@ -77,6 +86,12 @@ class DB
 	#---------------------------------------------------------------------
 	def set(*params)
 		@params = params
+	end
+
+	# prepare - 直接SQL文を指定する
+	#---------------------------------------------------------------------
+	def prepare(sql)
+		@sql = sql
 	end
 
 	# execute_column - SQLを実行し、先頭行先頭列の値を戻す
@@ -125,7 +140,6 @@ class DB
 		st.execute(*@params)
 		return st
 	end
-
 
 	# get - 対象テーブルから特定のレコードを取得
 	#---------------------------------------------------------------------
@@ -185,7 +199,12 @@ class DB
 	#---------------------------------------------------------------------
 	private
 	def make
-		@sql = [@select , @from , @join , @where , @option].join(' ')
+		if @insert.empty?
+			@select = @select.empty? ? 'SELECT *' : @select
+			@sql = [@select , @from , @join , @where , @option].join(' ')
+		else
+			@sql = @insert
+		end
 	end
 
 end
