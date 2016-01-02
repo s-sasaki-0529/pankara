@@ -56,6 +56,18 @@ class DB
 		return sql.join(' ')
 	end
 
+	# get - 対象テーブルから特定のレコードを取得
+	#---------------------------------------------------------------------
+	def self.get(table , id)
+		self.sql_row("SELECT * FROM #{table} WHERE id = ?" , id)
+	end
+
+	# all - 対象テーブルから全レコードを取得
+	#---------------------------------------------------------------------
+	def self.all(table)
+		self.sql_row("SELECT * FROM #{table}")
+	end
+
 	# sql_column - SQLを実行し、先頭行先頭列の値のみ戻す
 	#---------------------------------------------------------------------
 	def self.sql_column(sql , params = [])
