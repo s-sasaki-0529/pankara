@@ -13,3 +13,47 @@
 <p>最高: <%= @my_score['score_max'] %></p>
 <p>最低: <%= @my_score['score_min'] %></p>
 <p>平均: <%= @my_score['score_avg'] %></p>
+
+<h4>この曲のみんなの歌唱履歴</h4>
+<table class="table table-striped">
+	<thead>
+		<th>日付</th>
+		<th>ユーザ</th>
+		<th>キー</th>
+		<th>採点モード</th>
+		<th>得点</th>
+	</thead>
+	<tbody>
+		<% @song.params['sang_history'].each do |sang| %>
+		<tr>
+			<td><%= sang['datetime'] %></td>
+			<td><%= sang['user_screenname'] %></td>
+			<td><%= sang['songkey'] %></td>
+			<td><%= sang['score_type'] %></td>
+			<td><%= sang['score'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<h4>この曲のあなたの歌唱履歴</h4>
+<table class="table table-striped">
+	<thead>
+		<th>日付</th>
+		<th>ユーザ</th>
+		<th>キー</th>
+		<th>採点モード</th>
+		<th>得点</th>
+	</thead>
+	<tbody>
+		<% @my_sang_history.each do |sang| %>
+		<tr>
+			<td><%= sang['datetime'] %></td>
+			<td><%= sang['user_screenname'] %></td>
+			<td><%= sang['songkey'] %></td>
+			<td><%= sang['score_type'] %></td>
+			<td><%= sang['score'] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

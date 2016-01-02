@@ -66,8 +66,10 @@ class March < Sinatra::Base
 		@song = Song.new(params[:id])
 		@song.count_all
 		@song.score_all(score_type)
+		@song.sang_history_all
 		@my_sangcount = @song.count_as(@current_user.params['id'])
 		@my_score = @song.score_as(score_type , @current_user.params['id'])
+		@my_sang_history = @song.sang_history_as(@current_user.params['id'])
 		erb :song_detail
 	end
 

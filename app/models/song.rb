@@ -61,6 +61,38 @@ class Song
 		return result
 	end
 
+	# sang_history_all - 全ユーザのこの曲の歌唱履歴を取得(最近１０件)
+	#---------------------------------------------------------------------
+	def sang_history_all
+		@params['sang_history'] = DB.sql_all("
+			SELECT karaoke.datetime as datetime , user.id as user_id , user.screenname as user_screenname ,
+			history.songkey as songkey , history.score_type as score_type , history.score as score
+			FROM (history JOIN attendance ON history.attendance = attendance.id)
+			JOIN user ON attendance.user = user.id JOIN karaoke ON attendance.karaoke = karaoke.id
+			WHERE history.song = ? ORDER BY karaoke.datetime DESC LIMIT 10;" , [@params['id']]
+		)
+		@params['sang_history'].each do |sang|
+			sang['score'] = sprintf "%.2f" , sang['score']
+		end
+	end
+
+	# sang_history_as - 対象ユーザの採点結果を取得、集計する
+	#---------------------------------------------------------------------
+	def sang_history_as(userid)
+		result = DB.sql_all("
+			SELECT karaoke.datetime as datetime , user.id as user_id , user.screenname as user_screenname ,
+			history.songkey as songkey , history.score_type as score_type , history.score as score
+			FROM (history JOIN attendance ON history.attendance = attendance.id)
+			JOIN user ON attendance.user = user.id JOIN karaoke ON attendance.karaoke = karaoke.id
+			WHERE history.song = ? AND attendance.user = ? ORDER BY karaoke.datetime DESC LIMIT 10;" , 
+			[@params['id'] , userid]
+		)
+		result.each do |sang|
+			sang['score'] = sprintf "%.2f" , sang['score']
+		end
+		return result
+	end
+
 	# transcate_score - (プライベートメソッド) 集計したスコアの桁数を合わせる
 	#---------------------------------------------------------------------
 	private
