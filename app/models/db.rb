@@ -13,6 +13,49 @@ class DB
 		@@db.charset = 'utf8'
 	end
 
+	# select - SELECT文を作成する
+	#---------------------------------------------------------------------
+	def self.select(*params)
+		as_hash = {}
+		params.each do |param|
+			if param.kind_of?(Hash)
+				hash = param
+			elsif param.kind_of?(String)
+				hash = {param => param}
+			end
+			as_hash.merge! hash
+		end
+
+		selects = []
+		as_hash.each do |key , val|
+			selects.push "#{key} AS #{val}"
+		end
+
+		return "SELECT #{selects.join(',')}"
+	end
+
+	# from - FROM文を作成する
+	#---------------------------------------------------------------------
+	def self.from(*params)
+		"FROM #{params.join(',')}"
+	end
+
+	# where - WHERE分を作成する
+	#---------------------------------------------------------------------
+	def self.where(*params)
+		"WHERE #{params.join(' and ')}"
+	end
+
+	# join - JOIN文を作成する
+	#---------------------------------------------------------------------
+	def self.join(*params)
+		sql = []
+		params.each do |set|
+			sql.push  "JOIN #{set[1]} ON #{set[0]}.#{set[1]} = #{set[1]}.id"
+		end
+		return sql.join(' ')
+	end
+
 	# sql_column - SQLを実行し、先頭行先頭列の値のみ戻す
 	#---------------------------------------------------------------------
 	def self.sql_column(sql , params = [])
