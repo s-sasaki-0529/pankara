@@ -14,7 +14,7 @@ class March < Sinatra::Base
 	# configure - サーバ起動時の初期設定
 	#---------------------------------------------------------------------
 	configure do
-		DB.init
+		DB.connect
 		enable :sessions
 	end
 

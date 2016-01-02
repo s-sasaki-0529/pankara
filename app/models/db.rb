@@ -6,16 +6,27 @@ class DB
 
 	@@db = nil
 
-	# initialize - mysqlサーバへの接続を行う
+	# initialize - インスタンス生成
 	#---------------------------------------------------------------------
-	def self.init
+	def initialize
+		@select = ''
+		@from = ''
+		@join = ''
+		@where = ''
+		@option = ''
+		@params = []
+	end
+
+	# connect - mysqlサーバへの接続を行う
+	#---------------------------------------------------------------------
+	def self.connect
 		@@db = Mysql.new('127.0.0.1' , 'root' , 'zenra' , 'march')
 		@@db.charset = 'utf8'
 	end
 
 	# select - SELECT文を作成する
 	#---------------------------------------------------------------------
-	def self.select(*params)
+	def select(*params)
 		as_hash = {}
 		params.each do |param|
 			if param.kind_of?(Hash)
@@ -31,30 +42,90 @@ class DB
 			selects.push "#{key} AS #{val}"
 		end
 
-		return "SELECT #{selects.join(',')}"
+		@select = "SELECT #{selects.join(',')}"
 	end
 
 	# from - FROM文を作成する
 	#---------------------------------------------------------------------
-	def self.from(*params)
-		"FROM #{params.join(',')}"
+	def from(*params)
+		@from = "FROM #{params.join(',')}"
 	end
 
 	# where - WHERE分を作成する
 	#---------------------------------------------------------------------
-	def self.where(*params)
-		"WHERE #{params.join(' and ')}"
+	def where(*params)
+		@where = "WHERE #{params.join(' and ')}"
 	end
 
 	# join - JOIN文を作成する
 	#---------------------------------------------------------------------
-	def self.join(*params)
+	def join(*params)
 		sql = []
 		params.each do |set|
 			sql.push  "JOIN #{set[1]} ON #{set[0]}.#{set[1]} = #{set[1]}.id"
 		end
-		return sql.join(' ')
+		@join = sql.join(' ')
 	end
+
+	# option - ORDER BY / LIMIT などその他の構文を作成
+	#---------------------------------------------------------------------
+	def option(*params)
+		@option = params.join(' ')
+	end
+
+	# set - prepareに引き渡すパラメータをセットする
+	#---------------------------------------------------------------------
+	def set(*params)
+		@params = params
+	end
+
+	# execute_column - SQLを実行し、先頭行先頭列の値を戻す
+	#---------------------------------------------------------------------
+	def execute_column
+		make
+		st = self.execute
+		result = st.fetch_hash
+		return nil if result.nil?
+		return result.values.to_a[0]	
+	end
+
+	# execute_row - SQLを実行し、先頭行を戻す
+	#---------------------------------------------------------------------
+	def execute_row
+		make
+		st = self.execute
+		return st.fetch_hash
+	end
+	
+	# execute_all - SQLを実行し、結果をハッシュ配列の形式で戻す
+	#---------------------------------------------------------------------
+	def execute_all
+		result = []
+		make
+		st = self.execute
+		while (h = st.fetch_hash)
+			result.push h
+		end
+		return result
+	end
+
+	# execute_insert_id - SQLを実行後、挿入レコードのIDを戻す
+	#---------------------------------------------------------------------
+	def execute_insert_id
+		make
+		st = self.execute
+		st.insert_id
+	end
+
+	# execute - SQLを実行する
+	#---------------------------------------------------------------------
+	def execute
+		make
+		st = @@db.prepare(@sql)
+		st.execute(*@params)
+		return st
+	end
+
 
 	# get - 対象テーブルから特定のレコードを取得
 	#---------------------------------------------------------------------
@@ -108,6 +179,13 @@ class DB
 		st = @@db.prepare(sql)
 		st.execute(*params)
 		return st
+	end
+
+	# make - SQL分を生成する
+	#---------------------------------------------------------------------
+	private
+	def make
+		@sql = [@select , @from , @join , @where , @option].join(' ')
 	end
 
 end

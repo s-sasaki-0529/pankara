@@ -16,50 +16,54 @@ class Song
 	# artist_name - 歌手名を取得
 	#---------------------------------------------------------------------
 	def song_name
-		select = DB.select('artist.name' => 'artist_name')
-		from = DB.from('song')
-		join = DB.join(['song' , 'artist'])
-		where = DB.where('song.id = ?')
-		sql = [select , from , join , where].join(' ')
-		@params['artist_name'] = DB.sql_column(sql , @params['id'])
+		db = DB.new
+		db.select('artist.name' => 'artist_name')
+		db.from('song')
+		db.join(['song' , 'artist'])
+		db.where('song.id = ?')
+		db.set(@params['id'])
+		@params['artist_name'] = db.execute_column
 	end
 
 	# count_all - 全歌唱回数を取得
 	#---------------------------------------------------------------------
 	def count_all
-		select = DB.select({'COUNT(*)' => 'count'})
-		from = DB.from('history')
-		where = DB.where('song = ?')
-		sql = [select , from , where].join(' ')
-		count = DB.sql_column(sql , [@params['id']])
+		db = DB.new
+		db.select({'COUNT(*)' => 'count'})
+		db.from('history')
+		db.where('song = ?')
+		db.set(@params['id'])
+		count = db.execute_column
 		@params['sangcount'] = (count.nil?) ? 0 : count
 	end
 
 	# count_as - 対象ユーザの歌唱回数を取得
 	#---------------------------------------------------------------------
 	def count_as(userid)
-		select = DB.select({'COUNT(*)' => 'count'})
-		from = DB.from('history')
-		join = DB.join(['history' , 'attendance'])
-		where = DB.where('attendance.user = ?' , 'history.song = ?')
-		option = 'GROUP BY history.song ORDER BY count DESC'
-		sql = [select , from , join , where , option].join(' ')
-		count = DB.sql_column(sql , [userid , @params['id']])
+		db = DB.new
+		db.select({'COUNT(*)' => 'count'})
+		db.from('history')
+		db.join(['history' , 'attendance'])
+		db.where('attendance.user = ?' , 'history.song = ?')
+		db.option('GROUP BY history.song ORDER BY count DESC')
+		db.set(userid , @params['id'])
+		count = db.execute_column
 		return (count.nil?) ? 0 : count
 	end
 
 	# score_all - 全ユーザの採点結果を取得、集計する
 	#---------------------------------------------------------------------
 	def score_all(score_type)
-		select = DB.select({
+		db = DB.new
+		db.select({
 			'MAX(score)' => 'score_max' ,
 			'MIN(score)' => 'score_min' ,
 			'AVG(score)' => 'score_avg'
 		})
-		from = DB.from('history')
-		where = DB.where('song = ?' , 'score_type = ?')
-		sql = [select , from , where].join(' ')
-		result = DB.sql_row(sql , [@params['id'] , score_type])
+		db.from('history')
+		db.where('song = ?' , 'score_type = ?')
+		db.set(@params['id'] , score_type)
+		result = db.execute_row
 		transcate_score(result)
 		@params.merge! result
 	end
@@ -67,16 +71,17 @@ class Song
 	# score_all - 対象ユーザの採点結果を取得、集計する
 	#---------------------------------------------------------------------
 	def score_as(score_type , userid)
-		select = DB.select({
+		db = DB.new
+		db.select({
 			'MAX(score)' => 'score_max' ,
 			'MIN(score)' => 'score_min' ,
 			'AVG(score)' => 'score_avg'
 		})
-		from = DB.from('history')
-		join = DB.join(['history' , 'attendance'])
-		where = DB.where('song = ?' , 'score_type = ?' , 'user = ?')
-		sql = [select , from , join , where].join(' ')
-		result = DB.sql_row(sql , [@params['id'] , score_type , userid])
+		db.from('history')
+		db.join(['history' , 'attendance'])
+		db.where('song = ?' , 'score_type = ?' , 'user = ?')
+		db.set(@params['id'] , score_type , userid)
+		result = db.execute_row
 		transcate_score(result)
 		return result
 	end
@@ -84,7 +89,8 @@ class Song
 	# sang_history_all - 全ユーザのこの曲の歌唱履歴を取得(最近１０件)
 	#---------------------------------------------------------------------
 	def sang_history_all
-		select = DB.select({
+		db = DB.new
+		db.select({
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,
@@ -92,17 +98,16 @@ class Song
 			'history.score_type' => 'score_type' ,
 			'history.score' => 'score'
 		})
-		from = DB.from('history')
-		join = DB.join(
+		db.from('history')
+		db.join(
 			['history' , 'attendance'] ,
 			['attendance' , 'user'] ,
 			['attendance' , 'karaoke']
 		)
-		where = DB.where('history.song = ?')
-		option = 'ORDER BY karaoke.datetime DESC LIMIT 10'
-		sql = [select , from , join , where , option].join(' ')
-
-		@params['sang_history'] = DB.sql_all(sql , [@params['id']])
+		db.where('history.song = ?')
+		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
+		db.set(@params['id'])
+		@params['sang_history'] = db.execute_all
 		@params['sang_history'].each do |sang|
 			sang['score'] = sprintf "%.2f" , sang['score']
 		end
@@ -111,7 +116,8 @@ class Song
 	# sang_history_as - 対象ユーザの採点結果を取得、集計する
 	#---------------------------------------------------------------------
 	def sang_history_as(userid)
-		select = DB.select({
+		db = DB.new
+		db.select({
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,
@@ -119,17 +125,16 @@ class Song
 			'history.score_type' => 'score_type' ,
 			'history.score' => 'score'
 		})
-		from = DB.from('history')
-		join = DB.join(
+		db.from('history')
+		db.join(
 			['history' , 'attendance'] ,
 			['attendance' , 'user'] ,
 			['attendance' , 'karaoke']
 		)
-		where = DB.where('history.song = ?' , 'attendance.user = ?')
-		option = 'ORDER BY karaoke.datetime DESC LIMIT 10'
-		sql = [select , from , join , where].join(' ')
-
-		result = DB.sql_all(sql , [@params['id'] , userid])
+		db.where('history.song = ?' , 'attendance.user = ?')
+		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
+		db.set(@params['id'] , userid)
+		result = db.execute_all
 		result.each do |sang|
 			sang['score'] = sprintf "%.2f" , sang['score']
 		end
