@@ -15,11 +15,19 @@ class History
 	# song_ranking - クラスメソッド: 楽曲の歌唱数ランキングを取得
 	#---------------------------------------------------------------------
 	def self.song_ranking
-		DB.sql_all(
-			"SELECT song.id as song_id , artist.name as artist_name , song.name as song_name ,
-							count(*) as count
-			FROM (history JOIN song ON history.song = song.id) JOIN artist ON song.artist = artist.id
-			GROUP BY history.song ORDER BY count DESC;"
+		db = DB.new
+		db.select({
+			'song.id' => 'song_id' ,
+			'song.name' => 'song_name' ,
+			'artist.name' => 'artist_name' ,
+			'count(*)' => 'count'
+		})
+		db.from('history')
+		db.join(
+			['history' , 'song'] ,
+			['song' , 'artist']
 		)
+		db.option('GROUP BY history.song' , 'ORDER BY count DESC')
+		db.execute_all
 	end
 end
