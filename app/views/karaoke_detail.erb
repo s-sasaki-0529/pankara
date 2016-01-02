@@ -35,7 +35,7 @@
 		<tr>
 			<td><%= history['userinfo']['username'] %></td>
 			<td><%= history['artist_name'] %></td>
-			<td><%= history['song_name'] %></td>
+			<td><a href="/song/<%= history['song_id'] %>"><%= history['song_name'] %></a></td>
 			<td><%= history['songkey'] %></td>
 		</tr>
 		<% end %>

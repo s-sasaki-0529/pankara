@@ -43,6 +43,7 @@ class March < Sinatra::Base
 	# get '/' - トップページへのアクセス
 	#---------------------------------------------------------------------
 	get '/' do
+		@karaoke_list = @current_user.get_karaoke
 		erb :index
 	end
 
