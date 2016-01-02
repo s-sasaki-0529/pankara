@@ -88,12 +88,6 @@ class DB
 		@params = params
 	end
 
-	# prepare - 直接SQL文を指定する
-	#---------------------------------------------------------------------
-	def prepare(sql)
-		@sql = sql
-	end
-
 	# execute_column - SQLを実行し、先頭行先頭列の値を戻す
 	#---------------------------------------------------------------------
 	def execute_column
