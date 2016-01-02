@@ -116,7 +116,7 @@ CREATE TABLE `history` (
   `song` INTEGER NOT NULL COMMENT '曲番号',
   `songkey` INTEGER NULL DEFAULT 0 COMMENT 'キー設定',
   `score_type` MEDIUMTEXT NULL DEFAULT NULL COMMENT '採点モード',
-  `score` FLOAT(3,2) NULL DEFAULT NULL COMMENT '点数',
+  `score` FLOAT NULL DEFAULT NULL COMMENT '点数',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT '歌唱履歴';

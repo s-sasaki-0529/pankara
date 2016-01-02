@@ -108,7 +108,7 @@ def insert_history(n , attendances)
 		song = rand(SONGS) + 1
 		songkey = rand(13) - 6
 		score_type = ['全国採点オンライン２' , '全国採点グランプリ' , '分析採点３' , '精密採点DX'].sample
-		score = rand(10001).to_f / 100.0
+		score = rand(100..10000).to_f / 100.0
 		insert.push "(#{attendance} , #{song} , #{songkey} , '#{score_type}' , #{score})"
 	end
 	print insert.join(",\n")
