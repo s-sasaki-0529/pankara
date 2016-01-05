@@ -98,6 +98,18 @@ class DB
 		return result.values.to_a[0]	
 	end
 
+	# execute_columns = SQKを実行し、先頭列の配列を戻す
+	#---------------------------------------------------------------------
+	def execute_columns
+		make
+		st = self.execute
+		result = []
+		while (row = st.fetch_hash)
+			result.push row.values.to_a[0]
+		end
+		return result
+	end
+
 	# execute_row - SQLを実行し、先頭行を戻す
 	#---------------------------------------------------------------------
 	def execute_row
