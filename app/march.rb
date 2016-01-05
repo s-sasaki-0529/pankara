@@ -6,6 +6,7 @@ require 'sinatra/base'
 require_relative 'models/db'
 require_relative 'models/user'
 require_relative 'models/karaoke'
+require_relative 'models/artist'
 require_relative 'models/history'
 require_relative 'public/scripts/util'
 
@@ -78,6 +79,14 @@ class March < Sinatra::Base
 		erb :song_detail
 	end
 
+	# get '/artist/:id' - 歌手情報を表示
+	#---------------------------------------------------------------------
+	get '/artist/:id' do
+		@artist = Artist.new(params[:id])
+		@artist.songs_with_count(@current_user.params['id'])
+		require 'pp'
+		pp @artist
+	end
 	# get '/karaoke' - カラオケ記録を一覧表示
 	#---------------------------------------------------------------------
 	get '/karaoke' do

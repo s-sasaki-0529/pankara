@@ -28,9 +28,9 @@ class Artist
 		@params['songs'] = db.execute_all
 	end
 
-	# songs_with_ranking - 楽曲の一覧と歌唱回数を取得
+	# songs_with_count - 楽曲の一覧と歌唱回数を取得
 	#---------------------------------------------------------------------
-	def songs_with_ranking(userid)
+	def songs_with_count(userid)
 		db = DB.new
 		db.select('id')
 		db.from('song')
