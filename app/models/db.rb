@@ -5,7 +5,6 @@ require 'mysql'
 class DB
 
 	@@db = nil
-	attr_accessor :sql
 	
 	# initialize - インスタンス生成
 	#---------------------------------------------------------------------
