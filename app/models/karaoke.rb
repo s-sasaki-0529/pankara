@@ -54,7 +54,7 @@ class Karaoke
 	#---------------------------------------------------------------------
 	def get_history
 		db = DB.new
-		db.select('datetime' , 'attendance' , 'song' , 'songkey')
+		db.select('datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score')
 		db.from('history')
 		db.join(
 			['history' , 'attendance'] ,
@@ -77,14 +77,14 @@ class Karaoke
 		db.where('karaoke = ?')
 		db.set(@params['id'])
 		users_info = db.execute_all
-
 		@params['members'] = users_info.collect { |user| user['username'] }.join(' , ')
 		@histories.each do | history |
 			song = Song.new(history['song'])
 			history['song_id'] = song.params['id']
 			history['song_name'] = song.params['name']
+			history['artist_id'] = song.params['artist']
 			history['artist_name'] = song.params['artist_name']
-			history['userinfo'] = users_info.find { |user| user['attendanceid'] == history['attendance'] }
+			history['userinfo'] = users_info.find { |user| user['attendance'] == history['attendance'] }
 		end
 	end
 end

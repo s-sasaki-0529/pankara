@@ -22,8 +22,12 @@ class March < Sinatra::Base
 	#---------------------------------------------------------------------
 	helpers do
 		def h(content)
-			content.gsub!(/<(script.*)>(.*)<\/script>/ , '&lt\1&gt\2&lt/script&gt;')
-			content.gsub!(/\r\n|\r|\n/, "<br />")
+			if content.kind_of? String
+				content.gsub!(/<(script.*)>(.*)<\/script>/ , '&lt\1&gt\2&lt/script&gt;')
+				content.gsub!(/\r\n|\r|\n/, "<br />")
+			elsif content.kind_of? Float
+				content = sprintf "%.1f" , content
+			end
 			content
 		end
 	end

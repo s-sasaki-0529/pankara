@@ -12,8 +12,8 @@
 		<% @histories.each do |history| %>
 		<tr>
 			<td><%= history['datetime'] %></td>
-			<td><%= history['artist_name'] %></td>
-			<td><%= history['song_name'] %></td>
+			<td><a href="/artist/<%= history['artist'] %>"><%= history['artist_name'] %></a></td>
+			<td><a href="/song/<%= history['song'] %>"><%= history['song_name'] %></a></td>
 			<td><%= history['songkey'] %></td>
 		</tr>
 		<% end %>

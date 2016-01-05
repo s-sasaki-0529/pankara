@@ -19,6 +19,7 @@ class History
 		db.select({
 			'song.id' => 'song_id' ,
 			'song.name' => 'song_name' ,
+			'song.artist' => 'artist_id' ,
 			'artist.name' => 'artist_name' ,
 			'count(*)' => 'count'
 		})

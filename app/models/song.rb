@@ -108,9 +108,6 @@ class Song
 		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
 		db.set(@params['id'])
 		@params['sang_history'] = db.execute_all
-		@params['sang_history'].each do |sang|
-			sang['score'] = sprintf "%.2f" , sang['score']
-		end
 	end
 
 	# sang_history_as - 対象ユーザの採点結果を取得、集計する
@@ -135,9 +132,6 @@ class Song
 		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
 		db.set(@params['id'] , userid)
 		result = db.execute_all
-		result.each do |sang|
-			sang['score'] = sprintf "%.2f" , sang['score']
-		end
 		return result
 	end
 

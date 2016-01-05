@@ -28,15 +28,19 @@
 			<th>歌手名</th>
 			<th>曲名</th>
 			<th>キー設定</th>
+			<th>採点モード</th>
+			<th>採点</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% @karaoke.histories.each do |history| %>
 		<tr>
-			<td><%= history['userinfo']['username'] %></td>
-			<td><%= history['artist_name'] %></td>
+			<td><%= history['userinfo']['screenname'] %></td>
+			<td><a href="/artist/<%= history['artist_id'] %>"><%= history['artist_name'] %></td>
 			<td><a href="/song/<%= history['song_id'] %>"><%= history['song_name'] %></a></td>
 			<td><%= history['songkey'] %></td>
+			<td><%= history['score_type'] %></td>
+			<td><%= h history['score'] %></td>
 		</tr>
 		<% end %>
 	</tbody>
