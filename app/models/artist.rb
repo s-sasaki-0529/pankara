@@ -12,9 +12,9 @@ class Artist
 		@params = DB.new.get('artist' , id)
 	end
 
-	# songs - 楽曲一覧を歌唱回数とともに取得
+	# songs - 楽曲一覧を取得
 	#---------------------------------------------------------------------
-	def get_songs
+	def songs
 		db = DB.new
 		db.select({
 			'song.id' => 'song_id' ,
@@ -24,6 +24,26 @@ class Artist
 		db.join(['song' , 'artist'])
 		db.where('song.artist = ?')
 		db.set(@params['id'])
+		@params['songs'] = db.execute_all
+	end
+
+	# songs_with_ranking
+	#---------------------------------------------------------------------
+	def songs_with_ranking
+		db = DB.new
+		db.select({
+			'song.id' => 'song_id' ,
+			'song.name' => 'song_name' ,
+			'count(*)' => 'count'
+		})
+		db.from('history')
+		db.join(
+			['history' , 'song'] ,
+			['song' , 'artist']
+		)
+		db.where('song.artist = ?')
+		db.set(@params['id'])
+		db.option('GROUP BY history.song' , 'ORDER BY count DESC')
 		@params['songs'] = db.execute_all
 	end
 end
