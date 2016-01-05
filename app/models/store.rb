@@ -9,7 +9,7 @@ class Store
 	# initialize - インスタンスを生成する
 	#---------------------------------------------------------------------
 	def initialize(id)
-		@params = DB.sql_row("SELECT * FROM store WHERE id = ?" , [id])
+		@params = DB.new.get('store' , id)
 	end
 
 end

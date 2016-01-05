@@ -137,56 +137,26 @@ class DB
 
 	# get - 対象テーブルから特定のレコードを取得
 	#---------------------------------------------------------------------
-	def self.get(table , id)
-		self.sql_row("SELECT * FROM #{table} WHERE id = ?" , id)
+	def get(table , id)
+		self.from(table)
+		self.where('id = ?')
+		self.set(id)
+		self.execute_row
 	end
 
 	# all - 対象テーブルから全レコードを取得
 	#---------------------------------------------------------------------
 	def self.all(table)
-		self.sql_row("SELECT * FROM #{table}")
-	end
-
-	# sql_column - SQLを実行し、先頭行先頭列の値のみ戻す
-	#---------------------------------------------------------------------
-	def self.sql_column(sql , params = [])
-		st = self.sql(sql , params)
-		result = st.fetch_hash
-		return nil if result.nil?
-		return result.values.to_a[0]
-	end
-
-	# sql_row - SQLを実行し、先頭行をハッシュ形式で取得
-	#---------------------------------------------------------------------
-	def self.sql_row(sql , params = [])
-		st = self.sql(sql , params)
-		return st.fetch_hash
-	end
-
-	# sql_all - SQLを実行し、結果をハッシュの配列形式で取得
-	#---------------------------------------------------------------------
-	def self.sql_all(sql , params = [])
-		result = []
-		st = self.sql(sql , params)
-		while (h = st.fetch_hash)
-			result.push h
-		end
-		return result
-	end
-
-	# sql_insert_id - SQLを実行し、insert_idを戻す
-	#--------------------------------------------------------------------
-	def self.sql_insert_id(sql , params = [])
-		st = self.sql(sql , params)
-		st.insert_id
+		self.from(table)
+		self.execute_all
 	end
 
 	# sql - SQLを実行
 	#---------------------------------------------------------------------
 	def self.sql(sql , params = [])
-		st = @@db.prepare(sql)
-		st.execute(*params)
-		return st
+		@sql = sql
+		@params = params
+		execute_all
 	end
 
 	# make - SQL分を生成する

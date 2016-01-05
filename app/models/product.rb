@@ -9,7 +9,7 @@ class Product
 	# initialize - インスタンスを生成する
 	#---------------------------------------------------------------------
 	def initialize(id)
-		@params = DB.sql_row("SELECT * FROM product WHERE id = ?" , [id])
+		@params = DB.new.get('product' , id)
 	end
 
 end

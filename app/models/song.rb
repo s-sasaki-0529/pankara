@@ -9,7 +9,7 @@ class Song
 	# initialize - インスタンスを生成し、曲名、歌手名を取得する
 	#---------------------------------------------------------------------
 	def initialize(id)
-		@params = DB.get('song' , id)
+		@params = DB.new.get('song' , id)
 		self.song_name
 	end
 
