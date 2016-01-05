@@ -36,7 +36,7 @@
 		<% @karaoke.histories.each do |history| %>
 		<tr>
 			<td><%= history['userinfo']['screenname'] %></td>
-			<td><%= history['artist_name'] %></td>
+			<td><a href="/artist/<%= history['artist_id'] %>"><%= history['artist_name'] %></td>
 			<td><a href="/song/<%= history['song_id'] %>"><%= history['song_name'] %></a></td>
 			<td><%= history['songkey'] %></td>
 			<td><%= history['score_type'] %></td>

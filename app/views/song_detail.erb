@@ -1,4 +1,7 @@
-<h2><%= @song.params['name'] %> / <%= @song.params['artist_name'] %></h2>
+<h2>
+	<%= @song.params['name'] %> /
+	<a href="artist/<%= @song.params['artist'] %>"><%= @song.params['artist_name'] %></a>
+</h2>
 
 <h4>この曲が歌われた回数</h4>
 <p>みんな: <%= @song.params['sangcount'] %></p>

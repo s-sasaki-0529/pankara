@@ -12,7 +12,7 @@
 		<% @songs.each_with_index do |song , rank| %>
 		<tr>
 			<td><%= rank %></td>
-			<td><%= song['artist_name'] %></td>
+			<td><a href="/artist/<%= song['artist_id'] %>"><%= song['artist_name'] %></a></td>
 			<td><a href="/song/<%= song['song_id'] %>"><%= song['song_name'] %></a></td>
 			<td><%= song['count'] %></td>
 		</tr>
