@@ -117,6 +117,12 @@ class March < Sinatra::Base
 		@histories = @user.histories
 		erb :history
 	end
+	
+	# get '/user/:userid' - ユーザページを表示
+	#---------------------------------------------------------------------
+	get '/user/:userid' do
+		erb :user_page
+	end
 
 	# post '/login' - ログインリクエスト
 	#---------------------------------------------------------------------
@@ -136,5 +142,4 @@ class March < Sinatra::Base
 		@current_user.create_karaoke_log(@params)
 		redirect '/karaoke'
 	end
-
 end
