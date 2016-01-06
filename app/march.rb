@@ -84,8 +84,7 @@ class March < Sinatra::Base
 	get '/artist/:id' do
 		@artist = Artist.new(params[:id])
 		@artist.songs_with_count(@current_user.params['id'])
-		require 'pp'
-		pp @artist
+		erb :artist_detail
 	end
 	# get '/karaoke' - カラオケ記録を一覧表示
 	#---------------------------------------------------------------------
