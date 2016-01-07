@@ -76,7 +76,7 @@ class Karaoke
 		db.where('karaoke = ?')
 		db.set(@params['id'])
 		users_info = db.execute_all
-		@params['members'] = users_info.collect { |user| user['username'] }.join(' , ')
+		@params['members'] = users_info.collect { |user| user['screenname'] }.join(' , ')
 		@histories.each do | history |
 			song = Song.new(history['song'])
 			history['song_id'] = song.params['id']
