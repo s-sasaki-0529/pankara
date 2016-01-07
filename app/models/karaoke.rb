@@ -1,9 +1,7 @@
 #----------------------------------------------------------------------
 # Karaoke - カラオケ記録に関する情報を操作
 #----------------------------------------------------------------------
-require_relative 'db'
-require_relative 'store'
-require_relative 'product'
+require_relative 'util'
 class Karaoke
 
 	attr_reader :params , :histories

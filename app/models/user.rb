@@ -1,9 +1,7 @@
 #----------------------------------------------------------------------
 # User - 個々のユーザアカウントに関する情報を操作
 #----------------------------------------------------------------------
-require_relative 'db'
-require_relative 'song'
-require_relative 'karaoke'
+require_relative 'util'
 class User
 
 	attr_reader :params

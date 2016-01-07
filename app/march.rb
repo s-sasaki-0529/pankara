@@ -3,12 +3,7 @@
 #----------------------------------------------------------------------
 
 require 'sinatra/base'
-require_relative 'models/db'
-require_relative 'models/user'
-require_relative 'models/karaoke'
-require_relative 'models/artist'
-require_relative 'models/history'
-require_relative 'public/scripts/util'
+require_relative 'models/util'
 
 class March < Sinatra::Base
 

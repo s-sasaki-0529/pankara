@@ -1,8 +1,7 @@
 #----------------------------------------------------------------------
 # Artist - 個々の歌手に関する情報を管理
 #----------------------------------------------------------------------
-require_relative 'db'
-require_relative 'song'
+require_relative 'util'
 class Artist
 
 	attr_reader :params
