@@ -21,6 +21,7 @@
 <table class="table table-striped">
 	<thead>
 		<th>日付</th>
+		<th>内容</th>
 		<th>ユーザ</th>
 		<th>キー</th>
 		<th>採点モード</th>
@@ -30,6 +31,7 @@
 		<% @song.params['sang_history'].each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
+			<td><a href="/karaoke/detail/<%= sang['karaoke_id'] %>"><%= sang['karaoke_name'] %></td>
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>
@@ -43,6 +45,7 @@
 <table class="table table-striped">
 	<thead>
 		<th>日付</th>
+		<th>内容</th>
 		<th>ユーザ</th>
 		<th>キー</th>
 		<th>採点モード</th>
@@ -52,6 +55,7 @@
 		<% @my_sang_history.each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
+			<td><a href="/karaoke/detail/<%= sang['karaoke_id'] %>"><%= sang['karaoke_name'] %></a></td>
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>

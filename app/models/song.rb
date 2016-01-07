@@ -89,7 +89,8 @@ class Song
 	def sang_history_all
 		db = DB.new
 		db.select({
-			'karaoke.name' => 'name' ,
+			'karaoke.id' => 'karaoke_id' ,
+			'karaoke.name' => 'karaoke_name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,
@@ -114,7 +115,8 @@ class Song
 	def sang_history_as(userid)
 		db = DB.new
 		db.select({
-			'karaoke.name' => 'name' ,
+			'karaoke.id' => 'karaoke_id' ,
+			'karaoke.name' => 'karaoke_name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,

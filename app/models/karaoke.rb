@@ -28,6 +28,7 @@ class Karaoke
 		db = DB.new
 		db.select({
 			'karaoke.id' => 'id' ,
+			'karaoke.name' => 'name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'karaoke.plan' => 'plan' ,
 			'karaoke.store' => 'store' ,
@@ -52,7 +53,7 @@ class Karaoke
 	#---------------------------------------------------------------------
 	def get_history
 		db = DB.new
-		db.select('datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score')
+		db.select('name' , 'datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score')
 		db.from('history')
 		db.join(
 			['history' , 'attendance'] ,

@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			<th>日時</th>
+			<th>内容</th>
 			<th>時間</th>
 			<th>お店</th>
 			<th>機種</th>
@@ -14,6 +15,7 @@
 		<% @karaoke_list.each do |karaoke| %>
 		<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
 			<td><%= karaoke['datetime'] %></td>
+			<td><%= karaoke['name'] %></td>
 			<td><%= karaoke['plan'] %></td>
 			<td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
 			<td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>

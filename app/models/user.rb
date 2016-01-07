@@ -21,6 +21,7 @@ class User
 	def histories
 		db = DB.new
 		db.select({
+			'karaoke.name' => 'karaoke_name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'history.song' => 'song' ,
 			'history.songkey' => 'songkey'
