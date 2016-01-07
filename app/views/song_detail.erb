@@ -8,14 +8,14 @@
 <p>あなた: <%= @my_sangcount %></p>
 
 <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-<p>最高: <%= @song.params['score_max'] %></p>
-<p>最低: <%= @song.params['score_min'] %></p>
-<p>平均: <%= @song.params['score_avg'] %></p>
+<p>最高: <%= h @song.params['score_max'] %></p>
+<p>最低: <%= h @song.params['score_min'] %></p>
+<p>平均: <%= h @song.params['score_avg'] %></p>
 
 <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
-<p>最高: <%= @my_score['score_max'] %></p>
-<p>最低: <%= @my_score['score_min'] %></p>
-<p>平均: <%= @my_score['score_avg'] %></p>
+<p>最高: <%= h @my_score['score_max'] %></p>
+<p>最低: <%= h @my_score['score_min'] %></p>
+<p>平均: <%= h @my_score['score_avg'] %></p>
 
 <h4>この曲のみんなの歌唱履歴</h4>
 <table class="table table-striped">
@@ -33,7 +33,7 @@
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>
-			<td><%= sang['score'] %></td>
+			<td><%= h sang['score'] %></td>
 		</tr>
 		<% end %>
 	</tbody>
@@ -55,7 +55,7 @@
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>
-			<td><%= sang['score'] %></td>
+			<td><%= h sang['score'] %></td>
 		</tr>
 		<% end %>
 	</tbody>

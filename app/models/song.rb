@@ -64,7 +64,6 @@ class Song
 		db.where('song = ?' , 'score_type = ?')
 		db.set(@params['id'] , score_type)
 		result = db.execute_row
-		transcate_score(result)
 		@params.merge! result
 	end
 
@@ -82,7 +81,6 @@ class Song
 		db.where('song = ?' , 'score_type = ?' , 'user = ?')
 		db.set(@params['id'] , score_type , userid)
 		result = db.execute_row
-		transcate_score(result)
 		return result
 	end
 
@@ -91,6 +89,7 @@ class Song
 	def sang_history_all
 		db = DB.new
 		db.select({
+			'karaoke.name' => 'name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,
@@ -115,6 +114,7 @@ class Song
 	def sang_history_as(userid)
 		db = DB.new
 		db.select({
+			'karaoke.name' => 'name' ,
 			'karaoke.datetime' => 'datetime' ,
 			'user.id' => 'user_id' ,
 			'user.screenname' => 'user_screenname' ,
@@ -135,12 +135,4 @@ class Song
 		return result
 	end
 
-	# transcate_score - (プライベートメソッド) 集計したスコアの桁数を合わせる
-	#---------------------------------------------------------------------
-	private
-	def transcate_score(hash)
-		hash.each do |key , value|
-			hash[key] = sprintf "%.2f" , value.to_f
-		end
-	end
 end
