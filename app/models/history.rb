@@ -14,12 +14,13 @@ class History
 
 	# song_ranking - クラスメソッド: 楽曲の歌唱数ランキングを取得
 	#---------------------------------------------------------------------
-	def self.song_ranking
+	def self.song_ranking(limit)
 		db = DB.new
 		db.select({
 			'song.id' => 'song_id' ,
 			'song.name' => 'song_name' ,
 			'song.artist' => 'artist_id' ,
+			'song.url' => 'song_url' ,
 			'artist.name' => 'artist_name' ,
 			'count(*)' => 'count'
 		})
@@ -28,7 +29,7 @@ class History
 			['history' , 'song'] ,
 			['song' , 'artist']
 		)
-		db.option('GROUP BY history.song' , 'ORDER BY count DESC')
+		db.option('GROUP BY history.song' , 'ORDER BY count DESC' , "LIMIT #{limit}")
 		db.execute_all
 	end
 end

@@ -3,6 +3,10 @@
 	<a href="artist/<%= @song.params['artist'] %>"><%= @song.params['artist_name'] %></a>
 </h2>
 
+<div>
+<%= tube @song.params['url'] , 560 , 315 %>
+</div>
+
 <h4>この曲が歌われた回数</h4>
 <p>みんな: <%= @song.params['sangcount'] %></p>
 <p>あなた: <%= @my_sangcount %></p>

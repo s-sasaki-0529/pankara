@@ -26,6 +26,15 @@ class March < Sinatra::Base
 			end
 			content
 		end
+		def tube(url , w , h)
+			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
+				embed = "https://www.youtube.com/embed/#{$1}"
+				return "<iframe width=\"#{w}\" height=\"#{h}\" src=\"#{embed}\"></iframe>"
+				return "https://www.youtube.com/embed/#{$1}"
+			else
+				return "<a href=\"#{url}\">動画リンク</a>"
+			end
+		end
 	end
 
 	# before - 全てのURLにおいて初めに実行される
@@ -105,7 +114,7 @@ class March < Sinatra::Base
 	# get '/ranking/song' - 楽曲の歌唱回数ランキングを表示
 	#---------------------------------------------------------------------
 	get '/ranking/song' do
-		@songs = History.song_ranking
+		@songs = History.song_ranking(20)
 		erb :song_ranking
 	end
 
