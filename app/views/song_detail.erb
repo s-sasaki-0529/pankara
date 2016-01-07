@@ -4,7 +4,9 @@
 </h2>
 
 <div>
-<%= tube @song.params['url'] , 560 , 315 %>
+	<% if @song.params['url'] %>
+		<%= tube @song.params['url'] , 560 , 315 %>
+	<% end %>
 </div>
 
 <h4>この曲が歌われた回数</h4>
