@@ -64,7 +64,7 @@ def insert_song(n)
 	insert = []
 	n.times do |i|
 		artist = rand(ARTISTS) + 1
-		insert.push "(#{artist} , '楽曲#{artist}')"
+		insert.push "(#{artist} , '楽曲#{i}')"
 	end
 	print insert.join(",\n")
 	puts ";"
