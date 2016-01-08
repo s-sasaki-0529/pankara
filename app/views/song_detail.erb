@@ -1,22 +1,22 @@
 <h2>
-	<%= @song.params['name'] %> /
-	<a href="artist/<%= @song.params['artist'] %>"><%= @song.params['artist_name'] %></a>
+	<%= @song['name'] %> /
+	<a href="artist/<%= @song['artist'] %>"><%= @song['artist_name'] %></a>
 </h2>
 
 <div>
-	<% if @song.params['url'] %>
-		<%= tube @song.params['url'] , 560 , 315 %>
+	<% if @song['url'] %>
+		<%= tube @song['url'] , 560 , 315 %>
 	<% end %>
 </div>
 
 <h4>この曲が歌われた回数</h4>
-<p>みんな: <%= @song.params['sangcount'] %></p>
+<p>みんな: <%= @song['sangcount'] %></p>
 <p>あなた: <%= @my_sangcount %></p>
 
 <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-<p>最高: <%= h @song.params['score_max'] %></p>
-<p>最低: <%= h @song.params['score_min'] %></p>
-<p>平均: <%= h @song.params['score_avg'] %></p>
+<p>最高: <%= h @song['score_max'] %></p>
+<p>最低: <%= h @song['score_min'] %></p>
+<p>平均: <%= h @song['score_avg'] %></p>
 
 <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
 <p>最高: <%= h @my_score['score_max'] %></p>
@@ -34,7 +34,7 @@
 		<th>得点</th>
 	</thead>
 	<tbody>
-		<% @song.params['sang_history'].each do |sang| %>
+		<% @song['sang_history'].each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
 			<td><a href="/karaoke/detail/<%= sang['karaoke_id'] %>"><%= sang['karaoke_name'] %></td>

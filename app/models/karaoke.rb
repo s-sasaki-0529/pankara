@@ -2,9 +2,9 @@
 # Karaoke - カラオケ記録に関する情報を操作
 #----------------------------------------------------------------------
 require_relative 'util'
-class Karaoke
+class Karaoke < Base
 
-	attr_reader :params , :histories
+	attr_reader :histories
 
 	# initialize - インスタンスを生成し、機種名、店舗名を取得する
 	#---------------------------------------------------------------------

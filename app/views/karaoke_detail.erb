@@ -1,4 +1,4 @@
-<h4><%= @karaoke.params['name'] %></h4>
+<h4><%= @karaoke['name'] %></h4>
 <table border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
@@ -11,12 +11,12 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><%= @karaoke.params['datetime'] %></td>
-			<td><%= @karaoke.params['plan'] %></td>
-			<td><%= @karaoke.params['store_name'] %></td>
-			<td><%= @karaoke.params['product_name'] %></td>
+			<td><%= @karaoke['datetime'] %></td>
+			<td><%= @karaoke['plan'] %></td>
+			<td><%= @karaoke['store_name'] %></td>
+			<td><%= @karaoke['product_name'] %></td>
 			<td>
-				<% @karaoke.params['members'].each do |member| %>
+				<% @karaoke['members'].each do |member| %>
 					<span style="margin-left: 6px">
 						<a href="/user/<%= member['username'] %>"><%= member['screenname'] %></a>
 					<span>

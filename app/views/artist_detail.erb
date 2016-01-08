@@ -1,5 +1,5 @@
 <h2>
-	<%= @artist.params['name'] %>
+	<%= @artist['name'] %>
 </h2>
 
 <h4>この歌手の楽曲一覧</h4>
@@ -10,11 +10,11 @@
 		<th>みんなが歌った回数</th>
 	</thead>
 	<tbody>
-		<% @artist.params['songs'].each do |song| %>
+		<% @artist['songs'].each do |song| %>
 		<tr>
-			<td><a href="/song/<%= song.params['id'] %>"><%= song.params['name'] %></a></td>
-			<td><%= song.params['my_sangcount'] %></td>
-			<td><%= song.params['sangcount'] %></td>
+			<td><a href="/song/<%= song['id'] %>"><%= song['name'] %></a></td>
+			<td><%= song['my_sangcount'] %></td>
+			<td><%= song['sangcount'] %></td>
 		</tr>
 		<% end %>
 	</tbody>

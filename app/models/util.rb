@@ -1,7 +1,8 @@
 #----------------------------------------------------------------------
 # Util - 汎用ライブラリ
 #----------------------------------------------------------------------
-require_relative 'db.rb'
+require_relative 'db'
+require_relative 'base'
 require_relative 'artist'
 require_relative 'history'
 require_relative 'karaoke'
