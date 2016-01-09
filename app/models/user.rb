@@ -94,6 +94,8 @@ class User < Base
 		db.execute_row
 	end
 
+	# get_most_sang - 最も歌っている曲と歌手を取得する 
+	#---------------------------------------------------------------------
 	def get_most_sang
 		most_sang = {}
 		db = DB.new
@@ -108,6 +110,8 @@ class User < Base
 		most_sang
 	end
 
+	# get_most_sang_song - 最も歌っている曲を取得する 
+	#---------------------------------------------------------------------
 	def get_most_sang_song(histories)
 		hash = {}
 		histories.each do |history|
@@ -128,6 +132,8 @@ class User < Base
 		{'id' => most_sang_song_id, 'name' => most_sang_song_name}
 	end
 
+	# get_most_sang_artist - 最も歌っている歌手を取得する 
+	#---------------------------------------------------------------------
 	def get_most_sang_artist(histories)
 		artists = []
 		db = DB.new
@@ -158,6 +164,8 @@ class User < Base
 		{'id' => most_sang_artist_id, 'name' => most_sang_artist_name}
 	end
 
+	# get_max_score - 最高スコアを取得する 
+	#---------------------------------------------------------------------
 	def get_max_score
 		db = DB.new
 		db.select({'MAX(history.score)' => 'max_score'})
