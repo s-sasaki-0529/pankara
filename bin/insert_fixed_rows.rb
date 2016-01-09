@@ -5,7 +5,7 @@ SONGS = 3
 USERS = 5
 FRIENDS = 5
 KARAOKES = 30
-HISTORIES = 1000
+HISTORIES = 2110
 
 def random_date
 	year = 2000 + rand(15)
@@ -144,5 +144,4 @@ insert_song(SONGS)
 insert_karaoke(KARAOKES)
 
 attendances = insert_attendance()
-insert_history(HISTORIES , attendances)
 insert_history(HISTORIES , attendances)
