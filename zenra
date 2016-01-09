@@ -25,6 +25,8 @@ elif [ "$command" = "ci" ]; then
 	zenra init_db --withfixed
 	cd $APPDIR
 	bundle exec rspec
+	cp -r coverage app/public/
+	rm -rf coverage
 else
 	echo "Not found such command"
 fi
