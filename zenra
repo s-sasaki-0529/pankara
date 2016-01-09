@@ -14,6 +14,8 @@ elif [ "$command" = "init_db" ]; then
 		ruby bin/insert_sample_rows.rb > bin/tmp.sql
 		mysql -u root --password=zenra -e "source bin/tmp.sql"
 		rm bin/tmp.sql
+	elif [ "$subcommand" = "--withrealdata" ]; then
+		mysql -u root --password=zenra -e "source realdata.sql"
 	fi
 elif [ "$command" = "ci" ]; then
 	cd $APPDIR/spec/assist
