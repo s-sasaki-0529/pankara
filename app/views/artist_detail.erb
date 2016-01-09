@@ -12,7 +12,7 @@
 	<tbody>
 		<% @artist['songs'].each do |song| %>
 		<tr>
-			<td><a href="/song/<%= song['id'] %>"><%= song['name'] %></a></td>
+			<td><%= song_link song['id'], song['name'] %></td>
 			<td><%= song['my_sangcount'] %></td>
 			<td><%= song['sangcount'] %></td>
 		</tr>

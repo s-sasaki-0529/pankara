@@ -20,8 +20,8 @@
 					未登録
 				<% end %>
 			</td>
-			<td><a href="/song/<%= song['song_id'] %>"><%= song['song_name'] %></a></td>
-			<td><a href="/artist/<%= song['artist_id'] %>"><%= song['artist_name'] %></a></td>
+			<td><%= song_link song['song_id'], song['song_name'] %></td>
+			<td><%= artist_link song['artist_id'], song['artist_name'] %></td>
 			<td><%= song['count'] %></td>
 		</tr>
 		<% end %>

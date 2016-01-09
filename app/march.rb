@@ -35,6 +35,18 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
+		def user_link(id, screenname)
+			return "<a href=/user/#{id}>#{screenname}</a>"
+		end
+		def karaoke_link(id, name)
+			return "<a href=/karaoke/detail/#{id}>#{name}</a>"
+		end
+		def song_link(id, name)
+			return "<a href=/song/#{id}>#{name}</a>"
+		end
+		def artist_link(id, name)
+			return "<a href=/artist/#{id}>#{name}</a>"
+		end
 	end
 
 	# before - 全てのURLにおいて初めに実行される

@@ -14,8 +14,8 @@
 		<tr>
 			<td><%= history['datetime'] %></td>
 			<td><%= history['karaoke_name'] %></td>
-			<td><a href="/artist/<%= history['artist'] %>"><%= history['artist_name'] %></a></td>
-			<td><a href="/song/<%= history['song'] %>"><%= history['song_name'] %></a></td>
+			<td><%= artist_link history['artist'], history['artist_name'] %></td>
+			<td><%= song_link history['song'], history['song'] %></td>
 			<td><%= history['songkey'] %></td>
 		</tr>
 		<% end %>

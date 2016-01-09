@@ -1,6 +1,6 @@
 <h2>
 	<%= @song['name'] %> /
-	<a href="/artist/<%= @song['artist'] %>"><%= @song['artist_name'] %></a>
+	<%= artist_link @song['artist'], @song['artist_name'] %>
 </h2>
 
 <div>
@@ -37,7 +37,7 @@
 		<% @song['sang_history'].each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
-			<td><a href="/karaoke/detail/<%= sang['karaoke_id'] %>"><%= sang['karaoke_name'] %></td>
+			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>
@@ -61,7 +61,7 @@
 		<% @my_sang_history.each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
-			<td><a href="/karaoke/detail/<%= sang['karaoke_id'] %>"><%= sang['karaoke_name'] %></a></td>
+			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
 			<td><%= sang['user_screenname'] %></td>
 			<td><%= sang['songkey'] %></td>
 			<td><%= sang['score_type'] %></td>
