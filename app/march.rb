@@ -35,8 +35,8 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def user_link(id, screenname)
-			return "<a href=/user/#{id}>#{screenname}</a>"
+		def user_link(username, screenname)
+			return "<a href=/user/#{username}>#{screenname}</a>"
 		end
 		def karaoke_link(id, name)
 			return "<a href=/karaoke/detail/#{id}>#{name}</a>"
@@ -146,9 +146,14 @@ class March < Sinatra::Base
 		erb :history
 	end
 	
-	# get '/user/:userid' - ユーザページを表示
+	# get '/user/:username' - ユーザページを表示
 	#---------------------------------------------------------------------
-	get '/user/:userid' do
+	get '/user/:username' do
+		@user = User.new(params[:username])
+		@histories = @user.histories 5
+		@karaoke_list = @user.get_karaoke 5
+		@most_sang = @user.get_most_sang
+		@max_score = @user.get_max_score
 		erb :user_page
 	end
 
