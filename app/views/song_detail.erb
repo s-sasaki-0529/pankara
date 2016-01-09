@@ -26,12 +26,12 @@
 <h4>この曲のみんなの歌唱履歴</h4>
 <table class="table table-striped">
 	<thead>
-		<th>日付</th>
+		<th class='cell-datetime'>日付</th>
 		<th>内容</th>
 		<th>ユーザ</th>
-		<th>キー</th>
+		<th class='cell-number'>キー</th>
 		<th>採点モード</th>
-		<th>得点</th>
+		<th class='cell-number'>得点</th>
 	</thead>
 	<tbody>
 		<% @song['sang_history'].each do |sang| %>
@@ -50,12 +50,12 @@
 <h4>この曲のあなたの歌唱履歴</h4>
 <table class="table table-striped">
 	<thead>
-		<th>日付</th>
+		<th class='cell-datetime'>日付</th>
 		<th>内容</th>
 		<th>ユーザ</th>
-		<th>キー</th>
+		<th class='cell-number'>キー</th>
 		<th>採点モード</th>
-		<th>得点</th>
+		<th class='cell-number'>得点</th>
 	</thead>
 	<tbody>
 		<% @my_sang_history.each do |sang| %>

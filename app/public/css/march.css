@@ -1,3 +1,11 @@
+.cell-number {
+	width: 5%;
+}
+
+.cell-datetime {
+	width: 15%;
+}
+
 .linkcursor {
 	cursor: pointer;
 }
