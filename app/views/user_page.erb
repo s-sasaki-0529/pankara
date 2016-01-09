@@ -1,3 +1,9 @@
+<!-- Sa2Knight: 
+画面デザインろくに決まってないから、カラムわけとかしなくていいよ 
+song_detailみたいにテーブルタグ直打ちだけで問題ない。そもそもカラムわけをそれぞれの
+ビューに度々書いてたらフレームワークの意味無いじゃん
+-->
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-3 bg-info">
@@ -22,6 +28,7 @@
 			<table class="table table-hover linkcursor">
 				<tbody>
 					<% @histories.each do |history| %>
+						<!-- Sa2Knight: 曲名には曲のリンク、歌手名には歌手のリンクのほうがよさ気 -->
 						<tr onclick="location.href='/song/<%= history['song'] %>'">
 							<td><%= history['song_name'] %></td>
 							<td><%= history['artist_name'] %></td>
@@ -30,12 +37,15 @@
 					</tr>
 				</tbody>
 			</table>
+			<!-- Sa2Knight: 歌手名を併記したり、何回歌ったかが書いてたらいいかも -->
 			<h4>一番歌っている曲</h4>
 			<%= song_link @most_sang['song']['id'], @most_sang['song']['name'] %>
 
+			<!-- SaKnight: 何回歌われたかが欲しい -->
 			<h4>一番歌っている歌手</h4>
 			<%= artist_link @most_sang['artist']['id'], @most_sang['artist']['name'] %>
 
+			<!-- Sa2Knight: 何の曲だよ -->
 			<h4>最高点数</h4>
 			<%= @max_score %>
 		</div>

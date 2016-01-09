@@ -14,7 +14,7 @@ class User < Base
 		@params = db.execute_row
 	end
 
-	# histories(limit = 0) - 歌唱履歴を取得、limitを指定するとその行数だけ取得
+	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
 	#---------------------------------------------------------------------
 	def histories(limit = 0)
 		db = DB.new
@@ -31,6 +31,7 @@ class User < Base
 		)
 		db.where('attendance.user = ?')
 		option = ['ORDER BY datetime DESC']
+		# Sa2Knight: 引数が負数の場合にバグる可能性があるからlimit > 0が無難
 		option.push("LIMIT #{limit}") if limit.nonzero?
 		db.option(option)
 		db.set(@params['id'])
@@ -44,7 +45,7 @@ class User < Base
 		return histories
 	end
 
-	# get_karaoke、limitを指定するとその行数だけ取得
+	# get_karaoke - limitを指定するとその行数だけ取得
 	#---------------------------------------------------------------------
 	def get_karaoke(limit = 0)
 		# 対象ユーザが参加したkaraokeのID一覧を取得
@@ -60,6 +61,7 @@ class User < Base
 		attended_karaoke_info = all_karaoke_info.select do |karaoke|
 			attended_id_list.include?(karaoke['id'])
 		end
+		# Sa2Knight: 同様にlimit > 0
 		return limit.nonzero? ? attended_karaoke_info[0...limit] : attended_karaoke_info
 	end
 
@@ -94,8 +96,10 @@ class User < Base
 		db.execute_row
 	end
 
+	# Sa2Knight - ヘッダーコメントつけて
 	def get_most_sang
 		most_sang = {}
+		# Sa2Knight - ここSQL記述してるけどhistoriesメソッド呼ぶだけじゃダメ？
 		db = DB.new
 		db.select({'history.song' => 'song'})
 		db.from('history')
@@ -103,12 +107,17 @@ class User < Base
 		db.where('attendance.user = ?')
 		db.set(@params['id'])
 		histories = db.execute_all
+		# Sa2Knight - 「最も歌った曲」はユーザ自信の情報なわけだから、インスタンスの変数にするべき
 		most_sang['song'] = get_most_sang_song histories
 		most_sang['artist'] = get_most_sang_artist histories
 		most_sang
 	end
 
+	# Sa2Knight - ヘッダーコメントつけて
+	# Sa2Knight - 外から使われないメソッドはprivateに
 	def get_most_sang_song(histories)
+		# Sa2Knight - 表の集計ぐらいSQLにやらせよう。
+		# COUNT(*) や GROUP BYを使ってSQLだけで一番歌われた曲は取れる
 		hash = {}
 		histories.each do |history|
 			unless hash.has_key? history['song'] then
@@ -128,7 +137,10 @@ class User < Base
 		{'id' => most_sang_song_id, 'name' => most_sang_song_name}
 	end
 
+	# Sa2Knight - ヘッダーコメントつけて
+	# Sa2Knight - 外から使われないメソッドはprivateに
 	def get_most_sang_artist(histories)
+		# Sa2Knight - SQLにやらせよう
 		artists = []
 		db = DB.new
 		db.select({'song.artist' => 'artist'})
@@ -158,7 +170,11 @@ class User < Base
 		{'id' => most_sang_artist_id, 'name' => most_sang_artist_name}
 	end
 
+	# Sa2Knight - ヘッダーコメントつけて
+	# Sa2Knight - 基本的には外から呼ばれるメソッドを上に、プライベートなメソッドを下に宣言する。
+	#逆でもいいけどどちらかに統一する
 	def get_max_score
+		# Sa2Knight - これはリクエストだけど、何の曲だったのか、どの採点モードだったのかはわかるべき
 		db = DB.new
 		db.select({'MAX(history.score)' => 'max_score'})
 		db.from('history')
