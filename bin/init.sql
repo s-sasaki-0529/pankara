@@ -39,6 +39,21 @@ CREATE TABLE `user` (
 ) COMMENT 'ユーザ';
 
 -- ---
+-- Table 'friend'
+-- 友達関係を管理
+-- ---
+
+DROP TABLE IF EXISTS `friend`;
+
+CREATE TABLE `friend` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `user_from` INTEGER NOT NULL COMMENT '申請側userid',
+  `user_to` INTEGER NOT NULL COMMENT '受信側userid',
+  `created_at` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`)
+) COMMENT '友達関係を管理';
+
+-- ---
 -- Table 'artist'
 -- 個々の歌手を管理
 -- ---
@@ -149,3 +164,5 @@ ALTER TABLE `history` ADD FOREIGN KEY (attendance) REFERENCES `attendance` (`id`
 ALTER TABLE `history` ADD FOREIGN KEY (song) REFERENCES `song` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
+ALTER TABLE `friend` ADD FOREIGN KEY (user_from) REFERENCES `user` (`id`);
+ALTER TABLE `friend` ADD FOREIGN KEY (user_to) REFERENCES `user` (`id`);
