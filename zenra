@@ -22,13 +22,9 @@ elif [ "$command" = "init_db" ]; then
 		mysql -u root --password=zenra -e "source realdata.sql"
 	fi
 elif [ "$command" = "ci" ]; then
-	cd $APPDIR/spec/assist
-	zenra init_db
-	./insert_test_records
+	zenra init_db --withfixed
 	cd $APPDIR
 	bundle exec rspec
-	cp -r coverage app/public/
-	rm -rf coverage
 else
 	echo "Not found such command"
 fi
