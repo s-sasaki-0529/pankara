@@ -7,11 +7,17 @@ module Rbase
 		click_on 'ログイン'
 	end
 
-	def iscontain(content)
-		expect(page).to have_content content
+	def iscontain(contents)
+		contents = [contents] if contents.kind_of?(String)
+		contents.each do |content|
+			expect(page).to have_content content
+		end
 	end
 
-	def islack(content)
-		expect(page).to (have_no_content content)
+	def islack(*contents)
+		contents = [contents] if contents.kind_of?(String)
+		contents.each do |content|
+			expect(page).to (have_no_content content)
+		end
 	end
 end
