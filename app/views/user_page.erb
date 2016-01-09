@@ -1,16 +1,46 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-3 bg-info">
-      <h3>hogeさんの友達</h3>
-      <%= '友達' * 100 %>
-    </div>
-    <div class="col-xs-6 bg-success">
-      <h3>最近のカラオケ記録</h3>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-xs-3 bg-info">
+			<h3>hogeさんの友達</h3>
+				<%= '友達' * 100 %>
+		</div>
+		<div class="col-xs-6 bg-success">
+			<h4>最近のカラオケ</h4>
+			<table class="table table-hover linkcursor">
+				<tbody>
+					<% @karaoke_list.each do |karaoke| %>
+						<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+							<td><%= karaoke['datetime'] %></td>
+							<td><%= karaoke['name'] %></td>
+						</tr>
+					<% end %>
+					</tr>
+				</tbody>
+			</table>
+
+			<h4>最近歌った曲</h4>
+			<table class="table table-hover linkcursor">
+				<tbody>
+					<% @histories.each do |history| %>
+						<tr onclick="location.href='/song/<%= history['song'] %>'">
+							<td><%= history['song_name'] %></td>
+							<td><%= history['artist_name'] %></td>
+						</tr>
+					<% end %>
+					</tr>
+				</tbody>
+			</table>
+			<h4>一番歌っている曲</h4>
+			<%= song_link @most_sang['song']['id'], @most_sang['song']['name'] %>
+
+			<h4>一番歌っている歌手</h4>
+			<%= artist_link @most_sang['artist']['id'], @most_sang['artist']['name'] %>
+
+			<h4>最高点数</h4>
+			<%= @max_score %>
+		</div>
+	</div>
 </div>
 <div class="footer">
-動画リンク　動画リンク　動画リンク　動画リンク　動画リンク動画リンク　動画リンク　動画リンク　動画リン>    ク　動画リンク動画リンク　動画リンク　動画リンク　動画リンク　動画リンク 動画リンク　動画リンク　動画リ
-ンク　動画リンク　動画リンク
 </div>
 

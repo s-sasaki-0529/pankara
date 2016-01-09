@@ -18,7 +18,7 @@
 			<td>
 				<% @karaoke['members'].each do |member| %>
 					<span style="margin-left: 6px">
-						<%= user_link member['userid'], member['screenname'] %>
+						<%= user_link member['username'], member['screenname'] %>
 					<span>
 				<% end %>
 			</td>
@@ -41,7 +41,7 @@
 	<tbody>
 		<% @karaoke.histories.each do |history| %>
 		<tr>
-			<td><%= user_link history['userinfo']['userid'], history['userinfo']['screenname'] %></td>
+			<td><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
 			<td><%= song_link history['song_id'], history['song_name'] %></td>
 			<td><%= artist_link history['artist_id'], history['artist_name'] %></td>
 			<td><%= history['songkey'] %></td>
