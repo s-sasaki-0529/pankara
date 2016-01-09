@@ -4,8 +4,8 @@
 		<tr>
 			<th>日時</th>
 			<th>内容</th>
-			<th>歌手名</th>
 			<th>曲名</th>
+			<th>歌手名</th>
 			<th>キー設定</th>
 		</tr>
 	</thead>
@@ -14,8 +14,8 @@
 		<tr>
 			<td><%= history['datetime'] %></td>
 			<td><%= history['karaoke_name'] %></td>
-			<td><%= artist_link history['artist'], history['artist_name'] %></td>
 			<td><%= song_link history['song'], history['song'] %></td>
+			<td><%= artist_link history['artist'], history['artist_name'] %></td>
 			<td><%= history['songkey'] %></td>
 		</tr>
 		<% end %>

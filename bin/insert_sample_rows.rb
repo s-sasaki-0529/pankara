@@ -3,6 +3,7 @@ STORES = 15
 ARTISTS = 100
 SONGS = 300
 USERS = 10
+FRIENDS = 5
 KARAOKES = 30
 ATTENDANCES = 100
 HISTORIES = 1000
@@ -54,6 +55,21 @@ def insert_user(n)
 	insert = []
 	n.times do |i|
 		insert.push "('user#{i}' , 'user#{i}' , 'ユーザ#{i}')"
+	end
+	print insert.join(",\n")
+	puts ";"
+end
+
+def insert_friend(n)
+	puts "INSERT INTO friend ( user_from , user_to ) VALUES"
+	insert = []
+	USERS.times do |i|
+		from = i + 1
+		n.times do |s|
+			to = rand(USERS) + 1
+			next if from == to
+			insert.push "(#{from} , #{to})"
+		end
 	end
 	print insert.join(",\n")
 	puts ";"
@@ -121,6 +137,7 @@ insert_product
 insert_store(5,3)
 insert_artist(ARTISTS)
 insert_user(USERS)
+insert_friend(FRIENDS)
 insert_song(SONGS)
 insert_karaoke(KARAOKES)
 
