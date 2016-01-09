@@ -10,7 +10,7 @@
 /tmp/
 /bundle
 /realdata
-
+app/public/coverage
 ## Specific to RubyMotion:
 .dat*
 .repl_history
