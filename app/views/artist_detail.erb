@@ -13,8 +13,8 @@
 		<% @artist['songs'].each do |song| %>
 		<tr>
 			<td><%= song_link song['id'], song['name'] %></td>
-			<td><%= song['my_sangcount'] %></td>
-			<td><%= song['sangcount'] %></td>
+			<td class='center'><%= song['my_sangcount'] %></td>
+			<td class='center'><%= song['sangcount'] %></td>
 		</tr>
 		<% end %>
 	</tbody>

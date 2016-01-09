@@ -1,3 +1,11 @@
+th {
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
 .cell-number {
 	width: 5%;
 }

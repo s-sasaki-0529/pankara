@@ -16,10 +16,10 @@
 		<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
 			<td><%= karaoke['datetime'] %></td>
 			<td><%= karaoke['name'] %></td>
-			<td><%= karaoke['plan'] %></td>
+			<td class='center'><%= karaoke['plan'] %></td>
 			<td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
 			<td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
-			<td><%= karaoke['price'] %></td>
+			<td class='center'><%= karaoke['price'] %></td>
 			<td><%= karaoke['memo'] %></td>
 		</tr>
 		<% end %>
