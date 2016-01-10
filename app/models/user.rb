@@ -61,7 +61,6 @@ class User < Base
 			attended_id_list.include?(karaoke['id'])
 		end
 		return limit > 0 ? attended_karaoke_info[0...limit] : attended_karaoke_info
-
 	end
 
 	# create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける
@@ -98,8 +97,6 @@ class User < Base
 	# get_most_sang_song - 最も歌っている曲を取得する 
 	#---------------------------------------------------------------------
 	def get_most_sang_song
-		@most_sang_song = {}
-
 		db = DB.new
 		db.select({'history.song' => 'song', 'COUNT(*)' => 'counter'})
 		db.from('history')
@@ -116,7 +113,6 @@ class User < Base
 	# get_most_sang_artist - 最も歌っている歌手を取得する 
 	#---------------------------------------------------------------------
 	def get_most_sang_artist
-		@most_sang_artist = {}
 		db = DB.new
 		db.select({'song.artist' => 'artist', 'COUNT(*)' => 'counter'})
 		db.from('history')

@@ -2,11 +2,11 @@
 <table border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
-			<th>日時</th>
+			<th class='cell-datetime'>日時</th>
 			<th>内容</th>
 			<th>曲名</th>
 			<th>歌手名</th>
-			<th>キー設定</th>
+			<th class='cell-number'>キー</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,7 +16,7 @@
 			<td><%= history['karaoke_name'] %></td>
 			<td><%= song_link history['song'], history['song_name'] %></td>
 			<td><%= artist_link history['artist'], history['artist_name'] %></td>
-			<td><%= history['songkey'] %></td>
+			<td class='center'><%= history['songkey'] %></td>
 		</tr>
 		<% end %>
 	</tbody>

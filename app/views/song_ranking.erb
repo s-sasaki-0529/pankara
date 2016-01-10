@@ -2,17 +2,17 @@
 <table border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
-			<th>順位</th>
+			<th class='cell-number'>順位</th>
 			<th>動画</th>
 			<th>曲名</th>
 			<th>歌手名</th>
-			<th>回数</th>
+			<th class='cell-number'>回数</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% @songs.each_with_index do |song , rank| %>
 		<tr>
-			<td><%= rank + 1 %></td>
+			<td class='center'><%= rank + 1 %></td>
 			<td>
 				<% if song['song_url'] %>
 					<%= tube song['song_url'] , 126 , 95 %>
@@ -22,7 +22,7 @@
 			</td>
 			<td><%= song_link song['song_id'], song['song_name'] %></td>
 			<td><%= artist_link song['artist_id'], song['artist_name'] %></td>
-			<td><%= song['count'] %></td>
+			<td class='center'><%= song['count'] %></td>
 		</tr>
 		<% end %>
 	</tbody>
