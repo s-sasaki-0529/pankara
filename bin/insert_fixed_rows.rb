@@ -5,7 +5,7 @@ SONGS = 3
 USERS = 5
 FRIENDS = 5
 KARAOKES = 30
-HISTORIES = 2110
+HISTORIES = 4220
 
 def random_date
 	year = 2000 + rand(15)
@@ -72,11 +72,14 @@ def insert_friend(n)
 end
 
 def insert_song(n)
-	puts "INSERT INTO song ( artist , name ) VALUES"
+	puts "INSERT INTO song ( artist , name , url) VALUES"
 	insert = []
 	ARTISTS.times do |i|
 		n.times do |s|
-			insert.push "(#{i + 1} , '楽曲#{i}-#{s}')"
+			tube = 'https://www.youtube.com/watch?v=_4P4P1Q-3k4'
+			nico = 'http://www.nicovideo.jp/watch/sm27583432'
+			url = s % 2 == 0 ? tube : nico
+			insert.push "(#{i + 1} , '楽曲#{i}-#{s}' , '#{url}')"
 		end
 	end
 	print insert.join(",\n")
