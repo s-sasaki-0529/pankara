@@ -55,6 +55,7 @@ class March < Sinatra::Base
 		logined = session[:logined]
 		path = request.path_info
 		unless logined || path == '/login'
+			#@current_user = User.new('user1')
 			redirect '/login'
 		else
 			@current_user = logined
@@ -64,6 +65,7 @@ class March < Sinatra::Base
 	# get '/' - トップページへのアクセス
 	#---------------------------------------------------------------------
 	get '/' do
+		@user = @current_user
 		@karaoke_list = @current_user.get_karaoke
 		erb :index
 	end

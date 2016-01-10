@@ -1,3 +1,22 @@
+.menubox {
+	border: 1px solid;
+	height: 150px;
+	margin: 10px;
+}
+
+#div_tl {
+	border: 1px solid;
+	height: 310px;
+	margin: 10px;
+}
+
+#div_icon {
+	border: 1px solid;
+	width: 96px;
+	height: 96px;
+	margin: 0 auto;
+}
+
 th {
 	text-align: center;
 }
