@@ -8,7 +8,7 @@ describe 'カラオケ詳細画面' do
 	it '概要' do
 		login user
 		visit url
-		iscontain ['5.0'	, 'カラオケ店3 店舗0' ,	'JOYSOUND' , 'MAX'	, 'ユーザ0' , 'ユーザ1' , 'ユーザ4']
+		iscontain ['5.0'	, 'カラオケ店3 店舗0' ,	'JOYSOUND(MAX)'	, 'ユーザ0' , 'ユーザ1' , 'ユーザ4']
 		iscontain ['楽曲29-0' , '歌手29' , '-3' , '精密採点DX' , '55.0']
 	end
 	it 'リンク' do
