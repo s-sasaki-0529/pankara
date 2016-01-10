@@ -94,7 +94,7 @@ def insert_karaoke(n)
 		name = "カラオケ#{i}"
 		plan = (i % 18 + 1).to_f / 2
 		store = i % STORES + 1
-		product = rand(PRODUCTS) + 1
+		product = i % PRODUCTS + 1
 		price = rand(1000) + 1000
 		memo = ['楽しかった' , '気まずかった' , '気持ちよかった' , 'クソだった'].sample
 		insert.push "('#{name}' , '#{datetime}' , #{plan} , #{store} , #{product} , #{price} , '#{memo}')"
