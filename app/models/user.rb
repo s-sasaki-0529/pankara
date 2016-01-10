@@ -14,7 +14,7 @@ class User < Base
 		@params = db.execute_row
 	end
 
-	# histories(limit = 0) - 歌唱履歴を取得、limitを指定するとその行数だけ取得
+	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
 	#---------------------------------------------------------------------
 	def histories(limit = 0)
 		db = DB.new
@@ -31,7 +31,7 @@ class User < Base
 		)
 		db.where('attendance.user = ?')
 		option = ['ORDER BY datetime DESC']
-		option.push("LIMIT #{limit}") if limit.nonzero?
+		option.push("LIMIT #{limit}") if limit > 0
 		db.option(option)
 		db.set(@params['id'])
 		histories = db.execute_all
@@ -44,7 +44,7 @@ class User < Base
 		return histories
 	end
 
-	# get_karaoke、limitを指定するとその行数だけ取得
+	# get_karaoke - limitを指定するとその行数だけ取得
 	#---------------------------------------------------------------------
 	def get_karaoke(limit = 0)
 		# 対象ユーザが参加したkaraokeのID一覧を取得
@@ -60,7 +60,8 @@ class User < Base
 		attended_karaoke_info = all_karaoke_info.select do |karaoke|
 			attended_id_list.include?(karaoke['id'])
 		end
-		return limit.nonzero? ? attended_karaoke_info[0...limit] : attended_karaoke_info
+		return limit > 0 ? attended_karaoke_info[0...limit] : attended_karaoke_info
+
 	end
 
 	# create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける
@@ -94,86 +95,78 @@ class User < Base
 		db.execute_row
 	end
 
-	# get_most_sang - 最も歌っている曲と歌手を取得する 
+	# get_most_sang_song - 最も歌っている曲を取得する 
 	#---------------------------------------------------------------------
-	def get_most_sang
-		most_sang = {}
+	def get_most_sang_song
+		@most_sang_song = {}
+
 		db = DB.new
-		db.select({'history.song' => 'song'})
+		db.select({'history.song' => 'song', 'COUNT(*)' => 'counter'})
 		db.from('history')
 		db.join(['history', 'attendance'])
 		db.where('attendance.user = ?')
+		db.option(['GROUP BY song', 'ORDER BY counter DESC, history.created_at DESC'])
 		db.set(@params['id'])
-		histories = db.execute_all
-		most_sang['song'] = get_most_sang_song histories
-		most_sang['artist'] = get_most_sang_artist histories
-		most_sang
-	end
+		@most_sang_song = db.execute_row
 
-	# get_most_sang_song - 最も歌っている曲を取得する 
-	#---------------------------------------------------------------------
-	def get_most_sang_song(histories)
-		hash = {}
-		histories.each do |history|
-			unless hash.has_key? history['song'] then
-				hash[history['song']] = 1
-			else
-				hash[history['song']] += 1
-			end
-		end
-		max = hash.max { |ary1, ary2| ary1[1] <=> ary2[1] }
-		most_sang_song_id = hash.key max[1]
-		db= DB.new
-		db.select('name')
-		db.from('song')
-		db.where('id = ?')
-		db.set(most_sang_song_id)
-		most_sang_song_name = db.execute_column
-		{'id' => most_sang_song_id, 'name' => most_sang_song_name}
+		get_song @most_sang_song
+		return @most_sang_song
 	end
 
 	# get_most_sang_artist - 最も歌っている歌手を取得する 
 	#---------------------------------------------------------------------
-	def get_most_sang_artist(histories)
-		artists = []
+	def get_most_sang_artist
+		@most_sang_artist = {}
 		db = DB.new
-		db.select({'song.artist' => 'artist'})
+		db.select({'song.artist' => 'artist', 'COUNT(*)' => 'counter'})
 		db.from('history')
-		db.join(['history', 'song'])
-		db.where('song.id = ?')
-		histories.each do |histroy|
-			db.set(histroy['song'])
-			artists.push db.execute_column
-		end
-		hash = {}
-		artists.each do |artist|
-			unless hash.has_key? artist then
-				hash[artist] = 1
-			else
-				hash[artist] += 1
-			end
-		end
-		max = hash.max { |ary1, ary2| ary1[1] <=> ary2[1] }
-		most_sang_artist_id = hash.key max[1]
-		db = DB.new
+		db.join(
+			['history', 'attendance'],
+			['history', 'song']
+		)
+		db.where('attendance.user = ?')
+		db.option(['GROUP BY artist', 'ORDER BY counter DESC, history.created_at DESC'])
+		db.set(@params['id'])
+		@most_sang_artist = db.execute_row
+
+		db= DB.new
 		db.select('name')
 		db.from('artist')
 		db.where('id = ?')
-		db.set(most_sang_artist_id)
-		most_sang_artist_name = db.execute_column
-		{'id' => most_sang_artist_id, 'name' => most_sang_artist_name}
+		db.set(@most_sang_artist['artist'])
+		@most_sang_artist['artist_name'] = db.execute_column
+		return @most_sang_artist
 	end
 
-	# get_max_score - 最高スコアを取得する 
+	# get_max_score - 最高スコアとその曲情報を取得する 
 	#---------------------------------------------------------------------
 	def get_max_score
 		db = DB.new
-		db.select({'MAX(history.score)' => 'max_score'})
+		db.select({
+			'history.song' => 'song',
+			'history.score_type' => 'score_type',
+			'MAX(history.score)' => 'score'
+		})
 		db.from('history')
-		db.join(['history', 'attendance'])
+		db.join(
+			['history', 'attendance'],
+		)
 		db.where('attendance.user = ?')
 		db.set(@params['id'])
-		db.execute_column
+		@max_score_history = db.execute_row
+
+		get_song @max_score_history
+		return @max_score_history
+	end
+
+	private
+	# get_song - history['song']を元に曲情報を取得する
+	#---------------------------------------------------------------------
+	def get_song(history)
+		song = Song.new(history['song'])
+		history['song_name'] = song.params['name']
+		history['artist'] = song.params['artist']
+		history['artist_name'] = song.params['artist_name']
 	end
 
 end

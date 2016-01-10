@@ -1,46 +1,34 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-xs-3 bg-info">
-			<h3>hogeさんの友達</h3>
-				<%= '友達' * 100 %>
-		</div>
-		<div class="col-xs-6 bg-success">
-			<h4>最近のカラオケ</h4>
-			<table class="table table-hover linkcursor">
-				<tbody>
-					<% @karaoke_list.each do |karaoke| %>
-						<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-							<td><%= karaoke['datetime'] %></td>
-							<td><%= karaoke['name'] %></td>
-						</tr>
-					<% end %>
-					</tr>
-				</tbody>
-			</table>
+<h4>最近のカラオケ</h4>
+<table class="table table-hover linkcursor">
+	<tbody>
+		<% @karaoke_list.each do |karaoke| %>
+			<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+				<td><%= karaoke['datetime'] %></td>
+				<td><%= karaoke['name'] %></td>
+			</tr>
+		<% end %>
+		</tr>
+	</tbody>
+</table>
 
-			<h4>最近歌った曲</h4>
-			<table class="table table-hover linkcursor">
-				<tbody>
-					<% @histories.each do |history| %>
-						<tr onclick="location.href='/song/<%= history['song'] %>'">
-							<td><%= history['song_name'] %></td>
-							<td><%= history['artist_name'] %></td>
-						</tr>
-					<% end %>
-					</tr>
-				</tbody>
-			</table>
-			<h4>一番歌っている曲</h4>
-			<%= song_link @most_sang['song']['id'], @most_sang['song']['name'] %>
+<h4>最近歌った曲</h4>
+<table class="table table-hover linkcursor">
+	<tbody>
+		<% @histories.each do |history| %>
+			<tr>
+				<td><%= song_link history['song'], history['song_name'] %></td>
+				<td><%= artist_link history['artist'], history['artist_name'] %></td>
+			</tr>
+		<% end %>
+		</tr>
+	</tbody>
+</table>
+<h4>一番歌っている曲</h4>
+<%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / <%= @most_sang_song['counter'] %>回
 
-			<h4>一番歌っている歌手</h4>
-			<%= artist_link @most_sang['artist']['id'], @most_sang['artist']['name'] %>
+<h4>一番歌っている歌手</h4>
+<%= artist_link @most_sang_artist['artist'], @most_sang_artist['artist_name'] %> / <%= @most_sang_artist['counter'] %>回
 
-			<h4>最高点数</h4>
-			<%= @max_score %>
-		</div>
-	</div>
-</div>
-<div class="footer">
-</div>
+<h4>最高点数</h4>
+<%= @max_score['score'] %> / <%= song_link @max_score['song'], @max_score['song_name']%> / <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 採点方法: <%= @max_score['score_type'] %>
 
