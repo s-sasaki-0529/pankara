@@ -52,6 +52,7 @@ class User < Base
 		db.select('karaoke')
 		db.from('attendance')
 		db.where('user = ?')
+		db.option("LIMIT #{limit}") if limit > 0
 		db.set(@params['id'])
 		attended_id_list = db.execute_all.collect {|info| info['karaoke']}
 
@@ -60,7 +61,7 @@ class User < Base
 		attended_karaoke_info = all_karaoke_info.select do |karaoke|
 			attended_id_list.include?(karaoke['id'])
 		end
-		return limit > 0 ? attended_karaoke_info[0...limit] : attended_karaoke_info
+		return attended_karaoke_info
 	end
 
 	# create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける
