@@ -1,5 +1,6 @@
 <div class="container-fluid">
 	<div id="div_top_column" class="row">
+		<!-- 左カラム -->
 		<div class="col-xs-2 bg-info center">
 			<h1>Menu</h1>
 			<div id="div_icon">
@@ -14,15 +15,25 @@
 			</div>
 			<img src="image/mascot.png" alt="マスコットキャラクター">
 		</div>
+		<!-- 中央カラム -->
 		<div class="col-xs-7 bg-success">
 			<h1 class="center">March</h3>
 			<div id="div_mymenu" class="menubox">
 				<p class="center">あなたのカラオケ<p>
+				<input type="button" class="menu-button" value="マイページ" onclick="location.href='user/<%= @user['username'] %>'">
+				<input type="button" class="menu-button" value="歌唱履歴">
+				<input type="button" class="menu-button" value="ランキング">
+				<input type="button" class="menu-button" value="集計">	
 			</div>
 			<div id="div_everymenu" class="menubox">
 				<p class="center">みんなのカラオケ<p/>
+				<input type="button" class="menu-button" value="カラオケ記録" onclick="location.href='/karaoke'">
+				<input type="button" class="menu-button" value="歌唱履歴">
+				<input type="button" class="menu-button" value="ランキング" onclick="location.href='/ranking/song'">
+				<input type="button" class="menu-button" value="集計">	
 			</div>
 		</div>
+		<!-- 右カラム -->
 		<div class="col-xs-3 bg-warning">
 			<h1 class='center'>TimeLine</h1>
 			<div id="div_tl">
@@ -30,6 +41,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- 下カラム -->
 	<div id="div_bottom_column" class="row">
 		動画リンク　動画リンク　動画リンク　動画リンク　動画リンク動画リンク　動画リンク　動画リンク　動画リンク　動画リンク動画リンク　動画リンク　動画リンク　動画リンク　動画リンク 動画リンク　動画リンク　動画リンク　動画リンク　動画リンク
 	</div>
