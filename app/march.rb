@@ -36,7 +36,9 @@ class March < Sinatra::Base
 			end
 		end
 		def user_link(username, screenname)
-			return "<a href=/user/#{username}>#{screenname}</a>"
+			link = "/user/#{username}"
+			img_tag = user_icon(username , '32px' , '32px')
+			return "<a href='#{link}'>#{img_tag} #{screenname}</a>"
 		end
 		def karaoke_link(id, name)
 			return "<a href=/karaoke/detail/#{id}>#{name}</a>"
@@ -47,9 +49,9 @@ class March < Sinatra::Base
 		def artist_link(id, name)
 			return "<a href=/artist/#{id}>#{name}</a>"
 		end
-		def user_icon(username)
+		def user_icon(username , width , height)
 			src = Util.icon_file(username)
-			return "<img src='#{src}' alt='ユーザアイコン' width='100%' height='100%'>"
+			return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
 		end
 	end
 

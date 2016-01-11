@@ -17,8 +17,8 @@ class Util
 	# icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
 	#----------------------------------------------------------------------
 	def self.icon_file(username)
-		user_icon = "image/user_icon/#{username}.png"
-		sample_icon = "image/sample_icon.png"
+		user_icon = "/image/user_icon/#{username}.png"
+		sample_icon = "/image/sample_icon.png"
 		File.exist?("app/public/#{user_icon}") ? user_icon : sample_icon
 	end
 
