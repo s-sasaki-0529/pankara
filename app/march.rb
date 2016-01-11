@@ -66,7 +66,7 @@ class March < Sinatra::Base
 	#---------------------------------------------------------------------
 	get '/' do
 		@user = @current_user
-		@karaoke_list = @current_user.get_karaoke
+		@recent_karaoke = @user.get_karaoke(1)[0]
 		erb :index
 	end
 
