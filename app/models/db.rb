@@ -92,7 +92,6 @@ class DB
 	# execute_column - SQLを実行し、先頭行先頭列の値を戻す
 	#---------------------------------------------------------------------
 	def execute_column
-		make
 		st = self.execute
 		result = st.fetch_hash
 		return nil if result.nil?
@@ -102,7 +101,6 @@ class DB
 	# execute_columns = SQKを実行し、先頭列の配列を戻す
 	#---------------------------------------------------------------------
 	def execute_columns
-		make
 		st = self.execute
 		result = []
 		while (row = st.fetch_hash)
@@ -114,7 +112,6 @@ class DB
 	# execute_row - SQLを実行し、先頭行を戻す
 	#---------------------------------------------------------------------
 	def execute_row
-		make
 		st = self.execute
 		return st.fetch_hash
 	end
@@ -123,7 +120,6 @@ class DB
 	#---------------------------------------------------------------------
 	def execute_all
 		result = []
-		make
 		st = self.execute
 		while (h = st.fetch_hash)
 			result.push h
@@ -134,7 +130,6 @@ class DB
 	# execute_insert_id - SQLを実行後、挿入レコードのIDを戻す
 	#---------------------------------------------------------------------
 	def execute_insert_id
-		make
 		st = self.execute
 		st.insert_id
 	end
