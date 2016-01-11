@@ -12,17 +12,28 @@ require_relative 'store'
 require_relative 'user'
 require 'uri'
 require 'open-uri'
+class Util
 
-# search_tube - 曲名と歌手名を指定し、Youtube動画のURLを取得する
-#----------------------------------------------------------------------
-def search_tube(song , artist)
-	word = "#{song} #{artist}"
-	uri = URI.escape("https://www.youtube.com/results?search_query=#{word}")
-	html = open(uri) do |f|
-		charset = f.charset
-		f.read
+	# icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
+	#----------------------------------------------------------------------
+	def self.icon_file(username)
+		user_icon = "image/user_icon/#{username}.png"
+		sample_icon = "image/sample_icon.png"
+		File.exist?("app/public/#{user_icon}") ? user_icon : sample_icon
 	end
-	html.scan(%r|"/watch\?v=(\w+?)"|) do
-		return "https://www.youtube.com/watch?v=#{$1}"
+
+	# search_tube - 曲名と歌手名を指定し、Youtube動画のURLを取得する
+	#----------------------------------------------------------------------
+	def self.search_tube(song , artist)
+		word = "#{song} #{artist}"
+		uri = URI.escape("https://www.youtube.com/results?search_query=#{word}")
+		html = open(uri) do |f|
+			charset = f.charset
+			f.read
+		end
+		html.scan(%r|"/watch\?v=(\w+?)"|) do
+			return "https://www.youtube.com/watch?v=#{$1}"
+		end
 	end
+
 end

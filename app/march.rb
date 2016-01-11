@@ -47,6 +47,10 @@ class March < Sinatra::Base
 		def artist_link(id, name)
 			return "<a href=/artist/#{id}>#{name}</a>"
 		end
+		def user_icon(username)
+			src = Util.icon_file(username)
+			return "<img src='#{src}' alt='ユーザアイコン' width='100%' height='100%'>"
+		end
 	end
 
 	# before - 全てのURLにおいて初めに実行される

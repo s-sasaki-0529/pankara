@@ -31,7 +31,9 @@ insert into artist ( name ) VALUES
 ('TOKIO');
 
 INSERT INTO user ( username , password , screenname ) VALUES
-('sa2knight' , 'zenra' , 'ないと');
+('sa2knight' , 'zenra' , 'ないと') ,
+('unagipai' , 'zenra' , 'ちゃらさん') ,
+('hetare' , 'zenra' , 'へたれ');
 
 INSERT INTO song ( artist , name , url ) VALUES
 (1 , 'オンリーロンリーグローリー' , 'https://www.youtube.com/watch?v=ZpAn8moiAOM') ,

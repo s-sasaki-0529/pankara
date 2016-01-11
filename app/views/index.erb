@@ -4,13 +4,17 @@
 		<div class="col-xs-2 bg-info center">
 			<h1>Menu</h1>
 			<div id="div_icon">
-				<img src="image/icon.jpg" alt="ユーザアイコン" width='100%' height='100%'>
+				<%= user_icon @user['username'] %>
 			</div>
 			<div id="div_myprofile">
 				<p>ユーザ名 <%= @user['screenname'] %></p>
 				<p>
 					前回のカラオケ<br>
-					<%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
+					<% if @recent_karaoke %>
+						<%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
+					<% else %>
+						記録がありません
+					<% end %>
 				</p>
 			</div>
 			<img src="image/mascot.png" alt="マスコットキャラクター">
