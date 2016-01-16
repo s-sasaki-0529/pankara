@@ -92,7 +92,7 @@ class March < Sinatra::Base
 	# get '/song/:id' - 曲情報を表示
 	#---------------------------------------------------------------------
 	get '/song/:id' do
-		score_type = '全国採点オンライン２' #現在は仮で固定
+		score_type = 1 #現在は仮で固定
 		@song = Song.new(params[:id])
 		@song.count_all
 		@song.score_all(score_type)

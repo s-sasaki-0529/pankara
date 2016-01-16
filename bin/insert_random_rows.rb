@@ -1,5 +1,6 @@
 PRODUCTS = 6
 STORES = 15
+SCORE_TYPES = 8
 ARTISTS = 100
 SONGS = 300
 USERS = 10
@@ -26,6 +27,18 @@ def insert_product
 	puts "('JOYSOUND' , 'MAX') ,"
 	puts "('DAM' , 'Premier DAM') ,"
 	puts "('DAM' , 'LIVE DAM');"
+end
+
+def insert_scoretype
+	puts "INSERT INTO score_type ( brand , name ) VALUES"
+	puts "('JOYSOUND' , '全国採点オンライン２') ,"
+	puts "('JOYSOUND' , '全国採点オンライン３') ,"
+	puts "('JOYSOUND' , '分析採点１') ,"
+	puts "('JOYSOUND' , '分析採点２') ,"
+	puts "('JOYSOUND' , '分析採点３') ,"
+	puts "('DAM' , 'ランキングバトル') ,"
+	puts "('DAM' , '精密採点２') ,"
+	puts "('DAM' , '精密採点DX');"
 end
 
 def insert_store(n , m)
@@ -124,9 +137,9 @@ def insert_history(n , attendances)
 		attendance = rand(attendances) + 1
 		song = rand(SONGS) + 1
 		songkey = rand(13) - 6
-		score_type = ['全国採点オンライン２' , '全国採点グランプリ' , '分析採点３' , '精密採点DX'].sample
+		score_type = rand(SCORE_TYPES) + 1
 		score = rand(100..10000).to_f / 100.0
-		insert.push "(#{attendance} , #{song} , #{songkey} , '#{score_type}' , #{score})"
+		insert.push "(#{attendance} , #{song} , #{songkey} , #{score_type} , #{score})"
 	end
 	print insert.join(",\n")
 	puts ";"
@@ -135,6 +148,7 @@ end
 puts "use march"
 insert_product
 insert_store(5,3)
+insert_scoretype()
 insert_artist(ARTISTS)
 insert_user(USERS)
 insert_friend(FRIENDS)

@@ -130,11 +130,26 @@ CREATE TABLE `history` (
   `attendance` INTEGER NOT NULL COMMENT '参加番号',
   `song` INTEGER NOT NULL COMMENT '曲番号',
   `songkey` INTEGER NULL DEFAULT 0 COMMENT 'キー設定',
-  `score_type` MEDIUMTEXT NULL DEFAULT NULL COMMENT '採点モード',
+  `score_type` INTEGER NULL DEFAULT NULL COMMENT '採点モード',
   `score` FLOAT NULL DEFAULT NULL COMMENT '点数',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT '歌唱履歴';
+
+-- ---
+-- Table 'score_type'
+-- 採点モード
+-- ---
+
+DROP TABLE IF EXISTS `score_type`;
+
+CREATE TABLE `score_type` (
+	`id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+	`brand` MEDIUMTEXT NOT NULL COMMENT '機種名(JOY or DAM)',
+	`name` MEDIUMTEXT NOT NULL COMMENT '採点モード名',
+	`created_at` TIMESTAMP NOT NULL,
+	PRIMARY KEY (`id`)
+) COMMENT '採点モード';
 
 -- ---
 -- Table 'attendance'
@@ -162,6 +177,7 @@ ALTER TABLE `karaoke` ADD FOREIGN KEY (product) REFERENCES `product` (`id`);
 ALTER TABLE `song` ADD FOREIGN KEY (artist) REFERENCES `artist` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (attendance) REFERENCES `attendance` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (song) REFERENCES `song` (`id`);
+ALTER TABLE `history` ADD FOREIGN KEY (score_type) REFERENCES `score_type` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
 ALTER TABLE `friend` ADD FOREIGN KEY (user_from) REFERENCES `user` (`id`);
