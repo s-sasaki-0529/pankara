@@ -33,8 +33,6 @@ class Karaoke < Base
 			'karaoke.plan' => 'plan' ,
 			'karaoke.store' => 'store' ,
 			'karaoke.product' => 'product_id' ,
-			'karaoke.price' => 'price' ,
-			'karaoke.memo' => 'memo' ,
 			'store.name' => 'store_name' ,
 			'store.branch' => 'branch_name' ,
 			'product.brand' => 'brand_name' ,

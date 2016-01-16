@@ -9,6 +9,6 @@ describe 'カラオケ一覧画面' do
 		login user
 		visit url
 		iscontain 'カラオケ記録一覧'
-		iscontain ['カラオケ5' , '3.0' , 'カラオケ店1 店舗2' , 'DAM(LIVE DAM)'  , 'クソだった']
+		iscontain ['カラオケ5' , '3.0' , 'カラオケ店1 店舗2' , 'DAM(LIVE DAM)']
 	end
 end

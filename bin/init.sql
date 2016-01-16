@@ -98,8 +98,6 @@ CREATE TABLE `karaoke` (
   `plan` FLOAT NULL DEFAULT NULL COMMENT '滞在時間',
   `store` INTEGER NOT NULL COMMENT '利用店舗',
   `product` INTEGER NOT NULL COMMENT '機種',
-  `price` INTEGER NULL DEFAULT 0 COMMENT '一人あたりの料金',
-  `memo` MEDIUMTEXT NULL DEFAULT NULL COMMENT '備考',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケデータ';
@@ -149,6 +147,8 @@ CREATE TABLE `attendance` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `user` INTEGER NOT NULL COMMENT '参加ユーザのID',
   `karaoke` INTEGER NOT NULL COMMENT '参加したカラオケ',
+  `price` INTEGER NULL DEFAULT 0 COMMENT '一人あたりの料金',
+  `memo` MEDIUMTEXT NULL DEFAULT NULL COMMENT '備考' ,
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケへの参加記録';

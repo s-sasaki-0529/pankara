@@ -71,12 +71,10 @@ class User < Base
 		plan = params[:plan].to_f
 		store = params[:store].to_i
 		product = params[:product].to_i
-		price = params[:price].to_i
-		memo = params[:memo]
 
 		db = DB.new
-		db.insert('karaoke' , ['datetime' , 'plan' , 'store' , 'product' , 'price' , 'memo'])
-		db.set(datetime , plan , store , product , price , memo)
+		db.insert('karaoke' , ['datetime' , 'plan' , 'store' , 'product'])
+		db.set(datetime , plan , store , product)
 		karaoke_id = db.execute_insert_id
 
 		db = DB.new
