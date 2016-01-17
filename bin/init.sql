@@ -182,3 +182,25 @@ ALTER TABLE `attendance` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
 ALTER TABLE `friend` ADD FOREIGN KEY (user_from) REFERENCES `user` (`id`);
 ALTER TABLE `friend` ADD FOREIGN KEY (user_to) REFERENCES `user` (`id`);
+
+-- ---
+-- Insert Fixed record
+-- ---
+
+INSERT INTO product ( brand , product ) VALUES
+('JOYSOUND' , 'WAVE') ,
+('JOYSOUND' , 'CROSSO') ,
+('JOYSOUND' , 'f1') ,
+('JOYSOUND' , 'MAX') ,
+('DAM' , 'Premier DAM') ,
+('DAM' , 'LIVE DAM');
+
+INSERT INTO score_type ( brand , name ) VALUES
+('JOYSOUND' , '全国採点オンライン２') ,
+('JOYSOUND' , '全国採点オンライン３') ,
+('JOYSOUND' , '分析採点１') ,
+('JOYSOUND' , '分析採点２') ,
+('JOYSOUND' , '分析採点３') ,
+('DAM' , 'ランキングバトル') ,
+('DAM' , '精密採点２') ,
+('DAM' , '精密採点DX');

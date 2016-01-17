@@ -19,28 +19,6 @@ def random_date
 	"#{year}-#{month}-#{day} #{hour}:#{min}:#{sec}"
 end
 
-def insert_product
-	puts "INSERT INTO product ( brand , product ) VALUES"
-	puts "('JOYSOUND' , 'WAVE') ,"
-	puts "('JOYSOUND' , 'CROSSO') ,"
-	puts "('JOYSOUND' , 'f1') ,"
-	puts "('JOYSOUND' , 'MAX') ,"
-	puts "('DAM' , 'Premier DAM') ,"
-	puts "('DAM' , 'LIVE DAM');"
-end
-
-def insert_scoretype
-	puts "INSERT INTO score_type ( brand , name ) VALUES"
-	puts "('JOYSOUND' , '全国採点オンライン２') ,"
-	puts "('JOYSOUND' , '全国採点オンライン３') ,"
-	puts "('JOYSOUND' , '分析採点１') ,"
-	puts "('JOYSOUND' , '分析採点２') ,"
-	puts "('JOYSOUND' , '分析採点３') ,"
-	puts "('DAM' , 'ランキングバトル') ,"
-	puts "('DAM' , '精密採点２') ,"
-	puts "('DAM' , '精密採点DX');"
-end
-
 def insert_store(n , m)
 	puts "INSERT INTO store ( name , branch , url , memo ) VALUES"
 	insert = []
@@ -146,9 +124,7 @@ def insert_history(n , attendances)
 end
 
 puts "use march"
-insert_product
 insert_store(5,3)
-insert_scoretype()
 insert_artist(ARTISTS)
 insert_user(USERS)
 insert_friend(FRIENDS)

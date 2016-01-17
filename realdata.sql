@@ -1,22 +1,4 @@
 use march;
-INSERT INTO product ( brand , product ) VALUES
-('JOYSOUND' , 'WAVE') ,
-('JOYSOUND' , 'CROSSO') ,
-('JOYSOUND' , 'f1') ,
-('JOYSOUND' , 'MAX') ,
-('DAM' , 'Premier DAM') ,
-('DAM' , 'LIVE DAM');
-
-INSERT INTO score_type ( brand , name ) VALUES
-('JOYSOUND' , '全国採点オンライン２') ,
-('JOYSOUND' , '全国採点オンライン３') ,
-('JOYSOUND' , '分析採点１') ,
-('JOYSOUND' , '分析採点２') ,
-('JOYSOUND' , '分析採点３') ,
-('DAM' , 'ランキングバトル') ,
-('DAM' , '精密採点２') ,
-('DAM' , '精密採点DX');
-
 insert into store ( name , branch , url , memo ) VALUES
 ('歌広場' , '亀戸店' , 'http://www.utahiro.com/store/storelist/storeinfo/tabid/64/pdid/0105/Default.aspx' , '壁がめっちゃうすい') ,
 ('JOYJOY' , '甚目寺店' , 'http://www.joyjoy.co.jp/shop_detail.html?id=12' , 'プロジェクタ壁に映してる');
