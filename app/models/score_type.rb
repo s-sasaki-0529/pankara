@@ -26,6 +26,6 @@ class ScoreType < Base
 	#---------------------------------------------------------------------
 	def self.id_to_name(id)
 		@@list.empty? and self.List
-		@@list[id]['name']
+		@@list[id] ? @@list[id]['name'] : nil
 	end
 end
