@@ -83,16 +83,6 @@ class User < Base
 		db.execute_insert_id
 	end
 
-	# authenticate - クラスメソッド ユーザのIDとパスワードを検証する
-	#---------------------------------------------------------------------
-	def self.authenticate(name , pw)
-		db = DB.new
-		db.from('user')
-		db.where('username = ?' , 'password = ?')
-		db.set(name , pw)
-		db.execute_row
-	end
-
 	# get_most_sang_song - 最も歌っている曲を取得する 
 	#---------------------------------------------------------------------
 	def get_most_sang_song
@@ -152,6 +142,31 @@ class User < Base
 
 		get_song @max_score_history
 		return @max_score_history
+	end
+
+	# authenticate - クラスメソッド ユーザのIDとパスワードを検証する
+	#---------------------------------------------------------------------
+	def self.authenticate(name , pw)
+		db = DB.new
+		db.from('user')
+		db.where('username = ?' , 'password = ?')
+		db.set(name , pw)
+		db.execute_row
+	end
+
+	# create - クラスメソッド ユーザを新規登録
+	#---------------------------------------------------------------------
+	def self.create(name , pw , screenname)
+		db = DB.new
+		db.from('user')
+		db.where('username = ?')
+		db.set(name)
+		db.execute_row and return
+
+		db = DB.new
+		db.insert('user' , ['username' , 'password' , 'screenname'])
+		db.set(name , pw , screenname)
+		db.execute_insert_id
 	end
 
 	private
