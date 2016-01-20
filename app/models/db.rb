@@ -140,6 +140,7 @@ class DB
 		make
 		st = @@db.prepare(@sql)
 		st.execute(*@params)
+		Util.write_log('sql' , "Execute SQL!!\n#{@params}")
 		return st
 	end
 
@@ -177,6 +178,7 @@ class DB
 		else
 			@sql = @insert
 		end
+		Util.write_log('sql' , "Make SQL!!\n#{@sql}")
 	end
 
 end

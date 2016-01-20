@@ -37,4 +37,18 @@ class Util
 		end
 	end
 
+	# write_log - ログを生成する
+	#---------------------------------------------------------------------
+	def self.write_log(type , log)
+		filepath = {
+			'sql' => 'logs/sql.log'
+		}[type] or return
+		datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+
+		File.open(filepath , 'a') do |f|
+			f.puts "---#{datetime}---"
+			f.puts log
+			f.puts "----------------------"
+		end
+	end
 end
