@@ -11,7 +11,7 @@
 /bundle
 /realdata
 app/public/coverage
-logs/*
+logs/
 ## Specific to RubyMotion:
 .dat*
 .repl_history

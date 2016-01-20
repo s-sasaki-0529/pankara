@@ -11,6 +11,7 @@ require_relative 'song'
 require_relative 'store'
 require_relative 'score_type'
 require_relative 'user'
+require_relative 'register'
 require 'uri'
 require 'open-uri'
 class Util
