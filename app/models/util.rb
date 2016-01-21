@@ -36,6 +36,7 @@ class Util
 		html.scan(%r|"/watch\?v=(\w+?)"|) do
 			return "https://www.youtube.com/watch?v=#{$1}"
 		end
+		return nil
 	end
 
 	# write_log - ログを生成する
