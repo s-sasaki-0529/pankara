@@ -7,7 +7,7 @@ class ArtistRoute < March
 	get '/artist/:id' do
 		@artist = Artist.new(params[:id])
 		@artist.songs_with_count(@current_user.params['id'])
-		template :artist_detail
+		erb :artist_detail
 	end
 	
 end

@@ -5,7 +5,7 @@ class AuthenticationRoute < March
 	# get '/login' - ログイン画面へのアクセス
 	#---------------------------------------------------------------------
 	get '/login' do
-		template :login
+		erb :login
 	end
 
 	# get '/logout' - ログアウトする

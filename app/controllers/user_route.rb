@@ -11,7 +11,7 @@ class UserRoute < March
 		@most_sang_song = @user.get_most_sang_song
 		@most_sang_artist = @user.get_most_sang_artist
 		@max_score = @user.get_max_score
-		template :user_page
+		erb :user_page
 	end
 
 end

@@ -13,7 +13,7 @@ class SongRoute < March
 		@my_sangcount = @song.count_as(@current_user.params['id'])
 		@my_score = @song.score_as(score_type , @current_user.params['id'])
 		@my_sang_history = @song.sang_history_as(@current_user.params['id'])
-		template :song_detail
+		erb :song_detail
 	end
 
 	

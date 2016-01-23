@@ -14,24 +14,7 @@ class IndexRoute < March
 	get '/' do
 		@user = @current_user
 		@recent_karaoke = @user.get_karaoke(1)[0]
-		column_name = [
-			'song', 
-			'artist',
-			'history'
-		]
-		table = [
-			{
-				song: 'song1',
-				artist: 'artist1',
-				history: 'history1'
-			},
-			{
-				song: 'song2',
-				artist: 'artist2',
-				history: 'history2'
-			}
-		]
-		template :index, :locals => {column_name: column_name, item: table}
+		erb :index
 	end
 
 	use AuthenticationRoute

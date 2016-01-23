@@ -6,7 +6,7 @@ class RankingRoute < March
 	#---------------------------------------------------------------------
 	get '/ranking/song' do
 		@songs = History.song_ranking(20)
-		template :song_ranking
+		erb :song_ranking
 	end
 
 end

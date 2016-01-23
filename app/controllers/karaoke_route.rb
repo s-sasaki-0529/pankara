@@ -6,7 +6,7 @@ class KaraokeRoute < March
 	#---------------------------------------------------------------------
 	get '/karaoke' do
 		@karaoke_list = @current_user.get_karaoke
-		template :mykaraoke
+		erb :mykaraoke
 	end
 
 	# get '/karaoke/detail/:id' - カラオケ記録の詳細表示
@@ -14,13 +14,13 @@ class KaraokeRoute < March
 	get '/karaoke/detail/:id' do
 		@karaoke = Karaoke.new(params[:id])
 		@karaoke.get_history
-		template :karaoke_detail
+		erb :karaoke_detail
 	end
 
 	# get '/karaoke/create' - カラオケ記録追加ページヘのアクセス
 	#---------------------------------------------------------------------
 	get '/karaoke/create' do
-		template :create_karaoke
+		erb :create_karaoke
 	end
 
 	# post '/karaoke/create' - カラオケ記録追加をリクエスト

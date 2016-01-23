@@ -56,9 +56,6 @@ class March < Sinatra::Base
 			src = Util.icon_file(username)
 			return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
 		end
-		def template(template_name, params = {})
-			erb template_name, params
-		end
 	end
 
 	# before - 全てのURLにおいて初めに実行される
