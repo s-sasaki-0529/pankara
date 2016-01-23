@@ -1,4 +1,4 @@
-require_relative '../march'
+require_relative './march'
 
 class AuthenticationRoute < March
 

@@ -3,9 +3,12 @@
 #----------------------------------------------------------------------
 
 require 'sinatra/base'
-require_relative 'models/util'
+require_relative '../models/util'
 
 class March < Sinatra::Base
+
+	set :views, File.dirname(__FILE__) + '/../views'
+	set :public_folder, File.dirname(__FILE__) + '/../public'
 
 	# configure - サーバ起動時の初期設定
 	#---------------------------------------------------------------------
@@ -53,8 +56,8 @@ class March < Sinatra::Base
 			src = Util.icon_file(username)
 			return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
 		end
-		def template(template_name)
-			erb template_name
+		def template(template_name, params = {})
+			erb template_name, params
 		end
 	end
 
