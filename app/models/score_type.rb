@@ -17,6 +17,7 @@ class ScoreType < Base
 			@@list[score_type['id']] = {
 				'brand' => score_type['brand'] ,
 				'name' => score_type['name'] ,
+				'tostring' => "#{score_type['brand']} #{score_type['name']}"
 			}
 		end
 	end
@@ -26,6 +27,6 @@ class ScoreType < Base
 	#---------------------------------------------------------------------
 	def self.id_to_name(id)
 		@@list.empty? and self.List
-		@@list[id] ? @@list[id]['name'] : nil
+		@@list[id] ? @@list[id]['tostring'] : nil
 	end
 end

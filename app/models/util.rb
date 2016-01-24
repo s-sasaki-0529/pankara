@@ -53,4 +53,13 @@ class Util
 			f.puts "----------------------"
 		end
 	end
+
+	# debug - 標準出力
+	#--------------------------------------------------------------------
+	def self.debug(v)
+		require 'pp'
+		puts "\n---debug---"
+		pp v
+		puts "-----------"
+	end
 end

@@ -196,11 +196,12 @@ INSERT INTO product ( brand , product ) VALUES
 ('DAM' , 'LIVE DAM');
 
 INSERT INTO score_type ( brand , name ) VALUES
-('JOYSOUND' , '全国採点オンライン２') ,
-('JOYSOUND' , '全国採点オンライン３') ,
-('JOYSOUND' , '分析採点１') ,
-('JOYSOUND' , '分析採点２') ,
-('JOYSOUND' , '分析採点３') ,
+('JOYSOUND' , '全国採点オンライン2') ,
+('JOYSOUND' , '全国採点オンライン3') ,
+('JOYSOUND' , '全国採点グランプリ') ,
+('JOYSOUND' , '分析採点1') ,
+('JOYSOUND' , '分析採点2') ,
+('JOYSOUND' , '分析採点3') ,
 ('DAM' , 'ランキングバトル') ,
 ('DAM' , '精密採点２') ,
 ('DAM' , '精密採点DX');
