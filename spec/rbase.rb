@@ -22,6 +22,24 @@ module Rbase
 		end
 	end
 
+	def id_to_element(id)
+		page.find("#" + id)
+	end
+
+	def class_to_elements(classname)
+		page.all(".#{classname}")
+	end
+
+	def examine_songlink(name , artist)
+		page.all('a' , :text => name)[0].click
+		iscontain "#{name} / #{artist}"
+	end
+
+	def examine_artistlink(name)
+		page.all('a' , :text => name)[0].click
+		iscontain [name , 'この歌手の楽曲一覧']
+	end
+
 	def table_to_hash(id)
 		ary = page.find("table[@id=#{id}]").all('tr').map { |row| row.all('th, td').map { |cell| cell.text.strip } }
 		header = ary.shift
@@ -35,5 +53,9 @@ module Rbase
 			list.push hash
 		end
 		list
+	end
+
+	def youtube_links
+		page.all('iframe').collect {|element| element[:src]}
 	end
 end

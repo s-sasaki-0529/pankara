@@ -1,5 +1,5 @@
 <h1>歌唱回数ランキング</h1>
-<table border="1" class="table table-hover linkcursor">
+<table id="songranking_table" border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
 			<th class='cell-number'>順位</th>
@@ -13,7 +13,7 @@
 		<% @songs.each_with_index do |song , rank| %>
 		<tr>
 			<td class='center'><%= rank + 1 %></td>
-			<td>
+			<td class='iframe-youtube'>
 				<% if song['song_url'] %>
 					<%= tube song['song_url'] , 126 , 95 %>
 				<% else %>
