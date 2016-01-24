@@ -21,7 +21,7 @@ done
 shift $((OPTIND - 1))
 
 # メイン処理
-zenra init -f
+zenra init
 cd $MARCHDIR
 bundle exec rspec
 cp -r coverage app/public/

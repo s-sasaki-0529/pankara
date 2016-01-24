@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../app/models/util'
 module Rbase
 	def login(id , pw = id)
 		visit '/logout'

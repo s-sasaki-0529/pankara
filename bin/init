@@ -37,6 +37,7 @@ shift $((OPTIND - 1))
 
 # メイン処理
 $MYSQL -e "source $BINDIR/scripts/init.sql"
+rm -f $MARCHDIR/logs/*
 cd $MARCHDIR
 if [ "$FLAG_S" -eq 1 ]; then
   bundle exec ruby $BINDIR/scripts/insert_random_rows.rb > $TMPPATH
