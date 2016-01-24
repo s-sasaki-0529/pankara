@@ -4,7 +4,7 @@
 require_relative 'util'
 class Register < Base
 
-	attr_accessor :karaoke
+	attr_accessor :karaoke , :with_url
 
 	# initialize - インスタンスを生成する
 	#---------------------------------------------------------------------
@@ -13,6 +13,7 @@ class Register < Base
 		@karaoke = nil
 		@attendance = nil
 		@score_type = nil
+		@with_url = true
 	end
 
 	# create_karaoke - カラオケ記録を作成する
@@ -80,7 +81,7 @@ class Register < Base
 		if song_id
 			song_id
 		else
-			url = Util.search_tube(artist_name , song_name)
+			url = @with_url ? Util.search_tube(artist_name , song_name) : nil
 			db.insert('song' , ['artist' , 'name' , 'url'])
 			db.set(artist_id , song_name , url)
 			db.execute_insert_id
