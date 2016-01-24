@@ -3,11 +3,13 @@
 </h2>
 
 <h4>この歌手の楽曲一覧</h4>
-<table class="table table-striped">
+<table id="artistdetail_table" class="table table-striped">
 	<thead>
-		<th>曲名</th>
-		<th>あなたが歌った回数</th>
-		<th>みんなが歌った回数</th>
+		<tr>
+			<th>曲名</th>
+			<th>あなたが歌った回数</th>
+			<th>みんなが歌った回数</th>
+		</tr>
 	</thead>
 	<tbody>
 		<% @artist['songs'].each do |song| %>

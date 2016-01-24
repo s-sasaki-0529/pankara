@@ -58,4 +58,11 @@ module Rbase
 	def youtube_links
 		page.all('iframe').collect {|element| element[:src]}
 	end
+
+	def debug(v)
+		require 'pp'
+		puts "\n----debug----"
+		pp v
+		puts "-------------"
+	end
 end
