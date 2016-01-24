@@ -6,7 +6,7 @@ init = proc do
 	`zenra init`
 end
 
-# 正常パターン定義
+# 定数定義
 
 # テスト実行
 describe 'テスト対象機能名' do

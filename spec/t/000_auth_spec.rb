@@ -2,13 +2,17 @@ require_relative '../rbase'
 include Rbase
 
 # テスト用データベース構築
-User.create('march_user' , 'march_user' , 'マーチユーザ')
+init = proc do
+	`zenra init`
+	User.create('march_user' , 'march_user' , 'マージユーザ')
+end
 
-# 正常パターン定義
+# 定数定義
 message = 'ログインしてください'
 
 # テスト実行
 describe 'ログイン機能' do
+	before(&init)
 	it '画面表示' do
 		visit '/'
 		iscontain message
