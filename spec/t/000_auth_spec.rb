@@ -1,4 +1,4 @@
-require_relative 'rbase'
+require_relative '../rbase'
 include Rbase
 
 # テスト用データベース構築
