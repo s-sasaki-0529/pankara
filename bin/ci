@@ -5,16 +5,20 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "インテグレーションテストを実施"
-  echo "  Usage: zenra $PROGNAME"
+  echo "  Usage: zenra $PROGNAME [-t testcode]"
+  echo "オプション"
+  echo "  -t 通し番号を指定して特定のテストのみ行う"
   exit 1
 }
 
 # オプション解析
-while getopts e:h OPT
+while getopts t:h OPT
 do
   case $OPT in
   h)  usage
       exit 1
+      ;;
+  t)  VALUE_T=$OPTARG
       ;;
   esac
 done
@@ -22,6 +26,10 @@ shift $((OPTIND - 1))
 
 # メイン処理
 cd $MARCHDIR
-bundle exec rspec
+if [ -n "$VALUE_T" ]; then
+  bundle exec rspec spec/t/${VALUE_T}*
+else
+  bundle exec rspec
+fi
 cp -r coverage app/public/
 rm -rf coverage
