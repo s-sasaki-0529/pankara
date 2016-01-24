@@ -1,3 +1,4 @@
+*.swp
 *.gem
 *.rbc
 /.config
@@ -11,11 +12,13 @@
 /bundle
 /realdata
 app/public/coverage
-logs/
 ## Specific to RubyMotion:
 .dat*
 .repl_history
 build/
+/log
+/log/*.log
+/log/sql.log
 
 ## Documentation cache and generated files:
 /.yardoc/
