@@ -1,0 +1,24 @@
+#!/bin/sh
+
+MARCHDIR="/home/vagrant/March"
+BINDIR="$MARCHDIR/bin"
+export MARCHDIR
+export BINDIR
+command="$1"
+
+case "$command" in
+[a-z0-9]*)
+	shift
+	if test -x "$BINDIR/$command"
+	then
+		exec "$BINDIR/$command" "$@"
+	else
+		echo 1>&2 "${command}: not found."
+	fi
+	;;
+*)
+	echo 1>&2 "${0}: unknown command."
+	;;
+esac
+
+exit 1

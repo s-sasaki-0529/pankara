@@ -1,4 +1,4 @@
-require_relative 'app/models/util'
+require '~/March/app/models/util'
 DB.connect
 datetime = '2016-01-17 14:50:00'
 name = '2016年 2/24回目'

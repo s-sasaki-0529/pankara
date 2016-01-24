@@ -1,0 +1,28 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+	echo "インテグレーションテストを実施"
+	echo "	Usage: zenra $PROGNAME"
+	exit 1
+}
+
+# オプション解析
+while getopts e:h OPT
+do
+	case $OPT in
+	h)	usage
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+zenra init -f
+cd $MARCHDIR
+bundle exec rspec
+cp -r coverage app/public/
+rm -rf coverage
