@@ -7,7 +7,7 @@ TMPPATH="$BINDIR/scripts/tmp.sql"
 # ヘルプ
 usage() {
 	echo "データベースを初期化"
-  echo "	Usage: zenra $PROGNAME [-s] [-f] [-r]"
+	echo "	Usage: zenra $PROGNAME [-s] [-f] [-r]"
 	echo "オプション:"
 	echo "	-s ランダムのサンプルデータを挿入"
 	echo "	-f 固定のサンプルデータを挿入"
@@ -21,17 +21,17 @@ FLAG_F=0
 FLAG_R=0
 while getopts sfrh OPT
 do
-    case $OPT in
-        h)  usage
-            exit 1
-						;;
-				s)	FLAG_S=1
-						;;
-				f)	FLAG_F=1
-						;;
-				r)	FLAG_R=1
-						;;
-    esac
+	case $OPT in
+	h)	usage
+			exit 1
+			;;
+	s)	FLAG_S=1
+			;;
+	f)	FLAG_F=1
+			;;
+	r)	FLAG_R=1
+			;;
+	esac
 done
 shift $((OPTIND - 1))
 
