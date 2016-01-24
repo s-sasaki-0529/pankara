@@ -102,4 +102,5 @@ RSpec.configure do |config|
 =end
 	Capybara.app = IndexRoute
 	config.include Capybara::DSL
+	config.order = "random"
 end
