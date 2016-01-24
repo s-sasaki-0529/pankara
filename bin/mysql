@@ -4,29 +4,29 @@ PROGNAME=$(basename $0)
 
 # ヘルプ
 usage() {
-	echo "mySQLサーバにログイン、Marchデータベースに接続"
-	echo "	Usage: zenra $PROGNAME [-e execute sql]"
-	echo "オプション"
-	echo "	-e 指定したSQLを実行する"
-	exit 1
+  echo "mySQLサーバにログイン、Marchデータベースに接続"
+  echo "  Usage: zenra $PROGNAME [-e execute sql]"
+  echo "オプション"
+  echo "  -e 指定したSQLを実行する"
+  exit 1
 }
 
 # オプション解析
 while getopts e:h OPT
 do
-	case $OPT in
-	h)	usage
-			exit 1
-			;;
-	e)	VALUE_E=$OPTARG
-			;;
-	esac
+  case $OPT in
+  h)  usage
+      exit 1
+      ;;
+  e)  VALUE_E=$OPTARG
+      ;;
+  esac
 done
 shift $((OPTIND - 1))
 
 # メイン処理
 if [ -n "$VALUE_E" ]; then
-	mysql -u root --password=zenra march -e "$VALUE_E"
+  mysql -u root --password=zenra march -e "$VALUE_E"
 else
-	mysql -u root --password=zenra march $@
+  mysql -u root --password=zenra march $@
 fi

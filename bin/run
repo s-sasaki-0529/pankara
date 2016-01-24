@@ -4,19 +4,19 @@ PROGNAME=$(basename $0)
 
 # ヘルプ
 usage() {
-	echo "Webサーバを立ち上げ、サービスを開始する"
-	echo "	Usage: zenra $PROGNAME"
-	exit 1
+  echo "Webサーバを立ち上げ、サービスを開始する"
+  echo "  Usage: zenra $PROGNAME"
+  exit 1
 }
 
 # オプション解析
 while getopts p:h OPT
 do
-		case $OPT in
-				h)	usage
-						exit 1
-						;;
-		esac
+    case $OPT in
+        h)  usage
+            exit 1
+            ;;
+    esac
 done
 shift $((OPTIND - 1))
 

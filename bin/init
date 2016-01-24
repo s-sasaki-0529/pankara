@@ -6,13 +6,13 @@ TMPPATH="$BINDIR/scripts/tmp.sql"
 
 # ヘルプ
 usage() {
-	echo "データベースを初期化"
-	echo "	Usage: zenra $PROGNAME [-s] [-f] [-r]"
-	echo "オプション:"
-	echo "	-s ランダムのサンプルデータを挿入"
-	echo "	-f 固定のサンプルデータを挿入"
-	echo "	-r 実データを挿入"
-	exit 1
+  echo "データベースを初期化"
+  echo "  Usage: zenra $PROGNAME [-s] [-f] [-r]"
+  echo "オプション:"
+  echo "  -s ランダムのサンプルデータを挿入"
+  echo "  -f 固定のサンプルデータを挿入"
+  echo "  -r 実データを挿入"
+  exit 1
 }
 
 # オプション解析
@@ -21,17 +21,17 @@ FLAG_F=0
 FLAG_R=0
 while getopts sfrh OPT
 do
-	case $OPT in
-	h)	usage
-			exit 1
-			;;
-	s)	FLAG_S=1
-			;;
-	f)	FLAG_F=1
-			;;
-	r)	FLAG_R=1
-			;;
-	esac
+  case $OPT in
+  h)  usage
+      exit 1
+      ;;
+  s)  FLAG_S=1
+      ;;
+  f)  FLAG_F=1
+      ;;
+  r)  FLAG_R=1
+      ;;
+  esac
 done
 shift $((OPTIND - 1))
 
@@ -39,12 +39,12 @@ shift $((OPTIND - 1))
 $MYSQL -e "source $BINDIR/scripts/init.sql"
 cd $MARCHDIR
 if [ "$FLAG_S" -eq 1 ]; then
-	bundle exec ruby $BINDIR/scripts/insert_random_rows.rb > $TMPPATH
-	$MYSQL -e "source $TMPPATH"
+  bundle exec ruby $BINDIR/scripts/insert_random_rows.rb > $TMPPATH
+  $MYSQL -e "source $TMPPATH"
 elif [ "$FLAG_F" -eq 1 ]; then
-	bundle exec ruby $BINDIR/scripts/insert_fixed_rows.rb > $TMPPATH
-	$MYSQL -e "source $TMPPATH"
+  bundle exec ruby $BINDIR/scripts/insert_fixed_rows.rb > $TMPPATH
+  $MYSQL -e "source $TMPPATH"
 elif [ "$FLAG_R" -eq 1 ]; then
-	bundle exec ruby $BINDIR/scripts/realdata.rb > $TMPPATH
+  bundle exec ruby $BINDIR/scripts/realdata.rb > $TMPPATH
 fi
 rm -f $TMPPATH
