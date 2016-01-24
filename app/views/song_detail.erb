@@ -10,21 +10,21 @@
 </div>
 
 <h4>この曲が歌われた回数</h4>
-<p>みんな: <%= @song['sangcount'] %></p>
-<p>あなた: <%= @my_sangcount %></p>
+<p id="sangcount">みんな: <%= @song['sangcount'] %></p>
+<p id="my_sangcount">あなた: <%= @my_sangcount %></p>
 
 <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-<p>最高: <%= h @song['score_max'] %></p>
-<p>最低: <%= h @song['score_min'] %></p>
-<p>平均: <%= h @song['score_avg'] %></p>
+<p id="maxscore">最高: <%= h @song['score_max'] %></p>
+<p id="minscore">最低: <%= h @song['score_min'] %></p>
+<p id="avgscore">平均: <%= h @song['score_avg'] %></p>
 
 <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
-<p>最高: <%= h @my_score['score_max'] %></p>
-<p>最低: <%= h @my_score['score_min'] %></p>
-<p>平均: <%= h @my_score['score_avg'] %></p>
+<p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
+<p id="my_minscore">最低: <%= h @my_score['score_min'] %></p>
+<p id="my_avgscore">平均: <%= h @my_score['score_avg'] %></p>
 
 <h4>この曲のみんなの歌唱履歴</h4>
-<table class="table table-striped">
+<table id="songdetail_allhistory_table" class="table table-striped">
 	<thead>
 		<th class='cell-datetime'>日付</th>
 		<th>内容</th>
@@ -48,7 +48,7 @@
 </table>
 
 <h4>この曲のあなたの歌唱履歴</h4>
-<table class="table table-striped">
+<table id="songdetail_myhistory-table" class="table table-striped">
 	<thead>
 		<th class='cell-datetime'>日付</th>
 		<th>内容</th>

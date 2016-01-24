@@ -22,8 +22,12 @@ module Rbase
 		end
 	end
 
-	def id_to_element(id)
-		page.find("#" + id)
+	def link(text)
+		page.all('a' , :text => text)[0].click
+	end
+
+	def examine_text(id , text)
+		expect(page.find("#" + id).text).to eq text
 	end
 
 	def class_to_elements(classname)
@@ -31,13 +35,21 @@ module Rbase
 	end
 
 	def examine_songlink(name , artist)
-		page.all('a' , :text => name)[0].click
+		link name
 		iscontain "#{name} / #{artist}"
 	end
 
 	def examine_artistlink(name)
-		page.all('a' , :text => name)[0].click
+		link name
 		iscontain [name , 'この歌手の楽曲一覧']
+	end
+
+	def examine_userlunk(name)
+	end
+
+	def examine_karaokelink(name)
+		link name
+		iscontain name
 	end
 
 	def table_to_hash(id)
@@ -59,10 +71,4 @@ module Rbase
 		page.all('iframe').collect {|element| element[:src]}
 	end
 
-	def debug(v)
-		require 'pp'
-		puts "\n----debug----"
-		pp v
-		puts "-------------"
-	end
 end
