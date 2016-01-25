@@ -44,9 +44,8 @@ describe '歌唱履歴ページ' do
 	it 'リンクが正常に登録されているか' do
 		login 'sa2knight'
 		visit url
-		examine_songlink('亜麻色の髪の乙女' , '島谷ひとみ')
-		visit url
-		examine_artistlink('SEKAI NO OWARI')
+		examine_songlink('亜麻色の髪の乙女' , '島谷ひとみ' , url)
+		examine_artistlink('SEKAI NO OWARI' , url)
 		#Todo カラオケへのリンクを検証
 	end
 end

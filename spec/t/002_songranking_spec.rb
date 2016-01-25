@@ -39,8 +39,7 @@ describe '楽曲ランキング機能' do
 	it 'リンクが正常に登録されているか' do
 		login 'sa2knight'
 		visit url
-		examine_songlink('ロストマン' , 'BUMP OF CHICKEN')
-		visit url
-		examine_artistlink('BUMP OF CHICKEN')
+		examine_songlink('ロストマン' , 'BUMP OF CHICKEN' , url)
+		examine_artistlink('BUMP OF CHICKEN' , url)
 	end
 end
