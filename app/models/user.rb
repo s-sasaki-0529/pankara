@@ -7,11 +7,7 @@ class User < Base
 	# initialize(username:) - usernameを指定してインスタンスを生成
 	#---------------------------------------------------------------------
 	def initialize(username)
-		db = DB.new
-		db.from('user')
-		db.where('username = ?')
-		db.set(username)
-		@params = db.execute_row
+		@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
 	end
 
 	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
@@ -48,12 +44,10 @@ class User < Base
 	#---------------------------------------------------------------------
 	def get_karaoke(limit = 0)
 		# 対象ユーザが参加したkaraokeのID一覧を取得
-		db = DB.new
-		db.select('karaoke')
-		db.from('attendance')
-		db.where('user = ?')
+		db = DB.new(
+			:SELECT => 'karaoke' , :FROM => 'attendance' , :WHERE => 'user = ?' , :SET => @params['id']
+		)
 		db.option("LIMIT #{limit}") if limit > 0
-		db.set(@params['id'])
 		attended_id_list = db.execute_all.collect {|info| info['karaoke']}
 
 		# 全karaokeの情報から、ユーザが参加したカラオケについてのみ抽出
@@ -157,10 +151,7 @@ class User < Base
 	# create - クラスメソッド ユーザを新規登録
 	#---------------------------------------------------------------------
 	def self.create(name , pw , screenname)
-		db = DB.new
-		db.from('user')
-		db.where('username = ?')
-		db.set(name)
+		db = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => name)
 		db.execute_row and return
 
 		db = DB.new
