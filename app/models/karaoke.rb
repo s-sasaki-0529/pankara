@@ -80,7 +80,7 @@ class Karaoke < Base
 			song = Song.new(history['song'])
 			history['song_id'] = song.params['id']
 			history['song_name'] = song.params['name']
-			history['artist_id'] = song.params['artist'['name']]
+			history['artist_id'] = song.params['artist']
 			history['artist_name'] = song.params['artist_name']
 			history['userinfo'] = users_info.find { |user| user['attendance'] == history['attendance'] }
 			history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
