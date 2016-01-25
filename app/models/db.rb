@@ -9,7 +9,7 @@ class DB
 	
 	# initialize - インスタンス生成
 	#---------------------------------------------------------------------
-	def initialize
+	def initialize(arg = nil)
 		@select = ''
 		@from = ''
 		@join = ''
@@ -17,6 +17,15 @@ class DB
 		@insert = ''
 		@option = ''
 		@params = []
+		if arg
+			arg[:SELECT] and select(arg[:SELECT])
+			arg[:FROM] and from(arg[:FROM])
+			arg[:WHERE] and where(arg[:WHERE])
+			arg[:JOIN] and join(arg[:JOIN])
+			arg[:INSERT] and insert(arg[:INSERT])
+			arg[:OPTION] and option(arg[:OPTION])
+			arg[:SET] and set(arg[:SET])
+		end
 	end
 
 	# connect - mysqlサーバへの接続を行う

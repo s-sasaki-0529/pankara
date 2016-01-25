@@ -54,7 +54,7 @@ describe '楽曲詳細ページ' do
 		login 'sa2knight'
 		visit 'history'
 		examine_songlink('ゼロ' , 'BUMP OF CHICKEN')
-		db = DB.new; db.select('url'); db.from('song'); db.where('name = ?'); db.set('ゼロ')
+		db = DB.new(:SELECT => 'url' , :FROM => 'song' , :WHERE => 'name = ?' , :SET => 'ゼロ')
 		tube = db.execute_column
 		expect(youtube_links[0].slice(/\w+$/)).to eq tube.slice(/\w+$/)
 	end

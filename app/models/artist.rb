@@ -13,28 +13,19 @@ class Artist < Base
 	# songs - 楽曲一覧を取得
 	#---------------------------------------------------------------------
 	def songs
-		db = DB.new
-		db.select({
-			'song.id' => 'song_id' ,
-			'song.name' => 'song_name'
-		})
-		db.from('song')
-		db.join(['song' , 'artist'])
-		db.where('song.artist = ?')
-		db.set(@params['id'])
-		@params['songs'] = db.execute_all
+		@params['songs'] = DB.new(
+			:SELECT => {'song.id' => 'song_id' , 'song.name' => 'song_name'} ,
+			:FROM => 'song' ,
+			:WHERE => 'song.artist = ?' ,
+			:SET => @params['id'] ,
+		).execute_all
 	end
 
 	# songs_with_count - 楽曲の一覧と歌唱回数を取得
 	#---------------------------------------------------------------------
 	def songs_with_count(userid)
-		db = DB.new
-		db.select('id')
-		db.from('song')
-		db.where('artist = ?')
-		db.set(@params['id'])
+		db = DB.new(:SELECT => 'id' , :FROM => 'song' , :WHERE => 'artist = ?' , :SET => @params['id'])
 		id_list = db.execute_columns
-
 		songs = []
 		id_list.each do |id|
 			song = Song.new(id)
