@@ -38,10 +38,14 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def user_link(username, screenname)
+		def user_link(username, screenname , with_icon = true)
 			link = "/user/#{username}"
-			img_tag = user_icon(username , '32px' , '32px')
-			return "<a href='#{link}'>#{img_tag} #{screenname}</a>"
+			if with_icon
+				img_tag = user_icon(username , '32px' , '32px')
+				return "#{img_tag} <a href='#{link}'>#{screenname}</a>"
+			else
+				return "<a href='#{link}'>#{screenname}</a>"
+			end
 		end
 		def karaoke_link(id, name)
 			return "<a href=/karaoke/detail/#{id}>#{name}</a>"

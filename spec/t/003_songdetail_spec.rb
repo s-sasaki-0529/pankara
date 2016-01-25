@@ -65,7 +65,7 @@ describe '楽曲詳細ページ' do
 		examine_songlink('ゼロ' , 'BUMP OF CHICKEN')
 		song_url = page.current_path
 		examine_karaokelink('楽曲詳細ページテスト用カラオケ' , song_url)
-		#Todo ユーザページヘのリンクを検証
+		examine_userlink('ないと' , song_url)
 	end
 
 end

@@ -38,7 +38,7 @@
 		<tr>
 			<td><%= sang['datetime'] %></td>
 			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-			<td><%= sang['user_screenname'] %></td>
+			<td><%= user_link sang['username'] , sang['user_screenname'] %></td>
 			<td class='center'><%= sang['songkey'] %></td>
 			<td><%= sang['scoretype_name'] %></td>
 			<td class='center'><%= h sang['score'] %></td>
@@ -62,7 +62,7 @@
 		<tr>
 			<td><%= sang['datetime'] %></td>
 			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-			<td><%= sang['user_screenname'] %></td>
+			<td><%= user_link sang['username'] , sang['user_screenname'] %></td>
 			<td class='center'><%= sang['songkey'] %></td>
 			<td><%= sang['scoretype_name'] %></td>
 			<td class='center'><%= h sang['score'] %></td>
