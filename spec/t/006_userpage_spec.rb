@@ -1,0 +1,20 @@
+require_relative '../rbase'
+include Rbase
+
+# テスト用データベース構築
+init = proc do
+	`zenra init`
+end
+
+# 定数定義
+
+# テスト実行
+describe 'テスト対象機能名' do
+	before(&init)
+	it 'テスト項目１' do
+	end
+	it 'テスト項目２' do
+	end
+	it 'テスト項目３' do
+	end
+end
