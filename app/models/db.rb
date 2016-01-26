@@ -36,20 +36,22 @@ class DB
 	end
 
 	# select - SELECT文を作成する
+	# String / Array[String] / Hash[String => String]のみサポート
 	#---------------------------------------------------------------------
-	def select(*params)
-		as_hash = {}
-		params.each do |param|
-			if param.kind_of?(Hash)
-				hash = param
-			elsif param.kind_of?(String)
-				hash = {param => param}
+	def select(params)
+		hash = {}
+		if params.kind_of?(Hash)
+			hash = params
+		elsif params.kind_of?(Array)
+			params.each do |param|
+				hash[param] = param
 			end
-			as_hash.merge! hash
+		elsif params.kind_of?(String)
+			hash[params] = params
 		end
 
 		selects = []
-		as_hash.each do |key , val|
+		hash.each do |key , val|
 			selects.push "#{key} AS #{val}"
 		end
 
@@ -57,20 +59,25 @@ class DB
 	end
 
 	# from - FROM文を作成する
+	# String のみサポート 複数表にまたがる場合はJOINを用いること
 	#---------------------------------------------------------------------
-	def from(*params)
-		@from = "FROM #{params.join(',')}"
+	def from(param)
+		@from = "FROM #{param}"
 	end
 
 	# where - WHERE分を作成する
+	# String / Array[String] のみサポート
 	#---------------------------------------------------------------------
-	def where(*params)
+	def where(params)
+		params.kind_of?(String) and params = [params]
 		@where = "WHERE #{params.join(' and ')}"
 	end
 
 	# join - JOIN文を作成する
+	# Array[String , String] / Array[Array[String , String]] のみサポート
 	#---------------------------------------------------------------------
-	def join(*params)
+	def join(params)
+		params[0].kind_of?(String) and params = [params]
 		sql = []
 		params.each do |set|
 			sql.push  "JOIN #{set[1]} ON #{set[0]}.#{set[1]} = #{set[1]}.id"
@@ -79,22 +86,30 @@ class DB
 	end
 
 	# insert - INSERT文を作成する
+	# table - String
+	# column_list - String / Array[String]
 	#---------------------------------------------------------------------
 	def insert(table , column_list)
+		column_list.kind_of?(String) and column_list = [column_list]
 		columns = column_list.join(',')
 		questions = ('?' * column_list.size).split('').join(',') 
 		@insert = "INSERT INTO #{table} (#{columns}) VALUES (#{questions})"
 	end
 
 	# option - ORDER BY / LIMIT などその他の構文を作成
+	# String / Array[String]
+	# 複数回呼び出すと上書きでなく追記になる
 	#---------------------------------------------------------------------
-	def option(*params)
-		@option = params.join(' ')
+	def option(params)
+		params.kind_of?(String) and params = [params]
+		@option = [@option , params.join(' ')].join(' ')
 	end
 
 	# set - prepareに引き渡すパラメータをセットする
+	# String / Array[String] のみサポート
 	#---------------------------------------------------------------------
-	def set(*params)
+	def set(params)
+		params.kind_of?(String) and params = [params]
 		@params = params
 	end
 

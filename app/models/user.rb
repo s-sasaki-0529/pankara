@@ -13,23 +13,23 @@ class User < Base
 	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
 	#---------------------------------------------------------------------
 	def histories(limit = 0)
-		db = DB.new
-		db.select({
-			'karaoke.name' => 'karaoke_name' ,
-			'karaoke.datetime' => 'datetime' ,
-			'history.song' => 'song' ,
-			'history.songkey' => 'songkey'
-		})
-		db.from('history')
-		db.join(
-			['history' , 'attendance'] ,
-			['attendance' , 'karaoke']
+		db = DB.new(
+			:SELECT => {
+				'karaoke.name' => 'karaoke_name' ,
+				'karaoke.datetime' => 'datetime' ,
+				'history.song' => 'song' ,
+				'history.songkey' => 'songkey'
+			} ,
+			:FROM => 'history' ,
+			:JOIN => [
+				['history' , 'attendance'] ,
+				['attendance' , 'karaoke']
+			] ,
+			:WHERE => 'attendance.user = ?' ,
+			:SET => @params['id'] ,
+			:OPTION => 'ORDER BY datetime DESC' ,
 		)
-		db.where('attendance.user = ?')
-		option = ['ORDER BY datetime DESC']
-		option.push("LIMIT #{limit}") if limit > 0
-		db.option(option)
-		db.set(@params['id'])
+		db.option("LIMIT #{limit}") if limit > 0
 		histories = db.execute_all
 		histories.each do | history |
 			song = Song.new(history['song'])
@@ -45,9 +45,9 @@ class User < Base
 	def get_karaoke(limit = 0)
 		# 対象ユーザが参加したkaraokeのID一覧を取得
 		db = DB.new(
-			:SELECT => 'karaoke' , :FROM => 'attendance' , :WHERE => 'user = ?' , :SET => @params['id']
+			:SELECT => 'karaoke' , :FROM => 'attendance' , :WHERE => 'user = ?' , :SET => @params['id'] , 
+			:OPTION => (limit > 0) ? "LIMIT #{limit}" : nil
 		)
-		db.option("LIMIT #{limit}") if limit > 0
 		attended_id_list = db.execute_all.collect {|info| info['karaoke']}
 
 		# 全karaokeの情報から、ユーザが参加したカラオケについてのみ抽出
@@ -68,26 +68,26 @@ class User < Base
 
 		db = DB.new
 		db.insert('karaoke' , ['datetime' , 'plan' , 'store' , 'product'])
-		db.set(datetime , plan , store , product)
+		db.set([datetime , plan , store , product])
 		karaoke_id = db.execute_insert_id
 
 		db = DB.new
 		db.insert('attendance' , ['user' , 'karaoke'])
-		db.set(@params['id'] , karaoke_id)
+		db.set([@params['id'] , karaoke_id])
 		db.execute_insert_id
 	end
 
 	# get_most_sang_song - 最も歌っている曲を取得する 
 	#---------------------------------------------------------------------
 	def get_most_sang_song
-		db = DB.new
-		db.select({'history.song' => 'song', 'COUNT(*)' => 'counter'})
-		db.from('history')
-		db.join(['history', 'attendance'])
-		db.where('attendance.user = ?')
-		db.option(['GROUP BY song', 'ORDER BY counter DESC, history.created_at DESC'])
-		db.set(@params['id'])
-		@most_sang_song = db.execute_row
+		@most_sang_song = DB.new(
+			:SELECT => {'history.song' => 'song' , 'COUNT(*)' => 'counter'} ,
+			:FROM => 'history' ,
+			:JOIN => ['history' , 'attendance'] ,
+			:WHERE => 'attendance.user = ?' ,
+			:SET => @params['id'] ,
+			:OPTION => ['GROUP BY song', 'ORDER BY counter DESC, history.created_at DESC']
+		).execute_row
 
 		get_song @most_sang_song
 		return @most_sang_song
@@ -96,24 +96,21 @@ class User < Base
 	# get_most_sang_artist - 最も歌っている歌手を取得する 
 	#---------------------------------------------------------------------
 	def get_most_sang_artist
-		db = DB.new
-		db.select({'song.artist' => 'artist', 'COUNT(*)' => 'counter'})
-		db.from('history')
-		db.join(
-			['history', 'attendance'],
-			['history', 'song']
-		)
-		db.where('attendance.user = ?')
-		db.option(['GROUP BY artist', 'ORDER BY counter DESC, history.created_at DESC'])
-		db.set(@params['id'])
-		@most_sang_artist = db.execute_row
+		@most_sang_artist = DB.new(
+			:SELECT => {'song.artist' => 'artist', 'COUNT(*)' => 'counter'} ,
+			:FROM => 'history' ,
+			:JOIN => [
+				['history' , 'attendance'] ,
+				['history' , 'song'] ,
+			] ,
+			:WHERE => 'attendance.user = ?' ,
+			:SET => @params['id'] ,
+			:OPTION => ['GROUP BY artist', 'ORDER BY counter DESC, history.created_at DESC'] ,
+		).execute_row
 
-		db= DB.new
-		db.select('name')
-		db.from('artist')
-		db.where('id = ?')
-		db.set(@most_sang_artist['artist'])
-		@most_sang_artist['artist_name'] = db.execute_column
+		@most_sang_artist['artist_name'] = DB.new(
+			:SELECT => 'name' , :FROM => 'artist' , :WHERE => 'id = ?' , :SET => @most_sang_artist['artist']
+		).execute_column
 		return @most_sang_artist
 	end
 
@@ -127,9 +124,7 @@ class User < Base
 			'MAX(history.score)' => 'score'
 		})
 		db.from('history')
-		db.join(
-			['history', 'attendance'],
-		)
+		db.join(['history', 'attendance'])
 		db.where('attendance.user = ?')
 		db.set(@params['id'])
 		@max_score_history = db.execute_row
@@ -141,10 +136,7 @@ class User < Base
 	# authenticate - クラスメソッド ユーザのIDとパスワードを検証する
 	#---------------------------------------------------------------------
 	def self.authenticate(name , pw)
-		db = DB.new
-		db.from('user')
-		db.where('username = ?' , 'password = ?')
-		db.set(name , pw)
+		db = DB.new(:FROM => 'user' , :WHERE => ['username = ?' , 'password = ?'] , :SET => [name , pw])
 		db.execute_row
 	end
 
@@ -156,7 +148,7 @@ class User < Base
 
 		db = DB.new
 		db.insert('user' , ['username' , 'password' , 'screenname'])
-		db.set(name , pw , screenname)
+		db.set([name , pw , screenname])
 		db.execute_insert_id
 	end
 

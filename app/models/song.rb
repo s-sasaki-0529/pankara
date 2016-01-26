@@ -15,7 +15,7 @@ class Song < Base
 	#---------------------------------------------------------------------
 	def song_name
 		db = DB.new
-		db.select('artist.name' => 'artist_name')
+		db.select({'artist.name' => 'artist_name'})
 		db.from('song')
 		db.join(['song' , 'artist'])
 		db.where('song.id = ?')
@@ -42,9 +42,9 @@ class Song < Base
 		db.select({'COUNT(*)' => 'count'})
 		db.from('history')
 		db.join(['history' , 'attendance'])
-		db.where('attendance.user = ?' , 'history.song = ?')
-		db.option('GROUP BY history.song ORDER BY count DESC')
-		db.set(userid , @params['id'])
+		db.where(['attendance.user = ?' , 'history.song = ?'])
+		db.option(['GROUP BY history.song' , 'ORDER BY count DESC'])
+		db.set([userid , @params['id']])
 		count = db.execute_column
 		return (count.nil?) ? 0 : count
 	end
@@ -59,8 +59,8 @@ class Song < Base
 			'AVG(score)' => 'score_avg'
 		})
 		db.from('history')
-		db.where('song = ?' , 'score_type = ?')
-		db.set(@params['id'] , score_type)
+		db.where(['song = ?' , 'score_type = ?'])
+		db.set([@params['id'] , score_type])
 		result = db.execute_row
 		@params.merge! result
 	end
@@ -76,8 +76,8 @@ class Song < Base
 		})
 		db.from('history')
 		db.join(['history' , 'attendance'])
-		db.where('song = ?' , 'score_type = ?' , 'user = ?')
-		db.set(@params['id'] , score_type , userid)
+		db.where(['song = ?' , 'score_type = ?' , 'user = ?'])
+		db.set([@params['id'] , score_type , userid])
 		result = db.execute_row
 		return result
 	end
@@ -97,13 +97,13 @@ class Song < Base
 			'history.score' => 'score'
 		})
 		db.from('history')
-		db.join(
+		db.join([
 			['history' , 'attendance'] ,
+			['attendance' , 'karaoke'] ,
 			['attendance' , 'user'] ,
-			['attendance' , 'karaoke']
-		)
+		])
 		db.where('history.song = ?')
-		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
+		db.option(['ORDER BY karaoke.datetime DESC' , 'LIMIT 10'])
 		db.set(@params['id'])
 		@params['sang_history'] = db.execute_all
 		@params['sang_history'].each do |sang|
@@ -126,14 +126,14 @@ class Song < Base
 			'history.score' => 'score'
 		})
 		db.from('history')
-		db.join(
+		db.join([
 			['history' , 'attendance'] ,
 			['attendance' , 'user'] ,
 			['attendance' , 'karaoke']
-		)
-		db.where('history.song = ?' , 'attendance.user = ?')
-		db.option('ORDER BY karaoke.datetime DESC LIMIT 10')
-		db.set(@params['id'] , userid)
+		])
+		db.where(['history.song = ?' , 'attendance.user = ?'])
+		db.option(['ORDER BY karaoke.datetime DESC' , 'LIMIT 10'])
+		db.set([@params['id'] , userid])
 		result = db.execute_all
 		result.each do |sang|
 			sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'])

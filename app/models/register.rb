@@ -24,7 +24,7 @@ class Register < Base
 
 		db = DB.new
 		db.insert('karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product'])
-		db.set(datetime , name , plan , store_id , product_id)
+		db.set([datetime , name , plan , store_id , product_id])
 		@karaoke = db.execute_insert_id
 	end
 
@@ -34,7 +34,7 @@ class Register < Base
 		@karaoke or return
 		db = DB.new
 		db.insert('attendance' , ['user' , 'karaoke' , 'price' , 'memo'])
-		db.set(@userid , @karaoke , price , memo)
+		db.set([@userid , @karaoke , price , memo])
 		@attendance = db.execute_insert_id
 	end
 
@@ -47,22 +47,21 @@ class Register < Base
 		scoretype_id = get_scoretype(score_type)
 		db = DB.new
 		db.insert('history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'])
-		db.set(@attendance , song_id , key , scoretype_id , score)
+		db.set([@attendance , song_id , key , scoretype_id , score])
 		db.execute_insert_id
 	end
 
 	# create_artist - 歌手を新規登録。既出の場合IDを戻す
 	#---------------------------------------------------------------------
 	def create_artist(name)
-		db = DB.new
-		db.select('id')
-		db.from('artist')
-		db.where('name = ?')
-		db.set(name)
-		artist_id = db.execute_column
+		artist_id = DB.new(
+			:SELECT => 'id' , :FROM => 'artist' , :WHERE => 'name = ?' , :SET => name
+		).execute_column
+		
 		if artist_id
 			artist_id
 		else
+			db = DB.new
 			db.insert('artist' , ['name'])
 			db.set(name)
 			db.execute_insert_id
@@ -72,18 +71,18 @@ class Register < Base
 	# create_song - 曲を新規登録。既出の場合IDを戻す
 	#---------------------------------------------------------------------
 	def create_song(artist_id , artist_name , song_name)
-		db = DB.new
-		db.select('id')
-		db.from('song')
-		db.where('artist = ?' , 'name = ?')
-		db.set(artist_id , song_name)
-		song_id = db.execute_column
+		song_id = DB.new(
+			:SELECT => 'id' , :FROM => 'song' , :WHERE => ['artist = ?' , 'name = ?'] ,
+			:SET => [artist_id , song_name]
+		).execute_column
+		
 		if song_id
 			song_id
 		else
 			url = @with_url ? Util.search_tube(artist_name , song_name) : nil
+			db = DB.new
 			db.insert('song' , ['artist' , 'name' , 'url'])
-			db.set(artist_id , song_name , url)
+			db.set([artist_id , song_name , url])
 			db.execute_insert_id
 		end
 	end
@@ -91,17 +90,17 @@ class Register < Base
 	# create_store - 店舗を新規登録。既出の場合IDを戻す
 	#---------------------------------------------------------------------
 	def create_store(store)
-		db = DB.new
-		db.select('id')
-		db.from('store')
-		db.where('name = ?' , 'branch = ?')
-		db.set(store['name'] , store['branch'])
-		store_id = db.execute_column
+		store_id = DB.new(
+			:SELECT => 'id' , :FROM => 'store' , :WHERE => ['name = ?' , 'branch = ?'] ,
+			:SET => [store['name'] , store['branch']]
+		).execute_column
+		
 		if store_id
 			store_id
 		else
+			db = DB.new
 			db.insert('store' , ['name' , 'branch'])
-			db.set(store['name'] , store['branch'])
+			db.set([store['name'] , store['branch']])
 			db.execute_insert_id
 		end
 	end
@@ -109,17 +108,17 @@ class Register < Base
 	# create_product - 機種を新規登録。既出の場合IDを戻す
 	#---------------------------------------------------------------------
 	def create_product(product)
-		db = DB.new
-		db.select('id')
-		db.from('product')
-		db.where('brand = ?' , 'product = ?')
-		db.set(product['brand'] , product['product'])
-		product_id = db.execute_column
+		product_id = DB.new(
+			:SELECT => 'id' , :FROM => 'product' , :WHERE => ['brand = ?' , 'product = ?'] ,
+			:SET => [product['brand'] , product['product']]
+		).execute_column
+		
 		if product_id
 			product_id
 		else
+			db = DB.new
 			db.insert('product' , ['brand' , 'product'])
-			db.set(product['brand'], product['product'])
+			db.set([product['brand'], product['product']])
 			db.execute_insert_id
 		end
 	end
@@ -130,12 +129,10 @@ class Register < Base
 		score_type or return
 		brand = score_type['brand']
 		name = score_type['name']
-		db = DB.new
-		db.select('id')
-		db.from('score_type')
-		db.where('brand = ?' , 'name = ?')
-		db.set(brand , name)
-		db.execute_column
+		db = DB.new(
+			:SELECT => 'id' , :FROM => 'score_type' , :WHERE => ['brand = ?' , 'name = ?'] ,
+			:SET => [brand , name]
+		).execute_column
 	end
 
 end

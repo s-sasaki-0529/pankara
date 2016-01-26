@@ -9,11 +9,7 @@ class Karaoke < Base
 	# initialize - インスタンスを生成し、機種名、店舗名を取得する
 	#---------------------------------------------------------------------
 	def initialize(id)
-		db = DB.new
-		db.from('karaoke')
-		db.where('id = ?')
-		db.set(id)
-		@params = db.execute_row
+		@params = DB.new.get('karaoke' , id)
 
 		product = Product.new(@params['product'])
 		@params['product_name'] = "#{product.params['brand']}(#{product.params['product']})"
@@ -25,38 +21,38 @@ class Karaoke < Base
 	# list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
 	#---------------------------------------------------------------------
 	def self.list_all()
-		db = DB.new
-		db.select({
-			'karaoke.id' => 'id' ,
-			'karaoke.name' => 'name' ,
-			'karaoke.datetime' => 'datetime' ,
-			'karaoke.plan' => 'plan' ,
-			'karaoke.store' => 'store' ,
-			'karaoke.product' => 'product_id' ,
-			'store.name' => 'store_name' ,
-			'store.branch' => 'branch_name' ,
-			'product.brand' => 'brand_name' ,
-			'product.product' => 'product_name'
-		})
-		db.from('karaoke')
-		db.join(
-			['karaoke' , 'store'] ,
-			['karaoke' , 'product']
-		)
-		db.option('ORDER BY datetime DESC')
-		db.execute_all
+		DB.new(
+			:SELECT =>	{
+				'karaoke.id' => 'id' ,
+				'karaoke.name' => 'name' ,
+				'karaoke.datetime' => 'datetime' ,
+				'karaoke.plan' => 'plan' ,
+				'karaoke.store' => 'store' ,
+				'karaoke.product' => 'product_id' ,
+				'store.name' => 'store_name' ,
+				'store.branch' => 'branch_name' ,
+				'product.brand' => 'brand_name' ,
+				'product.product' => 'product_name'
+			} ,
+			:FROM => 'karaoke' ,
+			:JOIN => [
+				['karaoke' , 'store'] ,
+				['karaoke' , 'product'] ,
+			] ,
+			:OPTION => 'ORDER BY datetime DESC'
+		).execute_all
 	end
 
 	# get_history - カラオケ記録に対応した歌唱履歴を取得する
 	#---------------------------------------------------------------------
 	def get_history
 		db = DB.new
-		db.select('name' , 'datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score')
+		db.select(['name' , 'datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score'])
 		db.from('history')
-		db.join(
+		db.join([
 			['history' , 'attendance'] ,
 			['attendance' , 'karaoke']
-		)
+		])
 		db.where('attendance.karaoke = ?')
 		db.option('ORDER BY datetime DESC')
 		db.set(@params['id'])

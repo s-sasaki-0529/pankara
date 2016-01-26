@@ -10,10 +10,12 @@ class ScoreType < Base
 	# List - idと採点モード名の対応を取得
 	#--------------------------------------------------------------------
 	def self.List
-		db = DB.new
-		db.select('id' , 'brand' , 'name')
-		db.from('score_type')
-		db.execute_all.each do |score_type|
+		score_types = DB.new(
+			:SELECT => ['id' , 'brand' , 'name'] ,
+			:FROM => 'score_type' ,
+		).execute_all
+
+		score_types.each do |score_type|
 			@@list[score_type['id']] = {
 				'brand' => score_type['brand'] ,
 				'name' => score_type['name'] ,
