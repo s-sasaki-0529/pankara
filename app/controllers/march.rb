@@ -65,10 +65,15 @@ class March < Sinatra::Base
 	# before - 全てのURLにおいて初めに実行される
 	#---------------------------------------------------------------------
 	before do
+		# 自動ログイン(debug用)
+		if (!session[:logined] && user = Util.read_config('auto_login'))
+			session[:logined] = User.new(user)
+		end
+
+		# ログイン状況を検出
 		logined = session[:logined]
 		path = request.path_info
 		unless logined || path == '/login'
-			#@current_user = User.new('user1')
 			redirect '/login'
 		else
 			@current_user = logined

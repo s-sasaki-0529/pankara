@@ -14,6 +14,8 @@ require_relative 'user'
 require_relative 'register'
 require 'uri'
 require 'open-uri'
+require 'yaml'
+CONFIG = 'config.yml'
 class Util
 
 	# icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
@@ -37,6 +39,31 @@ class Util
 			return "https://www.youtube.com/watch?v=#{$1}"
 		end
 		return nil
+	end
+
+	# read_config - コンフィグを参照する
+	#---------------------------------------------------------------------
+	def self.read_config(key)
+		config = YAML.load_file(CONFIG)
+		config[key]
+	end
+
+	# set_config - コンフィグを設定する
+	#---------------------------------------------------------------------
+	def self.set_config(key , value)
+		config = YAML.load_file(CONFIG)
+		if value
+			config[key] = value
+		else
+			config.delete(key)
+		end
+		open(CONFIG , "w"){|f| f.write(YAML.dump(config))}
+	end
+
+	# unset_config - コンフィグを削除する
+	#---------------------------------------------------------------------
+	def self.unset_config(key)
+		set_config(key , nil)
 	end
 
 	# write_log - ログを生成する
