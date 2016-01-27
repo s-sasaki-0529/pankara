@@ -11,7 +11,7 @@ end
 message = 'ログインしてください'
 
 # テスト実行
-describe 'ログイン機能' do
+describe '認証系ページ' do
 	before(&init)
 	it '画面表示' do
 		visit '/'
