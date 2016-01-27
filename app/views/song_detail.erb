@@ -10,13 +10,13 @@
 </div>
 
 <h4>この曲が歌われた回数</h4>
-<p id="sangcount">みんな: <%= @song['sangcount'] %></p>
+<p id="sangcount">みんな: <%= @sangcount %></p>
 <p id="my_sangcount">あなた: <%= @my_sangcount %></p>
 
 <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-<p id="maxscore">最高: <%= h @song['score_max'] %></p>
-<p id="minscore">最低: <%= h @song['score_min'] %></p>
-<p id="avgscore">平均: <%= h @song['score_avg'] %></p>
+<p id="maxscore">最高: <%= h @score['score_max'] %></p>
+<p id="minscore">最低: <%= h @score['score_min'] %></p>
+<p id="avgscore">平均: <%= h @score['score_avg'] %></p>
 
 <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
 <p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
@@ -34,7 +34,7 @@
 		<th class='cell-number'>得点</th>
 	</thead>
 	<tbody>
-		<% @song['sang_history'].each do |sang| %>
+		<% @history.each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
 			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
@@ -58,7 +58,7 @@
 		<th class='cell-number'>得点</th>
 	</thead>
 	<tbody>
-		<% @my_sang_history.each do |sang| %>
+		<% @my_history.each do |sang| %>
 		<tr>
 			<td><%= sang['datetime'] %></td>
 			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>

@@ -23,68 +23,54 @@ class Song < Base
 		).execute_column
 	end
 
-	# count_all - 全歌唱回数を取得
+	# sangcount - 歌唱回数を取得
+	# userの指定がない場合、全体を対象とする
 	#---------------------------------------------------------------------
-	def count_all
-		count = DB.new(
-			:SELECT => {'COUNT(*)' => 'count'} ,
-			:FROM => 'history' ,
-			:WHERE => 'song = ?' ,
-			:SET => @params['id'] ,
-		).execute_column
-		@params['sangcount'] = (count.nil?) ? 0 : count
-	end
+	def sangcount(userid = nil)
+		db = DB.new(:SELECT => {'COUNT(*)' => 'count'} , :FROM => 'history')
+		if userid
+			db.join(['history' , 'attendance'])
+			db.where(['attendance.user = ?' , 'history.song = ?'])
+			db.set([userid , @params['id']])
+			db.option(['GROUP BY history.song' , 'ORDER BY count DESC'])
+		else
+			db.where('song = ?')
+			db.set(@params['id'])
+		end
 
-	# count_as - 対象ユーザの歌唱回数を取得
-	#---------------------------------------------------------------------
-	def count_as(userid)
-		count = DB.new(
-			:SELECT => {'COUNT(*)' => 'count'} ,
-			:FROM => 'history' ,
-			:JOIN => ['history' , 'attendance'] ,
-			:WHERE => ['attendance.user = ?' , 'history.song = ?'] ,
-			:SET => [userid , @params['id']] ,
-			:OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC'] ,
-		).execute_column
+		count = db.execute_column
 		return (count.nil?) ? 0 : count
 	end
 
-	# score_all - 全ユーザの採点結果を取得、集計する
+	# tally_score - 得点の集計を得る
+	# useridの指定がない場合、全体を対象とする
 	#---------------------------------------------------------------------
-	def score_all(score_type)
-		result = DB.new(
+	def tally_score(score_type , userid = nil)
+		db = DB.new(
 			:SELECT => {
 				'MAX(score)' => 'score_max' ,
 				'MIN(score)' => 'score_min' ,
-				'AVG(score)' => 'score_avg'
+				'AVG(score)' => 'score_avg' ,
 			} ,
-			:FROM => 'history' ,
-			:WHERE => ['song = ?' , 'score_type = ?'] ,
-			:SET => [@params['id'] , score_type] ,
-		).execute_row
-		@params.merge! result
+			:FROM => 'history'
+		)
+		where = ['song = ?' , 'score_type = ?']
+		set = [@params['id'] , score_type]
+
+		if userid
+			db.join(['history' , 'attendance'])
+			where.push 'attendance.id = ?'
+			set.push userid
+		end
+		db.where(where)
+		db.set(set)
+		db.execute_row
 	end
 
-	# score_all - 対象ユーザの採点結果を取得、集計する
+	# history_list - この曲の歌唱履歴を取得
+	# useridを省略した場合、全ユーザを対象にする
 	#---------------------------------------------------------------------
-	def score_as(score_type , userid)
-		result = DB.new(
-			:SELECT => {
-				'MAX(score)' => 'score_max' ,
-				'MIN(score)' => 'score_min' ,
-				'AVG(score)' => 'score_avg'
-			} ,
-			:FROM => 'history' ,
-			:JOIN => ['history' , 'attendance'] ,
-			:WHERE => ['song = ?' , 'score_type = ?' , 'user = ?'] ,
-			:SET => [@params['id'] , score_type , userid] ,
-		).execute_row
-		return result
-	end
-
-	# sang_history_all - 全ユーザのこの曲の歌唱履歴を取得(最近１０件)
-	#---------------------------------------------------------------------
-	def sang_history_all
+	def history_list(limit , userid = nil)
 		db = DB.new(
 			:SELECT => {
 				'karaoke.id' => 'karaoke_id' ,
@@ -96,46 +82,24 @@ class Song < Base
 				'history.score_type' => 'score_type' ,
 				'history.score' => 'score'
 			} ,
-			:FROM => 'history' ,
 			:JOIN => [
 				['history' , 'attendance'] ,
 				['attendance' , 'karaoke'] ,
 				['attendance' , 'user'] ,
-			] ,
-			:WHERE => 'history.song = ?' ,
-			:SET => @params['id'] ,
+			],
+			:FROM => 'history' ,
 			:OPTION => ['ORDER BY karaoke.datetime DESC' , 'LIMIT 10'] ,
 		)
-		@params['sang_history'] = db.execute_all
-		@params['sang_history'].each do |sang|
-			sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'])
-		end
-	end
+		where = ['history.song = ?']
+		set = [@params['id']]
 
-	# sang_history_as - 対象ユーザの採点結果を取得、集計する
-	#---------------------------------------------------------------------
-	def sang_history_as(userid)
-		db = DB.new(
-			:SELECT => {
-				'karaoke.id' => 'karaoke_id' ,
-				'karaoke.name' => 'karaoke_name' ,
-				'karaoke.datetime' => 'datetime' ,
-				'user.username' => 'username' ,
-				'user.screenname' => 'user_screenname' ,
-				'history.songkey' => 'songkey' ,
-				'history.score_type' => 'score_type' ,
-				'history.score' => 'score'
-			} ,
-			:FROM => 'history' ,
-			:JOIN => [
-				['history' , 'attendance'] ,
-				['attendance' , 'user'] ,
-				['attendance' , 'karaoke'] ,
-			] ,
-			:WHERE => ['history.song = ?' , 'attendance.user = ?'] ,
-			:SET => [@params['id'] , userid] ,
-			:OPTION => ['ORDER BY karaoke.datetime DESC' , 'LIMIT 10'],
-		)
+		if userid
+			where.push 'attendance.user = ?'
+			set.push userid
+		end
+		db.where(where)
+		db.set(set)
+
 		result = db.execute_all
 		result.each do |sang|
 			sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'])

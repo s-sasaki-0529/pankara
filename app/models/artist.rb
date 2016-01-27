@@ -29,8 +29,8 @@ class Artist < Base
 		songs = []
 		id_list.each do |id|
 			song = Song.new(id)
-			song.count_all
-			song.params['my_sangcount'] = song.count_as(userid)
+			song.params['sangcount'] = song.sangcount()
+			song.params['my_sangcount'] = song.sangcount(userid)
 			songs.push song
 		end
 		@params['songs'] = songs

@@ -6,13 +6,13 @@ class SongRoute < March
 	#---------------------------------------------------------------------
 	get '/song/:id' do
 		score_type = 1 #現在は仮で固定
-		@song = Song.new(params[:id])
-		@song.count_all
-		@song.score_all(score_type)
-		@song.sang_history_all
-		@my_sangcount = @song.count_as(@current_user.params['id'])
-		@my_score = @song.score_as(score_type , @current_user.params['id'])
-		@my_sang_history = @song.sang_history_as(@current_user.params['id'])
+		@song         = Song.new(params[:id])
+		@sangcount    = @song.sangcount()
+		@score        = @song.tally_score(score_type)
+		@history      = @song.history_list(10)
+		@my_sangcount = @song.sangcount(@current_user.params['id'])
+		@my_score     = @song.tally_score(score_type , @current_user.params['id'])
+		@my_history   = @song.history_list(10 , @current_user.params['id'])
 		erb :song_detail
 	end
 
