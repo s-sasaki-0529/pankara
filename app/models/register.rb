@@ -22,9 +22,10 @@ class Register < Base
 		store_id = self.create_store(store)
 		product_id = self.create_product(product)
 
-		db = DB.new
-		db.insert('karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product'])
-		db.set([datetime , name , plan , store_id , product_id])
+		db = DB.new(
+			:INSERT => ['karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product']] ,
+			:SET => [datetime , name , plan , store_id , product_id]
+		)
 		@karaoke = db.execute_insert_id
 	end
 
@@ -32,9 +33,10 @@ class Register < Base
 	#---------------------------------------------------------------------
 	def attend_karaoke(price = nil , memo = nil)
 		@karaoke or return
-		db = DB.new
-		db.insert('attendance' , ['user' , 'karaoke' , 'price' , 'memo'])
-		db.set([@userid , @karaoke , price , memo])
+		db = DB.new(
+			:INSERT => ['attendance' , ['user' , 'karaoke' , 'price' , 'memo']] ,
+			:SET => [@userid , @karaoke , price , memo] 
+		)
 		@attendance = db.execute_insert_id
 	end
 
@@ -45,10 +47,10 @@ class Register < Base
 		artist_id = create_artist(artist)
 		song_id = create_song(artist_id , artist , song)
 		scoretype_id = get_scoretype(score_type)
-		db = DB.new
-		db.insert('history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'])
-		db.set([@attendance , song_id , key , scoretype_id , score])
-		db.execute_insert_id
+		DB.new(
+			:INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score']] ,
+			:SET => [@attendance , song_id , key , scoretype_id , score] ,
+		).execute_insert_id
 	end
 
 	# create_artist - 歌手を新規登録。既出の場合IDを戻す
@@ -61,10 +63,10 @@ class Register < Base
 		if artist_id
 			artist_id
 		else
-			db = DB.new
-			db.insert('artist' , ['name'])
-			db.set(name)
-			db.execute_insert_id
+			DB.new(
+				:INSERT => ['artist' , ['name']] ,
+				:SET => name
+			).execute_insert_id
 		end
 	end
 
@@ -80,10 +82,10 @@ class Register < Base
 			song_id
 		else
 			url = @with_url ? Util.search_tube(artist_name , song_name) : nil
-			db = DB.new
-			db.insert('song' , ['artist' , 'name' , 'url'])
-			db.set([artist_id , song_name , url])
-			db.execute_insert_id
+			DB.new(
+				:INSERT => ['song' , ['artist' , 'name' , 'url']] ,
+				:SET => [artist_id , song_name , url] ,
+			).execute_insert_id
 		end
 	end
 
@@ -98,10 +100,10 @@ class Register < Base
 		if store_id
 			store_id
 		else
-			db = DB.new
-			db.insert('store' , ['name' , 'branch'])
-			db.set([store['name'] , store['branch']])
-			db.execute_insert_id
+			DB.new(
+				:INSERT => ['store' , ['name' , 'branch']] ,
+				:SET => [store['name'] , store['branch']] ,
+			).execute_insert_id
 		end
 	end
 
@@ -116,10 +118,10 @@ class Register < Base
 		if product_id
 			product_id
 		else
-			db = DB.new
-			db.insert('product' , ['brand' , 'product'])
-			db.set([product['brand'], product['product']])
-			db.execute_insert_id
+			DB.new(
+				:INSERT => ['product' , ['brand' , 'product']] ,
+				:SET => [product['brand'], product['product']] ,
+			).execute_insert_id
 		end
 	end
 

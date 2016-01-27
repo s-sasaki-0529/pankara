@@ -66,15 +66,15 @@ class User < Base
 		store = params[:store].to_i
 		product = params[:product].to_i
 
-		db = DB.new
-		db.insert('karaoke' , ['datetime' , 'plan' , 'store' , 'product'])
-		db.set([datetime , plan , store , product])
-		karaoke_id = db.execute_insert_id
+		karaoke_id = DB.new(
+			:INSERT => ['karaoke' , ['datetime' , 'plan' , 'store' , 'product']] ,
+			:SET => [datetime , plan , store , product]
+		).execute_insert_id
 
-		db = DB.new
-		db.insert('attendance' , ['user' , 'karaoke'])
-		db.set([@params['id'] , karaoke_id])
-		db.execute_insert_id
+		DB.new(
+			:INSERT => ['attendance' , ['user' , 'karaoke']] ,
+			:SET => [@params['id'] , karaoke_id] ,
+		).execute_insert_id
 	end
 
 	# get_most_sang_song - 最も歌っている曲を取得する 
@@ -117,16 +117,17 @@ class User < Base
 	# get_max_score - 最高スコアとその曲情報を取得する 
 	#---------------------------------------------------------------------
 	def get_max_score
-		db = DB.new
-		db.select({
-			'history.song' => 'song',
-			'history.score_type' => 'score_type',
-			'MAX(history.score)' => 'score'
-		})
-		db.from('history')
-		db.join(['history', 'attendance'])
-		db.where('attendance.user = ?')
-		db.set(@params['id'])
+		db = DB.new(
+			:SELECT => {
+				'history.song' => 'song',
+				'history.score_type' => 'score_type',
+				'MAX(history.score)' => 'score'
+			} ,
+			:FROM => 'history' ,
+			:JOIN => ['history' , 'attendance'] ,
+			:WHERE => 'attendance.user = ?' ,
+			:SET => @params['id'] ,
+		)
 		@max_score_history = db.execute_row
 
 		get_song @max_score_history
@@ -146,10 +147,10 @@ class User < Base
 		db = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => name)
 		db.execute_row and return
 
-		db = DB.new
-		db.insert('user' , ['username' , 'password' , 'screenname'])
-		db.set([name , pw , screenname])
-		db.execute_insert_id
+		DB.new(
+			:INSERT => ['user' , ['username' , 'password' , 'screenname']] ,
+			:SET => [name , pw , screenname] ,
+		).execute_insert_id
 	end
 
 	private

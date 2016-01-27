@@ -86,11 +86,12 @@ class DB
 	end
 
 	# insert - INSERT文を作成する
-	# table - String
-	# column_list - String / Array[String]
+	# [String , Array[String]] / [String , String] のみサポート
 	#---------------------------------------------------------------------
-	def insert(table , column_list)
-		column_list.kind_of?(String) and column_list = [column_list]
+	def insert(params)
+		params[1].kind_of?(String) and params = [params[0] , [params[1]]]
+		table = params[0]
+		column_list = params[1]
 		columns = column_list.join(',')
 		questions = ('?' * column_list.size).split('').join(',') 
 		@insert = "INSERT INTO #{table} (#{columns}) VALUES (#{questions})"
