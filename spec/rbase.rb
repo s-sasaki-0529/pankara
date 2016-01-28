@@ -34,25 +34,25 @@ module Rbase
 		page.all(".#{classname}")
 	end
 
-	def examine_songlink(name , artist , referer = false)
+	def examine_songlink(name , artist , referer = nil)
 		link name
 		iscontain "#{name} / #{artist}"
 		referer and visit referer
 	end
 
-	def examine_artistlink(name , referer = false)
+	def examine_artistlink(name , referer = nil)
 		link name
 		iscontain [name , 'この歌手の楽曲一覧']
 		referer and visit referer
 	end
 
-	def examine_userlink(name , referer = false)
+	def examine_userlink(name , referer = nil)
 		link name
 		iscontain "#{name}さんのユーザページ"
 		referer and visit referer
 	end
 
-	def examine_karaokelink(name , referer = false)
+	def examine_karaokelink(name , referer = nil)
 		link name
 		iscontain name #あんまよくないこれ
 		referer and visit referer
