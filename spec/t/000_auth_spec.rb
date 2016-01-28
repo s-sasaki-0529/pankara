@@ -26,6 +26,8 @@ describe '認証系ページ' do
 		islack message
 	end
 	it 'ログアウト' do
+		login 'march_user'
+		islack message
 		visit '/logout'
 		iscontain message
 	end
