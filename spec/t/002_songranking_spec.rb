@@ -13,10 +13,10 @@ init = proc do
 		{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
 	)
 	register.attend_karaoke(1000 , '楽曲ランキングテスト用attend')
-	10.times {|i| register.create_history('BUMP OF CHICKEN' , 'ロストマン') }
-	5.times {|i| register.create_history('BUMP OF CHICKEN' , 'ベル')}
+	10.times {|i| register.create_history('ロストマン' , 'BUMP OF CHICKEN') }
+	5.times {|i| register.create_history('ベル' , 'BUMP OF CHICKEN')}
 	register.with_url = false
-	30.times {|i| register.create_history('サンプル歌手' , "サンプル楽曲#{i}")}
+	30.times {|i| register.create_history("サンプル楽曲#{i}" , "サンプル歌手")}
 end
 
 # 定数定義

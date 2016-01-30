@@ -15,8 +15,8 @@ init = proc do
 		{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
 	)
 	register.attend_karaoke(1200 , '歌唱履歴テスト用attend1')
-	register.create_history('BUMP OF CHICKEN' , '天体観測' , 0)
-	register.create_history('SEKAI NO OWARI' , 'RPG' , -1)
+	register.create_history('天体観測' , 'BUMP OF CHICKEN' , 0)
+	register.create_history('RPG' , 'SEKAI NO OWARI' , -1)
 
 	register.create_karaoke(
 		'2016-01-02 13:00:00' , '歌唱履歴テスト用カラオケ2' , 5 ,
@@ -24,7 +24,7 @@ init = proc do
 		{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
 	)
 	register.attend_karaoke(1500 , '歌唱履歴テスト用attend2')
-	register.create_history('島谷ひとみ' , '亜麻色の髪の乙女' , -5)
+	register.create_history('亜麻色の髪の乙女' , '島谷ひとみ' , -5)
 end
 
 # 定数定義

@@ -15,17 +15,17 @@ init = proc do
 		{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
 	)
 	register.attend_karaoke(1000 , '歌手詳細ページテスト用attend1')
-	5.times {|i| register.create_history('BUMP OF CHICKEN' , 'カルマ') }
-	4.times {|i| register.create_history('BUMP OF CHICKEN' , '銀河鉄道')}
-	3.times {|i| register.create_history('BUMP OF CHICKEN' , 'stage of the ground')}
+	5.times {|i| register.create_history('カルマ' , 'BUMP OF CHICKEN') }
+	4.times {|i| register.create_history('銀河鉄道' , 'BUMP OF CHICKEN')}
+	3.times {|i| register.create_history('stage of the ground' , 'BUMP OF CHICKEN')}
 
 	register = Register.new(User.new('tomotin'))
 	register.with_url = false
 	register.karaoke = karaoke_id
 	register.attend_karaoke(1200 , '歌手詳細ページテスト用attend2')
-	3.times {|i| register.create_history('BUMP OF CHICKEN' , 'カルマ') }
-	2.times {|i| register.create_history('BUMP OF CHICKEN' , '銀河鉄道')}
-	1.times {|i| register.create_history('BUMP OF CHICKEN' , 'stage of the ground')}
+	3.times {|i| register.create_history('カルマ' , 'BUMP OF CHICKEN') }
+	2.times {|i| register.create_history('銀河鉄道' , 'BUMP OF CHICKEN')}
+	1.times {|i| register.create_history('stage of the ground' , 'BUMP OF CHICKEN')}
 end
 
 # 定数定義

@@ -22,8 +22,8 @@ init = proc do
 	score1 = [21.6 , 47.3 , 57.1 , 68.3 , 76.2 , 80.9 , 90 , 93.8 , 98.2 , 99.9]
 	score2 = [2.4 , 38.5 , 70.2 , 79 , 82.5 , 90.4 , 94.2 , 100 , 100 , 100]
 	0.upto(9) do |i|
-		register1.create_history('BUMP OF CHICKEN' , 'ゼロ' , 0 , score_type , score1[i])
-		register2.create_history('BUMP OF CHICKEN' , 'ゼロ' , 0 , score_type , score2[i])
+		register1.create_history('ゼロ' , 'BUMP OF CHICKEN' , 0 , score_type , score1[i])
+		register2.create_history('ゼロ' , 'BUMP OF CHICKEN' , 0 , score_type , score2[i])
 	end
 end
 

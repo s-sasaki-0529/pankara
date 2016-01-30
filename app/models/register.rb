@@ -42,7 +42,7 @@ class Register < Base
 
 	# create_history - 歌唱履歴を作成する
 	#---------------------------------------------------------------------
-	def create_history(artist , song , key = 0 , score_type=nil , score=nil)
+	def create_history(song , artist ,  key = 0 , score_type=nil , score=nil)
 		@attendance or return
 		artist_id = create_artist(artist)
 		song_id = create_song(artist_id , artist , song)
