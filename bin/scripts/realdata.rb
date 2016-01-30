@@ -5,6 +5,64 @@ User.create('tomotin' , 'zenra' , 'ともちん')
 User.create('hetare' , 'zenra' , 'へたれ')
 User.create('worry' , 'zenra' , 'ウォーリー')
 
+# --2016-01-30 sa2knight / tomotin
+datetime = '2016-01-30 14:00:00'
+name ='2016年 3/24回目'
+plan = 3
+store = {'name' => '歌広場' , 'bransh' => '亀戸店'}
+product = {'brand' => 'JOYSOUND' , 'product' => 'CROSSO'}
+score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点オンライン2'}
+
+register = Register.new(User.new('sa2knight'))
+karaoke = register.create_karaoke(datetime , name , plan , store , product)
+register.attend_karaoke(860 , 'グロリアスレボリューションが楽しかった')
+
+register.create_history('アゲハチョウ' , 'ポルノグラフィティ' , 0 , score_type , 88.812)
+register.create_history('からくりピエロ' , '40mP' , 3 , score_type , 91.806)
+register.create_history('タマシイレボリューション' , 'Superfly' , -5 , score_type , 85.913)
+register.create_history('天ノ弱' , '164' , -3 , score_type , 87.061)
+register.create_history('さよならのかわりに花束を' , '花束P' , 0 , score_type , 88.637)
+register.create_history('ランプ' , 'BUMP OF CHICKEN' , 0 , score_type , 89.154)
+register.create_history('サリシノハラ' , 'みきとP' , -4 , score_type , 89.404)
+register.create_history('シュガーソングとビターステップ' , 'UNISON SQUARE GARDEN' , -3 , score_type , 88.217)
+register.create_history('裏表ラバース' , 'wawoka' , 0 , score_type , 90.796)
+register.create_history('dialogue' , 'KEI' , -3 , score_type , 90.010)
+register.create_history('オンリーロンリーグローリー' , 'BUMP OF CHICKEN' , 0 , score_type , 88.395)
+register.create_history('袖触れ合うも他生の縁' , '磯P' , -3 , score_type , 88.861)
+register.create_history('歌に形はないけれど' , 'doriko' , -3 , score_type , 89.891)
+register.create_history('吉原ラメント' , '亜紗' , -3 , score_type , 86.232)
+register.create_history('ハウトゥー世界征服' , 'kemu' , 0 , score_type , 87.998)
+register.create_history('グロリアスレボリューション' , 'BUMP OF CHICKEN' , 0 , score_type , 83.452)
+register.create_history('ハッピーシンセサイザ' , 'Easy Pop' , -3 , score_type , 86.662)
+register.create_history('嘘' , 'シド' , 0 , score_type , 90.901)
+register.create_history('Independence' , '一ノ瀬トキヤ' , 0 , score_type , 88.028)
+register.create_history('Ending' , 'BUMP OF CHICKEN' , 0 , score_type , 86.545)
+
+register = Register.new(User.new('tomotin'))
+register.karaoke = karaoke
+register.attend_karaoke(860)
+
+register.create_history('オーバーキルサイズ・ヘル' , '暁切歌' , 0 , score_type , 89.064) 
+register.create_history('BAYONET CHARGE' , '風鳴翼、雪音クリス' , 0 , score_type , 86.642) 
+register.create_history('恋だなう' , '千歳千里' , 3 , score_type , 85.796)
+register.create_history('笑顔クエスト' , '一氏ユウジ' , 3 , score_type , 88.497)
+register.create_history('たったひとつの日々' , '伊月俊' , 3 , score_type , 87.003)
+register.create_history('Hikari' , '羽多野渉' , 2 , score_type , 85.321)
+register.create_history('daze' , 'じん' , 0 , score_type , 87.608)
+register.create_history('Get Sparks' , '財前光' , 4 , score_type , 86.063)
+register.create_history('ORBITAL BEAT' , 'ツヴァイウィング' , 0 , score_type , 85.278)
+register.create_history('殲琴・ダウルダブラ' , 'キャロル・マールス・ディーンハイム' , 0 , score_type , 87.971)
+register.create_history('月の下、命は淡く雪のように(絶唱)' , '雪音クリス' , 0 , score_type , 84.701)
+register.create_history('Rebirth-day' , '高垣彩陽' , 0 , score_type , 86.798)
+register.create_history('魔弓・イチイバル' , '雪音クリス' , 0 , score_type , 86.424)
+register.create_history('もんだいガール' , 'きゃりーぱみゅぱみゅ' , 0 , score_type , 87.177)
+register.create_history('おきてがみ' , '暁切歌' , 0 , score_type , 84.363)
+register.create_history('手紙' , '暁切歌' , 0 , score_type , 88.859)
+register.create_history('繋いだ手だけが紡ぐもの' , '雪音クリス' , 0 , score_type , 88.400)
+register.create_history('TRUST HART' , '雪音クリス' , 0 , score_type , 85.617)
+register.create_history('tomorrow' , 'キャロル・マールス・ディーンハイム' , 0 , score_type , 87.292)
+register.create_history('SENSE OF DISTANCE' , '月読調' , -2 , score_type , 86.597)
+
 # ---2016-01-17 sa2knight / tomotin
 datetime = '2016-01-17 14:50:00'
 name = '2016年 2/24回目'
