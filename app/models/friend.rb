@@ -10,6 +10,20 @@ class Friend < Base
 	@@FOLLOWED = 1
 	@@NONE = 0
 
+	# add - 指定したユーザに友達申請する
+	#---------------------------------------------------------------------
+	def self.add(user_from , user_to)
+		@@list.empty? and Friend.list
+		@@list[user_from][user_to] >= 2 and return false
+
+		result = DB.new(
+			:INSERT => ['friend' , ['user_from' , 'user_to']] ,
+			:SET => [user_from , user_to]
+		).execute_insert_id
+		result and Friend.list
+		return result
+	end
+
 	# get_status 指定したユーザ間の友達関係を取得
 	# ユーザの指定がない場合全ユーザを対象にリストを戻す
 	#---------------------------------------------------------------------

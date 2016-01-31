@@ -137,6 +137,7 @@ class User < Base
 	# addfriend - 友達を追加する
 	#---------------------------------------------------------------------
 	def addfriend(as_user)
+		Friend.add(@params['id'] , as_user)
 	end
 
 	# get_friend_status - 指定したユーザとも友達関係を戻す

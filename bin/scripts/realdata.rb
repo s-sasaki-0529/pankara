@@ -4,6 +4,14 @@ User.create('sa2knight' , 'zenra' , 'ないと')
 User.create('tomotin' , 'zenra' , 'ともちん')
 User.create('hetare' , 'zenra' , 'へたれ')
 User.create('worry' , 'zenra' , 'ウォーリー')
+Friend.add(1 , 2)
+Friend.add(1 , 3)
+Friend.add(2 , 1)
+Friend.add(2 , 3)
+Friend.add(3 , 1)
+Friend.add(3 , 2)
+Friend.add(3 , 4)
+Friend.add(4 , 3)
 
 # --2016-01-30 sa2knight / tomotin
 datetime = '2016-01-30 14:00:00'
