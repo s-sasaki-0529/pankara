@@ -12,11 +12,23 @@ require_relative 'store'
 require_relative 'score_type'
 require_relative 'user'
 require_relative 'register'
+require_relative 'friend'
 require 'uri'
 require 'open-uri'
 require 'yaml'
 CONFIG = 'config.yml'
 class Util
+
+	# Const - 定数管理
+	#---------------------------------------------------------------------
+	module Const
+		class Friend
+			FRIEND = 3
+			FOLLOW = 2
+			FOLLOWED = 1
+			NONE = 0
+		end
+	end
 
 	# icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
 	#----------------------------------------------------------------------
@@ -64,6 +76,24 @@ class Util
 	#---------------------------------------------------------------------
 	def self.unset_config(key)
 		set_config(key , nil)
+	end
+
+	# make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する
+	#---------------------------------------------------------------------
+	def self.make_questions(num)
+		q = '?' * num
+		q.split('').join(',')
+	end
+
+	# array_to_hash - Array[Hash]をHash[Hash]に変換する
+	#---------------------------------------------------------------------
+	def self.array_to_hash(array , key)
+		hash = {}
+		array.each do |i|
+			hash[i[key]] = i
+			hash[i[key]].delete(key)
+		end
+		return hash
 	end
 
 	# write_log - ログを生成する
