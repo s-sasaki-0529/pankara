@@ -134,6 +134,64 @@ class User < Base
 		return @max_score_history
 	end
 
+	# addfriend - 友達を追加する
+	#---------------------------------------------------------------------
+	def addfriend(as_user)
+		Friend.add(@params['id'] , as_user)
+	end
+
+	# get_friend_status - 指定したユーザとも友達関係を戻す
+	# statusを指定した場合、そのstatusであるかを戻す
+	#---------------------------------------------------------------------
+	def get_friend_status(as_userid , as_status = nil)
+		status = Friend.get_status(@params['id'] , as_userid)
+		return as_status ? (status == as_status) : status
+	end
+
+	# friend_list - 友達関係のユーザ一覧を取得
+	# statusを指定した場合、そのstatusのユーザのみ絞り込む
+	#---------------------------------------------------------------------
+	def friend_list(status = nil)
+		friend_list = Friend.get_status(@params['id'])
+		friend_info = User.id_to_name(friend_list.keys)
+		friend_list.each do |userid , status|
+			friend_info[userid]['status'] = status
+		end
+
+		if status
+			return friend_info.select {|k ,v| v['status'] == status}
+		else
+			return friend_info
+		end
+	end
+
+	# timeline - 友達の最近のカラオケを取得する
+	#---------------------------------------------------------------------
+	def timeline(limit = 10)
+		friends = self.friend_list(Util::Const::Friend::FRIEND)
+		qlist = Util.make_questions(friends.length)
+		timeline = DB.new(
+			:SELECT => {
+				'attendance.karaoke' => 'karaoke_id' ,
+				'attendance.user' => 'user_id' ,
+				'attendance.memo' => 'memo' ,
+				'karaoke.datetime' => 'datetime' ,
+				'karaoke.name' => 'name' ,
+				'karaoke.plan' => 'plan' ,
+			} ,
+			:FROM => 'attendance' ,
+			:JOIN => ['attendance' , 'karaoke'] ,
+			:WHERE => "attendance.user in (#{qlist})" ,
+			:SET => friends.keys ,
+			:OPTION => ["ORDER BY karaoke.created_at DESC" , "LIMIT #{limit}"]
+		).execute_all
+
+		timeline.each do |row|
+			row['userinfo'] = friends[row['user_id']]
+		end
+		return timeline
+	end
+
 	# authenticate - クラスメソッド ユーザのIDとパスワードを検証する
 	#---------------------------------------------------------------------
 	def self.authenticate(name , pw)
@@ -151,6 +209,21 @@ class User < Base
 			:INSERT => ['user' , ['username' , 'password' , 'screenname']] ,
 			:SET => [name , pw , screenname] ,
 		).execute_insert_id
+	end
+
+	# id_to_name - (クラスメソッド) useridに対応するusername,screennameを戻す
+	# 複数useridについてまとめて対応するので、基本的にUser.newでなくこちらを使う
+	#---------------------------------------------------------------------
+	def self.id_to_name(users)
+		qlist = Util.make_questions(users.length)
+		name_map = {}
+		table = DB.new(
+			:SELECT => ['id' , 'username' , 'screenname'] ,
+			:FROM => 'user' ,
+			:WHERE => "id in (#{qlist})" ,
+			:SET => users
+		).execute_all
+		return Util.array_to_hash(table , 'id')
 	end
 
 	private
