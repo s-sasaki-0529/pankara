@@ -121,11 +121,12 @@ class User < Base
 			:SELECT => {
 				'history.song' => 'song',
 				'history.score_type' => 'score_type',
-				'MAX(history.score)' => 'score'
+				'history.score' => 'score'
 			} ,
 			:FROM => 'history' ,
 			:JOIN => ['history' , 'attendance'] ,
 			:WHERE => 'attendance.user = ?' ,
+			:OPTION => 'ORDER BY score DESC',
 			:SET => @params['id'] ,
 		)
 		@max_score_history = db.execute_row
