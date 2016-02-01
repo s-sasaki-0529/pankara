@@ -129,7 +129,7 @@ class User < Base
 			:SET => @params['id'] ,
 		)
 		@max_score_history = db.execute_row
-
+		@max_score_history['scoretype_name'] = ScoreType.id_to_name(@max_score_history['score_type'])
 		get_song @max_score_history
 		return @max_score_history
 	end
