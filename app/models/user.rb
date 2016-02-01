@@ -165,6 +165,33 @@ class User < Base
 		end
 	end
 
+	# timeline - 友達の最近のカラオケを取得する
+	#---------------------------------------------------------------------
+	def timeline(limit = 10)
+		friends = self.friend_list(Util::Const::Friend::FRIEND)
+		qlist = Util.make_questions(friends.length)
+		timeline = DB.new(
+			:SELECT => {
+				'attendance.karaoke' => 'karaoke_id' ,
+				'attendance.user' => 'user_id' ,
+				'attendance.memo' => 'memo' ,
+				'karaoke.datetime' => 'datetime' ,
+				'karaoke.name' => 'name' ,
+				'karaoke.plan' => 'plan' ,
+			} ,
+			:FROM => 'attendance' ,
+			:JOIN => ['attendance' , 'karaoke'] ,
+			:WHERE => "attendance.user in (#{qlist})" ,
+			:SET => friends.keys ,
+			:OPTION => ["ORDER BY karaoke.created_at DESC" , "LIMIT #{limit}"]
+		).execute_all
+
+		timeline.each do |row|
+			row['userinfo'] = friends[row['user_id']]
+		end
+		return timeline
+	end
+
 	# authenticate - クラスメソッド ユーザのIDとパスワードを検証する
 	#---------------------------------------------------------------------
 	def self.authenticate(name , pw)
