@@ -14,7 +14,6 @@ class Friend < Base
 	#---------------------------------------------------------------------
 	def self.add(user_from , user_to)
 		@@list.empty? and Friend.list
-		@@list[user_from][user_to] >= 2 and return false
 
 		result = DB.new(
 			:INSERT => ['friend' , ['user_from' , 'user_to']] ,

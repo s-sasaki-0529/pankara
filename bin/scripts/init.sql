@@ -50,7 +50,8 @@ CREATE TABLE `friend` (
   `user_from` INTEGER NOT NULL COMMENT '申請側userid',
   `user_to` INTEGER NOT NULL COMMENT '受信側userid',
   `created_at` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`) ,
+	UNIQUE (`user_from` , `user_to`)
 ) COMMENT '友達関係を管理';
 
 -- ---
