@@ -184,7 +184,7 @@ class User < Base
 			:JOIN => ['attendance' , 'karaoke'] ,
 			:WHERE => "attendance.user in (#{qlist})" ,
 			:SET => friends.keys ,
-			:OPTION => ["ORDER BY karaoke.created_at DESC" , "LIMIT #{limit}"]
+			:OPTION => ["ORDER BY karaoke.datetime DESC" , "LIMIT #{limit}"]
 		).execute_all
 
 		timeline.each do |row|

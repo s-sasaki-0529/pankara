@@ -35,6 +35,10 @@ th {
 	margin: 10px;
 }
 
+.div-timeline {
+	padding: 5px 10px 5px 10px;
+}
+
 #div_tl {
 	border: 1px solid;
 	height: 310px;
@@ -54,6 +58,4 @@ th {
 	overflow: scroll;
 }
 
-#div_timeline {
-	padding: 5px 10px 5px 10px;
-}
+
