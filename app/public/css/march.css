@@ -48,3 +48,12 @@ th {
 	margin: 0 auto;
 }
 
+#div_timelines {
+	height: 310px;
+	border: 1px solid;
+	overflow: scroll;
+}
+
+#div_timeline {
+	padding: 5px 10px 5px 10px;
+}
