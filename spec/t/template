@@ -10,7 +10,7 @@ end
 
 # テスト実行
 describe 'テスト対象機能名' do
-	before(&init)
+	before(:all , &init)
 	it 'テスト項目１' do
 	end
 	it 'テスト項目２' do
