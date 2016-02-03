@@ -17,7 +17,7 @@ Friend.add(4 , 3)
 datetime = '2016-01-30 14:00:00'
 name ='2016年 3/24回目'
 plan = 3
-store = {'name' => '歌広場' , 'bransh' => '亀戸店'}
+store = {'name' => '歌広場' , 'branch' => '亀戸店'}
 product = {'brand' => 'JOYSOUND' , 'product' => 'CROSSO'}
 score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点オンライン2'}
 
