@@ -217,6 +217,7 @@ class User < Base
 	# 複数useridについてまとめて対応するので、基本的にUser.newでなくこちらを使う
 	#---------------------------------------------------------------------
 	def self.id_to_name(users)
+		users.empty? and return []
 		qlist = Util.make_questions(users.length)
 		name_map = {}
 		table = DB.new(
