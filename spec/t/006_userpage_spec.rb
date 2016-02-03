@@ -57,7 +57,7 @@ url = '/user/unagipai'
 
 # テスト実行
 describe 'ユーザページ機能' do
-	before(&init)
+	before(:all,&init)
 	it '最近のカラオケが正常に表示されるか' do
 		# 対象テーブルがN行存在することを検証する
 		# 1つ以上の行をサンプリングして、内容を検証する

@@ -29,7 +29,7 @@ end
 
 # テスト実行
 describe '楽曲詳細ページ' do
-	before(&init)
+	before(:all,&init)
 	it '得点の集計が正常に表示されるか' do
 		login 'sa2knight'
 		visit '/history'
