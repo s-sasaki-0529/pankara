@@ -170,6 +170,7 @@ class User < Base
 	#---------------------------------------------------------------------
 	def timeline(limit = 10)
 		friends = self.friend_list(Util::Const::Friend::FRIEND)
+		friends.empty? and return []
 		qlist = Util.make_questions(friends.length)
 		timeline = DB.new(
 			:SELECT => {
