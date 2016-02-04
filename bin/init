@@ -7,11 +7,13 @@ TMPPATH="$BINDIR/scripts/tmp.sql"
 # ヘルプ
 usage() {
   echo "データベースを初期化"
-  echo "  Usage: zenra $PROGNAME [-s] [-f] [-r]"
+  echo "  Usage: zenra $PROGNAME [-s] [-f] [-r] [-b] [-d filename]"
   echo "オプション:"
   echo "  -s ランダムのサンプルデータを挿入"
   echo "  -f 固定のサンプルデータを挿入"
   echo "  -r 実データを挿入"
+  echo "  -b 最新のバックアップから復元"
+  echo "  -d 指定したバックアップファイルから復元"
   exit 1
 }
 
@@ -19,7 +21,10 @@ usage() {
 FLAG_S=0
 FLAG_F=0
 FLAG_R=0
-while getopts sfrh OPT
+FLAG_B=0
+FLAG_D=0
+VALUE_D=""
+while getopts sfrhbd: OPT
 do
   case $OPT in
   h)  usage
@@ -30,6 +35,11 @@ do
   f)  FLAG_F=1
       ;;
   r)  FLAG_R=1
+      ;;
+  b)  FLAG_B=1
+      ;;
+  d)  FLAG_D=1
+      VALUE_D=$OPTARG
       ;;
   esac
 done
@@ -47,5 +57,12 @@ elif [ "$FLAG_F" -eq 1 ]; then
   $MYSQL -e "source $TMPPATH"
 elif [ "$FLAG_R" -eq 1 ]; then
   bundle exec ruby $BINDIR/scripts/realdata.rb > $TMPPATH
+elif [ "$FLAG_B" -eq 1 ]; then
+  dump=$(ls backup -1 | sort -r | head -1)
+  filepath="backup/$dump"
+  $MYSQL < "$filepath"
+elif [ "$FLAG_D" -eq 1 ]; then
+  filepath="backup/$VALUE_D"
+  $MYSQL < "$filepath"
 fi
 rm -f $TMPPATH

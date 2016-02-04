@@ -1,0 +1,27 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "mySQLのバックアップを作成し、現在日時で保存する"
+  echo "  Usage: zenra $PROGNAME"
+  exit 1
+}
+
+# オプション解析
+while getopts h OPT
+do
+    case $OPT in
+        h)  usage
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+cd ~/March
+filename=$(date +"%Y_%m_%d_%k_%M")
+filepath="backup/$filename"
+mysqldump --single-transaction -u root --password=zenra march > "$filepath"
