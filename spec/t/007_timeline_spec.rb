@@ -41,13 +41,18 @@ describe 'タイムライン' do
 	it 'タイムラインが正しく表示されるか' do
 		login 'sa2knight'
 		visit url
-		iscontain('友達がいません')
-		#タイムラインが１０件表示される
-		#友達のカラオケ記録が表示される
-		#友達じゃないユーザのは表示されない
+		timelines = class_to_elements('div-timeline')
+		tl_text = id_to_element('div_timelines').text
+		expect(timelines.length).to eq 10
+		expect(tl_text.index('ともちん').nil?).to eq false
+		expect(tl_text.index('へたれ').nil?).to eq false
+		expect(tl_text.index('ちゃらさん').nil?).to eq true
+		expect(tl_text.index('ウォーリー').nil?).to eq true
 	end
 	it 'リンクが正常に登録されているか' do
-		#ユーザリンクが正常に登録されている
-		#カラオケリンクが正常に登録されている
+		login 'sa2knight'
+		visit url
+		examine_userlink 'ともちん' , url
+		examine_karaokelink 'タイムラインテスト用カラオケ' , url
 	end
 end

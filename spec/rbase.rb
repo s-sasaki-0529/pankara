@@ -30,6 +30,10 @@ module Rbase
 		expect(page.find("#" + id).text).to eq text
 	end
 
+	def id_to_element(id)
+		page.find("\##{id}")
+	end
+
 	def class_to_elements(classname)
 		page.all(".#{classname}")
 	end
