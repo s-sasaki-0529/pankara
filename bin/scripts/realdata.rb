@@ -13,6 +13,30 @@ Friend.add(3 , 2)
 Friend.add(3 , 4)
 Friend.add(4 , 3)
 
+# --2016-02-05 hetare
+datetime = '2016-02-05 16:42:01'
+name ='ヒトカラ専用ルーム'
+plan = 1.5
+store = {'name' => '快活CLUB' , 'branch' => '甚目寺店'}
+product = {'brand' => 'DAM' , 'product' => 'LIVE DAM'}
+register = Register.new(User.new('hetare'))
+karaoke = register.create_karaoke(datetime , name , plan , store , product)
+register.attend_karaoke(765 , 'クーラーあった')
+
+register.create_history('カノン' , '宮野真守')
+register.create_history('シュガーソングとビターステップ' , 'UNISON SQUARE GARDEN')
+register.create_history('Innocent Graffiti' , 'Fo\'xTails')
+register.create_history('青い春' , 'back number')
+register.create_history('シャイン' , '宮野真守')
+register.create_history('蒼ノ翼' , '宮野真守')
+register.create_history('ハレ晴レユカイ' , '涼宮ハルヒ、朝比奈みくる、長門有希')
+register.create_history('恋愛勇者' , 'Last Note.')
+register.create_history('Clattanoia' , 'OxT')
+register.create_history('One More Chance!!' , 'ALL OFF')
+register.create_history('KINJITO' , 'UVERworld')
+register.create_history('クオリア' , 'UVERworld')
+register.create_history('Exterminate' , '水樹奈々')
+
 # --2016-01-30 sa2knight / tomotin
 datetime = '2016-01-30 14:00:00'
 name ='2016年 3/24回目'
