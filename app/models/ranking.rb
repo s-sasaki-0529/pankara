@@ -24,4 +24,22 @@ class Ranking < Base
 			:OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC' , "LIMIT #{limit}"] ,
 		).execute_all
 	end
+
+	# artist_sang_count - クラスメソッド: 歌手の歌唱数ランキングを取得
+	#--------------------------------------------------------------------
+	def self.artist_sang_count(limit = 20)
+		DB.new(
+			:SELECT => {
+				'artist.id' => 'artist_id' ,
+				'artist.name' => 'artist_name' ,
+				'count(*)' => 'count'
+			} ,
+			:FROM => 'history' ,
+			:JOIN => [
+				['history' , 'song'] ,
+				['song' , 'artist'] ,
+			] ,
+			:OPTION => ['GROUP BY artist.id' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
+		).execute_all
+	end
 end
