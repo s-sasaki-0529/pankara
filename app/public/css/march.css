@@ -1,5 +1,6 @@
 body {
 	padding-top: 70px;
+	padding-bottom: 100px;
 }
 
 th {
@@ -39,6 +40,14 @@ th {
 	padding: 5px 10px 5px 10px;
 }
 
+#div_youtube_line {
+	background-color: #feacc1;
+	position: fixed;
+	width: 100%;
+	height: 100px;
+	bottom: 0;
+}
+
 #div_tl {
 	border: 1px solid;
 	height: 310px;
@@ -57,5 +66,3 @@ th {
 	border: 1px solid;
 	overflow: scroll;
 }
-
-
