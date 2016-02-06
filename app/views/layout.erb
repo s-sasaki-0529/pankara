@@ -3,6 +3,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css" type="text/css">
 	<link rel="stylesheet" href="/css/march.css?20160206" type="text/css">
+	<link rel="stylesheet" href="/css/plugines.css?20160207" type="text/css">
 	<title>カラオケ情報統合管理サービス(仮)</title>
 </head>
 <body>
@@ -41,10 +42,16 @@
 </div>
 <!-- 動画垂れ流しエリア -->
 <div id="div_youtube_line">
-	ここにyoutube垂れ流すビューをインクルード
+	<ul id="slider">
+		<% @song_list.each do |song| %>
+			<li><%= tube_image song['url'] , 160 , 90 %></li>
+		<% end %>
+	</ul>
 </div>
 
 </body>
-	<script src="/jquery/jquery-2.2.0.min.js"></script>
+	<script src="/script/jquery-2.2.0.min.js"></script>
+	<script src="/script/jquery.simplyscroll.min.js"></script>
+	<script src="/script/march.js"></script>
 	<script src="/bootstrap/js/bootstrap.js"></script>
 </html>

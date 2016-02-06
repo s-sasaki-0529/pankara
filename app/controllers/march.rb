@@ -33,9 +33,17 @@ class March < Sinatra::Base
 			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
 				embed = "https://www.youtube.com/embed/#{$1}"
 				return "<iframe width=\"#{w}\" height=\"#{h}\" src=\"#{embed}\"></iframe>"
-				return "https://www.youtube.com/embed/#{$1}"
 			else
 				return "<a href=\"#{url}\">動画リンク</a>"
+			end
+		end
+		def tube_image(url , w , h)
+			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
+				image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
+				imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
+				return "<a style=\"padding-right: 0\" href=\"#{url}\" target=\"_blank\">#{imgtag}</a>"
+			else
+				return false
 			end
 		end
 		def user_link(username, screenname , with_icon = true , size = 32)
@@ -78,6 +86,9 @@ class March < Sinatra::Base
 		else
 			@current_user = logined
 		end
+
+		# Youtubeを垂れ流す
+		@song_list = History.recent_song
 	end
 
 end

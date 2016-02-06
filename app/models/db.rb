@@ -11,6 +11,7 @@ class DB
 	#---------------------------------------------------------------------
 	def initialize(arg = nil)
 		@select = ''
+		@distinct = false
 		@from = ''
 		@join = ''
 		@where = ''
@@ -18,6 +19,7 @@ class DB
 		@option = ''
 		@params = []
 		if arg
+			arg[:DISTINCT] and distinct()
 			arg[:SELECT] and select(arg[:SELECT])
 			arg[:FROM] and from(arg[:FROM])
 			arg[:WHERE] and where(arg[:WHERE])
@@ -55,7 +57,13 @@ class DB
 			selects.push "#{key} AS #{val}"
 		end
 
-		@select = "SELECT #{selects.join(',')}"
+		@select = @distinct ? "SELECT DISTINCT #{selects.join(',')}" : "SELECT #{selects.join(',')}"
+	end
+
+	# distinct - 重複列排除設定
+	#---------------------------------------------------------------------
+	def distinct
+		@distinct = true
 	end
 
 	# from - FROM文を作成する
