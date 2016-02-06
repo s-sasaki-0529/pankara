@@ -104,6 +104,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 	config.before :suite do
+		ENV['DISPLAY'] = 'localhost:1.0'
 		system "Xvfb :1 -screen 0 1024x768x16 -nolisten inet6 &"
 	end
 

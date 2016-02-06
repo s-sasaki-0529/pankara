@@ -156,7 +156,7 @@ class User < Base
 		friend_list = Friend.get_status(@params['id'])
 		friend_info = User.id_to_name(friend_list.keys)
 		friend_list.each do |userid , status|
-			friend_info[userid]['status'] = status
+			friend_info[userid] and friend_info[userid]['status'] = status
 		end
 
 		if status
