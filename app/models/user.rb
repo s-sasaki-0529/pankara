@@ -126,7 +126,7 @@ class User < Base
 			:FROM => 'history' ,
 			:JOIN => ['history' , 'attendance'] ,
 			:WHERE => 'attendance.user = ?' ,
-			:OPTION => 'ORDER BY score DESC',
+			:OPTION => ['ORDER BY score DESC', 'LIMIT 1'],
 			:SET => @params['id'] ,
 		)
 		@max_score_history = db.execute_row
