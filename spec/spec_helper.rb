@@ -1,5 +1,8 @@
 require 'capybara/rspec'
 require 'simplecov'
+require 'capybara-webkit'
+require 'headless'
+require 'tilt/erb'
 SimpleCov.start do
 	add_filter "/vendor/"
 end
@@ -100,7 +103,17 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+	config.before :suite do
+		ENV['DISPLAY'] = 'localhost:1.0'
+		system "Xvfb :1 -screen 0 1024x768x16 -nolisten inet6 &"
+	end
+
+	config.after :suite do
+	  system "killall Xvfb"
+	end
+	
 	Capybara.app = IndexRoute
+	Capybara.javascript_driver = :webkit
 	config.include Capybara::DSL
 	config.order = "random"
 end

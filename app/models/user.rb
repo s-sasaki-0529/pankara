@@ -156,7 +156,7 @@ class User < Base
 		friend_list = Friend.get_status(@params['id'])
 		friend_info = User.id_to_name(friend_list.keys)
 		friend_list.each do |userid , status|
-			friend_info[userid]['status'] = status
+			friend_info[userid] and friend_info[userid]['status'] = status
 		end
 
 		if status
@@ -170,6 +170,7 @@ class User < Base
 	#---------------------------------------------------------------------
 	def timeline(limit = 10)
 		friends = self.friend_list(Util::Const::Friend::FRIEND)
+		friends.empty? and return []
 		qlist = Util.make_questions(friends.length)
 		timeline = DB.new(
 			:SELECT => {
@@ -184,7 +185,7 @@ class User < Base
 			:JOIN => ['attendance' , 'karaoke'] ,
 			:WHERE => "attendance.user in (#{qlist})" ,
 			:SET => friends.keys ,
-			:OPTION => ["ORDER BY karaoke.created_at DESC" , "LIMIT #{limit}"]
+			:OPTION => ["ORDER BY karaoke.datetime DESC" , "LIMIT #{limit}"]
 		).execute_all
 
 		timeline.each do |row|
@@ -216,6 +217,7 @@ class User < Base
 	# 複数useridについてまとめて対応するので、基本的にUser.newでなくこちらを使う
 	#---------------------------------------------------------------------
 	def self.id_to_name(users)
+		users.empty? and return []
 		qlist = Util.make_questions(users.length)
 		name_map = {}
 		table = DB.new(

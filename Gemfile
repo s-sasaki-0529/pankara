@@ -4,8 +4,8 @@ gem "pry"
 gem "ruby-mysql"
 gem "unicorn" 
 gem "watir-webdriver"
-group :test do
-        gem 'rspec'
-        gem 'capybara'
-        gem 'simplecov'
-end
+gem 'rspec'
+gem 'capybara'
+gem 'capybara-webkit'
+gem 'headless'
+gem 'simplecov'

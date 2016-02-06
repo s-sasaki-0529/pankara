@@ -24,7 +24,7 @@ url = '/ranking/song'
 
 # テスト実行
 describe '楽曲ランキング機能' do
-	before(&init)
+	before(:all,&init)
 	it 'ランキングが正常に表示される' do
 		login 'sa2knight'
 		visit url

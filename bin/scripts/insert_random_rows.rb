@@ -54,12 +54,14 @@ end
 def insert_friend(n)
 	puts "INSERT INTO friend ( user_from , user_to ) VALUES"
 	insert = []
+	inserted_hash = Hash.new(false)
 	USERS.times do |i|
 		from = i + 1
 		n.times do |s|
 			to = rand(USERS) + 1
-			next if from == to
+			next if from == to || inserted_hash["#{from}_#{to}"]
 			insert.push "(#{from} , #{to})"
+			inserted_hash["#{from}_#{to}"] = true
 		end
 	end
 	print insert.join(",\n")

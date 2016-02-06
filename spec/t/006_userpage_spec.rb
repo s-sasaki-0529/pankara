@@ -1,4 +1,5 @@
 require_relative '../rbase'
+
 include Rbase
 
 # テスト用データベース構築
@@ -57,7 +58,7 @@ url = '/user/unagipai'
 
 # テスト実行
 describe 'ユーザページ機能' do
-	before(&init)
+	before(:all,&init)
 	it '最近のカラオケが正常に表示されるか' do
 		# 対象テーブルがN行存在することを検証する
 		# 1つ以上の行をサンプリングして、内容を検証する
@@ -89,7 +90,10 @@ describe 'ユーザページ機能' do
 		iscontain 'Aqua Timez / 3回'
 		iscontain '心絵 / ロードオブメジャー / 採点方法: JOYSOUND 全国採点オンライン2'
 	end
-	it 'リンクが正常に登録されているか' do
+	it 'リンクが正常に登録されているか' , :js => true do
+		login 'unagipai'
+		visit url
+		id_to_element('recent_karaoke').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移
 		# 最近のカラオケにリンクが登録されていることを検証する
 		# 最近歌った曲の曲名にリンクが登録されていることを検証する
 		# 最近歌った曲の歌手名にリンクが登録されていること検証する

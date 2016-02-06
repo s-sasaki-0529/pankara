@@ -32,7 +32,7 @@ url = '/history'
 
 # テスト実行
 describe '歌唱履歴ページ' do
-	before(&init)
+	before(:all,&init)
 	it '歌唱履歴が正常に表示されるか' do
 		login 'sa2knight'
 		visit url

@@ -33,7 +33,7 @@ url = '/history'
 
 # テスト実行
 describe '歌手詳細ページ' do
-	before(&init)
+	before(:all,&init)
 	it '歌手の楽曲一覧が正常に表示されるか' do
 		login 'sa2knight'
 		visit url

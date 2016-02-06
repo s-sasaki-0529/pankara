@@ -12,7 +12,7 @@ message = 'ログインしてください'
 
 # テスト実行
 describe '認証系ページ' do
-	before(&init)
+	before(:all,&init)
 	it '画面表示' do
 		visit '/'
 		iscontain message

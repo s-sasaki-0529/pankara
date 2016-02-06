@@ -34,6 +34,7 @@ class Friend < Base
 	# list - (クラスメソッド) 全ての友達関係をクラス変数に展開する
 	#---------------------------------------------------------------------
 	def self.list()
+		@@list = Hash.new { |h,k| h[k] = Hash.new(0) }
 		db = DB.new(:SELECT => ['user_from' , 'user_to'] , :FROM => 'friend')
 		table = db.execute_all
 		table.each do |row|

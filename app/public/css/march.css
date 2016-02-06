@@ -35,6 +35,10 @@ th {
 	margin: 10px;
 }
 
+.div-timeline {
+	padding: 5px 10px 5px 10px;
+}
+
 #div_tl {
 	border: 1px solid;
 	height: 310px;
@@ -47,4 +51,11 @@ th {
 	height: 96px;
 	margin: 0 auto;
 }
+
+#div_timelines {
+	height: 310px;
+	border: 1px solid;
+	overflow: scroll;
+}
+
 

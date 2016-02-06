@@ -13,6 +13,7 @@ class IndexRoute < March
 	#---------------------------------------------------------------------
 	get '/' do
 		@user = @current_user
+		@timeline = @user.timeline
 		@recent_karaoke = @user.get_karaoke(1)[0]
 		erb :index
 	end

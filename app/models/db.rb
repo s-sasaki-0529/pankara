@@ -110,7 +110,7 @@ class DB
 	# String / Array[String] のみサポート
 	#---------------------------------------------------------------------
 	def set(params)
-		params.kind_of?(String) and params = [params]
+		params.kind_of?(Array) or params = [params]
 		@params = params
 	end
 
@@ -163,9 +163,14 @@ class DB
 	#---------------------------------------------------------------------
 	def execute
 		make
+		Util.write_log('sql' , "Execute SQL!!\n#{@params}")
 		st = @@db.prepare(@sql)
 		st.execute(*@params)
-		Util.write_log('sql' , "Execute SQL!!\n#{@params}")
+		done_sql = @sql
+		@params.each do |param|
+			done_sql.sub!('?' , param.to_s)
+		end
+		Util.write_log('sql' , "Done SQL!!\n#{done_sql}")
 		return st
 	end
 

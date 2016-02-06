@@ -35,7 +35,7 @@ url = '/karaoke/detail/1'
 
 # テスト実行
 describe 'カラオケ詳細ページ' do
-	before(&init)
+	before(:all,&init)
 	it 'カラオケ概要が正常に表示されるか' do
 		login 'sa2knight'
 		visit url

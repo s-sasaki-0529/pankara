@@ -38,10 +38,10 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def user_link(username, screenname , with_icon = true)
+		def user_link(username, screenname , with_icon = true , size = 32)
 			link = "/user/#{username}"
 			if with_icon
-				img_tag = user_icon(username , '32px' , '32px')
+				img_tag = user_icon(username , "#{size}px" , "#{size}px")
 				return "#{img_tag} <a href='#{link}'>#{screenname}</a>"
 			else
 				return "<a href='#{link}'>#{screenname}</a>"
