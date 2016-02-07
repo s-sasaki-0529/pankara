@@ -8,7 +8,7 @@ class User < Base
 	#---------------------------------------------------------------------
 	def initialize(username)
 		@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
-		@params['temp_histories'] = []
+		@params and @params['temp_histories'] = []
 	end
 
 	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
