@@ -1,5 +1,5 @@
 /*起動時に自動実行*/
-(function($){
+function init_ui() {
 		/*youtube垂れ流し開始*/
 		$('#slider').simplyScroll({
 			autoMode: 'loop',
@@ -26,4 +26,8 @@
 				},
 			});
 		});
+}
+
+(function($){
+	init_ui();
 })(jQuery);

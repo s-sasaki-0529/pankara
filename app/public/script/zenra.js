@@ -2,13 +2,6 @@
 zenra = {};
 
 /*
-helloWorld - サンプルメソッド
-*/
-zenra.helloWorld = function(name) {
-	alert('Hello ,' + name);
-};
-
-/*
 showDialog - ダイアログを表示する
 */
 zenra.showDialog = function(id) {
@@ -19,11 +12,7 @@ zenra.showDialog = function(id) {
 			height: "auto" ,
 			width: 480 ,
 		});
+		init_ui();
 	});
 };
 
-/*
-ajaxShowDialog - ダイアログを表示する(ajax版)
-*/
-zenra.ajaxShowDialog = function(id) {
-};
