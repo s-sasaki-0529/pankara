@@ -229,6 +229,35 @@ class User < Base
 		return Util.array_to_hash(table , 'id')
 	end
 
+	
+	@@histories = []
+	# store_history - 入力された歌唱履歴をクラス変数に貯める
+	#---------------------------------------------------------------------
+	def store_history(history)
+		@@histories.push history
+	end
+
+	# registrate_history - 入力された歌唱履歴をすべてDBに登録する
+	#---------------------------------------------------------------------
+	def registrate_history
+		register = Register.new(self)
+		register.with_url = false
+		karaoke_id = register.create_karaoke(
+			'2016-01-05 12:00:00' , '歌唱履歴入力テスト用カラオケ' , 5 ,
+			{'name' => 'カラオケ館' , 'branch' => '亀戸店'} ,
+			{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
+		)
+		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
+		score_type = {'brand' => 'JOYSOUND' , 'name' => '分析採点2'}
+	
+		@@histories.each do |history|
+			register.create_history(history[:song] ,  history[:artist] , history[:key] , score_type , history[:score])
+		end
+
+		@@histories = []
+		karaoke_id
+	end
+
 	private
 	# get_song - history['song']を元に曲情報を取得する
 	#---------------------------------------------------------------------
