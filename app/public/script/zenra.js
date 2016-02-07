@@ -14,11 +14,6 @@ showDialog - ダイアログを表示する
 zenra.showDialog = function() {
 	$( "#dialog" ).dialog({
 		modal: true,
-		buttons: {
-			"OK": function(){
-				$(this).dialog('close');
-			}
-		} ,
 		height: "auto",
 		width: 480,
 	});
