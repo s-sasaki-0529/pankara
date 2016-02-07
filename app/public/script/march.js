@@ -9,6 +9,17 @@
 			pauseOnHover:	false,
 			pauseOnTouch: false
 		});
+
+		$(function() {
+			$( "#dialog" ).dialog({
+				modal: true,
+				buttons: {
+					"OK": function(){
+						$(this).dialog('close');
+					}
+				}
+			});
+		});
 })(jQuery);
 
 zenra = {};
