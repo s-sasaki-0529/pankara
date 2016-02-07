@@ -8,6 +8,7 @@ class User < Base
 	#---------------------------------------------------------------------
 	def initialize(username)
 		@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
+		@params['temp_histories'] = []
 	end
 
 	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
@@ -229,12 +230,10 @@ class User < Base
 		return Util.array_to_hash(table , 'id')
 	end
 
-	
-	@@histories = []
 	# store_history - 入力された歌唱履歴をクラス変数に貯める
 	#---------------------------------------------------------------------
 	def store_history(history)
-		@@histories.push history
+		@params['temp_histories'].push history
 	end
 
 	# registrate_history - 入力された歌唱履歴をすべてDBに登録する
@@ -250,11 +249,11 @@ class User < Base
 		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
 		score_type = {'brand' => 'JOYSOUND' , 'name' => '分析採点2'}
 	
-		@@histories.each do |history|
+		@params['temp_histories'].each do |history|
 			register.create_history(history[:song] ,  history[:artist] , history[:key] , score_type , history[:score])
 		end
 
-		@@histories = []
+		@params['temp_histories'] = []
 		karaoke_id
 	end
 
