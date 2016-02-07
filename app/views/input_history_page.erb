@@ -1,7 +1,15 @@
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/start/jquery-ui.css" rel="stylesheet">
-<script type="text/javascript">
-</script>
-
 <div id="dialog" title="歌唱履歴の入力">
 	<p>「カラオケ」に登録</p>
+	<form action="action" method="post">
+		<p>曲名:<input type="text" name="song" value="" size="30"/></p>
+		<p>歌手:<input type="text" name="artist" value="" size="30"/></p>
+		<p>採点:<input type="text" name="score" value="" size="10"/></p>
+		<input type="submit" name="next" value="次を入力" />
+		<input type="submit" name="regist" value="すべて登録" />
+		<input type="submit" name="cancel" value="キャンセル" />
+	</form>
 </div>
+
+<script>
+	zenra.showDialog();
+</script>
