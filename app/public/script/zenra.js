@@ -11,18 +11,7 @@ zenra.helloWorld = function(name) {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function() {
-	$( "#dialog" ).dialog({
-		modal: true,
-		height: "auto",
-		width: 480,
-	});
-};
-
-/*
-ajaxShowDialog - ダイアログを表示する(ajax版)
-*/
-zenra.ajaxShowDialog = function(id) {
+zenra.showDialog = function(id) {
 	var div = $('<div>').attr('id' , 'dialog');
 	div.load("/_local/dialog" + " #" + id , function(date , status) {
 		div.dialog({
@@ -31,4 +20,10 @@ zenra.ajaxShowDialog = function(id) {
 			width: 480 ,
 		});
 	});
+};
+
+/*
+ajaxShowDialog - ダイアログを表示する(ajax版)
+*/
+zenra.ajaxShowDialog = function(id) {
 };

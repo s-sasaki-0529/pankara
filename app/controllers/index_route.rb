@@ -21,7 +21,7 @@ class IndexRoute < March
 	# get '/_local/dialog'
 	#---------------------------------------------------------------------
 	get '/_local/dialog' do
-		erb :_dialog
+		erb :_input_history
 	end
 
 	use AuthenticationRoute

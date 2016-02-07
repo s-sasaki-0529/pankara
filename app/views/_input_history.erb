@@ -1,23 +1,21 @@
-<div id="dialog" title="歌唱履歴の入力">
-	<form action="/history/input" method="post">
-		<p>「カラオケ」に登録</p>
-		<p>曲名:　　　<input type="text" name="song" value="" size="30"/></p>
-		<p>歌手:　　　<input type="text" name="artist" value="" size="30"/></p>
-		<div id="slidervalue" name="key"></div>
-		<div id="seekbar" ></div>
-		<% score_type = {'1' => '全国採点オンライン', '2' => '分析採点2' } %>
-		<p>採点方法:<SELECT name="socre_type">
-			<% score_type.each_pair do |key, value| %>
-				<OPTION value="<%= key %>"><%= value %></OPTION>
-			<% end %>
-		</SELECT></p>
-		<p>採点:　　　<input type="text" name="score" value="" size="10"/></p>
-		<input type="submit" name="next" value="次を入力" />
-		<input type="submit" name="regist" value="すべて登録" />
-		<input type="submit" name="cancel" value="キャンセル" />
-	</form>
+<div style="display: none">
+	<div id="input_history" title="歌唱履歴の入力">
+		<form action="/history/input" method="post">
+			<p>「カラオケ」に登録</p>
+			<p>曲名:　　　<input type="text" name="song" value="" size="30"/></p>
+			<p>歌手:　　　<input type="text" name="artist" value="" size="30"/></p>
+			<div id="slidervalue" name="key"></div>
+			<div id="seekbar" ></div>
+			<% score_type = {'1' => '全国採点オンライン', '2' => '分析採点2' } %>
+			<p>採点方法:<SELECT name="socre_type">
+				<% score_type.each_pair do |key, value| %>
+					<OPTION value="<%= key %>"><%= value %></OPTION>
+				<% end %>
+			</SELECT></p>
+			<p>採点:　　　<input type="text" name="score" value="" size="10"/></p>
+			<input type="submit" name="next" value="次を入力" />
+			<input type="submit" name="regist" value="すべて登録" />
+			<input type="submit" name="cancel" value="キャンセル" />
+		</form>
+	</div>
 </div>
-
-<script>
-	zenra.showDialog();
-</script>
