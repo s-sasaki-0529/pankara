@@ -24,6 +24,7 @@ class HistoryRoute < March
 		history = {}
 		history[:song] = @params[:song]
 		history[:artist] = @params[:artist]
+		history[:key] = @params[:key]
 		history[:score] = @params[:score]
 		
 		@current_user.store_history history
