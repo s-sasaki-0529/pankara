@@ -18,6 +18,12 @@ class IndexRoute < March
 		erb :index
 	end
 
+	# get '/_local/dialog'
+	#---------------------------------------------------------------------
+	get '/_local/dialog' do
+		erb :_dialog
+	end
+
 	use AuthenticationRoute
 	use KaraokeRoute
 	use HistoryRoute

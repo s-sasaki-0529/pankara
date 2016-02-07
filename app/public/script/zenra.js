@@ -18,3 +18,17 @@ zenra.showDialog = function() {
 		width: 480,
 	});
 };
+
+/*
+ajaxShowDialog - ダイアログを表示する(ajax版)
+*/
+zenra.ajaxShowDialog = function(id) {
+	var div = $('<div>').attr('id' , 'dialog');
+	div.load("/_local/dialog" + " #" + id , function(date , status) {
+		div.dialog({
+			modal: true ,
+			height: "auto" ,
+			width: 480 ,
+		});
+	});
+};
