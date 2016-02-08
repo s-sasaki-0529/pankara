@@ -2,6 +2,22 @@
 zenra = {};
 
 /*
+resetHistory - 歌唱履歴入力欄をリセットする
+*/
+zenra.resetHistory = function() {
+	$('#song').val("");
+	$('#artist').val("");
+	$('#score').val("");
+};
+
+/*
+postHistory - 歌唱履歴情報を送信（現在は画面のリセットのみ）
+*/
+zenra.postHistory = function() {
+	zenra.resetHistory();
+};
+
+/*
 showDialog - ダイアログを表示する
 */
 zenra.showDialog = function(id) {
@@ -15,4 +31,3 @@ zenra.showDialog = function(id) {
 		init_ui();
 	});
 };
-
