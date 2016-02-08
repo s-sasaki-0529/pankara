@@ -5,16 +5,32 @@ zenra = {};
 resetHistory - 歌唱履歴入力欄をリセットする
 */
 zenra.resetHistory = function() {
-	$('#song').val("");
-	$('#artist').val("");
-	$('#score').val("");
+	$('#song').val('');
+	$('#artist').val('');
+	$('#score').val('');
 };
 
 /*
-postHistory - 歌唱履歴情報を送信（現在は画面のリセットのみ）
+postHistory - 歌唱履歴情報を送信
 */
-zenra.postHistory = function() {
+zenra.postHistory = function(button) {
+	$.ajax({
+		type: "POST",
+		url: '/history/input',
+		async: false,
+		data: {
+			song: $('#song').val(),
+			artist: $('#artist').val(),
+			score: $('#score').val(),
+			key: $('#seekbar').slider('value'),
+		},
+	});
+
 	zenra.resetHistory();
+
+	if (button == 'regist') {
+		location.href = '/history/regist';
+	}
 };
 
 /*
