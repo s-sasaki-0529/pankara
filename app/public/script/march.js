@@ -4,7 +4,7 @@ function init_ui() {
 		$('#slider').simplyScroll({
 			autoMode: 'loop',
 			speed: 1,
-			frameRate: 24,
+			frameRate: 30,
 			horizontal: true,
 			pauseOnHover:	false,
 			pauseOnTouch: false
