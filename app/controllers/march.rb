@@ -29,22 +29,30 @@ class March < Sinatra::Base
 			end
 			content
 		end
-		def tube(url , w , h)
-			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
+		def movie_player(url , w , h)
+			if url =~ %r|www.youtube.com/watch\?v=(.+)$|
 				embed = "https://www.youtube.com/embed/#{$1}"
 				return "<iframe width=\"#{w}\" height=\"#{h}\" src=\"#{embed}\"></iframe>"
+			elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
+				embed = "http://ext.nicovideo.jp/thumb/sm#{$1}"
+				iframe = "<iframe width='312' height='176' src='#{embed}' scrolling='no' style='border:solid 1px #CCC;' frameborder='0'>"
+				iframe += "<a href='#{url}'></a></iframe>"
+				return iframe
 			else
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def tube_image(url , w , h)
+		def movie_image(url , w , h)
 			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
 				image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
-				imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
-				return "<a style=\"padding-right: 0\" href=\"#{url}\" target=\"_blank\">#{imgtag}</a>"
+			elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
+				image_url = "http://tn-skr3.smilevideo.jp/smile?i=#{$1}"
+				$1.to_i > 1000000 and image_url += ".L"
 			else
-				return false
+				return 'no image'
 			end
+			imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
+			return "<a style=\"padding-right: 0\" href=\"#{url}\" target=\"_blank\">#{imgtag}</a>"
 		end
 		def user_link(username, screenname , with_icon = true , size = 32)
 			link = "/user/#{username}"
