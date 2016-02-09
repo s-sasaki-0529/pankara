@@ -33,7 +33,15 @@ class KaraokeRoute < March
 	# post '/karaoke/input' - カラオケ記録を受け取り保持する
 	#---------------------------------------------------------------------
 	post '/karaoke/input' do
-		p params
+		p product = Product.new(params[:product].to_i)
+		karaoke = {}
+		karaoke['name'] = params[:name]
+		karaoke['datetime'] = params[:datetime]
+		karaoke['plan'] = params[:plan]
+		karaoke['store'] = params[:store]
+		karaoke['branch'] = params[:branch]
+		karaoke['product'] = params[:product]
+		@current_user.set_karaoke karaoke
 	end
 
 end
