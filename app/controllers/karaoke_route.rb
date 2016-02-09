@@ -30,4 +30,10 @@ class KaraokeRoute < March
 		redirect '/karaoke'
 	end
 
+	# post '/karaoke/input' - カラオケ記録を受け取り保持する
+	#---------------------------------------------------------------------
+	post '/karaoke/input' do
+		p params
+	end
+
 end

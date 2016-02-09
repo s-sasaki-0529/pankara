@@ -11,7 +11,7 @@ zenra.resetHistory = function() {
 };
 
 /*
-postHistory - 歌唱履歴情報を送信
+postHistory - 歌唱履歴情報を送信する
 */
 zenra.postHistory = function(button) {
 	$.ajax({
@@ -35,16 +35,48 @@ zenra.postHistory = function(button) {
 };
 
 /*
+postHistory - カラオケ情報を送信する
+*/
+zenra.postKaraoke = function() {
+	$.ajax({
+		type: "POST",
+		url: '/karaoke/input',
+		async: false,
+		data: {
+			name: $('#name').val(),
+			datetime: $('#datetime').val(),
+			plan: $('#plan').val(),
+			store: $('#store').val(),
+			branch: $('#branch').val(),
+			product: $('#product').val(),
+		},
+	});
+	
+	zenra.transitionInDialog(zenra.showDialog, 'input_history', 480);
+};
+
+/*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(id) {
+zenra.showDialog = function(id, width) {
 	var div = $('<div>').attr('id' , 'dialog');
 	div.load("/_local/dialog" + " #" + id , function(date , status) {
 		div.dialog({
 			modal: true ,
 			height: "auto" ,
-			width: 480 ,
+			width: width,
 		});
 		init_ui();
 	});
+};
+
+/*
+transitionInDialog - ダイアログ内の画面を遷移する
+*/
+zenra.transitionInDialog = function(func, id, width) {
+	var div = $('#dialog');
+	div.dialog('close');
+
+	div.remove();
+	func(id, width);
 };
