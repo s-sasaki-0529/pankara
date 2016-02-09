@@ -21,6 +21,7 @@ class IndexRoute < March
 	# get '/_local/dialog'
 	#---------------------------------------------------------------------
 	get '/_local/dialog' do
+		@score_type = ScoreType.List
 		erb :_input_history
 	end
 

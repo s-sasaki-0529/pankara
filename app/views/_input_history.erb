@@ -6,10 +6,9 @@
 			<p>歌手:　　　<input id="artist" type="text" name="artist" value="" size="30"/></p>
 			<div id="slidervalue" name="key"></div>
 			<div id="seekbar" name="seekbar"></div>
-			<% score_type = {'1' => '全国採点オンライン', '2' => '分析採点2' } %>
 			<p>採点方法:<SELECT id="score_type" name="socre_type">
-				<% score_type.each_pair do |key, value| %>
-					<OPTION value="<%= key %>"><%= value %></OPTION>
+				<% @score_type.each do |value| %>
+					<OPTION value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></OPTION>
 				<% end %>
 			</SELECT></p>
 			<p>採点:　　　<input id="score" type="text" name="score" value="" size="10"/></p>
