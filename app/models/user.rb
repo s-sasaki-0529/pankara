@@ -248,10 +248,10 @@ class User < Base
 			{'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
 		)
 		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
-		score_type = {'brand' => 'JOYSOUND' , 'name' => '分析採点2'}
 	
 		@params['temp_histories'].each do |history|
-			register.create_history(history[:song] ,  history[:artist] , history[:key] , score_type , history[:score])
+			score_type = ScoreType.id_to_name(history['score_type'].to_i, true)
+			register.create_history(history['song'],  history['artist'], history['songkey'], score_type ,history['score'])
 		end
 
 		@params['temp_histories'] = []

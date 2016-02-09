@@ -22,7 +22,8 @@ zenra.postHistory = function(button) {
 			song: $('#song').val(),
 			artist: $('#artist').val(),
 			score: $('#score').val(),
-			key: $('#seekbar').slider('value'),
+			songkey: $('#seekbar').slider('value'),
+			score_type: $('#score_type').val(),
 		},
 	});
 

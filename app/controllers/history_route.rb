@@ -29,12 +29,12 @@ class HistoryRoute < March
 	#---------------------------------------------------------------------
 	post '/history/input' do
 		history = {}
-		history[:song] = params[:song]
-		history[:artist] = params[:artist]
-		history[:score] = params[:score]
-		history[:key] = params[:key]
+		history['song'] = params[:song]
+		history['artist'] = params[:artist]
+		history['score'] = params[:score]
+		history['songkey'] = params[:songkey]
+		history['score_type'] = params[:score_type]
 
-		p params
 		@current_user.store_history history
 	end
 

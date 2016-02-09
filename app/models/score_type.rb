@@ -29,7 +29,7 @@ class ScoreType < Base
 	def self.id_to_name(id , wanthash = false)
 		@@list.empty? and self.List
 		if wanthash
-			@@list[id] ? @@list[id] : {'branch' => '' , 'name' => ''}
+			@@list[id] ? @@list[id] : {'brand' => '' , 'name' => ''}
 		else
 			@@list[id] ? @@list[id]['name'] : ""
 		end
