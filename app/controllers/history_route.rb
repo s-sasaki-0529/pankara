@@ -5,6 +5,7 @@ class HistoryRoute < March
 	# get '/history - ログイン中のユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
 	get '/history' do
+		@user = @current_user
 		@histories = @current_user.histories
 		erb :history
 	end
