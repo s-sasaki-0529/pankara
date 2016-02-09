@@ -26,21 +26,21 @@
 <h4>この曲のみんなの歌唱履歴</h4>
 <table id="songdetail_allhistory_table" class="table table-striped">
 	<thead>
-		<th class='cell-datetime'>日付</th>
-		<th>内容</th>
-		<th>ユーザ</th>
-		<th class='cell-number'>キー</th>
-		<th>採点モード</th>
-		<th class='cell-number'>得点</th>
+		<th class='center cell-datetime'>日付</th>
+		<th class='center'>内容</th>
+		<th class='center'>ユーザ</th>
+		<th class='center cell-number'>キー</th>
+		<th class='center'>採点モード</th>
+		<th class='center cell-number'>得点</th>
 	</thead>
 	<tbody>
 		<% @history.each do |sang| %>
 		<tr>
-			<td><%= sang['datetime'] %></td>
-			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-			<td><%= user_link sang['username'] , sang['user_screenname'] %></td>
+			<td class='center'><%= sang['datetime'] %></td>
+			<td class='center'><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
+			<td class='center'><%= user_link sang['username'] , sang['user_screenname'] %></td>
 			<td class='center'><%= sang['songkey'] %></td>
-			<td><%= sang['scoretype_name'] %></td>
+			<td class='center'><%= sang['scoretype_name'] %></td>
 			<td class='center'><%= h sang['score'] %></td>
 		</tr>
 		<% end %>
@@ -51,20 +51,20 @@
 <table id="songdetail_myhistory-table" class="table table-striped">
 	<thead>
 		<th class='cell-datetime'>日付</th>
-		<th>内容</th>
-		<th>ユーザ</th>
+		<th class='center'>内容</th>
+		<th class='center'>ユーザ</th>
 		<th class='cell-number'>キー</th>
-		<th>採点モード</th>
+		<th class='center'>採点モード</th>
 		<th class='cell-number'>得点</th>
 	</thead>
 	<tbody>
 		<% @my_history.each do |sang| %>
 		<tr>
-			<td><%= sang['datetime'] %></td>
-			<td><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-			<td><%= user_link sang['username'] , sang['user_screenname'] %></td>
+			<td class='center'><%= sang['datetime'] %></td>
+			<td class='center'><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
+			<td class='center'><%= user_link sang['username'] , sang['user_screenname'] %></td>
 			<td class='center'><%= sang['songkey'] %></td>
-			<td><%= sang['scoretype_name'] %></td>
+			<td class='center'><%= sang['scoretype_name'] %></td>
 			<td class='center'><%= h sang['score'] %></td>
 		</tr>
 		<% end %>

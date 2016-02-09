@@ -29,9 +29,8 @@ describe '楽曲ランキング機能' do
 		login 'sa2knight'
 		visit url
 		tables = table_to_hash('songranking_table')
-		iframes = youtube_links
+		expect(tables.select {|t| t['動画'] == '未登録'}.length).to eq 18
 		expect(tables.length).to eq 20
-		expect(iframes.length).to eq 2
 		expect(tables[0]['tostring']).to eq '1,,ロストマン,BUMP OF CHICKEN,10'
 		expect(tables[1]['tostring']).to eq '2,,ベル,BUMP OF CHICKEN,5'
 		expect(tables[2]['tostring']).to eq '3,未登録,サンプル楽曲0,サンプル歌手,1'

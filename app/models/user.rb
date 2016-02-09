@@ -16,6 +16,7 @@ class User < Base
 	def histories(limit = 0)
 		db = DB.new(
 			:SELECT => {
+				'karaoke.id' => 'karaoke_id' ,
 				'karaoke.name' => 'karaoke_name' ,
 				'karaoke.datetime' => 'datetime' ,
 				'history.song' => 'song' ,

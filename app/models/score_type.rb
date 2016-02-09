@@ -19,7 +19,6 @@ class ScoreType < Base
 			@@list[score_type['id']] = {
 				'brand' => score_type['brand'] ,
 				'name' => score_type['name'] ,
-				'tostring' => "#{score_type['brand']} #{score_type['name']}"
 			}
 		end
 	end
@@ -27,8 +26,12 @@ class ScoreType < Base
 	#---------------------------------------------------------------------
 	# id_to_name - 指定したIDに対応する採点モード名を戻す
 	#---------------------------------------------------------------------
-	def self.id_to_name(id)
+	def self.id_to_name(id , wanthash = false)
 		@@list.empty? and self.List
-		@@list[id] ? @@list[id]['tostring'] : nil
+		if wanthash
+			@@list[id] ? @@list[id] : {'branch' => '' , 'name' => ''}
+		else
+			@@list[id] ? @@list[id]['name'] : ""
+		end
 	end
 end

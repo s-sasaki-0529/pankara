@@ -6,15 +6,23 @@
 <table id="artistdetail_table" class="table table-striped">
 	<thead>
 		<tr>
-			<th>曲名</th>
-			<th>あなたが歌った回数</th>
-			<th>みんなが歌った回数</th>
+			<th class='center' width='160'>動画</th>
+			<th class='center'>曲名</th>
+			<th class='center'>あなたが歌った回数</th>
+			<th class='center'>みんなが歌った回数</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% @artist['songs'].each do |song| %>
 		<tr>
-			<td><%= song_link song['id'], song['name'] %></td>
+			<td class='center' width='160'>
+				<% if song['url'] %>
+					<%= movie_image song['url'] , 160 , 90 %>
+				<% else %>
+					未登録
+				<% end %>
+			</td>
+			<td class='center'><%= song_link song['id'], song['name'] %></td>
 			<td class='center'><%= song['my_sangcount'] %></td>
 			<td class='center'><%= song['sangcount'] %></td>
 		</tr>

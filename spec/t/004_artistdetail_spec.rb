@@ -40,9 +40,9 @@ describe '歌手詳細ページ' do
 		examine_artistlink 'BUMP OF CHICKEN'
 		tables = table_to_hash('artistdetail_table')
 		expect(tables.length).to eq 3
-		expect(tables[0]['tostring']).to eq 'カルマ,5,8'
-		expect(tables[1]['tostring']).to eq '銀河鉄道,4,6'
-		expect(tables[2]['tostring']).to eq 'stage of the ground,3,4'
+		expect(tables[0]['tostring']).to eq '未登録,カルマ,5,8'
+		expect(tables[1]['tostring']).to eq '未登録,銀河鉄道,4,6'
+		expect(tables[2]['tostring']).to eq '未登録,stage of the ground,3,4'
 	end
 	it 'リンクが正常に登録されているか' do
 		songs = ['カルマ' , '銀河鉄道' , 'stage of the ground']

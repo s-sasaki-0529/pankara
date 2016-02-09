@@ -2,20 +2,20 @@
 <table id="karaoke_detail_description" border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
-			<th class='cell-datetime'>日時</th>
-			<th class='cell-number'>時間</th>
-			<th>お店</th>
-			<th>機種</th>
-			<th>メンバー</th>
+			<th class='center cell-datetime'>日時</th>
+			<th class='center cell-number'>時間</th>
+			<th class='center'>お店</th>
+			<th class='center'>機種</th>
+			<th class='center'>メンバー</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td><%= @karaoke['datetime'] %></td>
+			<td class='center'><%= @karaoke['datetime'] %></td>
 			<td class='center'><%= @karaoke['plan'] %></td>
-			<td><%= @karaoke['store_name'] %></td>
-			<td><%= @karaoke['product_name'] %></td>
-			<td>
+			<td class='center'><%= @karaoke['store_name'] %></td>
+			<td class='center'><%= @karaoke['product_name'] %></td>
+			<td class='center'>
 				<% @karaoke['members'].each do |member| %>
 					<span style="margin-left: 6px">
 						<%= user_link member['username'], member['screenname'] %>
@@ -30,22 +30,30 @@
 <table id="karaoke_detail_history" border="1" class="table table-hover linkcursor">
 	<thead>
 		<tr>
-			<th>ユーザー</th>
-			<th>曲名</th>
-			<th>歌手名</th>
-			<th class='cell-number'>キー</th>
-			<th>採点モード</th>
+			<th class='center' width='140'>ユーザー</th>
+			<th class='center' width='160'>動画</th>
+			<th class='center' width='20%'>曲名</th>
+			<th class='center' width='20%'>歌手名</th>
+			<th class='center cell-number'>キー</th>
+			<th class='center' width='190'>採点モード</th>
 			<th class='cell-number'>採点</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% @karaoke.histories.each do |history| %>
 		<tr>
-			<td><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
-			<td><%= song_link history['song_id'], history['song_name'] %></td>
-			<td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+			<td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
+			<td class='center' width='160'>
+				<% if history['song_url'] %>
+					<%= movie_image history['song_url'] , 160 , 90 %>
+				<% else %>
+					未登録
+				<% end %>
+			</td>
+			<td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
+			<td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
 			<td class='center'><%= history['songkey'] %></td>
-			<td><%= history['scoretype_name'] %></td>
+			<td class='center' width='190'><%= history['scoretype_name'] %></td>
 			<td class='center'><%= h history['score'] %></td>
 		</tr>
 		<% end %>
