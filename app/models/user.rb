@@ -237,6 +237,8 @@ class User < Base
 		@params['temp_histories'].push history
 	end
 
+	# set_karaoke - 登録するカラオケ情報を設定する
+	#---------------------------------------------------------------------
 	def set_karaoke(karaoke)
 		@karaoke = karaoke
 	end
@@ -245,11 +247,11 @@ class User < Base
 	#---------------------------------------------------------------------
 	def registrate_history
 		register = Register.new(self)
-		register.with_url = false
+		register.with_url = true
 		karaoke_id = register.create_karaoke(
 			@karaoke['datetime'], @karaoke['name'], @karaoke['plan'].to_f,
 			{'name' => @karaoke['store'], 'branch' => @karaoke['branch']},
-			{'brand' => 'JOYSOUND' , 'product' => 'MAX'},
+			Product.id_to_product(@karaoke['product'])
 		)
 		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
 	
