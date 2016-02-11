@@ -22,48 +22,41 @@
 		<p>カラオケの新規作成</p>
 		<p>カラオケ名: <input id="name" type="text" value="" size="40"/></p>
 		<p>日時:       <input id="datetime" type="datetime" value="" size="40" required/></p>
-		<p>時間</p>
-		<p>
-			<select id="plan" name="plan">
-				<option value="0.5">00時間30分</option>
-				<option value="1">01時間00分</option>
-				<option value="1.5">01時間30分</option>
-				<option value="2">02時間00分</option>
-				<option value="2.5">02時間30分</option>
-				<option value="3">03時間00分</option>
-				<option value="3.5">03時間30分</option>
-				<option value="4">04時間00分</option>
-				<option value="4.5">04時間30分</option>
-				<option value="5">05時間00分</option>
-				<option value="5.5">05時間30分</option>
-				<option value="6">06時間00分</option>
-				<option value="6.5">06時間30分</option>
-				<option value="7">07時間00分</option>
-				<option value="7.5">07時間30分</option>
-				<option value="8">08時間00分</option>
-				<option value="8.5">08時間30分</option>	
-				<option value="9">09時間00分</option>
-				<option value="9.5">09時間30分</option>
-				<option value="10">10時間00分</option>
-				<option value="10.5">10時間30分</option>
-				<option value="11">11時間00分</option>
-				<option value="11.5">11時間30分</option>
-				<option value="12">12時間00分</option>
-			</select>
-		</p>
+		<p>時間:       <select id="plan" name="plan">
+			<option value="0.5">00時間30分</option>
+			<option value="1">01時間00分</option>
+			<option value="1.5">01時間30分</option>
+			<option value="2">02時間00分</option>
+			<option value="2.5">02時間30分</option>
+			<option value="3">03時間00分</option>
+			<option value="3.5">03時間30分</option>
+			<option value="4">04時間00分</option>
+			<option value="4.5">04時間30分</option>
+			<option value="5">05時間00分</option>
+			<option value="5.5">05時間30分</option>
+			<option value="6">06時間00分</option>
+			<option value="6.5">06時間30分</option>
+			<option value="7">07時間00分</option>
+			<option value="7.5">07時間30分</option>
+			<option value="8">08時間00分</option>
+			<option value="8.5">08時間30分</option>	
+			<option value="9">09時間00分</option>
+			<option value="9.5">09時間30分</option>
+			<option value="10">10時間00分</option>
+			<option value="10.5">10時間30分</option>
+			<option value="11">11時間00分</option>
+			<option value="11.5">11時間30分</option>
+			<option value="12">12時間00分</option>
+		</select></p>
 		<p>店:         <input id="store" type="text" value="" size="40"/></p>
 		<p>店舗:       <input id="branch" type="text" value="" size="40"/></p>
-		<p>機種</p>
-		<p>
-			<select id="product"name="product">
-				<option value="1">JOYSOUND WAVE</option>
-				<option value="2">JOYSOUND CROSSO</option>
-				<option value="3">JOYSOUND f1</option>
-				<option value="4">JOYSOUND MAX</option>
-				<option value="5">Premier DAM</option>
-				<option value="6">LIVE DAM</option>
-			</select>
-		</p>
+		<p>機種:       <select id="product"name="product">
+			<% @products.each do |id, product| %>
+				<option value="<%= id %>">
+					<%= product['brand'] %> <%= product['product'] %>
+				</option>
+			<% end%>
+		</select></p>
 		<input type="button" value="次へ" onclick="zenra.postKaraoke();"/>
 	</div>
 </div>
