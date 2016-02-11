@@ -15,23 +15,23 @@ postHistory - 歌唱履歴情報を送信する
 */
 zenra.postHistory = function(button) {
 	$.ajax({
-		type: "POST",
-		url: '/history/input',
-		async: false,
+		type: "POST" ,
+		url: '/history/input' ,
 		data: {
-			song: $('#song').val(),
-			artist: $('#artist').val(),
-			score: $('#score').val(),
-			songkey: $('#seekbar').slider('value'),
-			score_type: $('#score_type').val(),
-		},
+			song: $('#song').val() ,
+			artist: $('#artist').val() ,
+			score: $('#score').val() ,
+			songkey: $('#seekbar').slider('value') ,
+			score_type: $('#score_type').val() ,
+		} ,
+		complete: function() {
+			if (button == 'regist') {
+				location.href = '/history/regist';
+			}
+		} ,
 	});
 
 	zenra.resetHistory();
-
-	if (button == 'regist') {
-		location.href = '/history/regist';
-	}
 };
 
 /*
@@ -41,7 +41,6 @@ zenra.postKaraoke = function() {
 	$.ajax({
 		type: "POST",
 		url: '/karaoke/input',
-		async: false,
 		data: {
 			name: $('#name').val(),
 			datetime: $('#datetime').val(),
@@ -84,6 +83,6 @@ zenra.transitionInDialog = function(url , id) {
 
 	jQuery.removeData(div);
 	div.load(url + " #" + id , function(date , status) {
-		init_ui();		
+		init_ui();
 	});
 };
