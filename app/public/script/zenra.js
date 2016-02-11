@@ -65,6 +65,10 @@ zenra.showDialog = function(url , id , width) {
 			modal: true ,
 			height: "auto" ,
 			width: width ,
+			close: function(event) {
+				$(this).dialog('destroy');
+				$(event.target).remove();
+			} ,
 		});
 		init_ui();
 	});
