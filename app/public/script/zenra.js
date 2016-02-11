@@ -64,7 +64,7 @@ zenra.showDialog = function(id, width) {
 		div.dialog({
 			modal: true ,
 			height: "auto" ,
-			width: width,
+			width: width ,
 		});
 		init_ui();
 	});
