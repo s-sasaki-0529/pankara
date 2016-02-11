@@ -52,7 +52,7 @@ zenra.postKaraoke = function() {
 		},
 	});
 	
-	zenra.transitionInDialog(zenra.showDialog, 'input_history', 480);
+	zenra.transitionInDialog('/_local/dialog' , 'input_history');
 };
 
 /*
@@ -65,6 +65,7 @@ zenra.showDialog = function(url , id , width) {
 			modal: true ,
 			height: "auto" ,
 			width: width ,
+			resizable: false ,
 			close: function(event) {
 				$(this).dialog('destroy');
 				$(event.target).remove();
@@ -77,10 +78,11 @@ zenra.showDialog = function(url , id , width) {
 /*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(func, id, width) {
+zenra.transitionInDialog = function(url , id) {
 	var div = $('#dialog');
-	div.dialog('close');
 
-	div.remove();
-	func(id, width);
+	jQuery.removeData(div);
+	div.load(url + " #" + id , function(date , status) {
+		init_ui();		
+	});
 };
