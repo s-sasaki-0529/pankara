@@ -23,6 +23,7 @@ class IndexRoute < March
 	#---------------------------------------------------------------------
 	get '/_local/dialog' do
 		@score_type = ScoreType.List
+		@products = Product.list
 		erb :_input_history
 	end
 
