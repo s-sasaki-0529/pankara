@@ -249,15 +249,23 @@ class User < Base
 		register = Register.new(self)
 		register.with_url = true
 		karaoke_id = register.create_karaoke(
-			@karaoke['datetime'], @karaoke['name'], @karaoke['plan'].to_f,
+			@karaoke['datetime'], 
+			@karaoke['name'], 
+			@karaoke['plan'].to_f,
 			{'name' => @karaoke['store'], 'branch' => @karaoke['branch']},
 			Product.id_to_product(@karaoke['product'])
 		)
 		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
 	
 		@params['temp_histories'].each do |history|
-			score_type = ScoreType.id_to_name(history['score_type'].to_i, true)
-			register.create_history(history['song'],  history['artist'], history['songkey'], score_type ,history['score'])
+			if history['score_type'].to_i > 0
+				score_type = ScoreType.id_to_name(history['score_type'].to_i, true)
+			else
+				score_type = nil
+				history['score'] = nil
+			end
+
+			register.create_history(history['song'],  history['artist'], history['songkey'], score_type , history['score'])
 		end
 
 		@params['temp_histories'] = []
