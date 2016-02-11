@@ -42,7 +42,9 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def movie_image(url , w , h)
+		def movie_image(id , w , h)
+			song = Song.new(id)
+			id , name , url , artist = song['id'] , song['name'] , song['url'] , song['artist_name']
 			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
 				image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
 			elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
@@ -51,8 +53,9 @@ class March < Sinatra::Base
 			else
 				return 'no image'
 			end
+			jstag = "zenra.showDialog('#{name} (#{artist})' , '/player/#{id}' , 'player' , 600)"
 			imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
-			return "<a style=\"padding-right: 0\" href=\"#{url}\" target=\"_blank\">#{imgtag}</a>"
+			return "<span style=\"padding-right: 0\" href=# target=\"_blank\" onclick=\"#{jstag}\">#{imgtag}</span>"
 		end
 		def user_link(username, screenname , with_icon = true , size = 32)
 			link = "/user/#{username}"

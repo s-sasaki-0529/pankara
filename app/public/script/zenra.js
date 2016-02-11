@@ -58,10 +58,11 @@ zenra.postKaraoke = function() {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(url , id , width) {
+zenra.showDialog = function(title, url , id , width) {
 	var div = $('<div>').attr('id' , 'dialog');
 	div.load(url + " #" + id , function(date , status) {
 		div.dialog({
+			title: title ,
 			modal: true ,
 			height: "auto" ,
 			width: width ,

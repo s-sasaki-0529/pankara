@@ -10,6 +10,7 @@ class History < Base
 		songs = DB.new(
 			:DISTINCT => true ,
 			:SELECT => {
+					'song.id' => 'id' ,
 					'song.name' => 'name' ,
 					'song.url' => 'url'
 			} ,

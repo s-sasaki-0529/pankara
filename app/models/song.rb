@@ -8,19 +8,19 @@ class Song < Base
 	#---------------------------------------------------------------------
 	def initialize(id)
 		@params = DB.new.get('song' , id)
-		self.song_name
+		self.artist
 	end
 
-	# artist_name - 歌手名を取得
+	# artist - 歌手名を取得
 	#---------------------------------------------------------------------
-	def song_name
-		@params['artist_name'] = DB.new(
-			:SELECT => {'artist.name' => 'artist_name'} ,
+	def artist
+		@params.merge! DB.new(
+			:SELECT => {'artist.id' => 'artist_id' , 'artist.name' => 'artist_name'} ,
 			:FROM => 'song' ,
 			:JOIN => ['song' , 'artist'] ,
 			:WHERE => 'song.id = ?' ,
 			:SET => @params['id']
-		).execute_column
+		).execute_row
 	end
 
 	# sangcount - 歌唱回数を取得

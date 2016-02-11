@@ -25,6 +25,13 @@ class IndexRoute < March
 		erb :_input_history
 	end
 
+	# get '/player/:id'
+	#---------------------------------------------------------------------
+	get '/player/:id' do
+		@url = Song.new(params[:id])['url']
+		erb :_player
+	end
+
 	use AuthenticationRoute
 	use KaraokeRoute
 	use HistoryRoute
