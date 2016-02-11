@@ -97,9 +97,6 @@ class March < Sinatra::Base
 		else
 			@current_user = logined
 		end
-
-		# Youtubeを垂れ流す
-		@song_list = History.recent_song
 	end
 
 end

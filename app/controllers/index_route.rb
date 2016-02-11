@@ -15,6 +15,7 @@ class IndexRoute < March
 		@user = @current_user
 		@timeline = @user.timeline
 		@recent_karaoke = @user.get_karaoke(1)[0]
+		@song_list = History.recent_song
 		erb :index
 	end
 

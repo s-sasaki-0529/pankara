@@ -1,15 +1,5 @@
 /*起動時に自動実行*/
 function init_ui() {
-		/*youtube垂れ流し開始*/
-		$('#slider').simplyScroll({
-			autoMode: 'loop',
-			speed: 1,
-			frameRate: 30,
-			horizontal: true,
-			pauseOnHover:	false,
-			pauseOnTouch: false
-		});
-
 		/*シークバーの表示*/
 		$(function() {
 			$('#seekbar').slider({

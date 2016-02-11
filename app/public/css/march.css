@@ -44,7 +44,8 @@ th {
 #div_youtube_line {
 	background-color: #feacc1;
 	position: fixed;
-	width: 100%;
+	left: 0px;
+	right: 0px;
 	height: 90px;
 	bottom: 0;
 }
