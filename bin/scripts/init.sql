@@ -99,6 +99,7 @@ CREATE TABLE `karaoke` (
   `plan` FLOAT NULL DEFAULT NULL COMMENT '滞在時間',
   `store` INTEGER NOT NULL COMMENT '利用店舗',
   `product` INTEGER NOT NULL COMMENT '機種',
+	`created_by` INTEGER NOT NULL COMMENT '作成者',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケデータ';
@@ -175,6 +176,7 @@ CREATE TABLE `attendance` (
 
 ALTER TABLE `karaoke` ADD FOREIGN KEY (store) REFERENCES `store` (`id`);
 ALTER TABLE `karaoke` ADD FOREIGN KEY (product) REFERENCES `product` (`id`);
+ALTER TABLE `karaoke` ADD FOREIGN KEY (created_by) REFERENCES `user` (`id`);
 ALTER TABLE `song` ADD FOREIGN KEY (artist) REFERENCES `artist` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (attendance) REFERENCES `attendance` (`id`);
 ALTER TABLE `history` ADD FOREIGN KEY (song) REFERENCES `song` (`id`);

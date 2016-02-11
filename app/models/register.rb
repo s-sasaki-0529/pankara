@@ -23,8 +23,8 @@ class Register < Base
 		product_id = self.create_product(product)
 
 		db = DB.new(
-			:INSERT => ['karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product']] ,
-			:SET => [datetime , name , plan , store_id , product_id]
+			:INSERT => ['karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product' , 'created_by']] ,
+			:SET => [datetime , name , plan , store_id , product_id , @userid]
 		)
 		@karaoke = db.execute_insert_id
 	end
