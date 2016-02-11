@@ -58,9 +58,9 @@ zenra.postKaraoke = function() {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(id, width) {
+zenra.showDialog = function(url , id , width) {
 	var div = $('<div>').attr('id' , 'dialog');
-	div.load("/_local/dialog" + " #" + id , function(date , status) {
+	div.load(url + " #" + id , function(date , status) {
 		div.dialog({
 			modal: true ,
 			height: "auto" ,
