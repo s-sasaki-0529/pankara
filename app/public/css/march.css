@@ -41,15 +41,6 @@ th {
 	padding: 5px 10px 5px 10px;
 }
 
-#div_youtube_line {
-	background-color: #feacc1;
-	position: fixed;
-	left: 0px;
-	right: 0px;
-	height: 90px;
-	bottom: 0;
-}
-
 #div_tl {
 	border: 1px solid;
 	height: 310px;
@@ -67,4 +58,22 @@ th {
 	height: 310px;
 	border: 1px solid;
 	overflow: scroll;
+}
+
+#div_youtube_line {
+	background-color: #feacc1;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	height: 90px;
+	bottom: 0;
+}
+
+#bathtowel_info {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	bottom: 100px;
+	font-size: 24px;
+	text-align: center;
 }

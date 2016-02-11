@@ -22,7 +22,11 @@ class March < Sinatra::Base
 	helpers do
 		def h(content)
 			if content.kind_of? String
-				content.gsub!(/<(script.*)>(.*)<\/script>/ , '&lt\1&gt\2&lt/script&gt;')
+				content.gsub!('/' , '\/')
+				content.gsub!('\"' , '\\\"')
+				content.gsub!('\'' , '\\\'')
+				content.gsub!('<' , '\x3c')
+				content.gsub!('>' , '\x3e')
 				content.gsub!(/\r\n|\r|\n/, "<br />")
 			elsif content.kind_of? Float
 				content = sprintf "%.1f" , content
@@ -44,7 +48,7 @@ class March < Sinatra::Base
 		end
 		def movie_image(id , w , h)
 			song = Song.new(id)
-			id , name , url , artist = song['id'] , song['name'] , song['url'] , song['artist_name']
+			id , name , url , artist = song['id'] , h(song['name']) , song['url'] , h(song['artist_name'])
 			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
 				image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
 			elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
@@ -53,9 +57,11 @@ class March < Sinatra::Base
 			else
 				return 'no image'
 			end
-			jstag = "zenra.showDialog('#{name} (#{artist})' , '/player/#{id}' , 'player' , 600)"
+			info = "#{name} (#{artist})"
+			onclick = "onclick=\"zenra.showDialog('#{info}' , '/player/#{id}' , 'player' , 600)\""
+			onmouse = "onmouseover=\"bathtowel.showInfo('#{info}')\""
 			imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
-			return "<span style=\"padding-right: 0\" href=# target=\"_blank\" onclick=\"#{jstag}\">#{imgtag}</span>"
+			return "<span style=\"padding-right: 0\" href=# target=\"_blank\" #{onclick} #{onmouse}>#{imgtag}</span>"
 		end
 		def user_link(username, screenname , with_icon = true , size = 32)
 			link = "/user/#{username}"

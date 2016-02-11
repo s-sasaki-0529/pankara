@@ -86,3 +86,34 @@ zenra.transitionInDialog = function(url , id) {
 		init_ui();
 	});
 };
+
+/*
+	bathtowelオブジェクト -バスタオルの制御全般-
+*/
+bathtowel = {
+
+	/*[Method] バスタオルの初期設定*/
+	init : function () {
+		$('#slider').simplyScroll({
+			autoMode: 'loop',
+			speed: 1,
+			frameRate: 30,
+			horizontal: true,
+			pauseOnHover: false,
+			pauseOnTouch: true
+		});
+		self.info = $('<div>').attr('id' , 'bathtowel_info').css('display' , 'none').text('hogehoge');
+		self.info.appendTo('body');
+	} ,
+
+	/*[Method] 曲情報を通知する*/
+	showInfo : function(message) {
+		self.info.text(message).css('display' , '');
+	} ,
+
+	/*[Method] 曲情報を非表示にする*/
+	hideInfo : function() {
+		self.info.css('display' , 'none');
+	} ,
+
+};
