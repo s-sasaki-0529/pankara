@@ -40,8 +40,13 @@ class KaraokeRoute < March
 		karaoke['store'] = params[:store]
 		karaoke['branch'] = params[:branch]
 		karaoke['product'] = params['product'].to_i
+	
+		attendance = {}
+		attendance['price'] = params[:price].to_i
+		attendance['memo'] = params[:memo]
 
 		@current_user.set_karaoke karaoke
+		@current_user.set_attendance attendance
 	end
 
 end

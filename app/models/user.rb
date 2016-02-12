@@ -243,11 +243,18 @@ class User < Base
 		@karaoke = karaoke
 	end
 
+	# set_attendance - 登録する出席情報を設定する
+	#---------------------------------------------------------------------
+	def set_attendance(attendance)
+		@attendance = attendance
+	end
+
 	# registrate_history - 入力された歌唱履歴をすべてDBに登録する
 	#---------------------------------------------------------------------
 	def registrate_history
 		register = Register.new(self)
 		register.with_url = true
+		
 		karaoke_id = register.create_karaoke(
 			@karaoke['datetime'], 
 			@karaoke['name'], 
@@ -255,7 +262,8 @@ class User < Base
 			{'name' => @karaoke['store'], 'branch' => @karaoke['branch']},
 			Product.id_to_product(@karaoke['product'])
 		)
-		register.attend_karaoke(1500 , '歌唱履歴入力テスト用attend')
+
+		register.attend_karaoke(@attendance['price'] , @attendance['memo'])
 	
 		@params['temp_histories'].each do |history|
 			if history['score_type'].to_i > 0
@@ -265,10 +273,18 @@ class User < Base
 				history['score'] = nil
 			end
 
-			register.create_history(history['song'],  history['artist'], history['songkey'], score_type , history['score'])
+			register.create_history(
+				history['song'],  
+				history['artist'], 
+				history['songkey'], 
+				score_type , 
+				history['score']
+			)
 		end
 
 		@params['temp_histories'] = []
+		@karaoke = {}
+		@attendance = {}
 		karaoke_id
 	end
 
