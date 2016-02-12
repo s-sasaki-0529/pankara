@@ -18,7 +18,8 @@ zenra.post = function(url , data , funcs) {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(title, url , id , width) {
+zenra.showDialog = function(title, url , id , width , funcs) {
+	funcs = funcs || {};
 	var div = $('<div>').attr('id' , 'dialog');
 	div.load(url + " #" + id , function(date , status) {
 		div.dialog({
@@ -31,6 +32,7 @@ zenra.showDialog = function(title, url , id , width) {
 				$(this).dialog('destroy');
 				$(event.target).remove();
 			} ,
+			beforeClose: funcs.beforeClose ,
 		});
 	});
 };
@@ -101,7 +103,8 @@ bathtowel = {
 	registerクラス -カラオケ入力制御全般-
 */
 var register = (function() {
-	
+	var count = 0;
+
 	/*[Method] 歌唱履歴入力欄をリセットする*/
 	function resetHistory() {
 		$('#song').val('');
@@ -113,7 +116,13 @@ var register = (function() {
 	return {
 		/*[Method] 履歴入力用ダイアログを作成する*/
 		createDialog : function() {
-			zenra.showDialog('カラオケ入力' , '/_local/dialog' , 'input_karaoke', 600);
+			funcs = {}
+			funcs.beforeClose = function() {
+				count = 0;
+				return true;
+			};
+
+			zenra.showDialog('カラオケ入力' , '/_local/dialog' , 'input_karaoke' , 600 , funcs);
 		} ,
 
 		/*[Method] カラオケ情報入力終了後の処理*/
@@ -133,6 +142,8 @@ var register = (function() {
 	
 		/*[Method] 歌唱履歴情報入力終了後の処理*/
 		execInputHistory : function(button) {
+			count += 1;
+
 			data = {
 				song: $('#song').val() ,
 				artist: $('#artist').val() ,
@@ -148,6 +159,11 @@ var register = (function() {
 				};
 				funcs.complete = function() {
 					location.href = '/history/regist';
+				};
+			}
+			else {
+				funcs.complete = function() {
+					$('#result').html('<p>' + count + '件入力されました</p>')
 				};
 			}
 	
