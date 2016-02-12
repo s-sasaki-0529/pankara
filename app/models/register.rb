@@ -29,6 +29,12 @@ class Register < Base
 		@karaoke = db.execute_insert_id
 	end
 
+	# set_karaoke - カラオケIDを設定する
+	#---------------------------------------------------------------------
+	def set_karaoke(id)
+		@karaoke = id
+	end
+
 	# attend_karaoke - カラオケに参加する
 	#---------------------------------------------------------------------
 	def attend_karaoke(price = nil , memo = nil)
