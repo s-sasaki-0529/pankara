@@ -10,7 +10,8 @@ zenra.post = function(url , data , funcs) {
 		type: "POST" ,
 		url: url ,
 		data: data ,
-		complete: funcs.complete
+		beforeSend: funcs.beforeSend ,
+		complete: funcs.complete ,
 	});
 };
 
@@ -112,7 +113,7 @@ var register = (function() {
 	return {
 		/*[Method] 履歴入力用ダイアログを作成する*/
 		createDialog : function() {
-			zenra.showDialog('カラオケ入力' , '/_local/dialog' , 'input_karaoke' , 600);
+			zenra.showDialog('カラオケ入力' , '/_local/dialog' , 'input_karaoke', 600);
 		} ,
 
 		/*[Method] カラオケ情報入力終了後の処理*/
@@ -124,8 +125,6 @@ var register = (function() {
 				store: $('#store').val() ,
 				branch: $('#branch').val() ,
 				product: $('#product').val() ,
-				price: $('#price').val() ,
-				memo: $('#memo').val() ,
 			};
 	
 			zenra.post('/karaoke/input' , data);
@@ -144,6 +143,9 @@ var register = (function() {
 	
 			funcs = {};
 			if (button == 'regist') {
+				funcs.beforeSend = function() {
+					zenra.transitionInDialog('/_local/dialog' , 'loading');
+				};
 				funcs.complete = function() {
 					location.href = '/history/regist';
 				};
