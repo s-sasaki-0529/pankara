@@ -124,6 +124,8 @@ var register = (function() {
 				store: $('#store').val() ,
 				branch: $('#branch').val() ,
 				product: $('#product').val() ,
+				price: $('#price').val() ,
+				memo: $('#memo').val() ,
 			};
 	
 			zenra.post('/karaoke/input' , data);
