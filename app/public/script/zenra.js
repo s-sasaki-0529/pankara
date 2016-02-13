@@ -18,9 +18,9 @@ zenra.post = function(url , data , funcs) {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(title, url , id , width , funcs) {
+zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
 	funcs = funcs || {};
-	var div = $('<div>').attr('id' , 'dialog');
+	var div = $('<div>').attr('id' , dialogId);
 	div.load(url + " #" + id , function(date , status) {
 		div.dialog({
 			title: title ,
@@ -38,10 +38,18 @@ zenra.showDialog = function(title, url , id , width , funcs) {
 };
 
 /*
+closeDialog - ダイアログを閉じる
+*/
+zenra.closeDialog = function(id) {
+	var div = $('#' + id);
+	div.dialog('close');
+};
+
+/*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(url , id) {
-	var div = $('#dialog');
+zenra.transitionInDialog = function(url , dialogId , id) {
+	var div = $('#' + dialogId);
 
 	jQuery.removeData(div);
 	div.load(url + " #" + id , function(date , status) {
@@ -66,7 +74,7 @@ zenra.createSeekbar = function() {
 			$('#slidervalue').html('キー: ' + $('#seekbar').slider('value'));
 		} ,
 	});
-}
+};
 
 /*
 	bathtowelオブジェクト -バスタオルの制御全般-
@@ -104,6 +112,7 @@ bathtowel = {
 */
 var register = (function() {
 	var count = 0;
+	var closeFlg = false;
 
 	/*[Method] 歌唱履歴入力欄をリセットする*/
 	function resetHistory() {
@@ -114,15 +123,27 @@ var register = (function() {
 	}
 
 	return {
+		/*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
+		reset : function() {
+			closeFlg = true;
+			zenra.closeDialog('caution_dialog');
+			zenra.closeDialog('input_dialog');
+			count = 0;
+		} ,
+
 		/*[Method] 履歴入力用ダイアログを作成する*/
 		createDialog : function() {
 			funcs = {}
-			funcs.beforeClose = function() {
-				count = 0;
-				return true;
+			funcs.beforeClose = function() {	
+				if (!closeFlg) {
+					zenra.showDialog('注意' , 'caution_dialog' , '/_local/dialog' , 'caution' , 200);
+				}
+				
+				return closeFlg;
 			};
 
-			zenra.showDialog('カラオケ入力' , '/_local/dialog' , 'input_karaoke' , 600 , funcs);
+			closeFlg = false;
+			zenra.showDialog('カラオケ入力' , 'input_dialog' , '/_local/dialog' , 'input_karaoke' , 600 , funcs);
 		} ,
 
 		/*[Method] カラオケ情報入力終了後の処理*/
@@ -137,7 +158,7 @@ var register = (function() {
 			};
 	
 			zenra.post('/karaoke/input' , data);
-			zenra.transitionInDialog('/_local/dialog' , 'input_history');
+			zenra.transitionInDialog('/_local/dialog' , 'input_dialog' , 'input_history');
 		} ,
 	
 		/*[Method] 歌唱履歴情報入力終了後の処理*/

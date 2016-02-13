@@ -16,7 +16,7 @@
 			<p>採点:　　　<input id="score" type="text" name="score" value="" size="10"/>点</p>
 			<input type="button" value="次を入力" onclick="register.execInputHistory('next');"/>
 			<input type="button" value="全て登録" onclick="register.execInputHistory('regist');"/>
-			<input type="submit" name="cancel" value="キャンセル" />
+			<input type="button" value="キャンセル" onclick="zenra.closeDialog('input_dialog');"/>
 		</form>
 	</div>
 
@@ -68,6 +68,13 @@
 	<div id="loading">
 		<p>登録中です</p>
 		<img src="/image/mascot.png" width="30%" height="30%" alt="マスコット">
+	</div>
+
+	<div id="caution">
+		<p>入力を終了しますか？</p>
+		<p>ここまでの入力内容はすべて破棄されます</p>
+		<input id="yes" type="button" value="はい" onclick="register.reset()"/>
+		<input id="no" type="button" value="いいえ" onclick="zenra.closeDialog('caution_dialog')"/>
 	</div>
 </div>
 

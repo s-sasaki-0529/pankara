@@ -58,7 +58,7 @@ class March < Sinatra::Base
 				return 'no image'
 			end
 			info = "#{name} (#{artist})"
-			onclick = "onclick=\"zenra.showDialog('#{info}' , '/player/#{id}' , 'player' , 600)\""
+			onclick = "onclick=\"zenra.showDialog('#{info}' , 'player_dialog' , '/player/#{id}' , 'player' , 600)\""
 			onmouse = "onmouseover=\"bathtowel.showInfo('#{info}')\""
 			imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
 			return "<span style=\"padding-right: 0\" href=# target=\"_blank\" #{onclick} #{onmouse}>#{imgtag}</span>"
