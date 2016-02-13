@@ -8,7 +8,7 @@ class User < Base
 	#---------------------------------------------------------------------
 	def initialize(username)
 		@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
-		@params and @params['temp_histories'] = []
+		@params and reset_input_info
 	end
 
 	# histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
@@ -240,13 +240,21 @@ class User < Base
 	# set_karaoke - 登録するカラオケ情報を設定する
 	#---------------------------------------------------------------------
 	def set_karaoke(karaoke)
-		@karaoke = karaoke
+		@params['temp_karaoke'] = karaoke
 	end
 
 	# set_attendance - 登録する出席情報を設定する
 	#---------------------------------------------------------------------
 	def set_attendance(attendance)
-		@attendance = attendance
+		@params['temp_attendance'] = attendance
+	end
+
+	# reset_input_info - 入力情報を初期化する
+	#---------------------------------------------------------------------
+	def reset_input_info()
+		@params['temp_histories'] = []
+		@params['temp_karaoke'] = {}
+		@params['temp_attendance'] = {}
 	end
 
 	# registrate_history - 入力された歌唱履歴をすべてDBに登録する
@@ -256,18 +264,18 @@ class User < Base
 		register.with_url = true
 		
 		karaoke_id = register.create_karaoke(
-			@karaoke['datetime'], 
-			@karaoke['name'], 
-			@karaoke['plan'].to_f,
-			{'name' => @karaoke['store'], 'branch' => @karaoke['branch']},
-			Product.id_to_product(@karaoke['product'])
+			@params['temp_karaoke']['datetime'], 
+			@params['temp_karaoke']['name'], 
+			@params['temp_karaoke']['plan'].to_f,
+			{'name' => @params['temp_karaoke']['store'], 'branch' => @params['temp_karaoke']['branch']},
+			Product.id_to_product(@params['temp_karaoke']['product'])
 		)
 
-		register.attend_karaoke(@attendance['price'] , @attendance['memo'])
+		register.attend_karaoke(@params['temp_attendance']['price'] , @params['temp_attendance']['memo'])
 	
 		@params['temp_histories'].each do |history|
-			if history['score_type'].to_i > 0
-				score_type = ScoreType.id_to_name(history['score_type'].to_i, true)
+			if history['score_type'] > 0
+				score_type = ScoreType.id_to_name(history['score_type'], true)
 			else
 				score_type = nil
 				history['score'] = nil
@@ -282,9 +290,7 @@ class User < Base
 			)
 		end
 
-		@params['temp_histories'] = []
-		@karaoke = {}
-		@attendance = {}
+		reset_input_info
 		karaoke_id
 	end
 

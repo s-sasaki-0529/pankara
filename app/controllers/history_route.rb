@@ -16,6 +16,12 @@ class HistoryRoute < March
 		karaoke_id = @current_user.registrate_history
 		redirect "/karaoke/detail/#{karaoke_id}"	
 	end
+	
+	# get '/history/reset - 入力された歌唱履歴をすべて破棄
+	#---------------------------------------------------------------------
+	get '/history/reset' do
+		@current_user.reset_input_info
+	end
 
 	# get '/history/:username - ユーザの歌唱履歴を表示
 	#---------------------------------------------------------------------
@@ -33,7 +39,7 @@ class HistoryRoute < March
 		history['artist'] = params[:artist]
 		history['score'] = params[:score]
 		history['songkey'] = params[:songkey]
-		history['score_type'] = params[:score_type]
+		history['score_type'] = params[:score_type].to_i
 
 		@current_user.store_history history
 	end

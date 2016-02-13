@@ -16,6 +16,17 @@ zenra.post = function(url , data , funcs) {
 };
 
 /*
+get - 非同期で通信する
+*/
+zenra.get = function(url , funcs) {
+	funcs = funcs || {};
+	$.ajax({
+		type: "GET" ,
+		url: url ,
+	});
+};
+
+/*
 showDialog - ダイアログを表示する
 */
 zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
@@ -125,10 +136,12 @@ var register = (function() {
 	return {
 		/*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
 		reset : function() {
+			count = 0;
+			zenra.get('/history/reset');
 			closeFlg = true;
+			
 			zenra.closeDialog('caution_dialog');
 			zenra.closeDialog('input_dialog');
-			count = 0;
 		} ,
 
 		/*[Method] 履歴入力用ダイアログを作成する*/
