@@ -10,6 +10,13 @@ class HistoryRoute < March
 		erb :history
 	end
 
+	# get '/history/input - 歌唱履歴の入力画面を表示
+	#---------------------------------------------------------------------
+	get '/history/input' do
+		@score_type = ScoreType.List
+		erb :_input_history
+	end
+
 	# get '/history/register - 入力された歌唱履歴をすべて登録してカラオケ画面を表示
 	#---------------------------------------------------------------------
 	get '/history/register' do

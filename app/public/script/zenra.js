@@ -64,7 +64,7 @@ zenra.closeDialog = function(id) {
 /*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(url , dialogId , id) {
+zenra.transitionInDialog = function(dialogId , url , id) {
 	var div = $('#' + dialogId);
 
 	jQuery.removeData(div);
@@ -154,14 +154,14 @@ var register = (function() {
 			funcs = {}
 			funcs.beforeClose = function() {	
 				if (!closeFlg) {
-					zenra.showDialog('注意' , 'caution_dialog' , '/_local/dialog' , 'caution' , 200);
+					zenra.showDialog('注意' , 'caution_dialog' , '/history/input' , 'caution' , 200);
 				}
 				
 				return closeFlg;
 			};
 
 			closeFlg = false;
-			zenra.showDialog('カラオケ入力' , 'input_dialog' , '/_local/dialog' , 'input_karaoke' , 600 , funcs);
+			zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , funcs);
 		} ,
 
 		/*[Method] カラオケ情報入力終了後の処理*/
@@ -176,7 +176,7 @@ var register = (function() {
 			};
 	
 			zenra.post('/karaoke/input' , data);
-			zenra.transitionInDialog('/_local/dialog' , 'input_dialog' , 'input_history');
+			zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
 		} ,
 	
 		/*[Method] 歌唱履歴情報入力終了後の処理*/
@@ -194,7 +194,7 @@ var register = (function() {
 			funcs = {};
 			if (button == 'register') {
 				funcs.beforeSend = function() {
-					zenra.transitionInDialog('/_local/dialog' , 'input_dialog' , 'loading');
+					zenra.transitionInDialog('input_dialog' , '/history/input' , 'loading');
 				};
 				funcs.complete = function() {
 					location.href = '/history/register';
