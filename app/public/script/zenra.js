@@ -176,7 +176,7 @@ var register = (function() {
 			funcs = {};
 			if (button == 'regist') {
 				funcs.beforeSend = function() {
-					zenra.transitionInDialog('/_local/dialog' , 'loading');
+					zenra.transitionInDialog('/_local/dialog' , 'input_dialog' , 'loading');
 				};
 				funcs.complete = function() {
 					location.href = '/history/regist';
