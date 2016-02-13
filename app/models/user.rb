@@ -257,9 +257,9 @@ class User < Base
 		@params['temp_attendance'] = {}
 	end
 
-	# registrate_history - 入力された歌唱履歴をすべてDBに登録する
+	# register_history - 入力された歌唱履歴をすべてDBに登録する
 	#---------------------------------------------------------------------
-	def registrate_history
+	def register_history
 		register = Register.new(self)
 		register.with_url = true
 		

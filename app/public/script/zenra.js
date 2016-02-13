@@ -187,12 +187,12 @@ var register = (function() {
 			};
 	
 			funcs = {};
-			if (button == 'regist') {
+			if (button == 'register') {
 				funcs.beforeSend = function() {
 					zenra.transitionInDialog('/_local/dialog' , 'input_dialog' , 'loading');
 				};
 				funcs.complete = function() {
-					location.href = '/history/regist';
+					location.href = '/history/register';
 				};
 			}
 			else {

@@ -10,10 +10,10 @@ class HistoryRoute < March
 		erb :history
 	end
 
-	# get '/history/regist - 入力された歌唱履歴をすべて登録してカラオケ画面を表示
+	# get '/history/register - 入力された歌唱履歴をすべて登録してカラオケ画面を表示
 	#---------------------------------------------------------------------
-	get '/history/regist' do
-		karaoke_id = @current_user.registrate_history
+	get '/history/register' do
+		karaoke_id = @current_user.register_history
 		redirect "/karaoke/detail/#{karaoke_id}"	
 	end
 	
