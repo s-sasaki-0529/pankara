@@ -119,7 +119,7 @@ bathtowel = {
 };
 
 /*
-	registerクラス -カラオケ入力制御全般-
+	registerオブジェクト -カラオケ入力制御全般-
 */
 var register = (function() {
 	var count = 0;
