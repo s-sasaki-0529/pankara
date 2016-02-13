@@ -59,7 +59,7 @@ zenra.closeDialog = function(id) {
 /*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(url , dialogId , id) {
+zenra.transitionInDialog = function(dialogId , url , id) {
 	var div = $('#' + dialogId);
 
 	jQuery.removeData(div);
@@ -171,7 +171,7 @@ var register = (function() {
 			};
 	
 			zenra.post('/karaoke/input' , data);
-			zenra.transitionInDialog('/history/input' , 'input_dialog' , 'input_history');
+			zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
 		} ,
 	
 		/*[Method] 歌唱履歴情報入力終了後の処理*/
@@ -189,7 +189,7 @@ var register = (function() {
 			funcs = {};
 			if (button == 'register') {
 				funcs.beforeSend = function() {
-					zenra.transitionInDialog('/history/input' , 'input_dialog' , 'loading');
+					zenra.transitionInDialog('input_dialog' , '/history/input' , 'loading');
 				};
 				funcs.complete = function() {
 					location.href = '/history/register';
