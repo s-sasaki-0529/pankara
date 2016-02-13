@@ -19,14 +19,6 @@ class IndexRoute < March
 		erb :index
 	end
 
-	# get '/_local/dialog'
-	#---------------------------------------------------------------------
-	get '/_local/dialog' do
-		@score_type = ScoreType.List
-		@products = Product.list
-		erb :_input_history
-	end
-
 	# get '/player/:id'
 	#---------------------------------------------------------------------
 	get '/player/:id' do

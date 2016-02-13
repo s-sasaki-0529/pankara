@@ -22,6 +22,13 @@ class KaraokeRoute < March
 	get '/karaoke/create' do
 		erb :create_karaoke
 	end
+	
+	# get '/karaoke/input - カラオケ入力画面を表示
+	#---------------------------------------------------------------------
+	get '/karaoke/input' do
+		@products = Product.list
+		erb :_input_karaoke
+	end
 
 	# post '/karaoke/create' - カラオケ記録追加をリクエスト
 	#---------------------------------------------------------------------
