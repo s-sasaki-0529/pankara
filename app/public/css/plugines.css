@@ -25,3 +25,26 @@ http://logicbox.net/jquery/simplyscroll/horizontal.html
 .simply-scroll-list li img {
 	display: block;
 }
+
+/***
+Tablesorter
+***/
+table.sortable {
+}
+table.sortable thead tr th, table.sortable tfoot tr th {
+}
+table.sortable thead tr .header {
+	background-image: url(../public/image/tablesort_bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.sortable thead tr .headerSortUp {
+	background-image: url(../image/tablesort_asc.gif);
+}
+table.sortable thead tr .headerSortDown {
+	background-image: url(../image/tablesort_desc.gif);
+}
+table.sortable thead tr .headerSortDown, table.sortable thead tr .headerSortUp {
+	background-color: #8dbdd8;
+}
