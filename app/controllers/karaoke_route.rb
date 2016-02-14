@@ -2,11 +2,18 @@ require_relative './march'
 
 class KaraokeRoute < March
 
-	# get '/karaoke' - カラオケ記録を一覧表示
+	# get '/karaoke/user' - ログイン中ユーザのカラオケ記録を一覧表示
 	#---------------------------------------------------------------------
-	get '/karaoke/user' do
-		@karaoke_list = @current_user.get_karaoke
-		erb :mykaraoke
+	get '/karaoke/user/?' do
+		redirect "/karaoke/user/#{@current_user['username']}"
+	end
+
+	# get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
+	#---------------------------------------------------------------------
+	get '/karaoke/user/:username' do
+		@user = User.new(params[:username])
+		@karaoke_list = @user.get_karaoke
+		erb :karaokelist
 	end
 
 	# get '/karaoke/detail/:id' - カラオケ記録の詳細表示
