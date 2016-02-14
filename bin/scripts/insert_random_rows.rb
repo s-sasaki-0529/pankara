@@ -80,7 +80,7 @@ def insert_song(n)
 end
 
 def insert_karaoke(n)
-	puts "INSERT INTO karaoke ( name , datetime , plan , store , product) VALUES"
+	puts "INSERT INTO karaoke ( name , datetime , plan , store , product , created_by) VALUES"
 	insert = []
 	n.times do |i|
 		datetime = random_date
@@ -88,7 +88,8 @@ def insert_karaoke(n)
 		plan = rand(9) + 1
 		store = rand(STORES) + 1
 		product = rand(PRODUCTS) + 1
-		insert.push "('#{name}' , '#{datetime}' , #{plan} , #{store} , #{product})"
+		created_by = rand(USERS) + 1
+		insert.push "('#{name}' , '#{datetime}' , #{plan} , #{store} , #{product} , #{created_by})"
 	end
 	print insert.join(",\n")
 	puts ";"
