@@ -48,7 +48,7 @@
 		<div id="bathtowel_div" onmouseout="bathtowel.hideInfo()">
 			<ul id="slider">
 				<% @song_list.each do |song| %>
-					<li><%= movie_image song['id'] , 160 , 90 %></li>
+					<li><%= movie_image song['id'] , 160 , 90 , true%></li>
 				<% end %>
 			</ul>
 		</div>

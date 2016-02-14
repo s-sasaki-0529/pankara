@@ -46,7 +46,7 @@ class March < Sinatra::Base
 				return "<a href=\"#{url}\">動画リンク</a>"
 			end
 		end
-		def movie_image(id , w , h)
+		def movie_image(id , w , h , event = false)
 			song = Song.new(id)
 			id , name , url , artist = song['id'] , h(song['name']) , song['url'] , h(song['artist_name'])
 			if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
@@ -59,7 +59,7 @@ class March < Sinatra::Base
 			end
 			info = "#{name} (#{artist})"
 			onclick = "onclick=\"zenra.showDialog('#{info}' , 'player_dialog' , '/player/#{id}' , 'player' , 600)\""
-			onmouse = "onmouseover=\"bathtowel.showInfo('#{info}')\""
+			onmouse = event ? "onmouseover=\"bathtowel.showInfo('#{info}')\"" : ""
 			imgtag = "<img src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
 			return "<span style=\"padding-right: 0\" href=# target=\"_blank\" #{onclick} #{onmouse}>#{imgtag}</span>"
 		end
