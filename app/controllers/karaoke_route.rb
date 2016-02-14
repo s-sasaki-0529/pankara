@@ -4,7 +4,7 @@ class KaraokeRoute < March
 
 	# get '/karaoke' - カラオケ記録を一覧表示
 	#---------------------------------------------------------------------
-	get '/karaoke' do
+	get '/karaoke/user' do
 		@karaoke_list = @current_user.get_karaoke
 		erb :mykaraoke
 	end
