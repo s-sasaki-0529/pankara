@@ -1,4 +1,6 @@
-<h1><%= @user['screenname'] %>さんのカラオケ記録一覧</h1>
+<h1>
+	<% if @user %><%= @user['screenname'] %>さんの<% end %>カラオケ一覧
+</h1>
 <table border="1" class="table sortable table-hover linkcursor">
 	<thead>
 		<tr>
