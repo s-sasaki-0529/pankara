@@ -4,10 +4,19 @@
 require_relative 'util'
 class User < Base
 
-	# initialize(username:) - usernameを指定してインスタンスを生成
+	# initialize(user) - usernameをインスタンスを生成
+	# User.new('sa2knight') - usernameがsa2knightのユーザを生成
+	# User.new({:id => 1}) - idが1のユーザを生成
 	#---------------------------------------------------------------------
-	def initialize(username)
-		@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
+	def initialize(user)
+		user.kind_of?(String) and username = user
+		user.kind_of?(Hash) and user[:username] and username = uszer[:username]
+		user.kind_of?(Hash) and user[:id] and id = user[:id]
+		if username
+			@params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row
+		elsif id
+			@params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
+		end
 		@params and reset_input_info
 	end
 
@@ -215,7 +224,7 @@ class User < Base
 		).execute_insert_id
 	end
 
-	# id_to_name - (クラスメソッド) useridに対応するusername,screennameを戻す
+	# id_to_name - クラスメソッド useridに対応するusername,screennameを戻す
 	# 複数useridについてまとめて対応するので、基本的にUser.newでなくこちらを使う
 	#---------------------------------------------------------------------
 	def self.id_to_name(users)
