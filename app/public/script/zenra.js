@@ -167,7 +167,7 @@ var register = (function() {
 
 			if (id > 0) {
 				zenra.post('/karaoke/input/id' , {id: id});
-				zenra.showDialog('カラオケ入力' , 'input_dialog' , '/history/input' , 'input_history' , 600 , funcs);
+				zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , funcs);
 			}
 			else {
 				zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , funcs);
