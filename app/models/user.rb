@@ -240,10 +240,22 @@ class User < Base
 		return Util.array_to_hash(table , 'id')
 	end
 
-	# store_history - 入力された歌唱履歴をクラス変数に貯める
+	# store_history - 入力された歌唱履歴インスタンスを変数に貯める
 	#---------------------------------------------------------------------
 	def store_history(history)
 		@params['temp_histories'].push history
+	end
+
+	# set_karaoke_id - 歌唱履歴を登録するカラオケのIDを設定する
+	#---------------------------------------------------------------------
+	def set_karaoke_id(id)
+		@karaoke_id = id
+	end
+
+	# get_karaoke_id - 歌唱履歴を登録するカラオケのIDを取得する
+	#---------------------------------------------------------------------
+	def get_karaoke_id()
+		@karaoke_id
 	end
 
 	# set_karaoke - 登録するカラオケ情報を設定する
@@ -260,27 +272,32 @@ class User < Base
 
 	# reset_input_info - 入力情報を初期化する
 	#---------------------------------------------------------------------
-	def reset_input_info()
+	def reset_input_info
+		@register = Register.new(self)
+		@register.with_url = true
+		@karaoke_id = 0
 		@params['temp_histories'] = []
 		@params['temp_karaoke'] = {}
 		@params['temp_attendance'] = {}
 	end
 
-	# register_history - 入力された歌唱履歴をすべてDBに登録する
+	# register_karaoke - 入力されたカラオケをDBに登録する
 	#---------------------------------------------------------------------
-	def register_history
-		register = Register.new(self)
-		register.with_url = true
-		
-		karaoke_id = register.create_karaoke(
+	def register_karaoke
+		@karaoke_id = @register.create_karaoke(
 			@params['temp_karaoke']['datetime'], 
 			@params['temp_karaoke']['name'], 
 			@params['temp_karaoke']['plan'].to_f,
 			{'name' => @params['temp_karaoke']['store'], 'branch' => @params['temp_karaoke']['branch']},
-			Product.id_to_product(@params['temp_karaoke']['product'])
+			Product.get(@params['temp_karaoke']['product'])
 		)
+	end
 
-		register.attend_karaoke(@params['temp_attendance']['price'] , @params['temp_attendance']['memo'])
+	# register_history - 入力された歌唱履歴をすべてDBに登録する
+	#---------------------------------------------------------------------
+	def register_history
+		@register.set_karaoke @karaoke_id
+		@register.attend_karaoke(@params['temp_attendance']['price'] , @params['temp_attendance']['memo'])
 	
 		@params['temp_histories'].each do |history|
 			if history['score_type'] > 0
@@ -290,7 +307,7 @@ class User < Base
 				history['score'] = nil
 			end
 
-			register.create_history(
+			@register.create_history(
 				history['song'],  
 				history['artist'], 
 				history['songkey'], 
@@ -300,7 +317,6 @@ class User < Base
 		end
 
 		reset_input_info
-		karaoke_id
 	end
 
 	private

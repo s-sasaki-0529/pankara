@@ -70,4 +70,11 @@ class KaraokeRoute < March
 		@current_user.set_attendance attendance
 	end
 
+	# post '/karaoke/input/id' - 登録用カラオケのIDを設定
+	#---------------------------------------------------------------------
+	post '/karaoke/input/id' do
+		@current_user.set_karaoke_id params[:id].to_i
+		redirect '/'
+	end
+
 end

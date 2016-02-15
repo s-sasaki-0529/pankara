@@ -35,15 +35,24 @@ class Register < Base
 		@karaoke = id
 	end
 
-	# attend_karaoke - カラオケに参加する
+	# attend_karaoke - カラオケに参加する 既に参加している場合IDを設定する
 	#---------------------------------------------------------------------
 	def attend_karaoke(price = nil , memo = nil)
 		@karaoke or return
-		db = DB.new(
-			:INSERT => ['attendance' , ['user' , 'karaoke' , 'price' , 'memo']] ,
-			:SET => [@userid , @karaoke , price , memo] 
-		)
-		@attendance = db.execute_insert_id
+		@attendance = DB.new(
+			:SELECT => 'id' ,
+			:FROM => 'attendance' ,
+			:WHERE => ['user = ?' , 'karaoke = ?'] ,
+			:SET => [@userid , @karaoke]
+		).execute_column
+
+		if @attendance.nil?
+			db = DB.new(
+				:INSERT => ['attendance' , ['user' , 'karaoke' , 'price' , 'memo']] ,
+				:SET => [@userid , @karaoke , price , memo] 
+			)
+			@attendance = db.execute_insert_id
+		end
 	end
 
 	# create_history - 歌唱履歴を作成する

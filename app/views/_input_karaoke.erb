@@ -32,8 +32,8 @@
 		<p>店:　　　　<input id="store" type="text" value="" size="40"/></p>
 		<p>店舗:　　　<input id="branch" type="text" value="" size="40"/></p>
 		<p>機種:　　　<select id="product"name="product">
-			<% @products.each do |id, product| %>
-				<option value="<%= id %>">
+			<% @products.each do |product| %>
+				<option value="<%= product['id'] %>">
 					<%= product['brand'] %> <%= product['product'] %>
 				</option>
 			<% end%>

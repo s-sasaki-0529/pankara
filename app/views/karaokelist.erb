@@ -13,12 +13,13 @@
 	</thead>
 	<tbody>
 		<% @karaoke_list.each do |karaoke| %>
-		<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+		<tr> <!-- onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'" -->
 			<td><%= karaoke['datetime'] %></td>
 			<td><%= karaoke['name'] %></td>
 			<td class='center'><%= karaoke['plan'] %></td>
 			<td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
 			<td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+			<td class="noborder"><input type="button" value="履歴追加" onclick="register.createDialog(<%= karaoke['id'] %>);" /></td>
 		</tr>
 		<% end %>
 	</tbody>

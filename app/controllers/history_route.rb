@@ -20,7 +20,9 @@ class HistoryRoute < March
 	# get '/history/register - 入力された歌唱履歴をすべて登録してカラオケ画面を表示
 	#---------------------------------------------------------------------
 	get '/history/register' do
-		karaoke_id = @current_user.register_history
+		karaoke_id = @current_user.get_karaoke_id
+		karaoke_id = @current_user.register_karaoke if karaoke_id == 0
+		@current_user.register_history
 		redirect "/karaoke/detail/#{karaoke_id}"	
 	end
 	

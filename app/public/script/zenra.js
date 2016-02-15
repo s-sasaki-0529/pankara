@@ -50,6 +50,7 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
 			} ,
 			beforeClose: funcs.beforeClose ,
 		});
+		zenra.createSeekbar();
 	});
 };
 
@@ -150,7 +151,9 @@ var register = (function() {
 		} ,
 
 		/*[Method] 履歴入力用ダイアログを作成する*/
-		createDialog : function() {
+		createDialog : function(id) {
+			id = id || 0;
+			
 			funcs = {}
 			funcs.beforeClose = function() {	
 				if (!closeFlg) {
@@ -161,7 +164,14 @@ var register = (function() {
 			};
 
 			closeFlg = false;
-			zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , funcs);
+
+			if (id > 0) {
+				zenra.post('/karaoke/input/id' , {id: id});
+				zenra.showDialog('カラオケ入力' , 'input_dialog' , '/history/input' , 'input_history' , 600 , funcs);
+			}
+			else {
+				zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , funcs);
+			}
 		} ,
 
 		/*[Method] カラオケ情報入力終了後の処理*/
