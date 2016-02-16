@@ -32,6 +32,17 @@ zenra.get = function(url , funcs) {
 };
 
 /*
+parseJSON - JSON文字列をJSオブジェクトに変換する
+*/
+zenra.parseJSON = function(json) {
+	if (window.JSON) {
+		return JSON.parse(json);
+	} else {
+		alert('ブラウザがJSONに対応していません');
+	}
+};
+
+/*
 showDialog - ダイアログを表示する
 */
 zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
