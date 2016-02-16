@@ -21,6 +21,35 @@ zenra.post = function(url , data , funcs) {
 };
 
 /*
+_post - 非同期POST(改良版)
+*/
+zenra._post = function(url , data , opt) {
+	beforeSend = opt['beforeSend'];
+	success = opt['success'];
+	error = opt['error'];
+	$.ajax({
+		type: "POST" ,
+		url: url ,
+		data: data ,
+		beforeSend: beforeSend ,
+		success: success ,
+		error: error ,
+	});
+};
+
+/*
+_ajaxsample - JSONを用いたAjax通信のサンプル
+*/
+zenra._ajaxsample = function() {
+	this._post('/local/rpc/storelist' , {} , {
+		success: function(result) {
+			storeList = zenra.parseJSON(result);
+			console.log(storeList);
+		}
+	});
+};
+
+/*
 get - 非同期で通信する
 */
 zenra.get = function(url , funcs) {
