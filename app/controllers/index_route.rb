@@ -6,6 +6,7 @@ require_relative './song_route'
 require_relative './artist_route'
 require_relative './ranking_route'
 require_relative './user_route'
+require_relative './local_route'
 
 class IndexRoute < March
 
@@ -33,5 +34,6 @@ class IndexRoute < March
 	use ArtistRoute
 	use RankingRoute
 	use UserRoute
+	use LocalRoute
 
 end
