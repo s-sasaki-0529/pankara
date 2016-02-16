@@ -16,6 +16,7 @@ require_relative 'friend'
 require_relative 'ranking'
 require 'uri'
 require 'open-uri'
+require 'json'
 require 'yaml'
 CONFIG = 'config.yml'
 class Util
@@ -71,6 +72,13 @@ class Util
 			config.delete(key)
 		end
 		open(CONFIG , "w"){|f| f.write(YAML.dump(config))}
+	end
+
+	# to_json - RubyオブジェクトをJSONに変換する
+	#---------------------------------------------------------------------
+	def self.to_json(data)
+		data.kind_of?(Hash) or data.kind_of?(Array) or return ""
+		JSON.generate(data)
 	end
 
 	# unset_config - コンフィグを削除する
