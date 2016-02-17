@@ -1,0 +1,33 @@
+<table <% locals['table_tag'].each do |attr, value| %>
+	<%= attr %>="<%= value %>"
+<% end %> >
+	<% unless locals['header']['name'].empty? %>
+		<thead>
+			<tr <% locals['header'].each do |attr, value| %>
+				<% unless attr == 'name' %>
+					<%= attr %>="<%= value %>"
+				<% end %>
+			<% end %> >
+				<% locals['header']['name'].each_value do |name| %>
+					<th>
+						<%= name %>
+					</th>
+				<% end %>
+			</tr>
+		</thead>
+	<% end %>
+
+	<tbody>
+		<% locals['body']['item'].zip(locals['body']['tr']) do |row_item, row_attr| %>
+			<tr <% row_attr.each do |attr, value| %>
+				<%= attr %>="<%= value %>"
+			<% end %> >
+				<% locals['item_symbol'].each do |key| %>
+					<td>
+						<%= row_item[key] %>
+					</td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
