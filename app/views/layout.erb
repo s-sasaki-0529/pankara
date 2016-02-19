@@ -1,53 +1,53 @@
 <html>
 <head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="/css/march.css?20160206" type="text/css">
-	<link rel="stylesheet" href="/css/plugines.css?20160207" type="text/css">
-	<link rel="stylesheet" href="/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css">
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css" type="text/css">
-	<script src="/script/jquery-2.2.0.min.js"></script>
-	<script src="/jquery-ui-1.11.4/jquery-ui.min.js"></script>
-	<script src="/script/jquery.simplyscroll.min.js"></script>
-	<script src="/jquery_lib/tablesort/jquery.tablesorter.min.js"></script>
-	<script src="/script/zenra.js"></script>
-	<title>カラオケ情報統合管理サービス(仮)</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/march.css?20160206" type="text/css">
+  <link rel="stylesheet" href="/css/plugines.css?20160207" type="text/css">
+  <link rel="stylesheet" href="/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" type="text/css">
+  <script src="/script/jquery-2.2.0.min.js"></script>
+  <script src="/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+  <script src="/script/jquery.simplyscroll.min.js"></script>
+  <script src="/jquery_lib/tablesort/jquery.tablesorter.min.js"></script>
+  <script src="/script/zenra.js"></script>
+  <title>カラオケ情報統合管理サービス(仮)</title>
 </head>
 <body>
 <div class="container">
-	<!-- メインメニューバー -->
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarEexample">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">🐼パンダリンのカラオケランド</a>
-			</div>
-			
-			<div class="collapse navbar-collapse" id="navbarEexample">
-				<ul class="nav navbar-nav">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							親メニュー<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">メニューＡ</a></li>
-							<li><a href="#">メニューＢ</a></li>
-							<li><a href="#">メニューＣ</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<p align="right"><input id="input" type="button" value="入力" onclick="register.createDialog();" /></p>
-		</div>
-	</nav>
-	<!-- コンテンツのインクルード-->
-	<%= yield %>
+  <!-- メインメニューバー -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarEexample">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">🐼パンダリンのカラオケランド</a>
+      </div>
+      
+      <div class="collapse navbar-collapse" id="navbarEexample">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              親メニュー<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">メニューＡ</a></li>
+              <li><a href="#">メニューＢ</a></li>
+              <li><a href="#">メニューＣ</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <p align="right"><input id="input" type="button" value="入力" onclick="register.createDialog();" /></p>
+    </div>
+  </nav>
+  <!-- コンテンツのインクルード-->
+  <%= yield %>
 </div>
 
 </body>
-	<script src="/bootstrap/js/bootstrap.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
 </html>

@@ -1,20 +1,20 @@
 <h1>歌手別歌唱回数ランキング</h1>
 <table id="artistranking_table" border="1" class="table sortable table-hover linkcursor">
-	<thead>
-		<tr>
-			<th class='cell-number'>順位</th>
-			<th>歌手名</th>
-			<th class='cell-number'>回数</th>
-		</tr>
-	</thead>
-	<tbody>
-		<% @artists.each_with_index do |artist , rank| %>
-		<tr>
-			<td class='center'><%= rank + 1 %></td>
-			<td><%= artist_link artist['artist_id'], artist['artist_name'] %></td>
-			<td class='center'><%= artist['count'] %></td>
-		</tr>
-		<% end %>
-	</tbody>
+  <thead>
+    <tr>
+      <th class='cell-number'>順位</th>
+      <th>歌手名</th>
+      <th class='cell-number'>回数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @artists.each_with_index do |artist , rank| %>
+    <tr>
+      <td class='center'><%= rank + 1 %></td>
+      <td><%= artist_link artist['artist_id'], artist['artist_name'] %></td>
+      <td class='center'><%= artist['count'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
 

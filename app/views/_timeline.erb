@@ -1,18 +1,18 @@
 <div id="div_timelines">
-	<% if @timeline.empty? %>
-		<p>友達がいません(笑)</p>
-	<% else %>
-		<% @timeline.each do |tl| %>
-			<div class="div-timeline">
-				<p>
-					<%= user_link tl['userinfo']['username'] , tl['userinfo']['screenname'] %>
-					さんがカラオケに行きました!
-				</p>
-				<p>
-					<%= karaoke_link(tl['karaoke_id'] , "#{tl['datetime']} #{tl['name']}") %>
-				</p>
-				<hr>
-			</div>
-		<% end %>
-	<% end %>
+  <% if @timeline.empty? %>
+    <p>友達がいません(笑)</p>
+  <% else %>
+    <% @timeline.each do |tl| %>
+      <div class="div-timeline">
+        <p>
+          <%= user_link tl['userinfo']['username'] , tl['userinfo']['screenname'] %>
+          さんがカラオケに行きました!
+        </p>
+        <p>
+          <%= karaoke_link(tl['karaoke_id'] , "#{tl['datetime']} #{tl['name']}") %>
+        </p>
+        <hr>
+      </div>
+    <% end %>
+  <% end %>
 </div>

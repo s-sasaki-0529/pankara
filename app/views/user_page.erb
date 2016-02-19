@@ -2,40 +2,40 @@
 
 <h4>最近のカラオケ</h4>
 <table id="recent_karaoke" class="table table-hover linkcursor">
-	<thead>
-		<tr>
-			<th class="cell-datetime">日時</th>
-			<th>カラオケ名</th>
-		</tr>
-	</thead>
-	<tbody>
-		<% @karaoke_list.each do |karaoke| %>
-			<tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-				<td><%= karaoke['datetime'] %></td>
-				<td><%= karaoke['name'] %></td>
-			</tr>
-		<% end %>
-		</tr>
-	</tbody>
+  <thead>
+    <tr>
+      <th class="cell-datetime">日時</th>
+      <th>カラオケ名</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @karaoke_list.each do |karaoke| %>
+      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+        <td><%= karaoke['datetime'] %></td>
+        <td><%= karaoke['name'] %></td>
+      </tr>
+    <% end %>
+    </tr>
+  </tbody>
 </table>
 
 <h4>最近歌った曲</h4>
 <table id="recent_sang" class="table table-hover linkcursor">
-	<tbody>
-		<thead>
-			<tr>
-				<th>曲</th>
-				<th>歌手</th>
-			</tr>
-		</thead>
-		<% @histories.each do |history| %>
-			<tr>
-				<td><%= song_link history['song'], history['song_name'] %></td>
-				<td><%= artist_link history['artist'], history['artist_name'] %></td>
-			</tr>
-		<% end %>
-		</tr>
-	</tbody>
+  <tbody>
+    <thead>
+      <tr>
+        <th>曲</th>
+        <th>歌手</th>
+      </tr>
+    </thead>
+    <% @histories.each do |history| %>
+      <tr>
+        <td><%= song_link history['song'], history['song_name'] %></td>
+        <td><%= artist_link history['artist'], history['artist_name'] %></td>
+      </tr>
+    <% end %>
+    </tr>
+  </tbody>
 </table>
 <h4>一番歌っている曲</h4>
 <%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / <%= @most_sang_song['counter'] %>回

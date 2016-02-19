@@ -1,55 +1,55 @@
 <script type='text/javascript'>$(function(){ bathtowel.init();});</script>
 
 <div class="container-fluid">
-	<div id="div_top_column" class="row">
-		<!-- 左カラム -->
-		<div class="col-xs-2 center">
-			<h1>Menu</h1>
-			<div id="div_icon">
-				<%= user_icon @user['username'] , '100%' , '100%' %>
-			</div>
-			<div id="div_myprofile">
-				<p>ユーザ名 <%= @user['screenname'] %></p>
-				<p>
-					前回のカラオケ<br>
-					<% if @recent_karaoke %>
-						<%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
-					<% else %>
-						記録がありません
-					<% end %>
-				</p>
-			</div>
-			<img src="image/mascot.png" alt="マスコットキャラクター" width='128px' height='128px'>
-		</div>
-		<!-- 中央カラム -->
-		<div class="col-xs-7">
-			<h1 class="center">March</h3>
-			<div id="div_mymenu" class="menubox">
-				<p class="center">あなたのカラオケ<p>
-				<input type="button" class="menu-button" value="マイページ" onclick="location.href='user/<%= @user['username'] %>'">
-				<input type="button" class="menu-button" value="歌唱履歴">
-				<input type="button" class="menu-button" value="ランキング">
-				<input type="button" class="menu-button" value="集計">	
-			</div>
-			<div id="div_everymenu" class="menubox">
-				<p class="center">みんなのカラオケ<p/>
-				<input type="button" class="menu-button" value="カラオケ記録" onclick="location.href='/karaoke/list'">
-				<input type="button" class="menu-button" value="歌唱履歴">
-				<input type="button" class="menu-button" value="ランキング" onclick="location.href='/ranking/song'">
-				<input type="button" class="menu-button" value="集計">	
-			</div>
-		</div>
-		<!-- 右カラム -->
-		<div class="col-xs-3">
-			<h1 class='center'>TimeLine</h1>
-			<%= erb :_timeline %>
-		</div>
-		<!-- 動画垂れ流しエリア -->
-		<div id="bathtowel_div" onmouseout="bathtowel.hideInfo()">
-			<ul id="slider">
-				<% @song_list.each do |song| %>
-					<li><%= movie_image song['id'] , 160 , 90 , true%></li>
-				<% end %>
-			</ul>
-		</div>
+  <div id="div_top_column" class="row">
+    <!-- 左カラム -->
+    <div class="col-xs-2 center">
+      <h1>Menu</h1>
+      <div id="div_icon">
+        <%= user_icon @user['username'] , '100%' , '100%' %>
+      </div>
+      <div id="div_myprofile">
+        <p>ユーザ名 <%= @user['screenname'] %></p>
+        <p>
+          前回のカラオケ<br>
+          <% if @recent_karaoke %>
+            <%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
+          <% else %>
+            記録がありません
+          <% end %>
+        </p>
+      </div>
+      <img src="image/mascot.png" alt="マスコットキャラクター" width='128px' height='128px'>
+    </div>
+    <!-- 中央カラム -->
+    <div class="col-xs-7">
+      <h1 class="center">March</h3>
+      <div id="div_mymenu" class="menubox">
+        <p class="center">あなたのカラオケ<p>
+        <input type="button" class="menu-button" value="マイページ" onclick="location.href='user/<%= @user['username'] %>'">
+        <input type="button" class="menu-button" value="歌唱履歴">
+        <input type="button" class="menu-button" value="ランキング">
+        <input type="button" class="menu-button" value="集計">  
+      </div>
+      <div id="div_everymenu" class="menubox">
+        <p class="center">みんなのカラオケ<p/>
+        <input type="button" class="menu-button" value="カラオケ記録" onclick="location.href='/karaoke/list'">
+        <input type="button" class="menu-button" value="歌唱履歴">
+        <input type="button" class="menu-button" value="ランキング" onclick="location.href='/ranking/song'">
+        <input type="button" class="menu-button" value="集計">  
+      </div>
+    </div>
+    <!-- 右カラム -->
+    <div class="col-xs-3">
+      <h1 class='center'>TimeLine</h1>
+      <%= erb :_timeline %>
+    </div>
+    <!-- 動画垂れ流しエリア -->
+    <div id="bathtowel_div" onmouseout="bathtowel.hideInfo()">
+      <ul id="slider">
+        <% @song_list.each do |song| %>
+          <li><%= movie_image song['id'] , 160 , 90 , true%></li>
+        <% end %>
+      </ul>
+    </div>
 </div>
