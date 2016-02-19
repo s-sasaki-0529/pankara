@@ -6,7 +6,7 @@ include Rbase
 init = proc do
   `zenra init`
   User.create('unagipai' , 'unagipai' , 'ちゃら')
-  score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点オンライン2'}
+  score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点'}
 
   register = Register.new(User.new('unagipai'))
   register.with_url = false
@@ -88,7 +88,7 @@ describe 'ユーザページ機能' do
     
     iscontain 'Butter-Fly / 和田光司 / 2回'
     iscontain 'Aqua Timez / 3回'
-    iscontain '82.0 / 心絵 / ロードオブメジャー / 採点方法: 全国採点オンライン2'
+    iscontain '82.0 / 心絵 / ロードオブメジャー / 採点方法: 全国採点'
   end
   it 'リンクが正常に登録されているか' , :js => true do
     login 'unagipai'

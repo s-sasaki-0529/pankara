@@ -6,7 +6,7 @@ init = proc do
   `zenra init`
   User.create('sa2knight' , 'sa2knight' , 'ないと')
   User.create('tomotin' , 'tomotin' , 'ともちん')
-  score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点オンライン2'}
+  score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点'}
 
   register1 = Register.new(User.new('sa2knight'))
   karaoke_id = register1.create_karaoke(
