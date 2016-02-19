@@ -10,30 +10,30 @@ require_relative './local_route'
 
 class IndexRoute < March
 
-	# get '/' - トップページへのアクセス
-	#---------------------------------------------------------------------
-	get '/' do
-		@user = @current_user
-		@timeline = @user.timeline
-		@recent_karaoke = @user.get_karaoke(1)[0]
-		@song_list = History.recent_song
-		erb :index
-	end
+  # get '/' - トップページへのアクセス
+  #---------------------------------------------------------------------
+  get '/' do
+    @user = @current_user
+    @timeline = @user.timeline
+    @recent_karaoke = @user.get_karaoke(1)[0]
+    @song_list = History.recent_song
+    erb :index
+  end
 
-	# get '/player/:id'
-	#---------------------------------------------------------------------
-	get '/player/:id' do
-		@url = Song.new(params[:id])['url']
-		erb :_player
-	end
+  # get '/player/:id'
+  #---------------------------------------------------------------------
+  get '/player/:id' do
+    @url = Song.new(params[:id])['url']
+    erb :_player
+  end
 
-	use AuthenticationRoute
-	use KaraokeRoute
-	use HistoryRoute
-	use SongRoute
-	use ArtistRoute
-	use RankingRoute
-	use UserRoute
-	use LocalRoute
+  use AuthenticationRoute
+  use KaraokeRoute
+  use HistoryRoute
+  use SongRoute
+  use ArtistRoute
+  use RankingRoute
+  use UserRoute
+  use LocalRoute
 
 end
