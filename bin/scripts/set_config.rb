@@ -4,7 +4,7 @@ key = ARGV[1]
 value = ARGV[2]
 
 if mode == 'set'
-	Util.set_config(key , value)
+  Util.set_config(key , value)
 elsif mode == 'unset'
-	Util.unset_config(key)
+  Util.unset_config(key)
 end

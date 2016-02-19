@@ -14,13 +14,13 @@ usage() {
 # オプション解析
 while getopts u:h OPT
 do
-    case $OPT in
-        h)  usage
-            exit 1
-            ;;
-        u)  VALUE_U=$OPTARG
-            ;;
-    esac
+  case $OPT in
+    h)  usage
+      exit 1
+      ;;
+    u)  VALUE_U=$OPTARG
+      ;;
+  esac
 done
 shift $((OPTIND - 1))
 

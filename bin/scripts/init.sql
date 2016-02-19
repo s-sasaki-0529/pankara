@@ -51,7 +51,7 @@ CREATE TABLE `friend` (
   `user_to` INTEGER NOT NULL COMMENT '受信側userid',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`) ,
-	UNIQUE (`user_from` , `user_to`)
+  UNIQUE (`user_from` , `user_to`)
 ) COMMENT '友達関係を管理';
 
 -- ---
@@ -99,7 +99,7 @@ CREATE TABLE `karaoke` (
   `plan` FLOAT NULL DEFAULT NULL COMMENT '滞在時間',
   `store` INTEGER NOT NULL COMMENT '利用店舗',
   `product` INTEGER NOT NULL COMMENT '機種',
-	`created_by` INTEGER NOT NULL COMMENT '作成者',
+  `created_by` INTEGER NOT NULL COMMENT '作成者',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'カラオケデータ';
@@ -146,11 +146,11 @@ CREATE TABLE `history` (
 DROP TABLE IF EXISTS `score_type`;
 
 CREATE TABLE `score_type` (
-	`id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-	`brand` MEDIUMTEXT NOT NULL COMMENT '機種名(JOY or DAM)',
-	`name` MEDIUMTEXT NOT NULL COMMENT '採点モード名',
-	`created_at` TIMESTAMP NOT NULL,
-	PRIMARY KEY (`id`)
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `brand` MEDIUMTEXT NOT NULL COMMENT '機種名(JOY or DAM)',
+  `name` MEDIUMTEXT NOT NULL COMMENT '採点モード名',
+  `created_at` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`)
 ) COMMENT '採点モード';
 
 -- ---
