@@ -4,12 +4,12 @@
 require_relative 'util'
 class Base
 
-	attr_reader :params
+  attr_reader :params
 
-	# [] - インデクサでparamsにアクセスさせる
-	#--------------------------------------------------------------------
-	def [](index)
-		@params[index]
-	end
+  # [] - インデクサでparamsにアクセスさせる
+  #--------------------------------------------------------------------
+  def [](index)
+    @params[index]
+  end
 
 end
