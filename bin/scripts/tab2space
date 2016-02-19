@@ -1,0 +1,11 @@
+# 本スクリプトを実行したディレクトリ内にある全てのファイルを対象に、
+# Tabをスペース２つに変換して上書き保存する
+# ファイルは再帰的な探索を行わず、ディレクトリは無視する
+
+ls -1 | grep -v / | grep -v ":" | while read f
+do
+  expand -t 2 "$f" > "${f}_tmp"
+  rm "$f"
+  mv "${f}_tmp" "$f"
+  echo "replaced $f"
+done
