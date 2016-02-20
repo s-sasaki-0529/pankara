@@ -60,8 +60,6 @@ url = '/user/unagipai'
 describe 'ユーザページ機能' do
   before(:all,&init)
   it '最近のカラオケが正常に表示されるか' do
-    # 対象テーブルがN行存在することを検証する
-    # 1つ以上の行をサンプリングして、内容を検証する
     login 'unagipai'
     visit url
     karaoke_table = table_to_hash('recent_karaoke')
@@ -70,8 +68,6 @@ describe 'ユーザページ機能' do
     expect(karaoke_table[0]['tostring']).to eq '2016-12-26 20:00:00,ユーザページテスト用カラオケ5'
   end
   it '最近歌った曲が正常に表示されるか' do
-    # 対象テーブルがN行存在することを検証する
-    # 1つ以上の行をサンプリングして、内容を検証する
     login 'unagipai'
     visit url
     karaoke_table = table_to_hash('recent_sang')
@@ -80,9 +76,6 @@ describe 'ユーザページ機能' do
     expect(karaoke_table[0]['tostring']).to eq '夏空,Galileo Galilei'
   end
   it '各種集計が正常に表示されるか' do
-    # 一番歌ってる曲が正常に表示される
-    # 一番歌っている歌手が正常に表示される
-    # 最高得点が正常に表示される
     login 'unagipai'
     visit url
     
