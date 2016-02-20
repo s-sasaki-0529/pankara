@@ -26,6 +26,7 @@ shift $((OPTIND - 1))
 
 # メイン処理
 cd $MARCHDIR
+bundle exec ruby "bin/scripts/set_config.rb" "unset" "auto_login"
 if [ -n "$VALUE_T" ]; then
   bundle exec rspec spec/t/${VALUE_T}*
 else
