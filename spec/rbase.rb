@@ -23,7 +23,8 @@ module Rbase
   end
 
   def link(text)
-    page.all('a' , :text => text)[0].click
+    url = page.all('a' , :text => text)[0]['href']
+    visit url
   end
 
   def examine_text(id , text)
