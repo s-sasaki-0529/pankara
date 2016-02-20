@@ -93,7 +93,10 @@ describe 'ユーザページ機能' do
   it 'リンクが正常に登録されているか' , :js => true do
     login 'unagipai'
     visit url
-    id_to_element('recent_karaoke').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移:w
+
+    id_to_element('recent_karaoke').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移
+    iscontain 'ユーザページテスト用カラオケ5'
+    visit url
 
     examine_songlink('夏空', 'Galileo Galilei', url)
     examine_artistlink('Galileo Galilei', url)
