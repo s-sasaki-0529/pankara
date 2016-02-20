@@ -49,11 +49,3 @@ table.sortable thead tr .headerSortDown, table.sortable thead tr .headerSortUp {
   background-color: #8dbdd8;
 }
 
-/***
-jQueryUI Dialog
-***/
-.ui-dialog {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-}

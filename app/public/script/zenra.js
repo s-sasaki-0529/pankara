@@ -84,17 +84,12 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
       height: "auto" ,
       width: width ,
       resizable: false ,
-      draggable: false ,
-      position: { my : "center center - 500"} ,
       close: function(event) {
         $(this).dialog('destroy');
         $(event.target).remove();
       } ,
       beforeClose: funcs.beforeClose ,
     });
-    var leftmargin = div.width() / 2 * -1;
-    var topmargin = div.height() / 2 * -1;
-    $('.ui-dialog').css('margin-left' , leftmargin).css('margin-top' , topmargin);
     zenra.createSeekbar();
   });
 };
