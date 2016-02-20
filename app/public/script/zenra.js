@@ -84,6 +84,7 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
       height: "auto" ,
       width: width ,
       resizable: false ,
+      draggable: false ,
       position: { my : "center center - 500"} ,
       close: function(event) {
         $(this).dialog('destroy');
