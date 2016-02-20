@@ -28,6 +28,12 @@ history_contents = [
   '採点方法',
   '採点',
 ]
+history = {
+  'song' => '心絵',
+  'artist' => 'ロードオブメジャー',
+  'score_type' => 'JOYSOUND 全国採点',
+  'score' => 80
+}
 
 # テスト実行
 describe '履歴入力用ダイアログのテスト', :js => true do
@@ -59,10 +65,12 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     input_karaoke
     click_button '次へ'
+   
+    input_history_with_data history, 1
     
-    input_history
+    input_history 1
     click_button '全て登録'
-
+    
     karaoke = [
       '2016-02-20 12:00:00',
       '2.0',
@@ -79,6 +87,16 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       '0',
       '全国採点',
       '80.0'
+    ]
+    iscontain history
+    
+    history = [
+      'ちゃら',
+      'song1',
+      'artist1',
+      '0',
+      '全国採点',
+      '1.0'
     ]
     iscontain history
   end

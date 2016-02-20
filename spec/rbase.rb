@@ -93,10 +93,33 @@ module Rbase
     fill_in 'memo', with: '楽しかった'
   end
 
-  def input_history
-    fill_in 'song', with: '心絵'
-    fill_in 'artist', with: 'ロードオブメジャー'
+  def input_history_with_data(history, num = 0)
+    fill_in 'song', with: history['song']
+    fill_in 'artist', with: history['artist']
+    select history['score_type'], from: 'score_type'
+    fill_in 'score', with: history['score']
+    
+    unless num == 0
+      click_button '次を入力'
+      wait_for_register_history num
+    end
+  end
+  
+  def input_history(value = 0, num = 0)
+    score = 0 + value
+    score = 100 if score > 100
+    fill_in 'song', with: "song#{value}"
+    fill_in 'artist', with: "artist#{value}"
     select 'JOYSOUND 全国採点', from: 'score_type'
-    fill_in 'score', with: '80'
+    fill_in 'score', with: score
+
+    unless num == 0
+      click_button '次を入力'
+      wait_for_register_history num
+    end
+  end
+
+  def wait_for_register_history(num)
+    page.find('#result').find('p', text: "#{num}件入力されました")
   end
 end
