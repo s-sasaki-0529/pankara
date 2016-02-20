@@ -93,6 +93,7 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
     });
     var margin = div.height() / 2;
     $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
+    div.css('overflow' , 'hidden');
     $(window).scrollTop(scroll);
     zenra.createSeekbar();
   });
