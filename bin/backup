@@ -22,6 +22,6 @@ shift $((OPTIND - 1))
 
 # メイン処理
 cd ~/March
-filename=$(date +"%Y_%m_%d_%k_%M")
+filename=$(date +"%Y-%m-%d-%T")
 filepath="backup/$filename"
 mysqldump --single-transaction -u root --password=zenra march > "$filepath"
