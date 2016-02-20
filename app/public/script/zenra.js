@@ -77,6 +77,7 @@ showDialog - ダイアログを表示する
 zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
   funcs = funcs || {};
   var div = $('<div>').attr('id' , dialogId);
+  var scroll = $(window).scrollTop();
   div.load(url + " #" + id , function(date , status) {
     div.dialog({
       title: title ,
@@ -90,6 +91,9 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
       } ,
       beforeClose: funcs.beforeClose ,
     });
+    var margin = div.height() / 2;
+    $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
+    $(window).scrollTop(scroll);
     zenra.createSeekbar();
   });
 };
