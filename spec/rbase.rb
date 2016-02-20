@@ -81,4 +81,21 @@ module Rbase
     page.all('iframe').collect {|element| element[:src]}
   end
 
+  def input_karaoke
+    fill_in 'name', with: '入力ダイアログテスト用カラオケ'
+    fill_in 'datetime', with: '2016-02-20 12:00:00'
+    select '02時間00分', from: 'plan'
+    fill_in 'store', with: '歌広場'
+    fill_in 'branch', with: '相模大野店'
+    select 'JOYSOUND MAX', from: 'product'
+    fill_in 'price', with: '620'
+    fill_in 'memo', with: '楽しかった'
+  end
+
+  def input_history
+    fill_in 'song', with: '心絵'
+    fill_in 'artist', with: 'ロードオブメジャー'
+    select 'JOYSOUND 全国採点', from: 'score_type'
+    fill_in 'score', with: '80'
+  end
 end
