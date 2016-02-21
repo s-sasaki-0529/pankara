@@ -38,31 +38,24 @@ history = {
 # テスト実行
 describe '履歴入力用ダイアログのテスト', :js => true do
   before(:all , &init)
-  it 'ダイアログが正常に表示されるか' do
+ 
+  before do
     login 'unagipai'
-    visit '/'
-    page.all('a' , :text => '親メニュー')[0].click
-    click_button '入力'
+    page.all('a' , :text => 'カラオケを記録する')[0].click
+    click_link 'カラオケを新規登録'
+  end
 
+  it 'ダイアログが正常に表示されるか' do
     iscontain karaoke_contents
   end
-  it 'ダイアログの画面が正常に遷移されるか' do
-    login 'unagipai'
-    visit '/'
-    page.all('a' , :text => '親メニュー')[0].click
-    click_button '入力'
 
+  it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
     click_button '次へ' 
-    
     iscontain history_contents
   end
-  it '入力内容が正しく登録されるか' do
-    login 'unagipai'
-    visit '/'
-    page.all('a' , :text => '親メニュー')[0].click
-    click_button '入力'
 
+  it '入力内容が正しく登録されるか' do
     input_karaoke
     click_button '次へ'
    
@@ -100,4 +93,5 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     ]
     iscontain history
   end
+
 end

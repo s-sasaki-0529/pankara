@@ -24,19 +24,6 @@ th {
   cursor: pointer;
 }
 
-.menu-button {
-  margin-left: 24px;
-  margin-right: 24px;
-  width: 96px;
-  height: 96px;
-}
-
-.menubox {
-  border: 1px solid;
-  height: 150px;
-  margin: 10px;
-}
-
 .div-timeline {
   padding: 5px 10px 5px 10px;
 }

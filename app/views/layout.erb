@@ -31,15 +31,35 @@
         <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              親メニュー<b class="caret"></b>
+              カラオケを振り返る<b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#">メニューＡ</a></li>
-              <li><a href="#">メニューＢ</a></li>
-              <li><a href="#">メニューＣ</a></li>
-              <li><p align="center"><input id="input" type="button" value="入力" onclick="register.createDialog();"/></p></li>
+              <li><a href="/karaoke/user/">今までのカラオケ</a></li>
+              <li><a href="/history/">今まで歌った曲</a></li>
             </ul>
           </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              カラオケを記録する<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="register.createDialog();">カラオケを新規登録</a></li>
+              <li><a href="#">既存のカラオケに歌唱履歴を登録(未)</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              ランキングを見る <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/ranking/song">楽曲ランキング</a></li>
+              <li><a href="/ranking/artist">アーティストランキング</a></li>
+            </ul>
+          </li>
+
+          <li><a href="/logout">ログアウト</a></li>
         </ul>
       </div>
     </div>
