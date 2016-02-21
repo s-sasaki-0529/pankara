@@ -77,3 +77,34 @@ th {
   font-size: 24px;
   text-align: center;
 }
+
+#input_attendace div,
+#input_karaoke div,
+#input_history div {
+  margin-top: 10px;
+}
+
+#input_attendance label,
+#input_karaoke label,
+#input_history label {
+  width: 80px;
+  float: left;
+  margin-right: 10px;
+}
+
+#input_attendance textarea,
+#input_karaoke textarea {
+  resize: vertical;
+  overflow: auto;
+  width: 560px;
+}
+
+#input_attendance #next_button,
+#input_karaoke #next_button,
+#input_history #buttons {
+  margin-top: 20px;
+}
+
+#input_history #buttons input {
+  margin-right: 20px;
+}

@@ -130,10 +130,13 @@ zenra.createSeekbar = function() {
     step: 1 ,
 
     create: function() {
-      $("#slidervalue").html('キー: ' + $('#seekbar').slider('value'));
+      $("#slidervalue").html($('#seekbar').slider('value'));
     } ,
-    change: function() {
-      $('#slidervalue').html('キー: ' + $('#seekbar').slider('value'));
+    change: function(event , ui) {
+      $('#slidervalue').html(ui.value);
+    } ,
+    slide: function(event , ui) {
+      $('#slidervalue').html(ui.value);
     } ,
   });
 };

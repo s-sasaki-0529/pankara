@@ -1,23 +1,43 @@
 <div style="display: none">
+
   <div id="input_history" title="歌唱履歴の入力">
-    <form action="/history/input" method="post">
-      <p>「カラオケ」に登録</p>
-      <p id="result"></p>
-      <p>曲名:　　　<input id="song" type="text" name="song" value="" size="30" autofocus/></p>
-      <p>歌手:　　　<input id="artist" type="text" name="artist" value="" size="30"/></p>
-      <div id="slidervalue" name="key"></div>
-      <div id="seekbar" name="seekbar"></div>
-      <p>採点方法:<SELECT id="score_type" name="socre_type">
-        <OPTION value="0"></OPTION>
-        <% @score_type.each do |value| %>
-          <OPTION value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></OPTION>
-        <% end %>
-      </SELECT></p>
-      <p>採点:　　　<input id="score" type="text" name="score" value="" size="10"/>点</p>
+    <p>「カラオケ」に登録</p>
+    <p id="result"></p>
+    <div>
+      <label for="song">曲名:</label>
+      <input id="song" type="text" name="song" value="" size="30" autofocus/>
+    </div>
+    <div>
+      <label for="artist">歌手:</label>
+      <input id="artist" type="text" name="artist" value="" size="30"/>
+    </div>
+    <div>
+      <label for="slidervalue">キー:</label>
+      <p id="slidervalue" name="key"></p>
+      <p id="seekbar" name="seekbar" style="width:350px"></p>
+      <div style="width:350px">
+        <p style="float:left">-6</p>
+        <p align="right">6</p>
+      </div>
+    </div>
+    <div>
+     <label for="score_type">採点方法:</label>
+     <p><select id="score_type" name="socre_type">
+       <option value="0"></option>
+       <% @score_type.each do |value| %>
+         <option value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></option>
+       <% end %>
+     </select></p>
+    </div>
+    <div>
+      <label for="score">採点:</label>
+      <input id="score" type="text" name="score" value="" size="10"/>点
+    </div>
+    <div id="buttons">
       <input type="button" value="次を入力" onclick="register.execInputHistory('next');"/>
       <input type="button" value="全て登録" onclick="register.execInputHistory('register');"/>
       <input type="button" value="キャンセル" onclick="zenra.closeDialog('input_dialog');"/>
-    </form>
+    </div>
   </div>
   
   <div id="loading">
@@ -31,5 +51,6 @@
     <input id="yes" type="button" value="はい" onclick="register.reset()"/>
     <input id="no" type="button" value="いいえ" onclick="zenra.closeDialog('caution_dialog')"/>
   </div>
+
 </div>
 

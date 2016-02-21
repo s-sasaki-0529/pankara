@@ -1,53 +1,83 @@
 <div style="display: none">
+  
   <div id="input_karaoke" title="カラオケの入力">
     <p>カラオケの新規作成</p>
-    <p>カラオケ名:　<input id="name" type="text" name="name" value="" size="40"/></p>
-    <p>日時:　　　　　<input id="datetime" name="datetime" type="datetime" value="" size="40" required/></p>
-    <p>時間:　　　　　<select id="plan" name="plan">
-      <option value="0.5">00時間30分</option>
-      <option value="1">01時間00分</option>
-      <option value="1.5">01時間30分</option>
-      <option value="2">02時間00分</option>
-      <option value="2.5">02時間30分</option>
-      <option value="3">03時間00分</option>
-      <option value="3.5">03時間30分</option>
-      <option value="4">04時間00分</option>
-      <option value="4.5">04時間30分</option>
-      <option value="5">05時間00分</option>
-      <option value="5.5">05時間30分</option>
-      <option value="6">06時間00分</option>
-      <option value="6.5">06時間30分</option>
-      <option value="7">07時間00分</option>
-      <option value="7.5">07時間30分</option>
-      <option value="8">08時間00分</option>
-      <option value="8.5">08時間30分</option>  
-      <option value="9">09時間00分</option>
-      <option value="9.5">09時間30分</option>
-      <option value="10">10時間00分</option>
-      <option value="10.5">10時間30分</option>
-      <option value="11">11時間00分</option>
-      <option value="11.5">11時間30分</option>
-      <option value="12">12時間00分</option>
-    </select></p>
-    <p>店:　　　　<input id="store" type="text" name="store" value="" size="40"/></p>
-    <p>店舗:　　　<input id="branch" type="text" name="branch" value="" size="40"/></p>
-    <p>機種:　　　<select id="product"name="product">
-      <% @products.each do |product| %>
-        <option value="<%= product['id'] %>">
-          <%= product['brand'] %> <%= product['product'] %>
-        </option>
-      <% end%>
-    </select></p>
-    <p>値段:　　　<input id="price" type="text" name="price" value="" size="10">円</p>
-    <p>感想:</p>
-    <p><textarea id="memo" name="memo" cols=60 rows=3></textarea></p>
-    <input type="button" value="次へ" onclick="register.execInputKaraoke();"/>
+    <div>
+      <label for="name">カラオケ名:</label>
+      <input id="name" type="text" name="name" value="" size="30"/>
+    </div>
+    <div>
+      <label for="datetime">日時:</label>
+      <input id="datetime" name="datetime" type="datetime" value="" size="20" required/>
+    </div>
+    <div>
+      <label for="plan">時間:</label>
+      <p><select id="plan" name="plan">
+        <option value="0.5">00時間30分</option>
+        <option value="1">01時間00分</option>
+        <option value="1.5">01時間30分</option>
+        <option value="2">02時間00分</option>
+        <option value="2.5">02時間30分</option>
+        <option value="3">03時間00分</option>
+        <option value="3.5">03時間30分</option>
+        <option value="4">04時間00分</option>
+        <option value="4.5">04時間30分</option>
+        <option value="5">05時間00分</option>
+        <option value="5.5">05時間30分</option>
+        <option value="6">06時間00分</option>
+        <option value="6.5">06時間30分</option>
+        <option value="7">07時間00分</option>
+        <option value="7.5">07時間30分</option>
+        <option value="8">08時間00分</option>
+        <option value="8.5">08時間30分</option>  
+        <option value="9">09時間00分</option>
+        <option value="9.5">09時間30分</option>
+        <option value="10">10時間00分</option>
+        <option value="10.5">10時間30分</option>
+        <option value="11">11時間00分</option>
+        <option value="11.5">11時間30分</option>
+        <option value="12">12時間00分</option>
+      </select></p>
+    </div>
+    <div>
+      <label for="store">店:</label>
+      <input id="store" type="text" name="store" value="" size="40"/>
+    </div>
+    <div>
+      <label for="branch">店舗:</label>
+      <input id="branch" type="text" name="branch" value="" size="40"/>
+    </div>
+    <div>
+      <label for="product">機種:</label>
+      <p><select id="product"name="product">
+        <% @products.each do |product| %>
+          <option value="<%= product['id'] %>">
+            <%= product['brand'] %> <%= product['product'] %>
+          </option>
+        <% end%>
+      </select></p>
+    </div>
+    <div>
+      <label for="price">値段:</label>
+      <input id="price" type="text" name="price" value="" size="10">円
+    </div>
+    <div>
+      <label for="memo">感想:</label>
+      <textarea id="memo" name="memo" cols=60 rows=3></textarea>
+    </div>
+    <p align="right"><input id="next_button" type="button" value="次へ" onclick="register.execInputKaraoke();"/></p>
   </div>
 
   <div id="input_attendance">
-    <p>値段:　　　<input id="price" type="text" name="price" value="" size="10">円</p>
-    <p>感想:</p>
-    <p><textarea id="memo" name="memo" cols=60 rows=3></textarea></p>
-    <input type="button" value="次へ" onclick="register.execInputKaraoke();"/>
+    <div>
+      <label for="price">値段:</label>
+      <input id="price" type="text" name="price" value="" size="10">円
+    </div>
+    <div class="most_under_input">
+      <p><label for="memo">感想:</label></p>
+      <textarea id="memo" name="memo" rows=3></textarea>
+    </div>
+    <p align="right"><input id="next_button" type="button" value="次へ" onclick="register.execInputKaraoke();"/></p>
   </div>
+
 </div>
