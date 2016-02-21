@@ -69,25 +69,6 @@ class User < Base
     return attended_karaoke_info
   end
 
-  # create_karaoke_log - karaokeレコードを挿入し、attendanceレコードを紐付ける
-  #---------------------------------------------------------------------
-  def create_karaoke_log(params)
-    datetime = params[:datetime]
-    plan = params[:plan].to_f
-    store = params[:store].to_i
-    product = params[:product].to_i
-
-    karaoke_id = DB.new(
-      :INSERT => ['karaoke' , ['datetime' , 'plan' , 'store' , 'product']] ,
-      :SET => [datetime , plan , store , product]
-    ).execute_insert_id
-
-    DB.new(
-      :INSERT => ['attendance' , ['user' , 'karaoke']] ,
-      :SET => [@params['id'] , karaoke_id] ,
-    ).execute_insert_id
-  end
-
   # get_most_sang_song - 最も歌っている曲を取得する 
   #---------------------------------------------------------------------
   def get_most_sang_song

@@ -31,24 +31,11 @@ class KaraokeRoute < March
     erb :karaoke_detail
   end
 
-  # get '/karaoke/create' - カラオケ記録追加ページヘのアクセス
-  #---------------------------------------------------------------------
-  get '/karaoke/create' do
-    erb :create_karaoke
-  end
-  
   # get '/karaoke/input - カラオケ入力画面を表示
   #---------------------------------------------------------------------
   get '/karaoke/input' do
     @products = Product.list
     erb :_input_karaoke
-  end
-
-  # post '/karaoke/create' - カラオケ記録追加をリクエスト
-  #---------------------------------------------------------------------
-  post '/karaoke/create' do
-    @current_user.create_karaoke_log(@params)
-    redirect '/karaoke'
   end
 
   # post '/karaoke/input' - カラオケ記録を受け取り保持する
