@@ -22,7 +22,7 @@ karaoke_contents = [
   '感想'
 ]
 history_contents = [
-  '曲', 
+  '曲名', 
   '歌手',
   'キー',
   '採点方法',
@@ -46,12 +46,15 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   end
 
   it 'ダイアログが正常に表示されるか' do
+    page.find('#name')
     iscontain karaoke_contents
   end
 
   it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
     click_button '次へ'
+
+    page.find('#song')
     iscontain history_contents
   end
 

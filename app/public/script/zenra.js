@@ -60,8 +60,11 @@ zenra.parseJSON = function(json) {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
-  funcs = funcs || {};
+zenra.showDialog = function(title , dialogId , url , id , width , opt) {
+  opt = opt || {}
+  funcs = opt['funcs'] || {};
+  func_at_load = opt['func_at_load'] || function(){};
+
   var dialog = $('<div>').attr('id' , dialogId);
   var scroll = $(window).scrollTop();
   dialog.dialog({
@@ -83,7 +86,8 @@ zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
     $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
     div.css('overflow' , 'hidden');
     $(window).scrollTop(scroll);
-    zenra.createSeekbar();
+    
+    func_at_load();
   });
 
   dialog.html(div);
@@ -100,12 +104,15 @@ zenra.closeDialog = function(id) {
 /*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(dialogId , url , id) {
+zenra.transitionInDialog = function(dialogId , url , id , opt) {
+  opt = opt || {};
+  func_at_load = opt['func_at_load'] || function(){};
+
   var div = $('#' + dialogId);
 
   jQuery.removeData(div);
   div.load(url + " #" + id , function(date , status) {
-    zenra.createSeekbar();
+    func_at_load();
   });
 };
   
@@ -128,6 +135,12 @@ zenra.createSeekbar = function() {
     slide: function(event , ui) {
       $('#slidervalue').html(ui.value);
     } ,
+  });
+};
+
+zenra.autocomplete = function(id , source) {
+  $('#' + id).autocomplete({
+    source: source  
   });
 };
 
@@ -169,6 +182,8 @@ var register = (function() {
   var count = 0;
   var closeFlg = false;
   var karaoke_id;
+  var song_list = [];
+  var artist_list = [];
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -213,9 +228,22 @@ var register = (function() {
     /*[Method] 履歴入力用ダイアログを作成する*/
     createDialog : function(id) {
       id = id || 0;
-      
-      funcs = {}
-      funcs.beforeClose = function() {  
+
+      zenra.post('/local/rpc/songlist' , {} , { 
+        success: function(result) {
+          song_list = zenra.parseJSON(result);
+          
+          zenra.post('/local/rpc/artistlist' , {} , { 
+            success: function(result) {
+              artist_list = zenra.parseJSON(result);
+            }
+          });
+        }
+      });
+
+      var opt = {}
+      opt['funcs'] = {}
+      opt['funcs']['beforeClose'] = function() {  
         if (!closeFlg) {
           zenra.showDialog('注意' , 'caution_dialog' , '/history/input' , 'caution' , 200);
         }
@@ -227,10 +255,10 @@ var register = (function() {
 
       if (id > 0) {
         karaoke_id = id;
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , funcs);
+        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , opt);
       }
       else {
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , funcs);
+        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , opt);
       }
     } ,
 
@@ -251,11 +279,19 @@ var register = (function() {
         return;
       }
       
-      funcs = {}
+      var funcs = {}
       funcs['success'] = function(result) {
         result_obj = zenra.parseJSON(result);
         karaoke_id = result_obj['karaoke_id'];
-        zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
+        
+        var opt = {}
+        opt['func_at_load'] = function() {
+          zenra.createSeekbar();
+          zenra.autocomplete('song' , song_list);
+          zenra.autocomplete('artist' , artist_list);
+        }
+
+        zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , opt);
       };
 
       zenra.post('/karaoke/input' , data , funcs);
@@ -263,7 +299,7 @@ var register = (function() {
   
     /*[Method] 出席情報入力終了後の処理*/
     onPushedRegisterAttendanceButton : function() {
-      data = {
+      var data = {
         karaoke_id: karaoke_id ,
         price: $('#price').val() ,
         memo: $('#memo').val()
@@ -275,7 +311,8 @@ var register = (function() {
 
     /*[Method] 歌唱履歴情報入力終了後の処理*/
     execInputHistory : function(button) {
-      data = {
+
+      var data = {
         karaoke_id: karaoke_id ,
         song: $('#song').val() ,
         artist: $('#artist').val() ,
@@ -288,7 +325,7 @@ var register = (function() {
         return;
       }
   
-      funcs = {};
+      var funcs = {};
       if (button == 'register') {
         funcs['success'] = function() {
           location.href = ('/karaoke/detail/' + karaoke_id);
