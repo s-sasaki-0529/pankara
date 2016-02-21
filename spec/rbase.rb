@@ -83,6 +83,7 @@ module Rbase
   end
 
   def input_karaoke
+    page.find('#name')
     fill_in 'name', with: '入力ダイアログテスト用カラオケ'
     fill_in 'datetime', with: '2016-02-20 12:00:00'
     select '02時間00分', from: 'plan'
@@ -94,6 +95,7 @@ module Rbase
   end
 
   def input_history_with_data(history, num = 0)
+    page.find('#song')
     fill_in 'song', with: history['song']
     fill_in 'artist', with: history['artist']
     select history['score_type'], from: 'score_type'
@@ -106,6 +108,7 @@ module Rbase
   end
   
   def input_history(value = 0, num = 0)
+    page.find('#song')
     score = 0 + value
     score = 100 if score > 100
     fill_in 'song', with: "song#{value}"

@@ -174,6 +174,27 @@ var register = (function() {
     $('input[name=song]').focus();
   }
 
+  /*[Method] カラオケが正しく入力されているか確認する*/
+  function validateKaraoke(data) {
+    if (data['name'] == '') {
+      return false;
+    }
+
+    return true;
+  }
+
+  /*[Method] 歌唱履歴が正しく入力されているか確認する*/
+  function validateHistory(data) {
+    if (data['song'] == '') {
+      return false;
+    }
+    if (data['artist'] == '') {
+      return false;
+    }
+
+    return true;
+  }
+
   return {
     /*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
     reset : function() {
@@ -222,14 +243,18 @@ var register = (function() {
         memo: $('#memo').val()
       };
  
+      if (validateKaraoke(data) == false) {
+        return;
+      }
+      
       funcs = {}
       funcs['success'] = function(result) {
         result_obj = zenra.parseJSON(result);
         karaoke_id = result_obj['karaoke_id'];
+        zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
       };
 
       zenra.post('/karaoke/input' , data , funcs);
-      zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
     } ,
   
     /*[Method] 出席情報入力終了後の処理*/
@@ -254,6 +279,10 @@ var register = (function() {
         score: $('#score').val() ,
         score_type: $('#score_type').val() ,
       };
+
+      if (validateHistory(data) == false) {
+        return;
+      }
   
       funcs = {};
       if (button == 'register') {
