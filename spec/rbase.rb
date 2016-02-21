@@ -82,6 +82,10 @@ module Rbase
     page.all('iframe').collect {|element| element[:src]}
   end
 
+  def thumbnail_list
+    page.all('.thumbnail').collect {|element| element['src']}
+  end
+
   def input_karaoke
     page.find('#name')
     fill_in 'name', with: '入力ダイアログテスト用カラオケ'

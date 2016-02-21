@@ -1,7 +1,7 @@
 <h1>得点ランキング <%= @score_type['brand'] %> <%= @score_type['name'] %> 編</h1>
 <div class='right'>採点モード <%= erb :_score_type_selecter %></div>
 <% if @scores.empty? %>
-該当データなし
+<p id="nondata">該当データなし</p>
 <% else %>
 <table id="scoreranking_table" border="1" class="table sortable table-hover linkcursor">
   <thead>
