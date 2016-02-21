@@ -60,12 +60,12 @@ zenra.parseJSON = function(json) {
 /*
 showDialog - ダイアログを表示する
 */
-zenra.showDialog = function(title , dialogId , url , id , width , opt) {
+zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
   opt = opt || {}
   funcs = opt['funcs'] || {};
   func_at_load = opt['func_at_load'] || function(){};
 
-  var dialog = $('<div>').attr('id' , dialogId);
+  var dialog = $('<div>').attr('id' , dialog_id);
   var scroll = $(window).scrollTop();
   dialog.dialog({
     title: title ,
@@ -104,11 +104,11 @@ zenra.closeDialog = function(id) {
 /*
 transitionInDialog - ダイアログ内の画面を遷移する
 */
-zenra.transitionInDialog = function(dialogId , url , id , opt) {
+zenra.transitionInDialog = function(dialog_id , url , id , opt) {
   opt = opt || {};
   func_at_load = opt['func_at_load'] || function(){};
 
-  var div = $('#' + dialogId);
+  var div = $('#' + dialog_id);
 
   jQuery.removeData(div);
   div.load(url + " #" + id , function(date , status) {
@@ -263,7 +263,7 @@ var register = (function() {
     } ,
 
     /*[Method] カラオケ情報入力終了後の処理*/
-    execInputKaraoke : function() {
+    onPushedRegisterKaraokeButton : function() {
       data = {
         name: $('#name').val() ,
         datetime: $('#datetime').val() ,
@@ -310,7 +310,7 @@ var register = (function() {
     } ,
 
     /*[Method] 歌唱履歴情報入力終了後の処理*/
-    execInputHistory : function(button) {
+    onPushedRegisterHistoryButton : function(button) {
 
       var data = {
         karaoke_id: karaoke_id ,
