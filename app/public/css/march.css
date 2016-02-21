@@ -64,12 +64,12 @@ tr *.cell-datetime {
   height: 96px;
 }
 
+/* 履歴入力画面の配置調整クラス */
 #input_attendace div,
 #input_karaoke div,
 #input_history div {
   margin-top: 10px;
 }
-
 #input_attendance label,
 #input_karaoke label,
 #input_history label {
@@ -77,20 +77,17 @@ tr *.cell-datetime {
   float: left;
   margin-right: 10px;
 }
-
 #input_attendance textarea,
 #input_karaoke textarea {
   resize: vertical;
   overflow: auto;
   width: 560px;
 }
-
 #input_attendance #next_button,
 #input_karaoke #next_button,
 #input_history #buttons {
   margin-top: 20px;
 }
-
 #input_history #buttons input {
   margin-right: 20px;
 }
