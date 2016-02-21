@@ -5,17 +5,24 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "mySQLのバックアップを作成し、現在日時で保存する"
-  echo "  Usage: zenra $PROGNAME"
+  echo "  Usage: zenra $PROGNAME [-m description]"
+  echo "オプション"
+  echo "  -m 先頭にコメントを付与する"
   exit 1
 }
 
 # オプション解析
-while getopts h OPT
+FLAG_M=0
+VALUE_M=""
+while getopts hm: OPT
 do
   case $OPT in
     h)  usage
-    exit 1
-    ;;
+        exit 1
+        ;;
+    m)  FLAG_M=1
+        VALUE_M=$OPTARG
+        ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -24,4 +31,9 @@ shift $((OPTIND - 1))
 cd ~/March
 filename=$(date +"%Y_%m_%d_%H_%M")
 filepath="backup/$filename"
-mysqldump --single-transaction -u root --password=zenra march > "$filepath"
+if [ $FLAG_M -eq 1 ]; then
+  echo "-- $VALUE_M" > "$filepath"
+  mysqldump --single-transaction -u root --password=zenra march >> "$filepath"
+else
+  mysqldump --single-transaction -u root --password=zenra march > "$filepath"
+fi
