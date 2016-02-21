@@ -51,6 +51,7 @@ class HistoryRoute < March
     history['score_type'] = params[:score_type].to_i
 
     @current_user.store_history history
+    Util.to_json({'result' => 'success'})
   end
 
 end

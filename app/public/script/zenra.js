@@ -9,24 +9,10 @@ zenra = {};
 /*
 post - 情報を非同期で送信する
 */
-zenra.post = function(url , data , funcs) {
-  funcs = funcs || {};
-  $.ajax({
-    type: "POST" ,
-    url: url ,
-    data: data ,
-    beforeSend: funcs.beforeSend ,
-    complete: funcs.complete ,
-  });
-};
-
-/*
-_post - 非同期POST(改良版)
-*/
-zenra._post = function(url , data , opt) {
-  beforeSend = opt['beforeSend'];
-  success = opt['success'];
-  error = opt['error'];
+zenra.post = function(url , data , opt) {
+  beforeSend = opt['beforeSend'] || function(){};
+  success = opt['success'] || function(){};
+  error = opt['error'] || function(){};
   $.ajax({
     type: "POST" ,
     url: url ,
@@ -214,7 +200,7 @@ var register = (function() {
       closeFlg = false;
 
       if (id > 0) {
-        zenra.post('/karaoke/input/id' , {id: id});
+        zenra.post('/karaoke/input/id' , {id: id} , {});
         zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , funcs);
       }
       else {
@@ -233,7 +219,7 @@ var register = (function() {
         product: $('#product').val() ,
       };
   
-      zenra.post('/karaoke/input' , data);
+      zenra.post('/karaoke/input' , data , {});
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
     } ,
   
@@ -251,15 +237,15 @@ var register = (function() {
   
       funcs = {};
       if (button == 'register') {
-        funcs.beforeSend = function() {
+        funcs['beforeSend'] = function() {
           zenra.transitionInDialog('input_dialog' , '/history/input' , 'loading');
         };
-        funcs.complete = function() {
+        funcs['success'] = function() {
           location.href = '/history/register';
         };
       }
       else {
-        funcs.complete = function() {
+        funcs['success'] = function(result) {
           $('#result').html('<p>' + count + '件入力されました</p>')
         };
       }
