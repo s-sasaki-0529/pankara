@@ -9,9 +9,10 @@ class RankingRoute < March
     redirect '/ranking/score/1' #取り急ぎデフォルトはJOY全国採点
   end
   get '/ranking/score/:score_type' do
-    @scores = Ranking.score(params[:score_type])
-    @score_type = ScoreType.id_to_name(params[:score_type] , true)
-    Util.debug(@score_type)
+    @current_score_type = params[:score_type]
+    @scores = Ranking.score(@current_score_type)
+    @score_type = ScoreType.id_to_name(@current_score_type , true)
+    @score_type_list = ScoreType.List
     erb :score_ranking
   end
 

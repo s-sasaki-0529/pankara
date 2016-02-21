@@ -1,4 +1,5 @@
 <h1>得点ランキング <%= @score_type['brand'] %> <%= @score_type['name'] %> 編</h1>
+<div class='right'>採点モード <%= erb :_score_type_selecter %></div>
 <% if @scores.empty? %>
 該当データなし
 <% else %>
@@ -33,3 +34,11 @@
   </tbody>
 </table>
 <% end %>
+
+<script type="text/javascript">
+var attr = $('#score_type_selecter');
+attr.change(function() {
+  var selectedID = attr.val();
+  location.href = selectedID;
+});
+</script>

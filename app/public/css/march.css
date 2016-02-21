@@ -8,12 +8,6 @@ th {
   text-align: center;
 }
 
-/*テキストを中央揃えにするクラス*/
-tr *.center {
-  text-align: center;
-  vertical-align: center;
-}
-
 /*セル内の数値*/
 tr *.cell-number {
   width: 5%;
@@ -27,6 +21,17 @@ tr *.cell-datetime {
 /*オンマウス時にポインタカーソルを表示するクラス*/
 .linkcursor {
   cursor: pointer;
+}
+
+/*テキストを中央揃えにするクラス*/
+.center {
+  text-align: center;
+  vertical-align: center;
+}
+
+/*テキストを右揃えにするクラス*/
+.right {
+  text-align: right;
 }
 
 /*トップ画面 タイムライン領域 */
