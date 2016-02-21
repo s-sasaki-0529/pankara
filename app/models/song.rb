@@ -107,6 +107,28 @@ class Song < Base
     return result
   end
 
+  # self.id_to_info - songIDに対応する曲名、歌手名を取得
+  # 複数id対応なので、まとめて行う場合はインスタンスを生成せずにこちらを用いる
+  #--------------------------------------------------------------------
+  def self.id_to_info(songs , opt = nil)
+    songs.kind_of?(Array) or songs = [songs]
+    qlist = Util.make_questions(songs.length)
+    song_info = DB.new(
+      :SELECT => {
+        'song.id' => 'song_id' ,
+        'song.name' => 'song_name' ,
+        'song.url' => 'url' ,
+        'artist.id' => 'artist_id' ,
+        'artist.name' => 'artist_name' ,
+      } ,
+      :FROM => 'song' ,
+      :JOIN => ['song' , 'artist'] ,
+      :WHERE => "song.id IN (#{qlist})" ,
+      :SET => songs ,
+    ).execute_all
+    Util.array_to_hash(song_info , 'song_id')
+  end
+
   # self.list - 楽曲一覧を戻す
   #--------------------------------------------------------------------
   def self.list(opt = nil)
