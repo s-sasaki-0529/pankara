@@ -35,4 +35,12 @@ class Artist < Base
     end
     @params['songs'] = songs
   end
+
+  # self.list - 歌手の一覧を取得
+  #--------------------------------------------------------------------
+  def self.list(opt = nil)
+    # とりあえず全歌手一覧を取得する
+    # 将来的にはoptに検索条件を指定することで柔軟に指定できるようにする
+    DB.new(:FROM => 'artist').execute_all
+  end
 end
