@@ -38,7 +38,7 @@ class KaraokeRoute < March
     erb :_input_karaoke
   end
 
-  # post '/karaoke/input' - カラオケ記録を受け取り保持する
+  # post '/karaoke/input' - カラオケ記録を受け取り登録
   #---------------------------------------------------------------------
   post '/karaoke/input' do
     karaoke = {}
@@ -48,20 +48,26 @@ class KaraokeRoute < March
     karaoke['store'] = params[:store]
     karaoke['branch'] = params[:branch]
     karaoke['product'] = params['product'].to_i
-  
+
     attendance = {}
     attendance['price'] = params[:price].to_i
     attendance['memo'] = params[:memo]
 
-    @current_user.set_karaoke karaoke
-    @current_user.set_attendance attendance
+    karaoke_id = @current_user.register_karaoke karaoke
+    @current_user.register_attendance karaoke_id, attendance
+    Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
   end
 
-  # post '/karaoke/input/id' - 登録用カラオケのIDを設定
+  # post '/karaoke/input/attendance' - 出席情報のみ受け取り登録
   #---------------------------------------------------------------------
-  post '/karaoke/input/id' do
-    @current_user.set_karaoke_id params[:id].to_i
-    redirect '/'
+  post '/karaoke/input/attendance' do
+    attendance = {}
+    karaoke_id = params[:karaoke_id]
+    attendance['price'] = params[:price].to_i
+    attendance['memo'] = params[:memo]
+
+    @current_user.register_attendance karaoke_id, attendance
+    Util.to_json({'result' => 'success'})
   end
 
 end
