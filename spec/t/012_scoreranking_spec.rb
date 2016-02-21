@@ -1,15 +1,16 @@
 require_relative '../rbase'
 include Rbase
 
+# 定数定義
+score_types = []
+selecter = 'score_type_selecter'
+nondata = '該当データなし'
+
 # テスト用データベース構築
 init = proc do
   `zenra init -d 2016_02_21_15_54`
+  score_types = ScoreType.List(true).collect {|st| "#{st['brand']} #{st['name']}"}
 end
-
-# 定数定義
-score_types = ScoreType.List(true).collect {|st| "#{st['brand']} #{st['name']}"}
-selecter = 'score_type_selecter'
-nondata = '該当データなし'
 
 # テスト実行
 describe '得点ランキング機能' do
