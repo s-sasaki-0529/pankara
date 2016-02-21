@@ -20,18 +20,9 @@ class HistoryRoute < March
   # get '/history/register - 入力された歌唱履歴をすべて登録してカラオケ画面を表示
   #---------------------------------------------------------------------
   get '/history/register' do
-    karaoke_id = @current_user.get_karaoke_id
-    karaoke_id = @current_user.register_karaoke if karaoke_id == 0
-    @current_user.register_history
     redirect "/karaoke/detail/#{karaoke_id}"  
   end
   
-  # get '/history/reset - 入力された歌唱履歴をすべて破棄
-  #---------------------------------------------------------------------
-  get '/history/reset' do
-    @current_user.reset_input_info
-  end
-
   # get '/history/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
   get '/history/:username' do
@@ -44,13 +35,14 @@ class HistoryRoute < March
   #---------------------------------------------------------------------
   post '/history/input' do
     history = {}
+    karaoke_id = params[:karaoke_id]
     history['song'] = params[:song]
     history['artist'] = params[:artist]
-    history['score'] = params[:score]
     history['songkey'] = params[:songkey]
+    history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
-
-    @current_user.store_history history
+    
+    @current_user.register_history karaoke_id, history
     Util.to_json({'result' => 'success'})
   end
 

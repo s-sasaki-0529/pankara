@@ -60,7 +60,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     click_button '次へ'
    
     input_history_with_data history, 1
-    
+   
     input_history 1
     click_button '全て登録'
     
@@ -90,6 +90,37 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       '0',
       '全国採点',
       '1.0'
+    ]
+    iscontain history
+  end
+
+  it '20件登録されるか' do
+    input_karaoke
+    click_button '次へ'
+   
+    19.times do |i|
+      input_history (i + 1), (i + 1)
+    end
+
+    input_history 20
+    click_button '全て登録'
+    
+    karaoke = [
+      '2016-02-20 12:00:00',
+      '2.0',
+      '歌広場 相模大野店',
+      'JOYSOUND(MAX)',
+      'ちゃら'
+    ]
+    iscontain karaoke
+
+    history = [
+      'ちゃら',
+      'song20',
+      'artist20',
+      '0',
+      '全国採点',
+      '20.0'
     ]
     iscontain history
   end
