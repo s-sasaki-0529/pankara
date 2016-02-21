@@ -1,52 +1,45 @@
+/*ヘッダメニューを表示するために、全てのページは上70px空ける*/
 body {
   padding-top: 70px;
-  padding-bottom: 90px;
 }
 
+/*テーブルヘッダは全て中央揃えに*/
 th {
   text-align: center;
 }
 
-.center {
+/*テキストを中央揃えにするクラス*/
+tr *.center {
   text-align: center;
   vertical-align: center;
 }
 
-.cell-number {
+/*セル内の数値*/
+tr *.cell-number {
   width: 5%;
 }
 
-.cell-datetime {
+/*セル内の日付時刻文字列*/
+tr *.cell-datetime {
   width: 15%;
 }
 
+/*オンマウス時にポインタカーソルを表示するクラス*/
 .linkcursor {
   cursor: pointer;
 }
 
-.div-timeline {
-  padding: 5px 10px 5px 10px;
-}
-
-#div_tl {
-  border: 1px solid;
-  height: 310px;
-  margin: 10px;
-}
-
-#div_icon {
-  border: 1px solid;
-  width: 96px;
-  height: 96px;
-  margin: 0 auto;
-}
-
+/*トップ画面 タイムライン領域 */
 #div_timelines {
   height: 310px;
   border: 1px solid;
   overflow: scroll;
 }
+.div-timeline {
+  padding: 5px 10px 5px 10px;
+}
 
+/*トップ画面　バスタオル*/
 #bathtowel_div {
   background-color: #feacc1;
   position: fixed;
@@ -55,7 +48,6 @@ th {
   height: 90px;
   bottom: 0;
 }
-
 #bathtowel_info {
   position: fixed;
   left: 0px;
@@ -63,6 +55,13 @@ th {
   bottom: 100px;
   font-size: 24px;
   text-align: center;
+}
+
+/*トップ画面 ログインユーザのアイコン領域*/
+#top_my_icon {
+  border: 1px solid;
+  width: 96px;
+  height: 96px;
 }
 
 #input_attendace div,

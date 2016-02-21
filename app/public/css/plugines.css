@@ -1,8 +1,7 @@
-/***
+/*
 simplyScroll v2
 http://logicbox.net/jquery/simplyscroll/horizontal.html
-****/
-
+*/
 .simply-scroll-container { 
   position: relative;
 }
@@ -26,13 +25,10 @@ http://logicbox.net/jquery/simplyscroll/horizontal.html
   display: block;
 }
 
-/***
+/*
 Tablesorter
-***/
-table.sortable {
-}
-table.sortable thead tr th, table.sortable tfoot tr th {
-}
+http://developmentor.lrlab.to/postal/jquery/jquery.tablesorter/basic1.html
+*/
 table.sortable thead tr .header {
   background-image: url(../public/image/tablesort_bg.gif);
   background-repeat: no-repeat;
