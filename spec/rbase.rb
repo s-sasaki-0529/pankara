@@ -129,4 +129,20 @@ module Rbase
   def wait_for_register_history(num)
     page.find('#result').find('p', text: "#{num}件入力されました")
   end
+
+  # 以下、ajax対応
+  def wait_for_ajax
+    Timeout.timeout(default_wait_time) do
+      loop until finished_all_ajax_requests?
+    end
+  end
+
+  def finished_all_ajax_requests?
+    page.evaluate_script('jQuery.active').zero?
+  end
+
+  def default_wait_time
+    Capybara.respond_to?(:default_max_wait_time) ? Capybara.default_max_wait_time : Capybara.default_wait_time
+  end
+
 end

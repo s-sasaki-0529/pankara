@@ -25,6 +25,7 @@ describe 'バスタオル' , :js => true do
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
     execute_script '$("#slider > li:first-child > span").trigger("click")'
+    wait_for_ajax
     expect(page.find('#ui-id-1').text).to eq 'カノン (宮野真守)'
     iframes = youtube_links()
     expect(iframes.length).to eq 1
