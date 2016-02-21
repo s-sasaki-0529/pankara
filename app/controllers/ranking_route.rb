@@ -10,7 +10,9 @@ class RankingRoute < March
   end
   get '/ranking/score/:score_type' do
     @scores = Ranking.score(params[:score_type])
-    Util.to_json(@scores)
+    @score_type = ScoreType.id_to_name(params[:score_type] , true)
+    Util.debug(@score_type)
+    erb :score_ranking
   end
 
   # get '/ranking/song' - 楽曲の歌唱回数ランキングを表示

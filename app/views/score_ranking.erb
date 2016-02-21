@@ -1,0 +1,35 @@
+<h1>得点ランキング <%= @score_type['brand'] %> <%= @score_type['name'] %> 編</h1>
+<% if @scores.empty? %>
+該当データなし
+<% else %>
+<table id="scoreranking_table" border="1" class="table sortable table-hover linkcursor">
+  <thead>
+    <tr>
+      <th class='cell-number'>順位</th>
+      <th width='160'>動画</th>
+      <th class='center'>ユーザ</th>
+      <th class='center'>曲名</th>
+      <th class='center'>歌手名</th>
+      <th class='center cell-number'>得点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @scores.each_with_index do |row , rank| %>
+    <tr>
+      <td class='center'><%= rank + 1 %></td>
+      <td class='center' width='160'>
+        <% if row['song_url'] %>
+          <%= movie_image row['song'] , 160 , 90 %>
+        <% else %>
+          未登録
+        <% end %>
+      </td>
+      <td class='center'><%= user_link row['username'] , row['screenname'] %></td>
+      <td class='center'><%= song_link row['song'], row['song_name'] %></td>
+      <td class='center'><%= artist_link row['artist_id'], row['artist_name'] %></td>
+      <td class='center'><%= h row['score'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

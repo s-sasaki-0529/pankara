@@ -117,7 +117,7 @@ class Song < Base
       :SELECT => {
         'song.id' => 'song_id' ,
         'song.name' => 'song_name' ,
-        'song.url' => 'url' ,
+        'song.url' => 'song_url' ,
         'artist.id' => 'artist_id' ,
         'artist.name' => 'artist_name' ,
       } ,

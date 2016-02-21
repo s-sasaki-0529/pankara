@@ -17,6 +17,9 @@ class Ranking < Base
       :SET => score_type
     ).execute_all
 
+    #該当データがない場合空配列を戻す
+    ranking.empty? and return []
+
     #useridからユーザ情報を取得する
     users = ranking.collect {|row| row['user']}
     users_info = User.id_to_name(users.uniq)
@@ -30,7 +33,6 @@ class Ranking < Base
       row.merge! users_info[row['user']]
       row.merge! songs_info[row['song']]
     end
-    Util.debug(ranking)
     return ranking
   end
 

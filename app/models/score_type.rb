@@ -28,6 +28,7 @@ class ScoreType < Base
   #---------------------------------------------------------------------
   def self.id_to_name(id , wanthash = false)
     @@list.empty? and self.List
+    id.kind_of?(String) and id = id.to_i
     if wanthash
       @@list[id] ? @@list[id] : {'brand' => '' , 'name' => ''}
     else
