@@ -62,27 +62,31 @@ showDialog - ダイアログを表示する
 */
 zenra.showDialog = function(title , dialogId , url , id , width , funcs) {
   funcs = funcs || {};
-  var div = $('<div>').attr('id' , dialogId);
+  var dialog = $('<div>').attr('id' , dialogId);
   var scroll = $(window).scrollTop();
+  dialog.dialog({
+    title: title ,
+    modal: true ,
+    height: "auto" ,
+    width: width ,
+    resizable: false ,
+    close: function(event) {
+      $(this).dialog('destroy');
+      $(event.target).remove();
+    } ,
+    beforeClose: funcs.beforeClose ,
+  });
+
+  var div = $('<div></div>');
   div.load(url + " #" + id , function(date , status) {
-    div.dialog({
-      title: title ,
-      modal: true ,
-      height: "auto" ,
-      width: width ,
-      resizable: false ,
-      close: function(event) {
-        $(this).dialog('destroy');
-        $(event.target).remove();
-      } ,
-      beforeClose: funcs.beforeClose ,
-    });
     var margin = div.height() / 2;
     $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
     div.css('overflow' , 'hidden');
     $(window).scrollTop(scroll);
     zenra.createSeekbar();
   });
+
+  dialog.html(div);
 };
 
 /*
