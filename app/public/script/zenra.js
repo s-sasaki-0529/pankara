@@ -138,9 +138,10 @@ zenra.createSeekbar = function() {
   });
 };
 
-zenra.autocomplete = function(id , source) {
+zenra.moshikashite = function(id , source) {
   $('#' + id).autocomplete({
-    source: source  
+    source: source ,
+    minLength: 2 ,
   });
 };
 
@@ -182,8 +183,8 @@ var register = (function() {
   var count = 0;
   var closeFlg = false;
   var karaoke_id;
-  var song_list = [];
-  var artist_list = [];
+  var store_list = [];
+  var branch_list = [];
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -214,11 +215,29 @@ var register = (function() {
     return true;
   }
 
+  /*[method] 曲名と歌手のもしかしてリストの生成*/
+  function createMoshikashite() {
+    var list = [];
+    
+    zenra.post('/local/rpc/songlist' , {} , { 
+      success: function(result) {
+        list = zenra.parseJSON(result);
+        zenra.moshikashite('song' , list);
+        
+        zenra.post('/local/rpc/artistlist' , {} , { 
+          success: function(result) {
+            list = zenra.parseJSON(result);
+            zenra.moshikashite('artist' , list);
+          }
+        });
+      }
+    });
+  }
+
   return {
     /*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
     reset : function() {
       count = 0;
-      zenra.get('/history/reset');
       closeFlg = true;
       
       zenra.closeDialog('caution_dialog');
@@ -229,21 +248,8 @@ var register = (function() {
     createDialog : function(id) {
       id = id || 0;
 
-      zenra.post('/local/rpc/songlist' , {} , { 
-        success: function(result) {
-          song_list = zenra.parseJSON(result);
-          
-          zenra.post('/local/rpc/artistlist' , {} , { 
-            success: function(result) {
-              artist_list = zenra.parseJSON(result);
-            }
-          });
-        }
-      });
-
-      var opt = {}
-      opt['funcs'] = {}
-      opt['funcs']['beforeClose'] = function() {  
+      closeFlg = false;
+      var beforeClose = function() {  
         if (!closeFlg) {
           zenra.showDialog('注意' , 'caution_dialog' , '/history/input' , 'caution' , 200);
         }
@@ -251,20 +257,47 @@ var register = (function() {
         return closeFlg;
       };
 
-      closeFlg = false;
-
       if (id > 0) {
         karaoke_id = id;
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , opt);
+        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
+          funcs: {
+            beforeClose: beforeClose
+          }
+        });
       }
       else {
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , opt);
+        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
+          funcs: {
+            beforeClose: beforeClose
+          } ,
+          func_at_load: function() {
+            // お店のもしかしてリスト作成
+            zenra.post('/local/rpc/storelist' , {} , { 
+              success: function(result) {
+                branch_list = zenra.parseJSON(result);
+                
+                // オブジェクトのキーをお店リストとして取得
+                store_list = [];
+                for (key in branch_list) {
+                  store_list.push(key);
+                }
+
+                zenra.moshikashite('store' , store_list);
+              }
+            });
+          
+            // お店を入力すると店舗のもしかしてリストが作成される
+            $('#store').blur(function() {
+              zenra.moshikashite('branch' , branch_list[$(this).val()]);
+            });
+          }
+        });
       }
     } ,
 
     /*[Method] カラオケ情報入力終了後の処理*/
     onPushedRegisterKaraokeButton : function() {
-      data = {
+      var data = {
         name: $('#name').val() ,
         datetime: $('#datetime').val() ,
         plan: $('#plan').val() ,
@@ -279,22 +312,20 @@ var register = (function() {
         return;
       }
       
-      var funcs = {}
-      funcs['success'] = function(result) {
-        result_obj = zenra.parseJSON(result);
-        karaoke_id = result_obj['karaoke_id'];
-        
-        var opt = {}
-        opt['func_at_load'] = function() {
-          zenra.createSeekbar();
-          zenra.autocomplete('song' , song_list);
-          zenra.autocomplete('artist' , artist_list);
+      zenra.post('/karaoke/input' , data , {
+        success: function(result) {
+          result_obj = zenra.parseJSON(result);
+          karaoke_id = result_obj['karaoke_id'];
+          
+          zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+            func_at_load: function() {
+              zenra.createSeekbar();
+              createMoshikashite();
+            }
+          });
         }
+      });
 
-        zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , opt);
-      };
-
-      zenra.post('/karaoke/input' , data , funcs);
     } ,
   
     /*[Method] 出席情報入力終了後の処理*/
@@ -306,12 +337,15 @@ var register = (function() {
       };
  
       zenra.post('/karaoke/input/attendance' , data , {});
-      zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history');
+      zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+        func_at_load: function() {
+          createMoshikashite();
+        }
+      });
     } ,
 
     /*[Method] 歌唱履歴情報入力終了後の処理*/
     onPushedRegisterHistoryButton : function(button) {
-
       var data = {
         karaoke_id: karaoke_id ,
         song: $('#song').val() ,
@@ -335,6 +369,7 @@ var register = (function() {
         funcs['success'] = function(result) {
           count += 1;
           $('#result').html('<p>' + count + '件入力されました</p>')
+          createMoshikashite();
         };
       }
   

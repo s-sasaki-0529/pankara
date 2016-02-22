@@ -41,31 +41,39 @@ describe '履歴入力用ダイアログのテスト', :js => true do
  
   before do
     login 'unagipai'
-    page.find('a' , :text => 'カラオケを記録する').click
-    click_link 'カラオケを新規登録'
+    execute_script 'register.createDialog();'
+    wait_for_ajax
   end
 
+  after do
+    wait_for_ajax
+  end
+  
   it 'ダイアログが正常に表示されるか' do
-    page.find('#name')
     iscontain karaoke_contents
   end
-
+  
   it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
-    click_button '次へ'
-
-    page.find('#song')
+    execute_script 'register.onPushedRegisterKaraokeButton();'
+    wait_for_ajax
+    
     iscontain history_contents
   end
 
   it '入力内容が正しく登録されるか' do
     input_karaoke
-    click_button '次へ'
+    execute_script 'register.onPushedRegisterKaraokeButton();'
+    wait_for_ajax
    
     input_history_with_data history_data, 1
-   
+    execute_script 'register.onPushedRegisterHistoryButton("next");'
+    wait_for_ajax
+
+
     input_history 1
-    click_button '全て登録'
+    execute_script 'register.onPushedRegisterHistoryButton("register");'
+    wait_for_ajax
     
     karaoke = [
       '2016-02-20 12:00:00',
@@ -97,35 +105,39 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     iscontain history
   end
 
+  it '入力された件数が正しく表示されるか' do
+    input_karaoke
+    execute_script 'register.onPushedRegisterKaraokeButton();'
+    wait_for_ajax
+   
+    3.times do |i|
+      input_history i
+      execute_script 'register.onPushedRegisterHistoryButton("next");'
+      wait_for_ajax
+      iscontain "#{i + 1}件入力されました"
+    end
+  end
+  
   it '20件登録されるか' do
     input_karaoke
-    click_button '次へ'
+    execute_script 'register.onPushedRegisterKaraokeButton();'
+    wait_for_ajax
    
-    19.times do |i|
-      input_history (i + 1), (i + 1)
+    20.times do |i|
+      input_history i
+      execute_script 'register.onPushedRegisterHistoryButton("next");'
+      wait_for_ajax
     end
 
     input_history 20
-    click_button '全て登録'
-    
-    karaoke = [
-      '2016-02-20 12:00:00',
-      '2.0',
-      '歌広場 相模大野店',
-      'JOYSOUND(MAX)',
-      'ちゃら'
-    ]
-    iscontain karaoke
-
-    history = [
-      'ちゃら',
-      'song20',
-      'artist20',
-      '0',
-      '全国採点',
-      '20.0'
-    ]
-    iscontain history
+    execute_script 'register.onPushedRegisterHistoryButton("register");'
+    wait_for_ajax
+  
+    histories = []
+    21.times do |i|
+      histories.push "song#{i}"
+      histories.push "artist#{i}"
+    end
+    iscontain histories
   end
-
 end

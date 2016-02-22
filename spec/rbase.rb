@@ -104,14 +104,9 @@ module Rbase
     fill_in 'artist', with: history['artist']
     select history['score_type'], from: 'score_type'
     fill_in 'score', with: history['score']
-    
-    unless num == 0
-      click_button '次を入力'
-      wait_for_register_history num
-    end
   end
   
-  def input_history(value = 0, num = 0)
+  def input_history(value = 0)
     page.find('#song')
     score = 0 + value
     score = 100 if score > 100
@@ -119,15 +114,6 @@ module Rbase
     fill_in 'artist', with: "artist#{value}"
     select 'JOYSOUND 全国採点', from: 'score_type'
     fill_in 'score', with: score
-
-    unless num == 0
-      click_button '次を入力'
-      wait_for_register_history num
-    end
-  end
-
-  def wait_for_register_history(num)
-    page.find('#result').find('p', text: "#{num}件入力されました")
   end
 
   # 以下、ajax対応
