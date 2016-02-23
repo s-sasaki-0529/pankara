@@ -290,6 +290,13 @@ var register = (function() {
             $('#store').blur(function() {
               zenra.moshikashite('branch' , branch_list[$(this).val()]);
             });
+
+            //日付時刻入力用のカレンダーを生成
+            $('#datetime').datetimepicker({
+              lang: 'ja' ,
+              step: 10 ,
+            });
+
           }
         });
       }
