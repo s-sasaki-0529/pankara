@@ -20,4 +20,10 @@ class LocalRoute < March
     Util.to_json(Store.list)
   end
 
+  # post '/local/rpc/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
+  #---------------------------------------------------------------------
+  post '/local/rpc/karaokelist/?' do
+    Util.to_json(Karaoke.new(params[:id]))
+  end
+
 end

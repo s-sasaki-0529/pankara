@@ -247,7 +247,13 @@ var register = (function() {
     /*[Method] 履歴入力用ダイアログを作成する*/
     createDialog : function(id) {
       id = id || 0;
-
+      
+      zenra.post('/local/rpc/karaokelist?id=1' , {} , {
+        success: function(result) {
+          console.log(result);
+        }  
+      });
+      
       closeFlg = false;
       var beforeClose = function() {  
         if (!closeFlg) {
