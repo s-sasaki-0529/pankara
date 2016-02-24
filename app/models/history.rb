@@ -4,6 +4,22 @@
 require_relative 'util'
 class History < Base
 
+  # initialize - historyを取得
+  #--------------------------------------------------------------------
+  def initialize(id)
+    @params = DB.new.get('history' , id)
+  end
+
+  # modify - カラオケレコードを修正する
+  #--------------------------------------------------------------------
+  def modify(arg)
+  end
+
+  # delete - カラオケレコードを削除する
+  #--------------------------------------------------------------------
+  def delete(id)
+  end
+
   # recent_song - 最近歌われた楽曲のリストを戻す
   #---------------------------------------------------------------------
   def self.recent_song(limit = 20)
