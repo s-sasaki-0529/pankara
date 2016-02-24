@@ -16,6 +16,7 @@ class DB
     @join = ''
     @where = ''
     @insert = ''
+    @delete = false
     @option = ''
     @params = []
     if arg
@@ -25,6 +26,7 @@ class DB
       arg[:WHERE] and where(arg[:WHERE])
       arg[:JOIN] and join(arg[:JOIN])
       arg[:INSERT] and insert(arg[:INSERT])
+      arg[:DELETE] and delete()
       arg[:OPTION] and option(arg[:OPTION])
       arg[:SET] and set(arg[:SET])
     end
@@ -103,6 +105,13 @@ class DB
     columns = column_list.join(',')
     questions = ('?' * column_list.size).split('').join(',') 
     @insert = "INSERT INTO #{table} (#{columns}) VALUES (#{questions})"
+  end
+
+  # delete - DELETE文を作成する
+  # 対象テーブルの指定にはFROM,条件設定はWHEREメソッドで行う
+  #--------------------------------------------------------------------
+  def delete
+    @delete = true
   end
 
   # option - ORDER BY / LIMIT などその他の構文を作成
@@ -210,11 +219,13 @@ class DB
   #---------------------------------------------------------------------
   private
   def make
-    if @insert.empty?
+    if @insert.size > 0
+      @sql = @insert
+    elsif @delete
+      @sql = ["DELETE" , @from , @where].join(' ')
+    else
       @select = @select.empty? ? 'SELECT *' : @select
       @sql = [@select , @from , @join , @where , @option].join(' ')
-    else
-      @sql = @insert
     end
     Util.write_log('sql' , "Make SQL!!\n#{@sql}")
   end
