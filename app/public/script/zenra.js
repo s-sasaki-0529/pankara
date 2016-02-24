@@ -234,6 +234,14 @@ var register = (function() {
     });
   }
 
+  /*[method] カラオケ入力欄にカラオケ情報をセットする*/
+  function setKaraokeToInput(karaoke) {
+    $('#name').val(karaoke['name']);
+    $('#datetime').val(karaoke['datetime']);
+    $('#store').val(karaoke['store']);
+    $('#branch').val(karaoke['branch']);
+  }
+
   return {
     /*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
     reset : function() {
@@ -247,12 +255,6 @@ var register = (function() {
     /*[Method] 履歴入力用ダイアログを作成する*/
     createDialog : function(id) {
       id = id || 0;
-      
-      zenra.post('/local/rpc/karaokelist?id=1' , {} , {
-        success: function(result) {
-          console.log(result);
-        }  
-      });
       
       closeFlg = false;
       var beforeClose = function() {  
@@ -308,6 +310,48 @@ var register = (function() {
       }
     } ,
 
+    /*[Method] カラオケ編集画面を表示する*/
+    editKaraoke : function(karaoke_id) {
+      zenra.post('/local/rpc/karaokelist/?id=' + karaoke_id , {} , {
+        success: function(result) {
+          var karaoke = zenra.parseJSON(result);
+
+          zenra.showDialog('カラオケ編集' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
+            func_at_load: function() {
+              // お店のもしかしてリスト作成
+              zenra.post('/local/rpc/storelist' , {} , { 
+                success: function(result) {
+                  branch_list = zenra.parseJSON(result);
+                  
+                  // オブジェクトのキーをお店リストとして取得
+                  store_list = [];
+                  for (key in branch_list) {
+                    store_list.push(key);
+                  }
+
+                  zenra.moshikashite('store' , store_list);
+               }
+              });
+            
+              // お店を入力すると店舗のもしかしてリストが作成される
+              $('#store').blur(function() {
+                zenra.moshikashite('branch' , branch_list[$(this).val()]);
+              });
+
+              //日付時刻入力用のカレンダーを生成
+              $('#datetime').datetimepicker({
+                lang: 'ja' ,
+                step: 10 ,
+              });
+
+              setKaraokeToInput(karaoke);
+            }
+          });
+        }  
+      });
+      
+    } ,
+    
     /*[Method] カラオケ情報入力終了後の処理*/
     onPushedRegisterKaraokeButton : function() {
       var data = {
