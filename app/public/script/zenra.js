@@ -182,7 +182,7 @@ bathtowel = {
 var register = (function() {
   var count = 0;
   var closeFlg = false;
-  var karaoke_id;
+  var karaoke_id = 0;
   var store_list = [];
   var branch_list = [];
 
@@ -243,26 +243,13 @@ var register = (function() {
   }
 
   return {
-    /*[Mothod] ここまでの入力内容を破棄しダイアログを閉じる*/
-    reset : function() {
-      count = 0;
-      closeFlg = true;
-      
-      zenra.closeDialog('caution_dialog');
-      zenra.closeDialog('input_dialog');
-    } ,
-
     /*[Method] 履歴入力用ダイアログを作成する*/
     createDialog : function(id) {
       id = id || 0;
       
-      closeFlg = false;
       var beforeClose = function() {  
-        if (!closeFlg) {
-          zenra.showDialog('注意' , 'caution_dialog' , '/history/input' , 'caution' , 200);
-        }
-        
-        return closeFlg;
+        count = 0;
+        karaoke_id = 0;
       };
 
       if (id > 0) {
@@ -389,6 +376,7 @@ var register = (function() {
     onPushedRegisterAttendanceButton : function() {
       var data = {
         karaoke_id: karaoke_id ,
+
         price: $('#price').val() ,
         memo: $('#memo').val()
       };
