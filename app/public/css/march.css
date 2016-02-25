@@ -70,29 +70,23 @@ tr *.cell-datetime {
 }
 
 /* 履歴入力画面の配置調整クラス */
-#input_attendace div,
-#input_karaoke div,
-#input_history div {
+.input_dialog div {
   margin-top: 10px;
 }
-#input_attendance label,
-#input_karaoke label,
-#input_history label {
-  width: 80px;
+.input_dialog label {
+  width: 100px;
   float: left;
   margin-right: 10px;
 }
-#input_attendance textarea,
-#input_karaoke textarea {
+.input_dialog textarea {
   resize: vertical;
   overflow: auto;
   width: 560px;
 }
-#input_attendance #next_button,
-#input_karaoke #next_button,
-#input_history #buttons {
+.input_dialog #next_button,
+.input_dialog #buttons {
   margin-top: 20px;
 }
-#input_history #buttons input {
+.input_dialog #buttons input {
   margin-right: 20px;
 }
