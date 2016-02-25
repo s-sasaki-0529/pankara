@@ -16,6 +16,7 @@ class DB
     @join = ''
     @where = ''
     @insert = ''
+    @update = ''
     @delete = false
     @option = ''
     @params = []
@@ -26,6 +27,7 @@ class DB
       arg[:WHERE] and where(arg[:WHERE])
       arg[:JOIN] and join(arg[:JOIN])
       arg[:INSERT] and insert(arg[:INSERT])
+      arg[:UPDATE] and update(arg[:UPDATE])
       arg[:DELETE] and delete()
       arg[:OPTION] and option(arg[:OPTION])
       arg[:SET] and set(arg[:SET])
@@ -105,6 +107,16 @@ class DB
     columns = column_list.join(',')
     questions = ('?' * column_list.size).split('').join(',') 
     @insert = "INSERT INTO #{table} (#{columns}) VALUES (#{questions})"
+  end
+
+  # update - UPDATE文を作成する
+  # [tablename , [keys]] にて指定する
+  #--------------------------------------------------------------------
+  def update(params)
+    table = params[0]
+    keys = params[1].collect {|i| "#{i} = ?"}.join(',')
+    values = Util.make_questions(params[1].size)
+    @update = "UPDATE #{table} SET #{keys}"
   end
 
   # delete - DELETE文を作成する
@@ -221,6 +233,9 @@ class DB
   def make
     if @insert.size > 0
       @sql = @insert
+    elsif @update.size > 0
+      @sql = @update
+      @where and @sql += " #{@where}"
     elsif @delete
       @sql = ["DELETE" , @from , @where].join(' ')
     else
