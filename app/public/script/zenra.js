@@ -183,6 +183,7 @@ var register = (function() {
   var count = 0;
   var closeFlg = false;
   var karaoke_id = 0;
+  var history_id = 0;
   var store_list = [];
   var branch_list = [];
 
@@ -191,7 +192,7 @@ var register = (function() {
     $('#song').val('');
     $('#artist').val('');
     $('#score').val('');
-    $('input[name=song]').focus();
+    $('#song').focus();
   }
 
   /*[Method] カラオケが正しく入力されているか確認する*/
@@ -242,105 +243,105 @@ var register = (function() {
     $('#branch').val(karaoke['branch']);
   }
 
+  /*[method] カラオケ入力画面用ウィジェットを作成する*/
+  function createWidgetForKaraoke() {
+    // お店のもしかしてリスト作成
+    zenra.post('/local/rpc/storelist' , {} , { 
+      success: function(result) {
+        branch_list = zenra.parseJSON(result);
+        
+        // オブジェクトのキーをお店リストとして取得
+        store_list = [];
+        for (key in branch_list) {
+          store_list.push(key);
+        }
+    
+        zenra.moshikashite('store' , store_list);
+      }
+    });
+    
+    // お店を入力すると店舗のもしかしてリストが作成される
+    $('#store').blur(function() {
+      zenra.moshikashite('branch' , branch_list[$(this).val()]);
+    });
+    
+    //日付時刻入力用のカレンダーを生成
+    $('#datetime').datetimepicker({
+      lang: 'ja' ,
+      step: 10 ,
+    });
+  }
+
   return {
-    /*[Method] 履歴入力用ダイアログを作成する*/
-    createDialog : function(id) {
-      id = id || 0;
-      
+    /*[Method] カラオケ入力画面を表示する*/
+    createKaraoke : function() {
       var beforeClose = function() {  
         count = 0;
         karaoke_id = 0;
       };
 
-      if (id > 0) {
-        karaoke_id = id;
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
-          funcs: {
-            beforeClose: beforeClose
-          }
-        });
-      }
-      else {
-        zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
-          funcs: {
-            beforeClose: beforeClose
-          } ,
-          func_at_load: function() {
-            // お店のもしかしてリスト作成
-            zenra.post('/local/rpc/storelist' , {} , { 
-              success: function(result) {
-                branch_list = zenra.parseJSON(result);
-                
-                // オブジェクトのキーをお店リストとして取得
-                store_list = [];
-                for (key in branch_list) {
-                  store_list.push(key);
-                }
+      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
+        funcs: {
+          beforeClose: beforeClose
+        } ,
+        func_at_load: function() {
+          createWidgetForKaraoke();
+        }
+      });
+    } ,
+    
+    /*[Method] 歌唱履歴入力画面を表示する*/
+    createHistor : function(karaoke) {
+      var beforeClose = function() {  
+        count = 0;
+        karaoke_id = 0;
+      };
 
-                zenra.moshikashite('store' , store_list);
-              }
-            });
-          
-            // お店を入力すると店舗のもしかしてリストが作成される
-            $('#store').blur(function() {
-              zenra.moshikashite('branch' , branch_list[$(this).val()]);
-            });
-
-            //日付時刻入力用のカレンダーを生成
-            $('#datetime').datetimepicker({
-              lang: 'ja' ,
-              step: 10 ,
-            });
-
-          }
-        });
-      }
+      karaoke_id = karaoke;
+      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
+        funcs: {
+          beforeClose: beforeClose
+        }
+      });
     } ,
 
     /*[Method] カラオケ編集画面を表示する*/
-    editKaraoke : function(karaoke_id) {
-      zenra.post('/local/rpc/karaokelist/?id=' + karaoke_id , {} , {
+    editKaraoke : function(karaoke) {
+      zenra.post('/local/rpc/karaokelist/?id=' + karaoke , {} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
           zenra.showDialog('カラオケ編集' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
             func_at_load: function() {
-              // お店のもしかしてリスト作成
-              zenra.post('/local/rpc/storelist' , {} , { 
-                success: function(result) {
-                  branch_list = zenra.parseJSON(result);
-                  
-                  // オブジェクトのキーをお店リストとして取得
-                  store_list = [];
-                  for (key in branch_list) {
-                    store_list.push(key);
-                  }
-
-                  zenra.moshikashite('store' , store_list);
-               }
-              });
-            
-              // お店を入力すると店舗のもしかしてリストが作成される
-              $('#store').blur(function() {
-                zenra.moshikashite('branch' , branch_list[$(this).val()]);
-              });
-
-              //日付時刻入力用のカレンダーを生成
-              $('#datetime').datetimepicker({
-                lang: 'ja' ,
-                step: 10 ,
-              });
-
+              createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
+              $('#next_button').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
             }
           });
         }  
       });
-      
+    } ,
+    
+    /*[Method] 歌唱履歴編集画面を表示する*/
+    editHistory : function(karaoke , history) {
+      karoake_id = karaoke;
+
+      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
+        success: function(result) {
+          var history = zenra.parseJSON(result);
+
+          zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
+            func_at_load: function() {
+              zenra.createSeekbar();
+              createMoshikashite();
+            }
+          });
+        }  
+      });
     } ,
     
     /*[Method] カラオケ情報入力終了後の処理*/
-    onPushedRegisterKaraokeButton : function() {
+    onPushedRegisterKaraokeButton : function(action) {
       var data = {
         name: $('#name').val() ,
         datetime: $('#datetime').val() ,
@@ -361,12 +362,18 @@ var register = (function() {
           result_obj = zenra.parseJSON(result);
           karaoke_id = result_obj['karaoke_id'];
           
-          zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
-            func_at_load: function() {
-              zenra.createSeekbar();
-              createMoshikashite();
-            }
-          });
+          // カラオケの作成時にはダイアログの画面を遷移する
+          if (action == 'create') {
+            zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+              func_at_load: function() {
+                zenra.createSeekbar();
+                createMoshikashite();
+              }
+            });
+          }
+          else {
+            zenra.closeDialog('input_dialog');
+          }
         }
       });
 
@@ -384,6 +391,7 @@ var register = (function() {
       zenra.post('/karaoke/input/attendance' , data , {});
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
         func_at_load: function() {
+          zenra.createSeekbar();
           createMoshikashite();
         }
       });

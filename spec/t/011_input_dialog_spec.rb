@@ -41,7 +41,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
  
   before do
     login 'unagipai'
-    execute_script 'register.createDialog();'
+    execute_script 'register.createKaraoke();'
     wait_for_ajax
   end
 
@@ -55,7 +55,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   
   it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton();'
+    execute_script 'register.onPushedRegisterKaraokeButton("create");'
     wait_for_ajax
     
     iscontain history_contents
@@ -63,7 +63,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
   it '入力内容が正しく登録されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton();'
+    execute_script 'register.onPushedRegisterKaraokeButton("create");'
     wait_for_ajax
    
     input_history_with_data history_data, 1
@@ -107,7 +107,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
   it '入力された件数が正しく表示されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton();'
+    execute_script 'register.onPushedRegisterKaraokeButton("create");'
     wait_for_ajax
    
     3.times do |i|
@@ -120,7 +120,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   
   it '20件登録されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton();'
+    execute_script 'register.onPushedRegisterKaraokeButton("create");'
     wait_for_ajax
    
     20.times do |i|
