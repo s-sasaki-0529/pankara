@@ -55,7 +55,20 @@ zenra.parseJSON = function(json) {
   } else {
     alert('ブラウザがJSONに対応していません');
   }
+  return false;
 };
+
+/*
+toJSON - JSオブジェクトをJSON文字列に変換する
+*/
+zenra.toJSON = function(obj) {
+  if (window.JSON) {
+    return JSON.stringify(obj);
+  } else {
+    alert('ブラウザがJSONに対応していません');
+  }
+  return false;
+}
 
 /*
 showDialog - ダイアログを表示する
