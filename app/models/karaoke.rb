@@ -10,6 +10,7 @@ class Karaoke < Base
   #---------------------------------------------------------------------
   def initialize(id)
     @params = DB.new.get('karaoke' , id)
+    @params or return nil
 
     product = Product.new(@params['product'])
     @params['product_name'] = "#{product.params['brand']}(#{product.params['product']})"
