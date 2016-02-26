@@ -17,7 +17,9 @@ class History < Base
 
   # delete - カラオケレコードを削除する
   #--------------------------------------------------------------------
-  def delete(id)
+  def delete()
+    DB.new(:DELETE => 1 , :FROM => 'history' , :WHERE => 'id = ?' , :SET => @params['id']).execute
+    @params = nil
   end
 
   # recent_song - 最近歌われた楽曲のリストを戻す
