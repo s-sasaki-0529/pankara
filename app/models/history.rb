@@ -13,6 +13,15 @@ class History < Base
   # modify - カラオケレコードを修正する
   #--------------------------------------------------------------------
   def modify(arg)
+    arg.select! do |k , v|
+      ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'].include?(k)
+    end
+    DB.new(
+      :UPDATE => ['history' , arg.keys] ,
+      :WHERE => 'id = ?' ,
+      :SET => arg.values.push(@params['id'])
+    ).execute
+    @params = DB.new.get('history' , @params['id'])
   end
 
   # delete - カラオケレコードを削除する

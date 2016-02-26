@@ -46,6 +46,15 @@ class Karaoke < Base
   # modify - カラオケレコードを修正する
   #---------------------------------------------------------------------
   def modify(arg)
+    arg.select! do |k , v| 
+      ['name' , 'datetime' , 'plan' , 'store' , 'product'].include?(k)
+    end
+    DB.new(
+      :UPDATE => ['karaoke' , arg.keys] , 
+      :WHERE => 'id = ?' ,
+      :SET => arg.values.push(@params['id'])
+    ).execute
+    @params = DB.new.get('karaoke' , @params['id'])
   end
 
   # delete - カラオケレコードを削除する
