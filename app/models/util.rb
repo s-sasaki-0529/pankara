@@ -82,6 +82,12 @@ class Util
     JSON.generate(data)
   end
 
+  # to_hash - JSON文字列をRubyオブジェクトに変換する
+  #--------------------------------------------------------------------
+  def self.to_hash(json)
+    JSON.parse(json)
+  end
+
   # unset_config - コンフィグを削除する
   #---------------------------------------------------------------------
   def self.unset_config(key)
