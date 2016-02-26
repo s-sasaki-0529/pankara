@@ -51,8 +51,24 @@ class Karaoke < Base
   # delete - カラオケレコードを削除する
   #--------------------------------------------------------------------
   def delete
+
+    # 参照されているattendanceレコードを削除する
+    attendances = DB.new(
+      :SELECT => {'attendance.id' => 'id'} ,
+      :FROM => 'attendance' ,
+      :JOIN => ['attendance' , 'karaoke'] ,
+      :WHERE => 'karaoke.id = ?' ,
+      :SET => @params['id']
+    ).execute_columns
+    attendances.each do |id|
+      attendance = Attendance.new(id)
+      attendance.delete
+    end
+
+    # karaokeレコードを削除する
     DB.new(:DELETE => 1 , :FROM => 'karaoke' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     @params = nil
+
   end
 
   # get_history - カラオケ記録に対応した歌唱履歴を取得する
