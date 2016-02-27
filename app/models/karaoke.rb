@@ -47,6 +47,13 @@ class Karaoke < Base
   # modify - カラオケレコードを修正する
   #---------------------------------------------------------------------
   def modify(arg)
+
+    # 店名と店舗名の指定がある場合、storeに置き換える
+    if  arg['store_name'] && arg['store_branch']
+      r = Register.new
+      arg['store'] = r.create_store({'name' => arg['store_name'] ,'branch' => arg['store_branch']})
+    end
+
     arg.select! do |k , v| 
       ['name' , 'datetime' , 'plan' , 'store' , 'product'].include?(k)
     end

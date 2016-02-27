@@ -8,8 +8,8 @@ class Register < Base
 
   # initialize - インスタンスを生成する
   #---------------------------------------------------------------------
-  def initialize(user)
-    @userid = user['id']
+  def initialize(user = nil)
+    @userid = user && user['id']
     @karaoke = nil
     @attendance = nil
     @score_type = nil
