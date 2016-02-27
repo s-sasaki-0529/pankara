@@ -280,7 +280,7 @@ var register = (function() {
         } ,
         func_at_load: function() {
           createWidgetForKaraoke();
-          $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton("create");').val('次へ');
+          $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton();').val('次へ');
         }
       });
     } ,
@@ -306,9 +306,9 @@ var register = (function() {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
-              $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
+              $('#button1').attr('onclick' , 'register.onPushedEditKaraokeButton();').val('保存');
               var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
-              button2.attr('onclick' , 'register.onPushedRegisterKaraokeButton("delete");').val('削除');
+              button2.attr('onclick' , 'register.onPushedDeleteKaraokeButton();').val('削除');
               var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
               button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
               $('#buttons').append(button2);
@@ -336,8 +336,8 @@ var register = (function() {
             func_at_load: function() {
               zenra.createSeekbar();
               createMoshikashite();
-              $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("edit");').val('保存');
-              $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("delete");').val('削除');
+              $('#button1').attr('onclick' , 'register.onPushedEditHistoryButton();').val('保存');
+              $('#button2').attr('onclick' , 'register.onPushedDeleteHistoryButton();').val('削除');
               var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
               button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
               $('#buttons').append(button3);
@@ -350,8 +350,8 @@ var register = (function() {
 //      });
     } ,
     
-    /*[Method] カラオケ情報入力終了後の処理*/
-    onPushedRegisterKaraokeButton : function(action) {
+    /*[Method] カラオケ登録ボタン押下時の処理*/
+    onPushedRegisterKaraokeButton : function() {
       var data = {
         name: $('#name').val() ,
         datetime: $('#datetime').val() ,
@@ -363,52 +363,19 @@ var register = (function() {
         memo: $('#memo').val()
       };
       
-      if (action == 'delete') {
-        zenra.post(('/local/rpc/karaoke/delete/' + karaoke_id) , {} , {
-          success: function(result) {
-            zenra.closeDialog('input_dialog');
-          }
-        });
-      }
-      else if(action == 'edit') {
-        var json_data = zenra.toJSON({
-          name: $('#name').val() ,
-          datetime: $('#datetime').val() ,
-          plan: $('#plan').val() ,
-          store_name: $('#store').val() ,
-          store_branch: $('#branch').val() ,
-          product: $('#product').val()
-        });
-
-        zenra.post(('/local/rpc/karaoke/modify/' + karaoke_id) , {params: json_data} , {
-          success: function(json_result) {
-            result = zenra.parseJSON(json_result);
-            if (result['result'] == 'success') {
-              location.href = ('/karaoke/detail/' + karaoke_id);
-            }
-          }
-        });
-      }
-      
       zenra.post('/karaoke/input' , data , {
         success: function(result) {
           result_obj = zenra.parseJSON(result);
           karaoke_id = result_obj['karaoke_id'];
           
-          // カラオケの作成時にはダイアログの画面を遷移する
-          if (action == 'create') {
-            zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
-              func_at_load: function() {
-                zenra.createSeekbar();
-                createMoshikashite();
-                $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
-                $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
-              }
-            });
-          }
-          else {
-            zenra.closeDialog('input_dialog');
-          }
+          zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+            func_at_load: function() {
+              zenra.createSeekbar();
+              createMoshikashite();
+              $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
+              $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
+            }
+          });
         }
       });
     } ,
@@ -441,7 +408,6 @@ var register = (function() {
         score_type: $('#score_type').val() ,
       };
 
-      var funcs = {};
       if (action == 'register') {
         zenra.post('/history/input' , data , {
           success: function(result) {
@@ -450,6 +416,7 @@ var register = (function() {
             createMoshikashite();
           }
         });
+     
         resetHistory();
       }
       else if (action == 'end') {
@@ -459,28 +426,62 @@ var register = (function() {
         
         zenra.closeDialog('input_dialog');
       }
-      else if (action == 'edit') {
-        var json_data = zenra.toJSON({
-          song_name: $('#song').val() ,
-          artist_name: $('#artist').val() ,
-          songkey: $('$#seekbar').slider('value') ,
-          score: $('#score').val() ,
-          score_type: $('#score_type').val()
-        });
+    } ,
+    
+    /*[Method] カラオケ編集ボタン押下時の処理*/
+    onPushedEditKaraokeButton : function() {
+      var json_data = zenra.toJSON({
+        name: $('#name').val() ,
+        datetime: $('#datetime').val() ,
+        plan: $('#plan').val() ,
+        store_name: $('#store').val() ,
+        store_branch: $('#branch').val() ,
+        product: $('#product').val()
+      });
 
-        zenra.post('/local/rpc/history/modify/' + history_id , {params: json_data} , {
-          success: function() {
+      zenra.post(('/local/rpc/karaoke/modify/' + karaoke_id) , {params: json_data} , {
+        success: function(json_result) {
+          result = zenra.parseJSON(json_result);
+          if (result['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
-        });
-      }
-      else if (action == 'delete') {
-        zenra.post(('/local/rpc/history/delete/' + history_id) , {} , {
-          success: function(result) {
-            location.href = ('/karaoke/detail/' + karaoke_id);
-          }
-        });
-      }
+        }
+      });
+    } ,
+    
+    /*[Method] 歌唱履歴編集ボタン押下時の処理*/
+    onPushedEditHistoryButton : function() {
+      var json_data = zenra.toJSON({
+        song_name: $('#song').val() ,
+        artist_name: $('#artist').val() ,
+        songkey: $('#seekbar').slider('value') ,
+        score: $('#score').val() ,
+        score_type: $('#score_type').val()
+      });
+
+      zenra.post('/local/rpc/history/modify/' + history_id , {params: json_data} , {
+        success: function() {
+          location.href = ('/karaoke/detail/' + karaoke_id);
+        }
+      });
+    } ,
+
+    /*[Method] カラオケ削除ボタン押下時の処理*/
+    onPushedDeleteKaraokeButton : function() {
+      zenra.post(('/local/rpc/karaoke/delete/' + karaoke_id) , {} , {
+        success: function(result) {
+          zenra.closeDialog('input_dialog');
+        }
+      });
+    } ,
+    
+    /*[Method] 歌唱履歴削除ボタン押下時の処理*/
+    onPushedDeleteHistoryButton : function() {
+      zenra.post(('/local/rpc/history/delete/' + history_id) , {} , {
+        success: function(result) {
+          location.href = ('/karaoke/detail/' + karaoke_id);
+        }
+      });
     } ,
   }
   
