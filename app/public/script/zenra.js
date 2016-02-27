@@ -348,7 +348,6 @@ var register = (function() {
           });
 //        }  
 //      });
-            console.log(karaoke_id);
     } ,
     
     /*[Method] カラオケ情報入力終了後の処理*/
@@ -357,6 +356,21 @@ var register = (function() {
         zenra.post(('/local/rpc/karaoke/delete/' + karaoke_id) , {} , {
           success: function(result) {
             zenra.closeDialog('input_dialog');
+          }
+        });
+      }
+      else if(action == 'edit') {
+        var json_data = zenra.toJSON({
+          name: $('#name').val() ,
+          store_name: $('#store').val() ,
+          store_branch: $('#branch').val()
+        });
+        zenra.post(('/local/rpc/karaoke/modify/' + karaoke_id) , {params: json_data} , {
+          success: function(json_result) {
+            result = zenra.parseJSON(json_result);
+            if (result['result'] == 'success') {
+              location.href = ('/karaoke/detail/' + karaoke_id);
+            }
           }
         });
       }
@@ -443,12 +457,17 @@ var register = (function() {
         zenra.closeDialog('input_dialog');
       }
       else if (action == 'edit') {
-        // @todo カラオケ情報を更新する
-//        zenra.post('/local/rpc/history/modify/' + history_id , data , {
-//          success: function() { 
-//            zenra.closeDialog('input_dialog');
-//          }
-//        });
+        var json_data = zenra.toJSON({
+          song_name: $('#song').val() ,
+          artist_name: $('#artist').val() ,
+          score: $('#score').val()
+        });
+
+        zenra.post('/local/rpc/history/modify/' + history_id , {params: json_data} , {
+          success: function() {
+            location.href = ('/karaoke/detail/' + karaoke_id);
+          }
+        });
       }
       else if (action == 'delete') {
         zenra.post(('/local/rpc/history/delete/' + history_id) , {} , {
