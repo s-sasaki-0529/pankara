@@ -280,6 +280,7 @@ var register = (function() {
         } ,
         func_at_load: function() {
           createWidgetForKaraoke();
+          $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton("create");').val('次へ');
         }
       });
     } ,
@@ -296,6 +297,7 @@ var register = (function() {
 
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke) {
+      karaoke_id = karaoke;
       zenra.post('/local/rpc/karaokelist/?id=' + karaoke , {} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
@@ -304,7 +306,10 @@ var register = (function() {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
-              $('#next_button').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
+              $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
+              var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
+              button2.attr('onclick' , 'register.onPushedRegisterKaraokeButton("delete");').val('削除');
+              $('#buttons').append(button2);
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -316,7 +321,7 @@ var register = (function() {
     
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke , history) {
-      karoake_id = karaoke;
+      karaoke_id = karaoke;
       history_id = history;
 
       // @todo IDに対応する歌唱履歴情報を取得する
@@ -341,6 +346,14 @@ var register = (function() {
     
     /*[Method] カラオケ情報入力終了後の処理*/
     onPushedRegisterKaraokeButton : function(action) {
+      if (action == 'delete') {
+        zenra.post(('/local/rpc/karaoke/delete/' + karaoke_id) , {} , {
+          success: function(result) {
+            zenra.closeDialog('input_dialog');
+          }
+        });
+      }
+      
       var data = {
         name: $('#name').val() ,
         datetime: $('#datetime').val() ,
@@ -417,8 +430,7 @@ var register = (function() {
       }
       else if (action == 'end') {
         if (count > 0) {
-          id = karaoke_id;
-          location.href = ('/karaoke/detail/' + id);
+          location.href = ('/karaoke/detail/' + karaoke_id);
         }
         
         zenra.closeDialog('input_dialog');
