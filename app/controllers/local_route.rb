@@ -35,7 +35,7 @@ class LocalRoute < March
   # post '/local/rpc/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
   #---------------------------------------------------------------------
   post '/local/rpc/karaokelist/?' do
-    params[:id].nil? ? Karaoke.list_all : Util.to_json(Karaoke.new(params[:id]).params)
+    params[:id].nil? ? Util.to_json(Karaoke.list_all) : Util.to_json(Karaoke.new(params[:id]).params)
   end
   
   # post '/local/rpc/karaoke/delete/:id' - カラオケを削除する
