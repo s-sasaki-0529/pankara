@@ -208,26 +208,12 @@ var register = (function() {
     $('#song').focus();
   }
 
-  /*[Method] カラオケが正しく入力されているか確認する*/
-  function validateKaraoke(data) {
-    if (data['name'] == '') {
-      return false;
-    }
-
-    return true;
-  }
-
-  /*[Method] 歌唱履歴が正しく入力されているか確認する*/
-  function validateHistory(data) {
-    if (data['song'] == '') {
-      return false;
-    }
-    if (data['artist'] == '') {
-      return false;
-    }
-
-    return true;
-  }
+  /*[Method] ダイアログを閉じる時に実施する処理*/ 
+  function beforeClose() {  
+    count = 0;
+    history_id = 0;
+    karaoke_id = 0;
+  };
 
   /*[method] 曲名と歌手のもしかしてリストの生成*/
   function createMoshikashite() {
@@ -288,11 +274,6 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      var beforeClose = function() {  
-        count = 0;
-        karaoke_id = 0;
-      };
-
       zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
         funcs: {
           beforeClose: beforeClose
@@ -305,11 +286,6 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke) {
-      var beforeClose = function() {  
-        count = 0;
-        karaoke_id = 0;
-      };
-
       karaoke_id = karaoke;
       zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
         funcs: {
@@ -320,11 +296,6 @@ var register = (function() {
 
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke) {
-      var beforeClose = function() {  
-        count = 0;
-        karaoke_id = 0;
-      };
-
       zenra.post('/local/rpc/karaokelist/?id=' + karaoke , {} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
@@ -345,11 +316,6 @@ var register = (function() {
     
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke , history) {
-      var beforeClose = function() {  
-        count = 0;
-        karaoke_id = 0;
-      };
-
       karoake_id = karaoke;
       history_id = history;
 
