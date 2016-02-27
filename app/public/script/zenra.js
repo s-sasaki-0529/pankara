@@ -309,7 +309,10 @@ var register = (function() {
               $('#button1').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
               var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
               button2.attr('onclick' , 'register.onPushedRegisterKaraokeButton("delete");').val('削除');
+              var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
+              button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
               $('#buttons').append(button2);
+              $('#buttons').append(button3);
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -334,7 +337,10 @@ var register = (function() {
               zenra.createSeekbar();
               createMoshikashite();
               $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("edit");').val('保存');
-              $('#button2').attr('onclick' , '').val('キャンセル');
+              $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("delete");').val('削除');
+              var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
+              button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+              $('#buttons').append(button3);
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -342,6 +348,7 @@ var register = (function() {
           });
 //        }  
 //      });
+            console.log(karaoke_id);
     } ,
     
     /*[Method] カラオケ情報入力終了後の処理*/
@@ -443,7 +450,13 @@ var register = (function() {
 //          }
 //        });
       }
-  
+      else if (action == 'delete') {
+        zenra.post(('/local/rpc/history/delete/' + history_id) , {} , {
+          success: function(result) {
+            location.href = ('/karaoke/detail/' + karaoke_id);
+          }
+        });
+      }
     } ,
   }
   
