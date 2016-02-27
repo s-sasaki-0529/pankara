@@ -67,13 +67,10 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     wait_for_ajax
    
     input_history_with_data history_data, 1
-    execute_script 'register.onPushedRegisterHistoryButton("next");'
-    wait_for_ajax
-
-
-    input_history 1
     execute_script 'register.onPushedRegisterHistoryButton("register");'
     wait_for_ajax
+
+    execute_script 'register.onPushedRegisterHistoryButton("end");'
     
     karaoke = [
       '2016-02-20 12:00:00',
@@ -93,16 +90,6 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       '80.0'
     ]
     iscontain history
-    
-    history = [
-      'ちゃら',
-      'song1',
-      'artist1',
-      '0',
-      '全国採点',
-      '1.0'
-    ]
-    iscontain history
   end
 
   it '入力された件数が正しく表示されるか' do
@@ -112,7 +99,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
    
     3.times do |i|
       input_history i
-      execute_script 'register.onPushedRegisterHistoryButton("next");'
+      execute_script 'register.onPushedRegisterHistoryButton("register");'
       wait_for_ajax
       iscontain "#{i + 1}件入力されました"
     end
@@ -125,16 +112,14 @@ describe '履歴入力用ダイアログのテスト', :js => true do
    
     20.times do |i|
       input_history i
-      execute_script 'register.onPushedRegisterHistoryButton("next");'
+      execute_script 'register.onPushedRegisterHistoryButton("register");'
       wait_for_ajax
     end
 
-    input_history 20
-    execute_script 'register.onPushedRegisterHistoryButton("register");'
-    wait_for_ajax
+    execute_script 'register.onPushedRegisterHistoryButton("end");'
   
     histories = []
-    21.times do |i|
+    20.times do |i|
       histories.push "song#{i}"
       histories.push "artist#{i}"
     end

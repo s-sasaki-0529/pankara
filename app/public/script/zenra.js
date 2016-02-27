@@ -304,7 +304,7 @@ var register = (function() {
     } ,
     
     /*[Method] 歌唱履歴入力画面を表示する*/
-    createHistor : function(karaoke) {
+    createHistory : function(karaoke) {
       var beforeClose = function() {  
         count = 0;
         karaoke_id = 0;
@@ -320,6 +320,11 @@ var register = (function() {
 
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke) {
+      var beforeClose = function() {  
+        count = 0;
+        karaoke_id = 0;
+      };
+
       zenra.post('/local/rpc/karaokelist/?id=' + karaoke , {} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
@@ -329,6 +334,9 @@ var register = (function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
               $('#next_button').attr('onclick' , 'register.onPushedRegisterKaraokeButton("edit");').val('保存');
+            } ,
+            funcs: {
+              beforeClose: beforeClose
             }
           });
         }  
@@ -337,20 +345,32 @@ var register = (function() {
     
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke , history) {
-      karoake_id = karaoke;
+      var beforeClose = function() {  
+        count = 0;
+        karaoke_id = 0;
+      };
 
-      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
-        success: function(result) {
-          var history = zenra.parseJSON(result);
+      karoake_id = karaoke;
+      history_id = history;
+
+      // @todo IDに対応する歌唱履歴情報を取得する
+//      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
+//        success: function(result) {
+//          var history = zenra.parseJSON(result);
 
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
             func_at_load: function() {
               zenra.createSeekbar();
               createMoshikashite();
+              $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("edit");').val('保存');
+              $('#button2').attr('onclick' , '').val('キャンセル');
+            } ,
+            funcs: {
+              beforeClose: beforeClose
             }
           });
-        }  
-      });
+//        }  
+//      });
     } ,
     
     /*[Method] カラオケ情報入力終了後の処理*/
@@ -366,10 +386,6 @@ var register = (function() {
         memo: $('#memo').val()
       };
  
-      if (validateKaraoke(data) == false) {
-        return;
-      }
-      
       zenra.post('/karaoke/input' , data , {
         success: function(result) {
           result_obj = zenra.parseJSON(result);
@@ -381,6 +397,8 @@ var register = (function() {
               func_at_load: function() {
                 zenra.createSeekbar();
                 createMoshikashite();
+                $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
+                $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
               }
             });
           }
@@ -389,7 +407,6 @@ var register = (function() {
           }
         }
       });
-
     } ,
   
     /*[Method] 出席情報入力終了後の処理*/
@@ -411,7 +428,7 @@ var register = (function() {
     } ,
 
     /*[Method] 歌唱履歴情報入力終了後の処理*/
-    onPushedRegisterHistoryButton : function(button) {
+    onPushedRegisterHistoryButton : function(action) {
       var data = {
         karaoke_id: karaoke_id ,
         song: $('#song').val() ,
@@ -421,26 +438,34 @@ var register = (function() {
         score_type: $('#score_type').val() ,
       };
 
-      if (validateHistory(data) == false) {
-        return;
-      }
-  
       var funcs = {};
-      if (button == 'register') {
-        funcs['success'] = function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
-        };
+      if (action == 'register') {
+        zenra.post('/history/input' , data , {
+          success: function(result) {
+            count += 1;
+            $('#result').html('<p>' + count + '件入力されました</p>')
+            createMoshikashite();
+          }
+        });
+        resetHistory();
       }
-      else {
-        funcs['success'] = function(result) {
-          count += 1;
-          $('#result').html('<p>' + count + '件入力されました</p>')
-          createMoshikashite();
-        };
+      else if (action == 'end') {
+        if (count > 0) {
+          id = karaoke_id;
+          location.href = ('/karaoke/detail/' + id);
+        }
+        
+        zenra.closeDialog('input_dialog');
+      }
+      else if (action == 'edit') {
+        // @todo カラオケ情報を更新する
+//        zenra.post('/local/rpc/history/modify/' + history_id , data , {
+//          success: function() { 
+//            zenra.closeDialog('input_dialog');
+//          }
+//        });
       }
   
-      zenra.post('/history/input' , data , funcs);
-      resetHistory();
     } ,
   }
   
