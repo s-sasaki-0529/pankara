@@ -13,6 +13,15 @@ class History < Base
   # modify - カラオケレコードを修正する
   #--------------------------------------------------------------------
   def modify(arg)
+
+    # 曲名、歌手名からsongidを取得
+    if arg['song_name'] && arg['artist_name']
+      r = Register.new
+      artist_id = r.create_artist(arg['artist_name'])
+      song_id = r.create_song(artist_id , arg['artist_name'] , arg['song_name'])
+      arg['song'] = song_id
+    end
+
     arg.select! do |k , v|
       ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'].include?(k)
     end
