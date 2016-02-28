@@ -1,5 +1,5 @@
 <h4><%= @karaoke['name'] %></h4>
-<table id="karaoke_detail_description" border="1" class="table table-hover linkcursor">
+<table id="karaoke_detail_description" border="1" class="table linkcursor" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
   <thead>
     <tr>
       <th class='center cell-datetime'>日時</th>
@@ -41,7 +41,7 @@
   </thead>
   <tbody>
     <% @karaoke.histories.each do |history| %>
-    <tr>
+    <tr onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
       <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
       <td class='center' width='160'>
         <% if history['song_url'] %>
