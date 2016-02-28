@@ -1,5 +1,5 @@
 <h4><%= @karaoke['name'] %></h4>
-<table id="karaoke_detail_description" border="1" class="table linkcursor" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+<table id="karaoke_detail_description" border="1" class="table linkcursor">
   <thead>
     <tr>
       <th class='center cell-datetime'>日時</th>
@@ -7,6 +7,7 @@
       <th class='center'>お店</th>
       <th class='center'>機種</th>
       <th class='center'>メンバー</th>
+      <th width='32px'>編集</th>
     </tr>
   </thead>
   <tbody>
@@ -21,6 +22,9 @@
             <%= user_link member['username'], member['screenname'] %>
           <span>
         <% end %>
+      </td>
+      <td width="32px">
+        <img src="/image/edit.png" width="32" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
       </td>
     </tr>
   </tbody>
@@ -37,11 +41,12 @@
       <th class='center cell-number'>キー</th>
       <th class='center' width='190'>採点モード</th>
       <th class='cell-number'>採点</th>
+      <th class='center' width='32'>編集</th>
     </tr>
   </thead>
   <tbody>
     <% @karaoke.histories.each do |history| %>
-    <tr onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
+    <tr>
       <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
       <td class='center' width='160'>
         <% if history['song_url'] %>
@@ -55,6 +60,9 @@
       <td class='center'><%= history['songkey'] %></td>
       <td class='center' width='190'><%= history['scoretype_name'] %></td>
       <td class='center'><%= h history['score'] %></td>
+      <td class='center' width='32'>
+        <img src="/image/edit.png" width="32" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
+      </td>
     </tr>
     <% end %>
   </tbody>

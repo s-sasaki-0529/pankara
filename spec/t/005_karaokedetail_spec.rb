@@ -41,15 +41,15 @@ describe 'カラオケ詳細ページ' do
     visit url
     iscontain 'カラオケ詳細ページテスト用カラオケ'
     des_table = table_to_hash('karaoke_detail_description')
-    expect(des_table[0]['tostring']).to eq '2016-01-05 12:00:00,5.0,カラオケ館 亀戸店,JOYSOUND(MAX),ないと ともちん'
+    expect(des_table[0]['tostring']).to eq '2016-01-05 12:00:00,5.0,カラオケ館 亀戸店,JOYSOUND(MAX),ないと ともちん,'
   end
   it '歌唱履歴が正常に表示されるか' do
     login 'sa2knight'
     visit url
     history_table = table_to_hash('karaoke_detail_history')
     expect(history_table.length).to eq 6
-    expect(history_table[0]['tostring']).to eq 'ないと,未登録,プラネタリウム,BUMP OF CHICKEN,0,全国採点,72.0'
-    expect(history_table[3]['tostring']).to eq 'ともちん,未登録,メーデー,BUMP OF CHICKEN,0,全国採点,91.0'
+    expect(history_table[0]['tostring']).to eq 'ないと,未登録,プラネタリウム,BUMP OF CHICKEN,0,全国採点,72.0,'
+    expect(history_table[3]['tostring']).to eq 'ともちん,未登録,メーデー,BUMP OF CHICKEN,0,全国採点,91.0,'
   end
   it 'リンクが正常に登録されているか' do
     login 'sa2knight'
