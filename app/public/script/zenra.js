@@ -238,8 +238,19 @@ var register = (function() {
   function setKaraokeToInput(karaoke) {
     $('#name').val(karaoke['name']);
     $('#datetime').val(karaoke['datetime']);
-    $('#store').val(karaoke['store']);
-    $('#branch').val(karaoke['branch']);
+    $('#plan').val(karaoke['plan']);
+    $('#store').val(karaoke['store_name']);
+    $('#branch').val(karaoke['branch_name']);
+    $('#product').val(karaoke['product']);
+  }
+
+  /*[method] 歌唱履歴入力欄に歌唱履歴情報をセットする*/
+  function setHistoryToInput(history) {
+    $('#song').val(history['song_name']);
+    $('#artist').val(history['artist_name']);
+    $('#seekbar').slider('value' , history['songkey']);
+    $('#score_type').val(history['score_type']);
+    $('#score').val(history['score']);
   }
 
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
@@ -328,14 +339,15 @@ var register = (function() {
       history_id = history;
 
       // @todo IDに対応する歌唱履歴情報を取得する
-//      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
-//        success: function(result) {
-//          var history = zenra.parseJSON(result);
+      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
+        success: function(result) {
+          var history = zenra.parseJSON(result);
 
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
             func_at_load: function() {
               zenra.createSeekbar();
               createMoshikashite();
+              setHistoryToInput(history);
               $('#button1').attr('onclick' , 'register.onPushedEditHistoryButton();').val('保存');
               $('#button2').attr('onclick' , 'register.onPushedDeleteHistoryButton();').val('削除');
               var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
@@ -346,8 +358,8 @@ var register = (function() {
               beforeClose: beforeClose
             }
           });
-//        }  
-//      });
+        }  
+      });
     } ,
     
     /*[Method] カラオケ登録ボタン押下時の処理*/
