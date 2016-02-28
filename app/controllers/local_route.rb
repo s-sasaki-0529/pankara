@@ -44,18 +44,18 @@ class LocalRoute < March
     params[:id].nil? ? Util.to_json(History.recent_song) : Util.to_json(History.new(params[:id], true).params)
   end
 
-  # post '/local/rpc/karaoke/delete/:id' - カラオケを削除する
+  # post '/local/rpc/karaoke/delete/?' - カラオケを削除する
   #--------------------------------------------------------------------
-  post '/local/rpc/karaoke/delete/:id' do
+  post '/local/rpc/karaoke/delete/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     karaoke.delete
     return success
   end
 
-  # post '/local/rpc/karaoke/modify/:id' - カラオケを編集する
+  # post '/local/rpc/karaoke/modify/?' - カラオケを編集する
   #--------------------------------------------------------------------
-  post '/local/rpc/karaoke/modify/:id' do
+  post '/local/rpc/karaoke/modify/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
@@ -63,18 +63,18 @@ class LocalRoute < March
     return result ? success : error('modify failed')
   end
 
-  # post '/local/rpc/history/delete/:id' - 歌唱履歴を削除する
+  # post '/local/rpc/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
-  post '/local/rpc/history/delete/:id' do
+  post '/local/rpc/history/delete/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     history.delete
     return success
   end
 
-  # post '/local/rpc/history/modify/:id' - 歌唱履歴を編集する
+  # post '/local/rpc/history/modify/?' - 歌唱履歴を編集する
   #--------------------------------------------------------------------
-  post '/local/rpc/history/modify/:id' do
+  post '/local/rpc/history/modify/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
