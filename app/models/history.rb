@@ -6,8 +6,13 @@ class History < Base
 
   # initialize - historyを取得
   #--------------------------------------------------------------------
-  def initialize(id)
+  def initialize(id , withInfo = false)
     @params = DB.new.get('history' , id)
+    if withInfo
+      songInfo = Song.new(@params['id']).params
+      @params['song_name'] = songInfo['name']
+      @params['artist_name'] = songInfo['artist_name']
+    end
   end
 
   # modify - カラオケレコードを修正する

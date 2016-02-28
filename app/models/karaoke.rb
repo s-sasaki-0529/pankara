@@ -16,7 +16,9 @@ class Karaoke < Base
     @params['product_name'] = "#{product.params['brand']}(#{product.params['product']})"
 
     store = Store.new(@params['store'])
-    @params['store_name'] = "#{store.params['name']} #{store.params['branch']}"
+    @params['store_name'] = store.params['name']
+    @params['branch_name'] = store.params['branch']
+    @params['store_full_name'] = "#{store.params['name']} #{store.params['branch']}"
   end
 
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
