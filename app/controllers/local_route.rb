@@ -16,14 +16,12 @@ class LocalRoute < March
 
   # post '/local/rpc/songlist' - 楽曲一覧を戻す
   #---------------------------------------------------------------------
-  post '/local/rpc/songlist/?' do
-    Util.to_json(Song.list.collect { |song| song['name'] }.sort)
-  end
-
-  # post '/local/rpc/artistlist' - 歌手一覧を戻す
-  #---------------------------------------------------------------------
-  post '/local/rpc/artistlist/?' do
-    Util.to_json(Artist.list.collect { |artist| artist['name'] }.sort)
+  get '/local/rpc/songlist/?' do
+    hash = Hash.new
+    Song.list.each do |s|
+      hash[s['song_name']] = s['artist_name']
+    end
+    return Util.to_json(hash)
   end
 
   # post '/local/rpc/storelist' - 店と店舗のリストをJSONで戻す

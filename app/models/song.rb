@@ -132,9 +132,17 @@ class Song < Base
   # self.list - 楽曲一覧を戻す
   #--------------------------------------------------------------------
   def self.list(opt = nil)
-    # とりあえず全曲一覧戻すだけを実装
-    # 将来的にはoptに検索条件を指定することで柔軟に取れるようにしたい
-    DB.new(:FROM => 'song').execute_all
+    DB.new(
+      :SELECT => {
+        'song.id' => 'song_id' ,
+        'song.name' => 'song_name' ,
+        'song.url' => 'song_url' ,
+        'artist.id' => 'artist_id' ,
+        'artist.name' => 'artist_name' ,
+      } ,
+      :FROM => 'song' ,
+      :JOIN => ['song' , 'artist']
+    ).execute_all
   end
 
 end
