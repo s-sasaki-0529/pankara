@@ -13,6 +13,7 @@ zenra.post = function(url , data , opt) {
   beforeSend = opt['beforeSend'] || function(){};
   success = opt['success'] || function(){};
   error = opt['error'] || function(){};
+  data['authenticity_token'] = $('#authenticity_token').val();
   $.ajax({
     type: "POST" ,
     url: url ,

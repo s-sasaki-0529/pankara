@@ -33,6 +33,11 @@ class March < Sinatra::Base
       end
       content
     end
+    def csrftoken
+      name = 'authenticity_token'
+      token = session['csrf']
+      return "<input type='hidden' name='#{name}' id='#{name}' value='#{token}'>"
+    end
     def movie_player(url , w , h)
       if url =~ %r|www.youtube.com/watch\?v=(.+)$|
         embed = "https://www.youtube.com/embed/#{$1}"
