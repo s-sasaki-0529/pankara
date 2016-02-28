@@ -16,7 +16,7 @@ class LocalRoute < March
 
   # post '/local/rpc/songlist' - 楽曲一覧を戻す
   #---------------------------------------------------------------------
-  get '/local/rpc/songlist/?' do
+  post '/local/rpc/songlist/?' do
     hash = Hash.new
     Song.list.each do |s|
       hash[s['song_name']] = s['artist_name']
