@@ -349,7 +349,7 @@ var register = (function() {
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke) {
       karaoke_id = karaoke;
-      zenra.post('/local/rpc/karaokelist/?id=' + karaoke , {} , {
+      zenra.post('/local/rpc/karaokelist/' , {id: karaoke} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
@@ -378,7 +378,7 @@ var register = (function() {
       karaoke_id = karaoke;
       history_id = history;
 
-      zenra.post('/local/rpc/historylist/?id=' + history , {} , {
+      zenra.post('/local/rpc/historylist/' , {id: history} , {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
@@ -491,7 +491,7 @@ var register = (function() {
         product: $('#product').val()
       });
 
-      zenra.post(('/local/rpc/karaoke/modify/?id=' + karaoke_id) , {params: json_data} , {
+      zenra.post('/local/rpc/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
         success: function(json_result) {
           result = zenra.parseJSON(json_result);
           if (result['result'] == 'success') {
@@ -511,7 +511,7 @@ var register = (function() {
         score_type: $('#score_type').val()
       });
 
-      zenra.post('/local/rpc/history/modify/?id=' + history_id , {params: json_data} , {
+      zenra.post('/local/rpc/history/modify/', {id: history_id, params: json_data} , {
         success: function() {
           location.href = ('/karaoke/detail/' + karaoke_id);
         }
@@ -520,7 +520,7 @@ var register = (function() {
 
     /*[Method] カラオケ削除ボタン押下時の処理*/
     onPushedDeleteKaraokeButton : function() {
-      zenra.post(('/local/rpc/karaoke/delete/?id=' + karaoke_id) , {} , {
+      zenra.post(('/local/rpc/karaoke/delete/') , {id: karaoke_id} , {
         success: function(result) {
           zenra.closeDialog('input_dialog');
         }
@@ -529,7 +529,7 @@ var register = (function() {
     
     /*[Method] 歌唱履歴削除ボタン押下時の処理*/
     onPushedDeleteHistoryButton : function() {
-      zenra.post(('/local/rpc/history/delete/?id=' + history_id) , {} , {
+      zenra.post('/local/rpc/history/delete/' , {id: history_id} , {
         success: function(result) {
           location.href = ('/karaoke/detail/' + karaoke_id);
         }
