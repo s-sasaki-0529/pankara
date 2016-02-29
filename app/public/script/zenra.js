@@ -209,6 +209,8 @@ var register = (function() {
   var store_list = [];
   var branch_list = [];
   var song_obj = [];
+  var song_list = [];
+  var artist_list = [];
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -290,8 +292,8 @@ var register = (function() {
         song_obj = zenra.parseJSON(result);
         
         // オブジェクトを曲名リストと歌手名リストに分割
-        var song_list = [];
-        var artist_list = [];
+        song_list = [];
+        artist_list = [];
         for (key in song_obj) {
           song_list.push(key);
 
@@ -313,11 +315,44 @@ var register = (function() {
     });
 
     $('#artist').focus(function() {
+      var temp_artist_list = [];
+      
+      // 現在の曲名をキーとして持つ値をリスト化する
       if ($('#song').val() in song_obj) {
+
+        for (key in song_obj) {
+          if (key == $('#song').val()) {
+            temp_artist_list.push(song_obj[key]);
+          }
+        }
+
         zenra.setOptionMoshikashite('artist' , 'minLength' , 0);
+        zenra.setOptionMoshikashite('artist' , 'source' , temp_artist_list);
       }
       else {
         zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
+        zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
+      }
+    });
+
+
+    // 歌手名が入力されるとその歌手が歌っている曲でもしかしてリストを生成
+    $('#artist').blur(function() {
+      var temp_song_list = [];
+      
+      for (key in song_obj) {
+        if (song_obj[key] === $('#artist').val()) {
+          temp_song_list.push(key);
+        }
+      }
+     
+      if (temp_song_list.length > 0) {
+        zenra.setOptionMoshikashite('song' , 'minLength' , 0);
+        zenra.setOptionMoshikashite('song' , 'source' , temp_song_list);
+      }
+      else {
+        zenra.setOptionMoshikashite('song' , 'minLength' , 2);
+        zenra.setOptionMoshikashite('song' , 'source' , song_list);
       }
     });
   }
@@ -443,8 +478,10 @@ var register = (function() {
       zenra.post('/karaoke/input/attendance' , data , {});
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
         func_at_load: function() {
-          zenra.createSeekbar();
-          createMoshikashite();
+          createWidgetForHistory();
+
+          $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
+          $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
         }
       });
     } ,

@@ -81,7 +81,12 @@ class User < Base
       :OPTION => ['GROUP BY song', 'ORDER BY counter DESC, history.created_at DESC']
     ).execute_row
 
-    get_song @most_sang_song
+		unless @most_sang_song.nil?  
+			get_song @most_sang_song
+		else
+			@most_sang_song = {}
+		end
+
     return @most_sang_song
   end
 
@@ -100,9 +105,14 @@ class User < Base
       :OPTION => ['GROUP BY artist', 'ORDER BY counter DESC, history.created_at DESC'] ,
     ).execute_row
 
-    @most_sang_artist['artist_name'] = DB.new(
-      :SELECT => 'name' , :FROM => 'artist' , :WHERE => 'id = ?' , :SET => @most_sang_artist['artist']
-    ).execute_column
+		unless @most_sang_artist.nil?
+			@most_sang_artist['artist_name'] = DB.new(
+				:SELECT => 'name' , :FROM => 'artist' , :WHERE => 'id = ?' , :SET => @most_sang_artist['artist']
+			).execute_column
+		else
+			@most_sang_artist = {}
+		end
+
     return @most_sang_artist
   end
 
@@ -122,8 +132,14 @@ class User < Base
       :SET => @params['id'] ,
     )
     @max_score_history = db.execute_row
-    @max_score_history['scoretype_name'] = ScoreType.id_to_name(@max_score_history['score_type'])
-    get_song @max_score_history
+		
+    unless @max_score_history.nil?
+			@max_score_history['scoretype_name'] = ScoreType.id_to_name(@max_score_history['score_type'])
+			get_song @max_score_history
+		else
+			@max_score_history = {}
+		end
+
     return @max_score_history
   end
 
