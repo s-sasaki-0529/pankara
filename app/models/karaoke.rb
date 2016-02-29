@@ -93,18 +93,28 @@ class Karaoke < Base
   # get_history - カラオケ記録に対応した歌唱履歴を取得する
   #---------------------------------------------------------------------
   def get_history
-    db = DB.new
-    db.select(['name' , 'datetime' , 'attendance' , 'song' , 'songkey' , 'score_type' , 'score'])
-    db.from('history')
-    db.join([
-      ['history' , 'attendance'] ,
-      ['attendance' , 'karaoke']
-    ])
-    db.where('attendance.karaoke = ?')
-    db.option('ORDER BY datetime DESC')
-    db.set(@params['id'])
-    @histories = db.execute_all
+    #Todo: ３テーブルのJOINは効率悪すぎる。参加ユーザを取得するメソッドを実装すべき
+    @histories = DB.new(
+      :SELECT => {
+        'history.id' => 'history_id' ,
+        'history.created_at' => 'history_datetime' ,
+        'history.song' => 'song' ,
+        'history.songkey' => 'songkey' ,
+        'history.score_type' => 'score_type' ,
+        'history.score' => 'score',
+        'attendance.id' => 'attendance'
+      } ,
+      :FROM => 'history' ,
+      :JOIN => [
+        ['history' , 'attendance'] ,
+        ['attendance' , 'karaoke']
+      ] ,
+      :WHERE => 'attendance.karaoke = ?' ,
+      :SET => @params['id'] ,
+      :OPTION => 'ORDER BY karaoke.datetime DESC'
+    ).execute_all
 
+    # karaokeに参加しているユーザ一覧を取得
     db = DB.new
     db.select({
       'attendance.id' => 'attendance' ,
@@ -118,7 +128,9 @@ class Karaoke < Base
     db.set(@params['id'])
     users_info = db.execute_all
     @params['members'] = users_info
-    
+
+    # historiesに含まれる楽曲情報を取得
+    # Todo: ここループでSong.newしててクッソ無駄
     @histories.each do | history |
       song = Song.new(history['song'])
       history['song_id'] = song.params['id']
