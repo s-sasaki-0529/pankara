@@ -457,6 +457,9 @@ var register = (function() {
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
+
+          $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
+          $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
         }
       });
     } ,
