@@ -209,6 +209,7 @@ var register = (function() {
   var store_list = [];
   var branch_list = [];
   var song_obj = [];
+  var artist_list = [];
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -291,7 +292,7 @@ var register = (function() {
         
         // オブジェクトを曲名リストと歌手名リストに分割
         var song_list = [];
-        var artist_list = [];
+        artist_list = [];
         for (key in song_obj) {
           song_list.push(key);
 
@@ -313,11 +314,23 @@ var register = (function() {
     });
 
     $('#artist').focus(function() {
+      var temp_artist_list = [];
+      
+      // 現在の曲名をキーとして持つ値をリスト化する
       if ($('#song').val() in song_obj) {
+
+        for (key in song_obj) {
+          if (key == $('#song').val()) {
+            temp_artist_list.push(song_obj[key]);
+          }
+        }
+
         zenra.setOptionMoshikashite('artist' , 'minLength' , 0);
+        zenra.setOptionMoshikashite('artist' , 'source' , temp_artist_list);
       }
       else {
         zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
+        zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
       }
     });
   }
@@ -443,8 +456,7 @@ var register = (function() {
       zenra.post('/karaoke/input/attendance' , data , {});
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
         func_at_load: function() {
-          zenra.createSeekbar();
-          createMoshikashite();
+          createWidgetForHistory();
         }
       });
     } ,
