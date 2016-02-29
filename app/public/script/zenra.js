@@ -209,6 +209,7 @@ var register = (function() {
   var store_list = [];
   var branch_list = [];
   var song_obj = [];
+  var song_list = [];
   var artist_list = [];
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
@@ -291,7 +292,7 @@ var register = (function() {
         song_obj = zenra.parseJSON(result);
         
         // オブジェクトを曲名リストと歌手名リストに分割
-        var song_list = [];
+        song_list = [];
         artist_list = [];
         for (key in song_obj) {
           song_list.push(key);
@@ -331,6 +332,27 @@ var register = (function() {
       else {
         zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
         zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
+      }
+    });
+
+
+    // 歌手名が入力されるとその歌手が歌っている曲でもしかしてリストを生成
+    $('#artist').blur(function() {
+      var temp_song_list = [];
+      
+      for (key in song_obj) {
+        if (song_obj[key] === $('#artist').val()) {
+          temp_song_list.push(key);
+        }
+      }
+     
+      if (temp_song_list.length > 0) {
+        zenra.setOptionMoshikashite('song' , 'minLength' , 0);
+        zenra.setOptionMoshikashite('song' , 'source' , temp_song_list);
+      }
+      else {
+        zenra.setOptionMoshikashite('song' , 'minLength' , 2);
+        zenra.setOptionMoshikashite('song' , 'source' , song_list);
       }
     });
   }
