@@ -65,7 +65,7 @@ module Rbase
   end
 
   def table_to_hash(id)
-    ary = page.find("table[@id=#{id}]").all('tr').map { |row| row.all('th, td').map { |cell| cell.text.strip } }
+    ary = page.find("table[id='#{id}']").all('tr').map { |row| row.all('th, td').map { |cell| cell.text.strip } }
     header = ary.shift
     list = []
     ary.each do |row|
