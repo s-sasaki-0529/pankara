@@ -559,7 +559,7 @@ var register = (function() {
     onPushedDeleteKaraokeButton : function() {
       zenra.post(('/local/rpc/karaoke/delete/') , {id: karaoke_id} , {
         success: function(result) {
-          zenra.closeDialog('input_dialog');
+          location.href = '/'
         }
       });
     } ,
