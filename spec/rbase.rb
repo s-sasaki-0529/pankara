@@ -118,6 +118,11 @@ module Rbase
   end
 
   # 以下、ajax対応
+  def js(script)
+    execute_script script
+    wait_for_ajax
+  end
+
   def wait_for_ajax
     Timeout.timeout(default_wait_time) do
       loop until finished_all_ajax_requests?

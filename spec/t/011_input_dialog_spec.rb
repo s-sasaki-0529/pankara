@@ -4,7 +4,6 @@ include Rbase
 # テスト用データベース構築
 init = proc do
   `zenra init`
-  default_max_wait_time = 5
   User.create('unagipai' , 'unagipai' , 'ちゃら')
 end
 
@@ -38,15 +37,12 @@ history_data = {
 # テスト実行
 describe '履歴入力用ダイアログのテスト', :js => true do
   before(:all , &init)
- 
-  before do
-    login 'unagipai'
-    execute_script 'register.createKaraoke();'
+  after :each do
     wait_for_ajax
   end
-
-  after do
-    wait_for_ajax
+  before do
+    login 'unagipai'
+    js 'register.createKaraoke();'
   end
   
   it 'ダイアログが正常に表示されるか' do
@@ -55,22 +51,17 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   
   it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton("create");'
-    wait_for_ajax
-    
+    js 'register.onPushedRegisterKaraokeButton("create");'
     iscontain history_contents
   end
 
   it '入力内容が正しく登録されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton("create");'
-    wait_for_ajax
+    js 'register.onPushedRegisterKaraokeButton("create");'
    
     input_history_with_data history_data, 1
-    execute_script 'register.onPushedRegisterHistoryButton("register");'
-    wait_for_ajax
-
-    execute_script 'register.onPushedRegisterHistoryButton("end");'
+    js 'register.onPushedRegisterHistoryButton("register");'
+    js 'register.onPushedRegisterHistoryButton("end");'
     
     karaoke = [
       '2016-02-20 12:00:00',
@@ -94,21 +85,18 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
   it '入力された件数が正しく表示されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton("create");'
-    wait_for_ajax
+    js 'register.onPushedRegisterKaraokeButton("create");'
    
     3.times do |i|
       input_history i
-      execute_script 'register.onPushedRegisterHistoryButton("register");'
-      wait_for_ajax
+      js 'register.onPushedRegisterHistoryButton("register");'
       iscontain "#{i + 1}件入力されました"
     end
   end
   
   it '20件登録されるか' do
     input_karaoke
-    execute_script 'register.onPushedRegisterKaraokeButton("create");'
-    wait_for_ajax
+    js 'register.onPushedRegisterKaraokeButton("create");'
    
     20.times do |i|
       input_history i
@@ -116,7 +104,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       wait_for_ajax
     end
 
-    execute_script 'register.onPushedRegisterHistoryButton("end");'
+    js 'register.onPushedRegisterHistoryButton("end");'
   
     histories = []
     20.times do |i|

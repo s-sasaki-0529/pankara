@@ -114,6 +114,7 @@ RSpec.configure do |config|
   
   Capybara.app = IndexRoute
   Capybara.javascript_driver = :webkit
+  Capybara.default_max_wait_time = 10
   config.include Capybara::DSL
   config.order = "random"
   Capybara::Webkit.configure do |config|

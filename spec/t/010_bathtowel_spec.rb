@@ -12,6 +12,9 @@ end
 describe 'バスタオル' , :js => true do
   before(:all , &init)
   before { login 'sa2knight' }
+  after :each do
+    wait_for_ajax
+  end
   it 'JavaScriptが実行されているか' do
     expect(page.first('.simply-scroll-container').nil?).to eq false
   end
