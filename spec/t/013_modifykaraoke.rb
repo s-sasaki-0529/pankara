@@ -9,7 +9,7 @@ end
 url = '/karaoke/user/sa2knight'
 
 # テスト実行
-describe 'Karaoke/Historyの編集/削除' , :js => true do
+describe 'Karaokeの編集/削除' , :js => true do
   before(:all , &init)
   
   before do
