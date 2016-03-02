@@ -56,9 +56,15 @@ class User < Base
   def get_karaoke(limit = 0)
     # 対象ユーザが参加したkaraokeのID一覧を取得
     db = DB.new(
-      :SELECT => 'karaoke' , :FROM => 'attendance' , :WHERE => 'user = ?' , :SET => @params['id'] , 
-      :OPTION => (limit > 0) ? "LIMIT #{limit}" : nil
+      :SELECT => {'attendance.karaoke' => 'karaoke'} ,
+      :FROM => 'attendance' ,
+      :JOIN => ['attendance' , 'karaoke'],
+      :WHERE => 'user = ?' , :SET => @params['id'] ,
+      #:OPTION => (limit > 0) ? "LIMIT #{limit}" : 'ORDER BY karaoke.datetime DESC'
     )
+    opt = ['ORDER BY karaoke.datetime DESC']
+    opt += ["LIMIT #{limit}"] if limit > 0
+    db.option(opt)
     attended_id_list = db.execute_all.collect {|info| info['karaoke']}
 
     # 全karaokeの情報から、ユーザが参加したカラオケについてのみ抽出
