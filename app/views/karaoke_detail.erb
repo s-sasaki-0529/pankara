@@ -1,5 +1,5 @@
 <h4><%= @karaoke['name'] %></h4>
-<table id="karaoke_detail_description" border="1" class="table">
+<table id="karaoke_detail_description" class="table">
   <thead>
     <tr>
       <th class='center cell-datetime'>日時</th>
@@ -34,7 +34,7 @@
 <p class='right linkcursor'>
   <img src="/image/addsong.png" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)">
 </p>
-<table id="karaoke_detail_history" border="1" class="table sortable table-hover">
+<table id="karaoke_detail_history" class="table sortable table-hover">
   <thead>
     <tr>
       <th class='center' width='140'>ユーザー</th>
