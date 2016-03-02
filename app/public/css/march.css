@@ -67,6 +67,7 @@ tr *.cell-datetime {
   border: 1px solid;
   width: 96px;
   height: 96px;
+  margin: auto;
 }
 
 /* 履歴入力画面の配置調整クラス */
