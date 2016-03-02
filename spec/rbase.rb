@@ -130,7 +130,8 @@ module Rbase
   end
 
   def finished_all_ajax_requests?
-    page.evaluate_script('jQuery.active').zero?
+    result = page.evaluate_script('jQuery.active')
+    result.nil? ? false : result.zero?
   end
 
   def default_wait_time

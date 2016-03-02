@@ -106,10 +106,12 @@ RSpec.configure do |config|
   config.before :suite do
     ENV['DISPLAY'] = 'localhost:1.0'
     system "Xvfb :1 -screen 0 1024x768x16 -nolisten inet6 &"
+    system "sleep 1s"
   end
 
   config.after :suite do
     system "killall Xvfb"
+    system "sleep 1s"
   end
   
   Capybara.app = IndexRoute

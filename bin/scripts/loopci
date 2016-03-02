@@ -1,0 +1,8 @@
+count=1
+for i in `seq 1 $1`
+do
+  zenra ci
+  echo "$count / $1" 1>&2
+  count=$(( count + 1 ))
+done
+echo "Finish" 1>&2
