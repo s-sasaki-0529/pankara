@@ -28,7 +28,7 @@ done
 shift $((OPTIND - 1))
 
 # メイン処理
-cd MARCHDIR
+cd $MARCHDIR
 filename=$(date +"%Y_%m_%d_%H_%M")
 filepath="backup/$filename"
 if [ $FLAG_M -eq 1 ]; then
