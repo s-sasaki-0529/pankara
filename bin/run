@@ -25,7 +25,9 @@ done
 shift $((OPTIND - 1))
 
 # メイン処理
-cd MARCHDIR
+cd $MARCHDIR
+zenra stop
+
 if [ -n "$VALUE_U" ]; then
   bundle exec ruby "bin/scripts/set_config.rb" "set" "auto_login" "$VALUE_U"
 else

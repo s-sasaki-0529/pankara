@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "稼働しているWebサーバを停止する"
+  echo "  Usage: zenra $PROGNAME"
+  exit 1
+}
+
+# オプション解析
+while getopts h OPT
+do
+  case $OPT in
+    h)  usage
+        exit 1
+        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+cd $MARCHDIR
+pid=$(ps -ax | grep "unicorn master" | grep -v "grep" | awk '{print $1}')
+if [ -n "$pid" ]; then
+  kill -KILL $pid
+fi
+
