@@ -111,7 +111,7 @@ class Karaoke < Base
       ] ,
       :WHERE => 'attendance.karaoke = ?' ,
       :SET => @params['id'] ,
-      :OPTION => 'ORDER BY karaoke.datetime DESC'
+      :OPTION => 'ORDER BY history.created_at'
     ).execute_all
 
     # karaokeに参加しているユーザ一覧を取得

@@ -17,15 +17,20 @@ init = proc do
   )
   register.attend_karaoke(1500 , 'カラオケ詳細ページテスト用attend1')
   register.create_history('プラネタリウム' ,  'BUMP OF CHICKEN' , 0 , score_type , 72)
+  system 'sleep 1'
   register.create_history('真っ赤な空を見ただろうか' , 'BUMP OF CHICKEN' , 0 , score_type , 92.3)
+  system 'sleep 1'
   register.create_history('ハルジオン' , 'BUMP OF CHICKEN' , 0 , score_type , 59)
+  system 'sleep 1'
 
   register = Register.new(User.new('tomotin'))
   register.with_url = false
   register.karaoke = karaoke_id
   register.attend_karaoke(1200 , 'カラオケ詳細ページテスト用attend2')
   register.create_history('メーデー' , 'BUMP OF CHICKEN' , 0 , score_type , 91)
+  system 'sleep 1'
   register.create_history('ダイヤモンド' , 'BUMP OF CHICKEN' , 0 , score_type , 80)
+  system 'sleep 1'
   register.create_history('ベンチとコーヒー' , 'BUMP OF CHICKEN' , 0 , score_type , 87)
 
 end
