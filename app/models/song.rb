@@ -70,7 +70,7 @@ class Song < Base
   # history_list - この曲の歌唱履歴を取得
   # useridを省略した場合、全ユーザを対象にする
   #---------------------------------------------------------------------
-  def history_list(limit , userid = nil)
+  def history_list(opt = nil)
     db = DB.new(
       :SELECT => {
         'karaoke.id' => 'karaoke_id' ,
@@ -82,23 +82,30 @@ class Song < Base
         'history.score_type' => 'score_type' ,
         'history.score' => 'score'
       } ,
+      :FROM => 'history' ,
       :JOIN => [
         ['history' , 'attendance'] ,
         ['attendance' , 'karaoke'] ,
         ['attendance' , 'user'] ,
       ],
-      :FROM => 'history' ,
-      :OPTION => ['ORDER BY karaoke.datetime DESC' , 'LIMIT 10'] ,
+      :WHERE => 'history.song = ?' ,
+      :SET => @params['id'] ,
+      :OPTION => 'ORDER BY karaoke.datetime DESC' ,
     )
-    where = ['history.song = ?']
-    set = [@params['id']]
 
-    if userid
-      where.push 'attendance.user = ?'
-      set.push userid
+    if opt[:limit]
+      db.set("LIMIT #{limit}")
     end
-    db.where(where)
-    db.set(set)
+
+    if opt[:target_user]
+      db.where('attendance.user = ?')
+      db.set(opt[:target_user])
+    end
+
+    if opt[:other_user]
+      db.where('attendance.user != ?')
+      db.set(opt[:other_user])
+    end
 
     result = db.execute_all
     result.each do |sang|

@@ -14,7 +14,7 @@ class DB
     @distinct = false
     @from = ''
     @join = ''
-    @where = ''
+    @where = []
     @insert = ''
     @update = ''
     @delete = false
@@ -82,7 +82,7 @@ class DB
   #---------------------------------------------------------------------
   def where(params)
     params.kind_of?(String) and params = [params]
-    @where = "WHERE #{params.join(' and ')}"
+    @where.concat(params)
   end
 
   # join - JOIN文を作成する
@@ -140,7 +140,7 @@ class DB
   #---------------------------------------------------------------------
   def set(params)
     params.kind_of?(Array) or params = [params]
-    @params = params
+    @params.concat(params)
   end
 
   # execute_column - SQLを実行し、先頭行先頭列の値を戻す
@@ -231,16 +231,17 @@ class DB
   #---------------------------------------------------------------------
   private
   def make
+    where = @where.empty? ? "" : "where #{@where.join(' and ')}"
     if @insert.size > 0
       @sql = @insert
     elsif @update.size > 0
       @sql = @update
-      @where and @sql += " #{@where}"
+      where.size > 0 and @sql += " #{where}"
     elsif @delete
-      @sql = ["DELETE" , @from , @where].join(' ')
+      @sql = ["DELETE" , @from , where].join(' ')
     else
       @select = @select.empty? ? 'SELECT *' : @select
-      @sql = [@select , @from , @join , @where , @option].join(' ')
+      @sql = [@select , @from , @join , where , @option].join(' ')
     end
     Util.write_log('sql' , "Make SQL!!\n#{@sql}")
   end
