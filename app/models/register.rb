@@ -96,7 +96,7 @@ class Register < Base
     if song_id
       song_id
     else
-      url = @with_url ? Util.search_tube(artist_name , song_name) : nil
+      url = @with_url ? Util.search_tube(song_name , artist_name) : nil
       DB.new(
         :INSERT => ['song' , ['artist' , 'name' , 'url']] ,
         :SET => [artist_id , song_name , url] ,
