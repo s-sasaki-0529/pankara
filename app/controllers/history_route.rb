@@ -2,14 +2,6 @@ require_relative './march'
 
 class HistoryRoute < March
 
-  # get '/history - ログイン中のユーザの歌唱履歴を表示
-  #---------------------------------------------------------------------
-  get '/history/?' do
-    @user = @current_user
-    @histories = @current_user.histories
-    erb :history
-  end
-
   # get '/history/input - 歌唱履歴の入力画面を表示
   #---------------------------------------------------------------------
   get '/history/input' do
@@ -22,12 +14,21 @@ class HistoryRoute < March
   get '/history/register' do
     redirect "/karaoke/detail/#{karaoke_id}"  
   end
-  
+
+  # get '/history - ログイン中のユーザの歌唱履歴を表示
+  #---------------------------------------------------------------------
+  get '/history/?' do
+    redirect "/history/#{@current_user['username']}"
+  end
+
   # get '/history/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
   get '/history/:username' do
     @user = User.new(params[:username])
     @histories = @user.histories
+    @histories.each do |h|
+      h['datetime'] = h['datetime'].to_s.split(' ')[0]
+    end
     erb :history
   end
 
