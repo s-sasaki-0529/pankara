@@ -1,0 +1,39 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "ワイシャツサーバにアクセスして各種操作を行う"
+  echo "  Usage: zenra $PROGNAME [-s] [-e]"
+  echo "オプション"
+  echo "  -s ワイシャツサーバを起動 or 再起動"
+  echo "  -e ワイシャツサーバを停止"
+  exit 1
+}
+
+# オプション解析
+FLAG_S=0
+FLAG_E=0
+while getopts hes OPT
+do
+  case $OPT in
+    h)  usage
+        exit 1
+        ;;
+    s)  FLAG_S=1
+        ;;
+    e)  FLAG_E=1
+        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+cd $MARCHDIR
+ssh="ssh root@160.16.227.161"
+if [ $FLAG_S -eq 1 ]; then
+  $ssh "nohup zenra run"
+elif [ $FLAG_E -eq 1 ]; then
+  $ssh "zenra stop"
+fi
