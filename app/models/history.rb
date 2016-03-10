@@ -53,10 +53,11 @@ class History < Base
       :SELECT => {
           'song.id' => 'id' ,
           'song.name' => 'name' ,
-          'song.url' => 'url'
+          'song.url' => 'url' ,
+          'artist.name' => 'artist'
       } ,
       :FROM => 'history' ,
-      :JOIN => ['history' , 'song'] ,
+      :JOIN => [ ['history' , 'song'] , ['song' , 'artist'] ] ,
       :WHERE => 'song.url IS NOT NULL' ,
       :OPTION => ['ORDER BY history.created_at DESC' , "LIMIT #{limit}"]
     ).execute_all #現在はURLがyoutubeであることが前提。今後はプレーヤー化できるかの情報も必要になる
