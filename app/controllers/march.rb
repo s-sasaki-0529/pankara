@@ -51,17 +51,20 @@ class March < Sinatra::Base
         return "<a href=\"#{url}\">動画リンク</a>"
       end
     end
+    def youtube_image(url)
+      if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
+        "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
+      elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
+        "http://tn-skr3.smilevideo.jp/smile?i=#{$1}"
+      else
+        nil
+      end
+    end
     def movie_image(id , w , h , event = false)
       song = Song.new(id)
       id , name , url , artist = song['id'] , h(song['name']) , song['url'] , h(song['artist_name'])
-      if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
-        image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
-      elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
-        image_url = "http://tn-skr3.smilevideo.jp/smile?i=#{$1}"
-        $1.to_i > 1000000 and image_url += ".L"
-      else
-        return 'no image'
-      end
+      image_url = youtube_image(url)
+      image_url or return 'no image'
       info = "#{name} (#{artist})"
       onclick = "onclick=\"zenra.showDialog('#{info}' , 'player_dialog' , '/player/#{id}' , 'player' , 600)\""
       onmouse = event ? "onmouseover=\"bathtowel.showInfo('#{info}')\"" : ""
