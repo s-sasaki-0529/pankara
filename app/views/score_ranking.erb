@@ -18,9 +18,17 @@
     <% @scores.each_with_index do |row , rank| %>
     <tr>
       <td class='center'><%= rank + 1 %></td>
-      <td class='center' width='160'>
+      <td id="thumbnail_<%= rank %>" class='center' width='160'>
         <% if row['song_url'] %>
-          <%= movie_image row['song'] , 160 , 90 %>
+          <script>
+            zenra.createThumbnail(
+              "<%= rank %>" ,
+              "<%= row['song'] %>" ,
+              "<%= row['song_name'] %>" ,
+              "<%= row['artist_name'] %>" ,
+              "<%= youtube_image row['song_url'] %>"
+            );
+          </script>
         <% else %>
           未登録
         <% end %>

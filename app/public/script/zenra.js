@@ -138,7 +138,7 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
 /*
 createThumbnail - youtubeのサムネイルを生成する
 */
-zenra.createThumbnail = function(idx , id , song , artist , image , url) {
+zenra.createThumbnail = function(idx , id , song , artist , image) {
   var $img = $('<img>').attr('src' , image);
   $img.css('width' , 160).css('height' , 90).css('cursor' , 'pointer');
   $img.attr('info' , song + ' (' + artist + ')');
