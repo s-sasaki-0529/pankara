@@ -14,6 +14,7 @@ describe 'バスタオル' , :js => true do
   before { login 'sa2knight' }
   after :each do
     wait_for_ajax
+    system 'sleep 1'
   end
   it 'JavaScriptが実行されているか' do
     expect(page.first('.simply-scroll-container').nil?).to eq false
@@ -23,7 +24,7 @@ describe 'バスタオル' , :js => true do
     expect(images.length).to eq 20 + 11
   end
   it 'オンマウスで楽曲情報が表示されるか' do
-    execute_script '$("#slider > li:first-child > span").trigger("onmouseover")'
+    execute_script '$("#slider > li:first-child > span").trigger("mouseenter")'
     expect(page.find('#bathtowel_info').text).to eq 'カノン (宮野真守)'
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
@@ -33,5 +34,7 @@ describe 'バスタオル' , :js => true do
     iframes = youtube_links()
     expect(iframes.length).to eq 1
     expect(iframes[0]).to eq 'https://www.youtube.com/embed/a6zJ9tWZgbM'
+    execute_script '$(".ui-dialog-title").trigger("click")'
+    expect(find('h2').text).to eq 'カノン / 宮野真守'
   end
 end

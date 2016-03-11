@@ -86,7 +86,8 @@ zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
     modal: true ,
     height: "auto" ,
     width: width ,
-    resizable: false ,
+    resizable: opt['resizable'] || false ,
+    draggable: opt['draggable'] == false ? false : true ,
     close: function(event) {
       $(this).dialog('destroy');
       $(event.target).remove();
@@ -100,9 +101,12 @@ zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
     $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
     div.css('overflow' , 'hidden');
     $(window).scrollTop(scroll);
-    
+
     func_at_load();
   });
+
+  //オプション: タイトルバーにオンマウス時のカーソル
+  $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
 
   dialog.html(div);
 };
@@ -129,7 +133,7 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
     func_at_load();
   });
 };
-  
+
 /*
 createSeekbar - シークバーを作成する
 */
@@ -161,8 +165,8 @@ zenra.moshikashite = function(id , source) {
 
 zenra.setOptionMoshikashite = function(id , opt , value) {
   $('#' + id).autocomplete(
-    'option' , 
-    opt , 
+    'option' ,
+    opt ,
     value
   );
 }
@@ -174,27 +178,52 @@ bathtowel = {
 
   /*[Method] バスタオルの初期設定*/
   init : function () {
-    $('#slider').simplyScroll({
-      autoMode: 'loop',
-      speed: 1,
-      frameRate: 30,
-      horizontal: true,
-      pauseOnHover: false,
-      pauseOnTouch: true
-    });
+
+    //楽曲情報表示用
     self.info = $('<div>').attr('id' , 'bathtowel_info').css('display' , 'none').text('hogehoge');
     self.info.appendTo('body');
-  } ,
 
-  /*[Method] 曲情報を通知する*/
-  showInfo : function(message) {
-    self.info.text(message).css('display' , '');
-  } ,
+    //バスタオル用のサムネイル画像を準備
+    $('.bathtowel-li').each(function() {
+      var id = $(this).attr('data-id');
+      var song = $(this).attr('data-song');
+      var artist = $(this).attr('data-artist');
+      var text = song + " (" + artist + ")";
+      var url = $(this).attr('data-url');
+      var image = $(this).attr('data-image');
+      var $span = $('<span>').css('padding-right' , '0').attr('href' , '#');
+      var $img = $('<img>').attr('src' , image).attr('width' , '160').attr('height' , '90');
+      $span.append($img);
+      $span.hover(
+        function() {
+          self.info.text(text).css('display' , '');
+        } ,
+        function() {
+          self.info.css('display' , 'none');
+        }
+      );
+      $span.click(function() {
+        var opt = {title_cursor: 'pointer' , draggable: false};
+        zenra.showDialog(text , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
+        $('.ui-dialog-title').unbind('click').click(function() {
+          location.href = '/song/' + id
+        });
+      });
 
-  /*[Method] 曲情報を非表示にする*/
-  hideInfo : function() {
-    self.info.css('display' , 'none');
-  } ,
+      $(this).append($span);
+    });
+
+    //バスタオルを再生
+    $('#slider').simplyScroll({
+      autoMode: 'loop' ,
+      speed: 1 ,
+      frameRate: 30 ,
+      horizontal: true ,
+      pauseOnHover: false ,
+      pauseOnTouch: true
+    });
+
+  },
 
 };
 
@@ -221,8 +250,8 @@ var register = (function() {
     $('#song').focus();
   }
 
-  /*[Method] ダイアログを閉じる時に実施する処理*/ 
-  function beforeClose() {  
+  /*[Method] ダイアログを閉じる時に実施する処理*/
+  function beforeClose() {
     count = 0;
     history_id = 0;
     karaoke_id = 0;
@@ -254,43 +283,43 @@ var register = (function() {
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
   function createWidgetForKaraoke() {
     // お店のもしかしてリスト作成
-    zenra.post('/local/rpc/storelist' , {} , { 
+    zenra.post('/local/rpc/storelist' , {} , {
       success: function(result) {
         branch_list = zenra.parseJSON(result);
-        
+
         // オブジェクトのキーをお店リストとして取得
         store_list = [];
         for (key in branch_list) {
           store_list.push(key);
         }
-    
+
         zenra.moshikashite('store' , store_list);
       }
     });
-    
+
     // お店を入力すると店舗のもしかしてリストが作成される
     $('#store').blur(function() {
       if ($(this).val() in branch_list) {
         zenra.moshikashite('branch' , branch_list[$(this).val()]);
       }
     });
-    
+
     //日付時刻入力用のカレンダーを生成
     $('#datetime').datetimepicker({
       lang: 'ja' ,
       step: 10 ,
     });
   }
-  
+
   /*[method] 歌唱履歴入力画面用ウィジェットを作成する*/
   function createWidgetForHistory() {
     zenra.createSeekbar();
-   
+
     // 曲名と歌手名の対応表を取得
-    zenra.post('/local/rpc/songlist' , {} , { 
+    zenra.post('/local/rpc/songlist' , {} , {
       success: function(result) {
         song_obj = zenra.parseJSON(result);
-        
+
         // オブジェクトを曲名リストと歌手名リストに分割
         song_list = [];
         artist_list = [];
@@ -301,12 +330,12 @@ var register = (function() {
             artist_list.push(song_obj[key]);
           }
         }
-    
+
         zenra.moshikashite('song' , song_list);
         zenra.moshikashite('artist' , artist_list);
       }
     });
-    
+
     // 曲名を入力すると歌手名が自動入力される
     $('#song').blur(function() {
       if ($(this).val() in song_obj) {
@@ -316,7 +345,7 @@ var register = (function() {
 
     $('#artist').focus(function() {
       var temp_artist_list = [];
-      
+
       // 現在の曲名をキーとして持つ値をリスト化する
       if ($('#song').val() in song_obj) {
 
@@ -339,13 +368,13 @@ var register = (function() {
     // 歌手名が入力されるとその歌手が歌っている曲でもしかしてリストを生成
     $('#artist').blur(function() {
       var temp_song_list = [];
-      
+
       for (key in song_obj) {
         if (song_obj[key] === $('#artist').val()) {
           temp_song_list.push(key);
         }
       }
-     
+
       if (temp_song_list.length > 0) {
         zenra.setOptionMoshikashite('song' , 'minLength' , 0);
         zenra.setOptionMoshikashite('song' , 'source' , temp_song_list);
@@ -370,7 +399,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke) {
       karaoke_id = karaoke;
@@ -404,10 +433,10 @@ var register = (function() {
               beforeClose: beforeClose
             }
           });
-        }  
+        }
       });
     } ,
-    
+
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke , history) {
       karaoke_id = karaoke;
@@ -420,9 +449,9 @@ var register = (function() {
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
             func_at_load: function() {
               createWidgetForHistory();
-  
+
               setHistoryToInput(history);
-              
+
               $('#button1').attr('onclick' , 'register.onPushedEditHistoryButton();').val('保存');
               $('#button2').attr('onclick' , 'register.onPushedDeleteHistoryButton();').val('削除');
               var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
@@ -433,10 +462,10 @@ var register = (function() {
               beforeClose: beforeClose
             }
           });
-        }  
+        }
       });
     } ,
-    
+
     /*[Method] カラオケ登録ボタン押下時の処理*/
     onPushedRegisterKaraokeButton : function() {
       var data = {
@@ -449,12 +478,12 @@ var register = (function() {
         price: $('#price').val() ,
         memo: $('#memo').val()
       };
-      
+
       zenra.post('/karaoke/input' , data , {
         success: function(result) {
           result_obj = zenra.parseJSON(result);
           karaoke_id = result_obj['karaoke_id'];
-          
+
           zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
@@ -466,7 +495,7 @@ var register = (function() {
         }
       });
     } ,
-  
+
     /*[Method] 出席情報入力終了後の処理*/
     onPushedRegisterAttendanceButton : function() {
       var data = {
@@ -474,7 +503,7 @@ var register = (function() {
         price: $('#price').val() ,
         memo: $('#memo').val()
       };
- 
+
       zenra.post('/karaoke/input/attendance' , data , {});
       zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
         func_at_load: function() {
@@ -505,18 +534,18 @@ var register = (function() {
             createMoshikashite();
           }
         });
-     
+
         resetHistory();
       }
       else if (action == 'end') {
         if (count > 0) {
           location.href = ('/karaoke/detail/' + karaoke_id);
         }
-        
+
         zenra.closeDialog('input_dialog');
       }
     } ,
-    
+
     /*[Method] カラオケ編集ボタン押下時の処理*/
     onPushedEditKaraokeButton : function() {
       var json_data = zenra.toJSON({
@@ -537,7 +566,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 歌唱履歴編集ボタン押下時の処理*/
     onPushedEditHistoryButton : function() {
       var json_data = zenra.toJSON({
@@ -563,7 +592,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 歌唱履歴削除ボタン押下時の処理*/
     onPushedDeleteHistoryButton : function() {
       zenra.post('/local/rpc/history/delete/' , {id: history_id} , {
@@ -573,5 +602,5 @@ var register = (function() {
       });
     } ,
   }
-  
+
 })();
