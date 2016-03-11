@@ -33,14 +33,19 @@
     <!-- 動画垂れ流しエリア -->
     <div id="bathtowel_div">
       <ul id="slider">
-        <% @song_list.each do |song| %>
-          <li class='bathtowel-li'
-            data-id="<%= song['id'] %>"
-            data-song="<%= song['name'] %>"
-            data-artist="<%= song['artist'] %>"
-            data-url="<%= song['url'] %>"
-            data-image="<%= youtube_image song['url'] %>"
-          >
+        <% @song_list.each_with_index do |song , idx| %>
+          <li id="thumbnail_<%= idx %>" class='bathtowel-li'>
+            <script>
+              zenra.createThumbnail(
+                "<%= idx %>" ,
+                "<%= song['id'] %>" ,
+                "<%= song['name'] %>" ,
+                "<%= song['artist'] %>" ,
+                "<%= youtube_image song['url'] %>" ,
+                "<%= song['url'] %>"
+              );
+            </script>
+          </li>
         <% end %>
       </ul>
     </div>

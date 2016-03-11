@@ -11,10 +11,12 @@ end
 # テスト実行
 describe 'バスタオル' , :js => true do
   before(:all , &init)
-  before { login 'sa2knight' }
-  after :each do
+  before do 
+    login 'sa2knight'
     wait_for_ajax
     system 'sleep 1'
+  end
+  after :each do
   end
   it 'JavaScriptが実行されているか' do
     expect(page.first('.simply-scroll-container').nil?).to eq false
@@ -24,11 +26,11 @@ describe 'バスタオル' , :js => true do
     expect(images.length).to eq 20 + 11
   end
   it 'オンマウスで楽曲情報が表示されるか' do
-    execute_script '$("#slider > li:first-child > span").trigger("mouseenter")'
+    execute_script '$("#slider > li:first > img").trigger("mouseenter")'
     expect(page.find('#bathtowel_info').text).to eq 'カノン (宮野真守)'
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
-    execute_script '$("#slider > li:first-child > span").trigger("click")'
+    execute_script '$("#slider > li:first > img").trigger("click")'
     wait_for_ajax
     expect(page.find('#ui-id-1').text).to eq 'カノン (宮野真守)'
     iframes = youtube_links()

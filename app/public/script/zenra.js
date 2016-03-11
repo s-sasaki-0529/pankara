@@ -1,5 +1,6 @@
 /*全てのページで読み込み時に実行*/
 $(function(){
+  //テーブルをソート可能に
   $('.sortable').tablesorter();
 });
 
@@ -135,6 +136,23 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
 };
 
 /*
+createThumbnail - youtubeのサムネイルを生成する
+*/
+zenra.createThumbnail = function(idx , id , song , artist , image , url) {
+  var $img = $('<img>').attr('src' , image);
+  $img.css('width' , 160).css('height' , 90).css('cursor' , 'pointer');
+  $img.attr('info' , song + ' (' + artist + ')');
+  $img.click(function() {
+    var opt = {title_cursor: 'pointer' , draggable: false};
+    zenra.showDialog($img.attr('info') , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
+    $('.ui-dialog-title').unbind('click').click(function() {
+      location.href = '/song/' + id
+    });
+  });
+  $('#thumbnail_' + idx).append($img)
+};
+
+/*
 createSeekbar - シークバーを作成する
 */
 zenra.createSeekbar = function() {
@@ -180,37 +198,16 @@ bathtowel = {
   init : function () {
 
     //楽曲情報表示用
-    self.info = $('<div>').attr('id' , 'bathtowel_info').css('display' , 'none').text('hogehoge');
+    self.info = $('<div>').attr('id' , 'bathtowel_info').css('display' , 'none');
     self.info.appendTo('body');
 
-    //バスタオル用のサムネイル画像を準備
+    //オンマウス時に曲名を通知
     $('.bathtowel-li').each(function() {
-      var id = $(this).attr('data-id');
-      var song = $(this).attr('data-song');
-      var artist = $(this).attr('data-artist');
-      var text = song + " (" + artist + ")";
-      var url = $(this).attr('data-url');
-      var image = $(this).attr('data-image');
-      var $span = $('<span>').css('padding-right' , '0').attr('href' , '#');
-      var $img = $('<img>').attr('src' , image).attr('width' , '160').attr('height' , '90');
-      $span.append($img);
-      $span.hover(
-        function() {
-          self.info.text(text).css('display' , '');
-        } ,
-        function() {
-          self.info.css('display' , 'none');
-        }
+      var text = $(this).children('img').attr('info');
+      $(this).hover(
+        function() { self.info.text(text).css('display' , ''); } ,
+        function() { self.info.css('display' , 'none'); }
       );
-      $span.click(function() {
-        var opt = {title_cursor: 'pointer' , draggable: false};
-        zenra.showDialog(text , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
-        $('.ui-dialog-title').unbind('click').click(function() {
-          location.href = '/song/' + id
-        });
-      });
-
-      $(this).append($span);
     });
 
     //バスタオルを再生
