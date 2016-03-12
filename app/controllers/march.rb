@@ -29,7 +29,7 @@ class March < Sinatra::Base
         content.gsub!('>' , '\x3e')
         content.gsub!(/\r\n|\r|\n/, "<br />")
       elsif content.kind_of? Float
-        content = sprintf "%.1f" , content
+        content = sprintf "%.2f" , content
       end
       content
     end

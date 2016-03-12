@@ -53,8 +53,8 @@ describe 'カラオケ詳細ページ' do
     visit url
     history_table = table_to_hash('karaoke_detail_history')
     expect(history_table.length).to eq 6
-    expect(history_table[0]['tostring']).to eq 'ないと,未登録,プラネタリウム,BUMP OF CHICKEN,0,全国採点,72.0,'
-    expect(history_table[3]['tostring']).to eq 'ともちん,未登録,メーデー,BUMP OF CHICKEN,0,全国採点,91.0,'
+    expect(history_table[0]['tostring']).to eq 'ないと,未登録,プラネタリウム,BUMP OF CHICKEN,0,全国採点,72.00,'
+    expect(history_table[3]['tostring']).to eq 'ともちん,未登録,メーデー,BUMP OF CHICKEN,0,全国採点,91.00,'
   end
   it 'リンクが正常に登録されているか' do
     login 'sa2knight'

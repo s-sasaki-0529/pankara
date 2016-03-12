@@ -81,7 +81,7 @@ describe 'ユーザページ機能' do
     
     iscontain 'Butter-Fly / 和田光司 / 2回'
     iscontain 'Aqua Timez / 3回'
-    iscontain '82.0 / 心絵 / ロードオブメジャー / 採点方法: 全国採点'
+    iscontain '82.00 / 心絵 / ロードオブメジャー / 採点方法: 全国採点'
   end
   it 'リンクが正常に登録されているか' , :js => true do
     login 'unagipai'

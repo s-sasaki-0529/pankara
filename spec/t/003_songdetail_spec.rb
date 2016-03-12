@@ -19,7 +19,7 @@ init = proc do
   register2.karaoke = karaoke_id
   register2.attend_karaoke(1200 , '楽曲詳細ページテスト用attend2')
   
-  score1 = [21.6 , 47.3 , 57.1 , 68.3 , 76.2 , 80.9 , 90 , 93.8 , 98.2 , 99.9]
+  score1 = [21.6 , 47.3 , 57.1 , 68.3 , 76.2 , 80.9 , 90 , 93.8 , 98.2 , 99.90]
   score2 = [2.4 , 38.5 , 70.2 , 79 , 82.5 , 90.4 , 94.2 , 100 , 100 , 100]
   0.upto(9) do |i|
     register1.create_history('ゼロ' , 'BUMP OF CHICKEN' , 0 , score_type , score1[i])
@@ -35,20 +35,20 @@ describe '楽曲詳細ページ' do
     visit '/history'
     examine_songlink('ゼロ' , 'BUMP OF CHICKEN')
     examine_text('my_sangcount' , 'あなた: 10')
-    examine_text('my_maxscore' , '最高: 99.9')
-    examine_text('my_minscore' , '最低: 21.6')
-    examine_text('my_avgscore' , '平均: 73.3')
+    examine_text('my_maxscore' , '最高: 99.90')
+    examine_text('my_minscore' , '最低: 21.60')
+    examine_text('my_avgscore' , '平均: 73.33')
     examine_text('sangcount' , 'みんな: 20')
-    examine_text('maxscore' , '最高: 100.0')
-    examine_text('minscore' , '最低: 2.4')
-    examine_text('avgscore' , '平均: 74.5')
+    examine_text('maxscore' , '最高: 100.00')
+    examine_text('minscore' , '最低: 2.40')
+    examine_text('avgscore' , '平均: 74.52')
     login 'tomotin'
     visit '/history'
     examine_songlink('ゼロ' , 'BUMP OF CHICKEN')
     examine_text('my_sangcount' , 'あなた: 10')
-    examine_text('my_maxscore' , '最高: 100.0')
-    examine_text('my_minscore' , '最低: 2.4')
-    examine_text('my_avgscore' , '平均: 75.7')
+    examine_text('my_maxscore' , '最高: 100.00')
+    examine_text('my_minscore' , '最低: 2.40')
+    examine_text('my_avgscore' , '平均: 75.72')
   end
   it 'Youtubeがインラインで表示されているか' do
     login 'sa2knight'

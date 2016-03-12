@@ -33,8 +33,8 @@ describe '得点ランキング機能' do
     visit '1'
     table = table_to_hash('scoreranking_table')
     expect(table.length).to eq 20
-    expect(table[0]['tostring']).to eq '1,,ないと,夢に消えたジュリア,サザンオールスターズ,92.1'
-    expect(table[19]['tostring']).to eq '20,,ともちん,もんだいガール,きゃりーぱみゅぱみゅ,88.2'
+    expect(table[0]['tostring']).to eq '1,,ないと,夢に消えたジュリア,サザンオールスターズ,92.12'
+    expect(table[19]['tostring']).to eq '20,,ともちん,もんだいガール,きゃりーぱみゅぱみゅ,88.15'
     # 該当データがない場合
     visit '5'
     expect(find('#nondata').text).to eq nondata
