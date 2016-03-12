@@ -48,12 +48,21 @@
     </tr>
   </thead>
   <tbody>
-    <% @karaoke.histories.each do |history| %>
+    <% @karaoke.histories.each_with_index do |history , idx| %>
     <tr>
       <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
-      <td class='center' width='160'>
+      <td id='thumbnail_<%= idx %>' class='center' width='160'>
         <% if history['song_url'] %>
-          <%= movie_image history['song_id'] , 160 , 90 %>
+          <script>
+            zenra.createThumbnail(
+              "<%= idx %>" ,
+              "<%= history['song_id'] %>" ,
+              "<%= history['song_name'] %>" ,
+              "<%= history['artist_name'] %>" ,
+              "<%= youtube_image(history['song_url']) %>" ,
+              "<%= history['song_url'] %>"
+            )
+          ;</script>
         <% else %>
           未登録
         <% end %>

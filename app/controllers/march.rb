@@ -60,17 +60,6 @@ class March < Sinatra::Base
         nil
       end
     end
-    def movie_image(id , w , h , event = false)
-      song = Song.new(id)
-      id , name , url , artist = song['id'] , h(song['name']) , song['url'] , h(song['artist_name'])
-      image_url = youtube_image(url)
-      image_url or return 'no image'
-      info = "#{name} (#{artist})"
-      onclick = "onclick=\"zenra.showDialog('#{info}' , 'player_dialog' , '/player/#{id}' , 'player' , 600)\""
-      onmouse = event ? "onmouseover=\"bathtowel.showInfo('#{info}')\"" : ""
-      imgtag = "<img class=\"thumbnail\" src=\"#{image_url}\" width=\"#{w}\" height=\"#{h}\">"
-      return "<span style=\"padding-right: 0\" href=# target=\"_blank\" #{onclick} #{onmouse}>#{imgtag}</span>"
-    end
     def user_link(username, screenname , with_icon = true , size = 32)
       link = "/user/#{username}"
       if with_icon

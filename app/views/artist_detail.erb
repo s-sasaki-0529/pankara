@@ -13,11 +13,19 @@
     </tr>
   </thead>
   <tbody>
-    <% @artist['songs'].each do |song| %>
+    <% @artist['songs'].each_with_index do |song , idx| %>
     <tr>
-      <td class='center' width='160'>
+      <td id="thumbnail_<%= idx %>" class='center' width='160'>
         <% if song['url'] %>
-          <%= movie_image song['id'] , 160 , 90 %>
+          <script>
+            zenra.createThumbnail(
+              "<%= idx %>" ,
+              "<%= song['id'] %>" ,
+              "<%= song['name'] %>" ,
+              "<%= @artist['name'] %>" ,
+              "<%= youtube_image song['url'] %>"
+            );
+          </script>
         <% else %>
           未登録
         <% end %>

@@ -31,15 +31,20 @@
       <%= erb :_timeline %>
     </div>
     <!-- 動画垂れ流しエリア -->
-    <div id="bathtowel_div" onmouseout="bathtowel.hideInfo()">
+    <div id="bathtowel_div">
       <ul id="slider">
-        <% @song_list.each do |song| %>
-          <li
-            data-id="<%= song['id'] %>"
-            data-song="<%= song['name'] %>"
-            data-artist="<%= song['artist'] %>"
-            data-url="<%= song['url'] %>"
-          ><%= movie_image song['id'] , 160 , 90 , true%></li>
+        <% @song_list.each_with_index do |song , idx| %>
+          <li id="thumbnail_<%= idx %>" class='bathtowel-li'>
+            <script>
+              zenra.createThumbnail(
+                "<%= idx %>" ,
+                "<%= song['id'] %>" ,
+                "<%= song['name'] %>" ,
+                "<%= song['artist'] %>" ,
+                "<%= youtube_image song['url'] %>"
+              );
+            </script>
+          </li>
         <% end %>
       </ul>
     </div>

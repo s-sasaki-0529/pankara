@@ -13,9 +13,17 @@
     <% @songs.each_with_index do |song , rank| %>
     <tr>
       <td class='center'><%= rank + 1 %></td>
-      <td class='center' width='160'>
+      <td id="thumbnail_<%= rank %>" class='center' width='160'>
         <% if song['song_url'] %>
-          <%= movie_image song['song_id'] , 160 , 90 %>
+          <script>
+            zenra.createThumbnail(
+              "<%= rank %>" ,
+              "<%= song['song_id'] %>" ,
+              "<%= song['song_name'] %>" ,
+              "<%= song['artist_name'] %>" ,
+              "<%= youtube_image song['song_url'] %>"
+            );
+          </script>
         <% else %>
           未登録
         <% end %>

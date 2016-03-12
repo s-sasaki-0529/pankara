@@ -35,7 +35,6 @@ describe '得点ランキング機能' do
     expect(table.length).to eq 20
     expect(table[0]['tostring']).to eq '1,,ないと,夢に消えたジュリア,サザンオールスターズ,92.1'
     expect(table[19]['tostring']).to eq '20,,ともちん,もんだいガール,きゃりーぱみゅぱみゅ,88.2'
-    expect(thumbnail_list.length).to eq 20
     # 該当データがない場合
     visit '5'
     expect(find('#nondata').text).to eq nondata
