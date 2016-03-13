@@ -39,8 +39,13 @@ class Artist < Base
   # self.list - 歌手の一覧を取得
   #--------------------------------------------------------------------
   def self.list(opt = nil)
-    # とりあえず全歌手一覧を取得する
-    # 将来的にはoptに検索条件を指定することで柔軟に指定できるようにする
-    DB.new(:FROM => 'artist').execute_all
+    db = DB.new(:FROM => 'artist')
+    # 曲名で曖昧検索
+    if opt[:name_like]
+      db.where('artist.name like ?')
+      db.set("%#{opt[:name_like]}%")
+    end
+
+    db.execute_all
   end
 end

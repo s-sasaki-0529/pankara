@@ -138,8 +138,9 @@ class Song < Base
 
   # self.list - 楽曲一覧を戻す
   #--------------------------------------------------------------------
-  def self.list(opt = nil)
-    DB.new(
+  def self.list(opt = {})
+    #Todo デフォルトでは歌手情報は取得しないようにする
+    db = DB.new(
       :SELECT => {
         'song.id' => 'song_id' ,
         'song.name' => 'song_name' ,
@@ -149,7 +150,14 @@ class Song < Base
       } ,
       :FROM => 'song' ,
       :JOIN => ['song' , 'artist']
-    ).execute_all
+    )
+
+    if opt[:name_like]
+      db.where("song.name like ?")
+      db.set("%#{opt[:name_like]}%")
+    end
+
+    db.execute_all
   end
 
 end

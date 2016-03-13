@@ -1,0 +1,44 @@
+<div>
+<% if @songs_list.size > 0 || @artist_list.size > 0 %>
+  
+  <% if @songs_list.size > 0 %>
+  <h3>"<%= @search_word %>" を含む楽曲一覧(<%= @songs_list.size %>件)</h3>
+  <table id="search_song_table" class="table sortable table-hover">
+    <thead>
+      <tr>
+        <th>曲名</th>
+        <th>歌手名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @songs_list.each do |song| %>
+      <tr>
+        <td><%= song_link song['song_id'] , song['song_name'] %></td>
+        <td><%= artist_link song['artist_id'] , song['artist_name'] %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+
+  <% if @artist_list.size > 0 %>
+  <h3>"<%= @search_word %>" を含む歌手一覧(<%= @artist_list.size %>件)</h3>
+  <table id="search_artist_table" class="table sortable table_hover">
+    <thead>
+      <tr>
+        <th>歌手名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @artist_list.each do |artist| %>
+      <tr>
+        <td><%= artist_link artist['id'] , artist['name'] %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+
+<% elsif @search_word.size > 0 %>
+  <h3>"<%= @search_word %>" を含む楽曲、歌手が存在しません</h3>
+<% end %>
