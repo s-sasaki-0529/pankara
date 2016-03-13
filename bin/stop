@@ -22,7 +22,7 @@ shift $((OPTIND - 1))
 
 # メイン処理
 cd $MARCHDIR
-pid=$(ps -ax | grep "unicorn master" | grep -v "grep" | awk '{print $1}')
+pid=$(ps -ax | grep "unicorn" | grep -v "grep" | awk '{print $1}')
 if [ -n "$pid" ]; then
   kill -KILL $pid
 fi

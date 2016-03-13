@@ -35,9 +35,10 @@
               カラオケを振り返る<b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
+              <li><a href="/karaoke/list">全てのカラオケ一覧</a></li>
               <% if @current_user %>
-              <li><a href="/karaoke/user/">今までのカラオケ</a></li>
-              <li><a href="/history/">今まで歌った曲</a></li>
+              <li><a href="/karaoke/user/">あなたのカラオケ一覧</a></li>
+              <li><a href="/history/">あなたの歌唱履歴</a></li>
               <% end %>
             </ul>
           </li>
