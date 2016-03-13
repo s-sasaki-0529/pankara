@@ -8,7 +8,7 @@
     <tr>
       <th class='center' width='160'>動画</th>
       <th class='center'>曲名</th>
-      <th class='center'>あなたが歌った回数</th>
+      <% if @current_user %><th class='center'>あなたが歌った回数</th><% end %>
       <th class='center'>みんなが歌った回数</th>
     </tr>
   </thead>
@@ -31,7 +31,7 @@
         <% end %>
       </td>
       <td class='center'><%= song_link song['id'], song['name'] %></td>
-      <td class='center'><%= song['my_sangcount'] %></td>
+      <% if @current_user %><td class='center'><%= song['my_sangcount'] %></td><% end %>
       <td class='center'><%= song['sangcount'] %></td>
     </tr>
     <% end %>

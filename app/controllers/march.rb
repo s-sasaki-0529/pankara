@@ -91,15 +91,17 @@ class March < Sinatra::Base
     if (!session[:logined] && user = Util.read_config('auto_login'))
       session[:logined] = User.new(user)
     end
+    @current_user = session[:logined]
 
-    # ログイン状況を検出
-    logined = session[:logined]
-    path = request.path_info
-    unless logined || path == '/login'
-      redirect '/login'
-    else
-      @current_user = logined
-    end
+    # 認証情報の確認
+
+   # logined = session[:logined]
+   # path = request.path_info
+   # unless logined || path == '/login'
+   #   redirect '/login'
+   # else
+   #   @current_user = logined
+   # end
   end
 
 end

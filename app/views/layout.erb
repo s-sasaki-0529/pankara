@@ -11,7 +11,7 @@
   <script src="/jquery_lib/tablesort/jquery.tablesorter.min.js"></script> <!-- テーブルソートスクリプト-->
   <script src="/jquery_lib/jquery.datetimepicker.js"></script><!-- カレンダースクリプト-->
   <script src="/script/zenra.js"></script> <!-- 全裸スクリプト -->
-  <title>カラオケ情報統合管理サービス(仮)</title>
+  <title>パンダリンのカラオケランド</title>
 </head>
 <body>
 <div class="container">
@@ -35,11 +35,13 @@
               カラオケを振り返る<b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
+              <% if @current_user %>
               <li><a href="/karaoke/user/">今までのカラオケ</a></li>
               <li><a href="/history/">今まで歌った曲</a></li>
+              <% end %>
             </ul>
           </li>
-
+          <% if @current_user %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               カラオケを記録する<b class="caret"></b>
@@ -60,7 +62,7 @@
               <li><a href="#">友達を検索(未)</a></li>
             </ul>
           </li>
-
+          <% end %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               ランキングを見る <b class="caret"></b>
@@ -72,6 +74,7 @@
             </ul>
           </li>
 
+          <% if @current_user %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <%= @current_user['screenname'] %> <b class="caret"></b>
@@ -82,7 +85,9 @@
               <li><a href="/logout">ログアウト</a></li>
             </ul>
           </li>
-
+          <% else %>
+          <li><a href="/login">ログイン</a></li>
+          <% end %>
         </ul>
       </div>
     </div>

@@ -11,17 +11,19 @@
 
 <h4>この曲が歌われた回数</h4>
 <p id="sangcount">みんな: <%= @sangcount %></p>
-<p id="my_sangcount">あなた: <%= @my_sangcount %></p>
+<% if @current_user %><p id="my_sangcount">あなた: <%= @my_sangcount %></p><% end %>
 
 <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
 <p id="maxscore">最高: <%= h @score['score_max'] %></p>
 <p id="minscore">最低: <%= h @score['score_min'] %></p>
 <p id="avgscore">平均: <%= h @score['score_avg'] %></p>
 
+<% if @current_user %>
 <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
 <p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
 <p id="my_minscore">最低: <%= h @my_score['score_min'] %></p>
 <p id="my_avgscore">平均: <%= h @my_score['score_avg'] %></p>
+<% end %>
 
 <h4>この曲のみんなの歌唱履歴</h4>
 <table id="songdetail_allhistory_table" class="table sortable table-striped">
@@ -47,6 +49,7 @@
   </tbody>
 </table>
 
+<% if @current_user %>
 <h4>この曲のあなたの歌唱履歴</h4>
 <table id="songdetail_myhistory-table" class="table sortable table-striped">
   <thead>
@@ -70,3 +73,4 @@
     <% end %>
   </tbody>
 </table>
+<% end %>

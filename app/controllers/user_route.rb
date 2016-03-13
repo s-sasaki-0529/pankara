@@ -5,8 +5,10 @@ class UserRoute < March
   # get '/user/:username' - ユーザページを表示
   #---------------------------------------------------------------------
   get '/user/?' do
-    user = @current_user['username']
-    redirect "/user/#{user}"
+    if @current_user
+      user = @current_user['username']
+      redirect "/user/#{user}"
+    end
   end
   get '/user/:username' do
     @user = User.new(params[:username])

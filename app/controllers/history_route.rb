@@ -18,7 +18,7 @@ class HistoryRoute < March
   # get '/history - ログイン中のユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
   get '/history/?' do
-    redirect "/history/#{@current_user['username']}"
+    @current_user and redirect "/history/#{@current_user['username']}"
   end
 
   # get '/history/:username - ユーザの歌唱履歴を表示
@@ -42,9 +42,12 @@ class HistoryRoute < March
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
-    
-    @current_user.register_history karaoke_id, history
-    Util.to_json({'result' => 'success'})
-  end
 
+    if @current_user
+      @current_user.register_history karaoke_id, history
+      Util.to_json({'result' => 'success'})
+    else
+      Util.to_json({'result' => 'invalid current user'})
+    end
+  end
 end

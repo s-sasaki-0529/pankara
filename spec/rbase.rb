@@ -5,7 +5,7 @@ module Rbase
     visit '/logout'
     fill_in 'username' , with: id
     fill_in 'password' , with: pw
-    click_on 'ログイン'
+    find('#login_button').click
   end
 
   def iscontain(contents)

@@ -12,7 +12,7 @@ class KaraokeRoute < March
   # get '/karaoke/user' - ログイン中ユーザのカラオケ記録を一覧表示
   #---------------------------------------------------------------------
   get '/karaoke/user/?' do
-    redirect "/karaoke/user/#{@current_user['username']}"
+    @current_user and redirect "/karaoke/user/#{@current_user['username']}"
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
@@ -53,9 +53,13 @@ class KaraokeRoute < March
     attendance['price'] = params[:price].to_i
     attendance['memo'] = params[:memo]
 
-    karaoke_id = @current_user.register_karaoke karaoke
-    @current_user.register_attendance karaoke_id, attendance
-    Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
+    if @current_user
+      karaoke_id = @current_user.register_karaoke karaoke
+      @current_user.register_attendance karaoke_id, attendance
+      Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
+    else
+      Util.to_json({'result' => 'invalid current user'})
+    end
   end
 
   # post '/karaoke/input/attendance' - 出席情報のみ受け取り登録
@@ -66,8 +70,12 @@ class KaraokeRoute < March
     attendance['price'] = params[:price].to_i
     attendance['memo'] = params[:memo]
 
-    @current_user.register_attendance karaoke_id, attendance
-    Util.to_json({'result' => 'success'})
+    if @current_user
+      @current_user.register_attendance karaoke_id, attendance
+      Util.to_json({'result' => 'success'})
+    else
+      Util.to_json({'result' => 'invalid current user'})
+    end
   end
 
 end

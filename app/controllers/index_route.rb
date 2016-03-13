@@ -13,11 +13,15 @@ class IndexRoute < March
   # get '/' - トップページへのアクセス
   #---------------------------------------------------------------------
   get '/' do
-    @user = @current_user
-    @timeline = @user.timeline
-    @recent_karaoke = @user.get_karaoke(1)[0]
-    @song_list = History.recent_song
-    erb :index
+    if @current_user
+      @user = @current_user
+      @timeline = @user.timeline
+      @recent_karaoke = @user.get_karaoke(1)[0]
+      @song_list = History.recent_song
+      erb :index
+    else
+      erb :login
+    end
   end
 
   # get '/player/:id'
