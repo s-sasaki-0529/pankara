@@ -1,6 +1,7 @@
 /*ヘッダメニューを表示するために、全てのページは上70px空ける*/
 body {
   padding-top: 70px;
+  background-image: url("../image/bg1.png");
 }
 
 /*テーブルヘッダは全て中央揃えに*/
