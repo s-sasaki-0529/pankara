@@ -4,26 +4,41 @@ PROGNAME=$(basename $0)
 
 # ヘルプ
 usage() {
-  echo "稼働しているWebサーバを停止する"
+  echo "稼働しているWebサーバを停止する [-v]"
   echo "  Usage: zenra $PROGNAME"
+  echo "オプション"
+  echo "  -v 進捗メッセージを標準出力"
   exit 1
 }
 
 # オプション解析
-while getopts h OPT
+FLAG_V=0
+while getopts vh OPT
 do
   case $OPT in
     h)  usage
         exit 1
         ;;
+    v)  FLAG_V=1
+        ;;
   esac
 done
 shift $((OPTIND - 1))
+
+# 進捗メッセージを表示
+mes () {
+  if [ "$FLAG_V" -eq 1 ]; then
+    echo $1
+  fi
+}
 
 # メイン処理
 cd $MARCHDIR
 pid=$(ps -ax | grep "unicorn" | grep -v "grep" | awk '{print $1}')
 if [ -n "$pid" ]; then
   kill -KILL $pid
+  mes "プロセス(${pid})を停止しました"
+else
+  mes "停止対象のプロセスがありません"
 fi
 

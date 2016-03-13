@@ -5,17 +5,19 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "Webサーバを立ち上げ、サービスを開始する"
-  echo "  Usage: zenra $PROGNAME [-u username] [-p port] [-f]"
+  echo "  Usage: zenra $PROGNAME [-u username] [-p port] [-f] [-v]"
   echo "オプション"
   echo "  -u 指定したユーザ名でログイン"
   echo "  -p unicornを起動するポートを指定(デフォルト8080)"
   echo "  -f Webサーバをフォアグランド上で実行する(ログの取得をしない)"
+  echo "  -v 進捗メッセージを標準出力"
   exit 1
 }
 
 # オプション解析
 FLAG_F=0
-while getopts u:p:fh OPT
+FLAG_V=0
+while getopts u:p:fhv OPT
 do
   case $OPT in
     h)  usage
@@ -27,9 +29,18 @@ do
       ;;
     f)  FLAG_F=1
       ;;
+    v)  FLAG_V=1
+      ;;
   esac
 done
 shift $((OPTIND - 1))
+
+# 進捗メッセージを表示
+mes () {
+  if [ "$FLAG_V" -eq 1 ]; then
+    echo $1
+  fi
+}
 
 # メイン処理
 cd $MARCHDIR
@@ -37,6 +48,7 @@ zenra stop
 
 if [ -n "$VALUE_U" ]; then
   bundle exec ruby "bin/scripts/set_config.rb" "set" "auto_login" "$VALUE_U"
+  mes "${VALUE_U} でオートログインを設定"
 else
   bundle exec ruby "bin/scripts/set_config.rb" "unset" "auto_login"
 fi
@@ -44,6 +56,7 @@ if [ -z "$VALUE_P" ]; then
   VALUE_P=8080
 fi
 
+mes "${VALUE_P}ポートでWebサーバを立ち上げます"
 if [ "$FLAG_F" -eq 1 ]; then
   bundle exec unicorn --port $VALUE_P
 else
