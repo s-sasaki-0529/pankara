@@ -8,7 +8,12 @@ class Karaoke < Base
 
   # initialize - インスタンスを生成し、機種名、店舗名を取得する
   #---------------------------------------------------------------------
-  def initialize(id)
+  def initialize(id , opt = {})
+    # レコードを取得せずにインスタンスを生成
+    if opt[:id_only]
+      @params = {'id' => id}
+      return
+    end
     @params = DB.new.get('karaoke' , id)
     @params or return nil
 
@@ -19,31 +24,6 @@ class Karaoke < Base
     @params['store_name'] = store.params['name']
     @params['branch_name'] = store.params['branch']
     @params['store_full_name'] = "#{store.params['name']} #{store.params['branch']}"
-  end
-
-  # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
-  #---------------------------------------------------------------------
-  def self.list_all()
-    DB.new(
-      :SELECT =>  {
-        'karaoke.id' => 'id' ,
-        'karaoke.name' => 'name' ,
-        'karaoke.datetime' => 'datetime' ,
-        'karaoke.plan' => 'plan' ,
-        'karaoke.store' => 'store' ,
-        'karaoke.product' => 'product_id' ,
-        'store.name' => 'store_name' ,
-        'store.branch' => 'branch_name' ,
-        'product.brand' => 'brand_name' ,
-        'product.product' => 'product_name'
-      } ,
-      :FROM => 'karaoke' ,
-      :JOIN => [
-        ['karaoke' , 'store'] ,
-        ['karaoke' , 'product'] ,
-      ] ,
-      :OPTION => 'ORDER BY datetime DESC'
-    ).execute_all
   end
 
   # modify - カラオケレコードを修正する
@@ -90,6 +70,23 @@ class Karaoke < Base
 
   end
 
+  # get_members - カラオケに参加しているユーザ一覧を取得する
+  #--------------------------------------------------------------------
+  def get_members
+    DB.new(
+      :SELECT => {
+        'attendance.id' => 'attendance',
+        'user.id' => 'userid',
+        'user.username' => 'username',
+        'user.screenname' => 'screenname',
+      },
+      :FROM => 'attendance',
+      :JOIN => ['attendance' , 'user'],
+      :WHERE => 'attendance.karaoke = ?',
+      :SET => @params['id'],
+    ).execute_all
+  end
+
   # get_history - カラオケ記録に対応した歌唱履歴を取得する
   #---------------------------------------------------------------------
   def get_history
@@ -115,18 +112,7 @@ class Karaoke < Base
     ).execute_all
 
     # karaokeに参加しているユーザ一覧を取得
-    db = DB.new
-    db.select({
-      'attendance.id' => 'attendance' ,
-      'user.id' => 'userid' ,
-      'user.username' => 'username' ,
-      'user.screenname' => 'screenname'
-    })
-    db.from('attendance')
-    db.join(['attendance' , 'user'])
-    db.where('karaoke = ?')
-    db.set(@params['id'])
-    users_info = db.execute_all
+    users_info = self.get_members
     @params['members'] = users_info
 
     # historiesに含まれる楽曲情報を取得
@@ -142,4 +128,39 @@ class Karaoke < Base
       history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
     end
   end
+
+  # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
+  #---------------------------------------------------------------------
+  def self.list_all(opt = {})
+    list = DB.new(
+      :SELECT =>  {
+        'karaoke.id' => 'id' ,
+        'karaoke.name' => 'name' ,
+        'karaoke.datetime' => 'datetime' ,
+        'karaoke.plan' => 'plan' ,
+        'karaoke.store' => 'store' ,
+        'karaoke.product' => 'product_id' ,
+        'store.name' => 'store_name' ,
+        'store.branch' => 'branch_name' ,
+        'product.brand' => 'brand_name' ,
+        'product.product' => 'product_name'
+      } ,
+      :FROM => 'karaoke' ,
+      :JOIN => [
+        ['karaoke' , 'store'] ,
+        ['karaoke' , 'product'] ,
+      ] ,
+      :OPTION => 'ORDER BY datetime DESC'
+    ).execute_all
+
+    if opt[:with_attendance]
+      list.each do |karaoke|
+        k = Karaoke.new(karaoke['id'] , {:id_only => true})
+        karaoke['members'] = k.get_members
+      end
+    end
+    Util.debug(list)
+    return list
+  end
+
 end

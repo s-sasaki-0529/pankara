@@ -9,6 +9,7 @@
       <th class='cell-number'>時間</th>
       <th>お店</th>
       <th>機種</th>
+      <th>メンバー</th>
     </tr>
   </thead>
   <tbody>
@@ -19,6 +20,12 @@
       <td class='center'><%= karaoke['plan'] %></td>
       <td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
       <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+      <td>
+        <% karaoke['members'].each do |member| %>
+          <span style="display:none"><%= member['screenname'] %></span>
+          <%= user_icon member['username'] , 32 , 32 %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   </tbody>
