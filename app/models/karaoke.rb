@@ -159,7 +159,6 @@ class Karaoke < Base
         karaoke['members'] = k.get_members
       end
     end
-    Util.debug(list)
     return list
   end
 
