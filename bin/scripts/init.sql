@@ -196,7 +196,8 @@ INSERT INTO product ( brand , product ) VALUES
 ('JOYSOUND' , 'f1') ,
 ('JOYSOUND' , 'MAX') ,
 ('DAM' , 'Premier DAM') ,
-('DAM' , 'LIVE DAM');
+('DAM' , 'LIVE DAM'),
+('その他' , 'その他');
 
 INSERT INTO score_type ( brand , name ) VALUES
 ('JOYSOUND' , '全国採点') ,
@@ -204,4 +205,5 @@ INSERT INTO score_type ( brand , name ) VALUES
 ('JOYSOUND' , 'その他'),
 ('DAM' , 'ランキングバトル') ,
 ('DAM' , '精密採点') ,
-('DAM' , 'その他');
+('DAM' , 'その他'),
+('その他' , 'その他');

@@ -10,7 +10,7 @@ class User < Base
   #---------------------------------------------------------------------
   def initialize(user)
     user.kind_of?(String) and username = user
-    user.kind_of?(Hash) and user[:username] and username = uszer[:username]
+    user.kind_of?(Hash) and user[:username] and username = user[:username]
     user.kind_of?(Hash) and user[:id] and id = user[:id]
     if username
       @params = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => username).execute_row

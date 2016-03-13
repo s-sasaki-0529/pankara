@@ -139,17 +139,21 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
 createThumbnail - youtubeのサムネイルを生成する
 */
 zenra.createThumbnail = function(idx , id , song , artist , image) {
-  var $img = $('<img>').attr('src' , image);
-  $img.css('width' , 160).css('height' , 90).css('cursor' , 'pointer');
-  $img.attr('info' , song + ' (' + artist + ')');
-  $img.click(function() {
-    var opt = {title_cursor: 'pointer' , draggable: false};
-    zenra.showDialog($img.attr('info') , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
-    $('.ui-dialog-title').unbind('click').click(function() {
-      location.href = '/song/' + id
+  if (image) {
+    var $img = $('<img>').attr('src' , image);
+    $img.css('width' , 160).css('height' , 90).css('cursor' , 'pointer');
+    $img.attr('info' , song + ' (' + artist + ')');
+    $img.click(function() {
+      var opt = {title_cursor: 'pointer' , draggable: false};
+      zenra.showDialog($img.attr('info') , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
+      $('.ui-dialog-title').unbind('click').click(function() {
+        location.href = '/song/' + id
+      });
     });
-  });
-  $('#thumbnail_' + idx).append($img)
+    $('#thumbnail_' + idx).append($img)
+  } else {
+    $('#thumbnail_' + idx).append('<span>未登録</span>');
+  }
 };
 
 /*

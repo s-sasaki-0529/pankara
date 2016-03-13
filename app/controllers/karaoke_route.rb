@@ -18,8 +18,8 @@ class KaraokeRoute < March
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
   #---------------------------------------------------------------------
   get '/karaoke/user/:username' do
-    @user = User.new(params[:username])
-    @karaoke_list = @user.get_karaoke
+    @target_user = User.new(params[:username])
+    @karaoke_list = @target_user.get_karaoke
     erb :karaokelist
   end
 
