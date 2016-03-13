@@ -1,0 +1,42 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "プログラムを更新してWebサーバを立ち上げる"
+  echo "  Usage: zenra $PROGNAME"
+  echo "オプション"
+  echo "  -v 進捗を標準出力"
+  exit 1
+}
+
+# オプション解析
+FLAG_V=0
+while getopts hv OPT
+do
+  case $OPT in
+    h)  usage
+        exit 1
+        ;;
+    v)  FLAG_V=1
+        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+cd $MARCHDIR
+
+if [ "$FLAG_V" -eq 1 ]; then
+  zenra stop -v
+  echo "プログラムを更新します"
+  git pull
+  zenra init -b -v
+  zenra run -v
+else
+  zenra stop
+  git pull
+  zenra init -b
+  zenra run
+fi

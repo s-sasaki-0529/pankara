@@ -5,8 +5,9 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "ワイシャツサーバにアクセスして各種操作を行う"
-  echo "  Usage: zenra $PROGNAME [-s] [-e]"
+  echo "  Usage: zenra $PROGNAME [-u] [-s] [-e]"
   echo "オプション"
+  echo "  -u ワイシャツサーバのプログラムを更新して再起動"
   echo "  -s ワイシャツサーバを起動 or 再起動"
   echo "  -e ワイシャツサーバを停止"
   exit 1
@@ -15,7 +16,8 @@ usage() {
 # オプション解析
 FLAG_S=0
 FLAG_E=0
-while getopts hes OPT
+FLAG_U=0
+while getopts uhes OPT
 do
   case $OPT in
     h)  usage
@@ -25,6 +27,8 @@ do
         ;;
     e)  FLAG_E=1
         ;;
+    u)  FLAG_U=1
+        ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -32,8 +36,13 @@ shift $((OPTIND - 1))
 # メイン処理
 cd $MARCHDIR
 ssh="ssh root@160.16.227.161"
+
 if [ $FLAG_S -eq 1 ]; then
-  $ssh "export ZENRA=/home/zenra/March/; nohup zenra run -p 80"
+  $ssh "export ZENRA=/home/zenra/March/; nohup zenra run -p 80 -v"
+
 elif [ $FLAG_E -eq 1 ]; then
-  $ssh "zenra stop"
+  $ssh "zenra stop -v"
+
+elif [ $FLAG_U -eq 1 ]; then
+  $ssh "zenra update -v"
 fi
