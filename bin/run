@@ -44,7 +44,12 @@ mes () {
 
 # メイン処理
 cd $MARCHDIR
-zenra stop
+
+if [ "$FLAG_V" -eq 1 ]; then
+  zenra stop -v
+else
+  zenra stop
+fi
 
 if [ -n "$VALUE_U" ]; then
   bundle exec ruby "bin/scripts/set_config.rb" "set" "auto_login" "$VALUE_U"
