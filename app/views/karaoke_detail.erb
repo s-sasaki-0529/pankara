@@ -7,7 +7,7 @@
       <th class='center'>お店</th>
       <th class='center'>機種</th>
       <th class='center'>メンバー</th>
-      <th width='32px'>編集</th>
+      <% if @current_user %><th width='32px'>編集</th><% end %>
     </tr>
   </thead>
   <tbody>
@@ -23,17 +23,21 @@
           <span>
         <% end %>
       </td>
+      <% if @current_user %>
       <td width="32px">
         <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
       </td>
+      <% end %>
     </tr>
   </tbody>
 </table>
 
 <h4>歌唱履歴</h4>
+<% if @current_user %>
 <p class='right linkcursor'>
   <img src="/image/addsong.png" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)">
 </p>
+<% end %>
 <table id="karaoke_detail_history" class="table sortable table-hover">
   <thead>
     <tr>
@@ -44,7 +48,7 @@
       <th class='center cell-number'>キー</th>
       <th class='center' width='190'>採点モード</th>
       <th class='cell-number'>採点</th>
-      <th class='center' width='32'>編集</th>
+      <% if @current_user %><th class='center' width='32'>編集</th><% end %>
     </tr>
   </thead>
   <tbody>
@@ -72,9 +76,11 @@
       <td class='center'><%= history['songkey'] %></td>
       <td class='center' width='190'><%= history['scoretype_name'] %></td>
       <td class='center'><%= h history['score'] %></td>
+      <% if @current_user %>
       <td class='center' width='32'>
         <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
       </td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>
