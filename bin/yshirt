@@ -44,5 +44,5 @@ elif [ $FLAG_E -eq 1 ]; then
   $ssh "zenra stop -v"
 
 elif [ $FLAG_U -eq 1 ]; then
-  $ssh "zenra update -v"
+  $ssh "zenra update -p 80 -v"
 fi
