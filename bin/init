@@ -45,9 +45,16 @@ do
 done
 shift $((OPTIND - 1))
 
-# メイン処理
+# DBスキーマを再構築
 $MYSQL -e "source $BINDIR/scripts/init.sql"
+
+# ログファイルを初期化
 rm -f $MARCHDIR/logs/*
+touch $MARCHDIR/logs/sql.log
+touch $MARCHDIR/logs/stdout.log
+touch $MARCHDIR/logs/stderr.log
+
+# 初期データの登録
 cd $MARCHDIR
 if [ "$FLAG_S" -eq 1 ]; then
   bundle exec ruby $BINDIR/scripts/insert_random_rows.rb > $TMPPATH
