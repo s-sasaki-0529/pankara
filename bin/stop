@@ -34,11 +34,12 @@ mes () {
 
 # メイン処理
 cd $MARCHDIR
+mes "既にサーバが起動している場合停止します"
 pid=$(ps -ax | grep "unicorn" | grep -v "grep" | awk '{print $1}')
 if [ -n "$pid" ]; then
   kill -KILL $pid
   mes "プロセス(${pid})を停止しました"
 else
-  mes "停止対象のプロセスがありません"
+  mes "停止対象のプロセスはありませんでした"
 fi
 
