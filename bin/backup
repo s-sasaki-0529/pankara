@@ -40,12 +40,24 @@ mes () {
 
 # メイン処理
 cd $MARCHDIR
-filename=$(date +"%Y_%m_%d_%H_%M")
-filepath="backup/$filename"
-if [ $FLAG_M -eq 1 ]; then
-  echo "-- $VALUE_M" > "$filepath"
-  mysqldump --single-transaction -u root --password=zenra march >> "$filepath"
-else
-  mysqldump --single-transaction -u root --password=zenra march > "$filepath"
+
+if [ $FLAG_M -eq 0 ]; then
+  mes "バックアップ生成理由を指定してください"
+  exit 1
 fi
+
+cat "backup/$(ls backup -1 | sort -r | head -1)" | sed -n '8,320p' > "/tmp/old_dump"
+filename=$(date +"%Y_%m_%d_%H_%M")
+filepath="backup/$(date +"%Y_%m_%d_%H_%M")"
+echo "-- $VALUE_M" > "$filepath"
+mysqldump --single-transaction -u root --password=zenra march >> "$filepath"
+
+cat "$filepath" | sed -n '8,320p' > "/tmp/new_dump"
+diff "/tmp/old_dump" "/tmp/new_dump" > /dev/null
+if [ $? -eq 0 ]; then
+  mes "最新のバックアップから変更がありません"
+  rm "$filepath"
+  exit 1
+fi
+
 mes "バックアップ($filename)を作成しました -$VALUE_M-"
