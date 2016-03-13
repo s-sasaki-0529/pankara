@@ -5,14 +5,15 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "Webサーバを立ち上げ、サービスを開始する"
-  echo "  Usage: zenra $PROGNAME [-u username]"
+  echo "  Usage: zenra $PROGNAME [-u username] [-p port]"
   echo "オプション"
   echo "  -u 指定したユーザ名でログイン"
+  echo "  -p unicornを起動するポートを指定(デフォルト8080)"
   exit 1
 }
 
 # オプション解析
-while getopts u:h OPT
+while getopts u:p:h OPT
 do
   case $OPT in
     h)  usage
@@ -20,6 +21,7 @@ do
       ;;
     u)  VALUE_U=$OPTARG
       ;;
+    p)  VALUE_P=$OPTARG
   esac
 done
 shift $((OPTIND - 1))
@@ -33,4 +35,8 @@ if [ -n "$VALUE_U" ]; then
 else
   bundle exec ruby "bin/scripts/set_config.rb" "unset" "auto_login"
 fi
-bundle exec unicorn --port 8080
+if [ -z "$VALUE_P" ]; then
+  VALUE_P=8080
+fi
+
+bundle exec unicorn -c unicorn.rb -D --port $VALUE_P

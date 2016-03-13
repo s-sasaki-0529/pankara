@@ -33,7 +33,7 @@ shift $((OPTIND - 1))
 cd $MARCHDIR
 ssh="ssh root@160.16.227.161"
 if [ $FLAG_S -eq 1 ]; then
-  $ssh "nohup zenra run"
+  $ssh "nohup zenra run -p 80"
 elif [ $FLAG_E -eq 1 ]; then
   $ssh "zenra stop"
 fi
