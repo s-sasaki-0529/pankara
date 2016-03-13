@@ -7,48 +7,47 @@ TMPPATH="$BINDIR/scripts/tmp.sql"
 # ヘルプ
 usage() {
   echo "データベースを初期化"
-  echo "  Usage: zenra $PROGNAME [-s] [-f] [-r] [-b] [-d filename]"
+  echo "  Usage: zenra $PROGNAME [-b] [-d filename] [-v]"
   echo "オプション:"
-  echo "  -s ランダムのサンプルデータを挿入"
-  echo "  -f 固定のサンプルデータを挿入"
-  echo "  -r 実データを挿入"
   echo "  -b 最新のバックアップから復元"
   echo "  -d 指定したバックアップファイルから復元"
+  echo "  -v 進捗を標準出力"
   exit 1
 }
 
 # オプション解析
-FLAG_S=0
-FLAG_F=0
-FLAG_R=0
 FLAG_B=0
 FLAG_D=0
+FLAG_V=0
 VALUE_D=""
-while getopts sfrhbd: OPT
+while getopts hbvd: OPT
 do
   case $OPT in
   h)  usage
       exit 1
-      ;;
-  s)  FLAG_S=1
-      ;;
-  f)  FLAG_F=1
-      ;;
-  r)  FLAG_R=1
       ;;
   b)  FLAG_B=1
       ;;
   d)  FLAG_D=1
       VALUE_D=$OPTARG
       ;;
+  v)  FLAG_V=1
+      ;;
   esac
 done
 shift $((OPTIND - 1))
 
-# DBスキーマを再構築
+# 標準出力
+mes () {
+  if [ "$FLAG_V" -eq 1 ]; then
+    echo $1
+  fi
+}
+
+mes "DBスキーマを再構築します"
 $MYSQL -e "source $BINDIR/scripts/init.sql"
 
-# ログファイルを初期化
+mes "ログファイルを初期化します"
 rm -f $MARCHDIR/logs/*
 touch $MARCHDIR/logs/sql.log
 touch $MARCHDIR/logs/stdout.log
@@ -56,19 +55,13 @@ touch $MARCHDIR/logs/stderr.log
 
 # 初期データの登録
 cd $MARCHDIR
-if [ "$FLAG_S" -eq 1 ]; then
-  bundle exec ruby $BINDIR/scripts/insert_random_rows.rb > $TMPPATH
-  $MYSQL -e "source $TMPPATH"
-elif [ "$FLAG_F" -eq 1 ]; then
-  bundle exec ruby $BINDIR/scripts/insert_fixed_rows.rb > $TMPPATH
-  $MYSQL -e "source $TMPPATH"
-elif [ "$FLAG_R" -eq 1 ]; then
-  bundle exec ruby $BINDIR/scripts/realdata.rb > $TMPPATH
-elif [ "$FLAG_B" -eq 1 ]; then
+if [ "$FLAG_B" -eq 1 ]; then
+  mes "テーブルを最新のバックアップを用いて初期化します"
   dump=$(ls backup -1 | sort -r | head -1)
   filepath="backup/$dump"
   $MYSQL < "$filepath"
 elif [ "$FLAG_D" -eq 1 ]; then
+  mes "テーブルをバックアップ($VALUE_D)を用いて初期化します"
   filepath="backup/$VALUE_D"
   $MYSQL < "$filepath"
 fi
