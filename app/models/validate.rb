@@ -2,11 +2,52 @@
 # Validate - 対象テキストを検証するクラス
 #----------------------------------------------------------------------
 require_relative 'util'
-class Validate < Base
+class Validate
+
+  attr_reader :text 
 
   # initialize - インスタンスを生成する
   #---------------------------------------------------------------------
-  def initialize(id)
+  def initialize(text)
+    @text = text
+  end
+
+  # strip - 文字列の前後に含まれるスペースを取り除く
+  #---------------------------------------------------------------------
+  def strip
+    @text.strip!
+    return self
+  end
+
+  # sanitize - HTMLタグをサニタイ
+  #---------------------------------------------------------------------
+  def sanitize 
+    @text.gsub!('/' , '\/')
+    @text.gsub!('\"' , '\\\"')
+    @text.gsub!('\'' , '\\\'')
+    @text.gsub!('<' , '\x3c')
+    @text.gsub!('>' , '\x3e')
+    return self
+  end
+
+  # is_datetime? - March標準の日付時刻フォーマットに沿っているかを戻す
+  #--------------------------------------------------------------------
+  def is_datetime?
+    if @text.match(%r|^[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}$|)
+      true
+    else
+      false
+    end
+  end
+
+  # is_integer? - 整数値であるかを戻し、整数値ならばIntに変換した値を戻す
+  #--------------------------------------------------------------------
+  def is_integer?
+    if @text.match(/^[0-9]+$/)
+      @text.to_i
+    else
+      false
+    end
   end
 
 end
