@@ -30,17 +30,17 @@
 <table id="karaoke_member_table" class="table sortable table-hover">
   <thead>
     <tr>
-      <th>ユーザ</th>
-      <th>歌唱曲数</th>
-      <th>最高点</th>
+      <th class='center'>ユーザ</th>
+      <th class='center'>歌唱曲数</th>
+      <th class='center'>最高点</th>
     </tr>
   </thead>
   <tbody>
   <% @karaoke['members'].each do |member| %>
     <tr>
-      <td><%= user_link member['username'], member['screenname'] %></td>
-      <td><%= member['sang_count'] %></td>
-      <td><%= h member['max_score'] %></td>
+      <td class='center'><%= user_link member['username'], member['screenname'] %></td>
+      <td class='center'><%= member['sang_count'] %></td>
+      <td class='center'><%= h member['max_score'] %></td>
     </tr>
   <% end %>
   </tbody>
