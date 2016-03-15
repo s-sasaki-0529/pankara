@@ -76,6 +76,8 @@ class Karaoke < Base
     DB.new(
       :SELECT => {
         'attendance.id' => 'attendance',
+        'attendance.price' => 'price',
+        'attendance.memo' => 'memo',
         'user.id' => 'userid',
         'user.username' => 'username',
         'user.screenname' => 'screenname',
