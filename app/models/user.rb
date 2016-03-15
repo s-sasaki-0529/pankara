@@ -267,6 +267,8 @@ class User < Base
   #---------------------------------------------------------------------
   def register_history(karaoke_id, history)
     @register.set_karaoke karaoke_id
+    @register.attend_karaoke
+
     if history['score_type'] > 0
       score_type = ScoreType.id_to_name(history['score_type'], true)
     else
@@ -281,6 +283,19 @@ class User < Base
       score_type , 
       history['score']
     )
+  end
+
+  # attended? - カラオケにすでに参加済みか確認する
+  #---------------------------------------------------------------------
+  def attended?(karaoke_id)
+    attended = DB.new(
+      :SELECT => ['id'] ,
+      :FROM => 'attendance' ,
+      :WHERE => ['user = ?' , 'karaoke = ?'] ,
+      :SET => [@params['id'] , karaoke_id]
+    ).execute_column
+
+    return attended.nil? ? false : true
   end
 
   private

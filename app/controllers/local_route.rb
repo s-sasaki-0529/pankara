@@ -80,5 +80,11 @@ class LocalRoute < March
     return result ? success : error('modify failed')
   end
 
+  # post '/ajax/attended/' - カラオケに参加済みか確認する
+  #--------------------------------------------------------------------
+  post '/ajax/attended' do
+    attended = @current_user.attended? params[:karaoke_id]
+    return Util.to_json({:attended => attended})
+  end
 
 end

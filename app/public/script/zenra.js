@@ -394,6 +394,7 @@ var register = (function() {
     button2.attr('onclick' , 'register.onPushedDeleteKaraokeButton();').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
     button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+
     $('#buttons').append(button2);
     $('#buttons').append(button3);
   }
@@ -428,9 +429,33 @@ var register = (function() {
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke) {
       karaoke_id = karaoke;
-      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
-        funcs: {
-          beforeClose: beforeClose
+
+      // 既にカラオケに参加済みか確認する
+      zenra.post('/ajax/attended' , {karaoke_id: karaoke_id} , {
+        success: function(result) {
+          var attended = zenra.parseJSON(result);
+         
+          if (attended['attended']) {
+            zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
+              func_at_load: function() {
+                createWidgetForHistory();
+
+                $('#button1').attr('onclick' , 'register.onPushedRegisterHistoryButton("register");').val('登録');
+                $('#button2').attr('onclick' , 'register.onPushedRegisterHistoryButton("end");').val('終了');
+              } ,
+              funcs: {
+                beforeClose: beforeClose
+              }
+            });
+          }
+          // まだ参加していない場合出席情報を入力する
+          else {
+            zenra.showDialog('出席情報入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
+              funcs: {
+                beforeClose: beforeClose
+              }
+            });
+          }
         }
       });
     } ,
@@ -438,7 +463,7 @@ var register = (function() {
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke) {
       karaoke_id = karaoke;
-      zenra.post('/local/rpc/karaokelist/' , {id: karaoke} , {
+      zenra.post('/local/rpc/karaokelist/' , {id: karaoke_id} , {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
@@ -461,7 +486,7 @@ var register = (function() {
       karaoke_id = karaoke;
       history_id = history;
 
-      zenra.post('/local/rpc/historylist/' , {id: history} , {
+      zenra.post('/local/rpc/historylist/' , {id: history_id} , {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
@@ -470,7 +495,6 @@ var register = (function() {
               createWidgetForHistory();
               setHistoryToInput(history);
               createElementForEditHistory();
-
             } ,
             funcs: {
               beforeClose: beforeClose
