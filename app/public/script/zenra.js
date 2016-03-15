@@ -387,6 +387,30 @@ var register = (function() {
     });
   }
 
+  /*[method] カラオケ編集画面用の要素を作成する*/
+  function createElementForEditKaraoke() {
+    $('#button1').attr('onclick' , 'register.onPushedEditKaraokeButton();').val('保存');
+    var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
+    button2.attr('onclick' , 'register.onPushedDeleteKaraokeButton();').val('削除');
+    var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
+    button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    $('#buttons').append(button2);
+    $('#buttons').append(button3);
+  }
+  
+  /*[method] 歌唱履歴編集画面用の要素を作成する*/
+  function createElementForEditHistory() {
+    var label = $('<label></label>').attr('for' , 'score').html('URL:');
+    var input = $('<input>').attr('id' , 'url').attr('type' , 'url').attr('name' , 'url').attr('size' , '50');
+    $('#url_area').html(label).append(input);
+    
+    $('#button1').attr('onclick' , 'register.onPushedEditHistoryButton();').val('保存');
+    $('#button2').attr('onclick' , 'register.onPushedDeleteHistoryButton();').val('削除');
+    var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
+    button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    $('#buttons').append(button3);
+  }
+
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
@@ -422,13 +446,7 @@ var register = (function() {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
-              $('#button1').attr('onclick' , 'register.onPushedEditKaraokeButton();').val('保存');
-              var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
-              button2.attr('onclick' , 'register.onPushedDeleteKaraokeButton();').val('削除');
-              var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-              button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
-              $('#buttons').append(button2);
-              $('#buttons').append(button3);
+              createElementForEditKaraoke();
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -450,14 +468,9 @@ var register = (function() {
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
             func_at_load: function() {
               createWidgetForHistory();
-
               setHistoryToInput(history);
+              createElementForEditHistory();
 
-              $('#button1').attr('onclick' , 'register.onPushedEditHistoryButton();').val('保存');
-              $('#button2').attr('onclick' , 'register.onPushedDeleteHistoryButton();').val('削除');
-              var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-              button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
-              $('#buttons').append(button3);
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -575,7 +588,8 @@ var register = (function() {
         artist_name: $('#artist').val() ,
         songkey: $('#seekbar').slider('value') ,
         score: $('#score').val() ,
-        score_type: $('#score_type').val()
+        score_type: $('#score_type').val() ,
+        url: $('#url').val()
       });
 
       zenra.post('/local/rpc/history/modify/', {id: history_id, params: json_data} , {
