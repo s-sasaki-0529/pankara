@@ -249,6 +249,12 @@ var register = (function() {
     $('#seekbar').slider('value' , 0);
     $('#score').val('');
     $('#song').focus();
+    
+    zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
+    zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
+    
+    zenra.setOptionMoshikashite('song' , 'minLength' , 2);
+    zenra.setOptionMoshikashite('song' , 'source' , song_list);
   }
 
   /*[Method] ダイアログを閉じる時に実施する処理*/
