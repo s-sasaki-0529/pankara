@@ -113,7 +113,6 @@ class Karaoke < Base
 
     # karaokeに参加しているユーザ一覧を取得
     users_info = self.get_members
-    @params['members'] = users_info
 
     # historiesに含まれる楽曲情報を取得
     # Todo: ここループでSong.newしててクッソ無駄
@@ -127,6 +126,14 @@ class Karaoke < Base
       history['userinfo'] = users_info.find { |user| user['attendance'] == history['attendance'] }
       history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
     end
+
+    # ユーザーごとの集計
+    users_info.each do |member|
+      membersHistory = @histories.select {|h| h['userinfo'] == member}
+      member['sang_count'] = membersHistory.count
+      member['max_score'] = membersHistory.max_by {|h| h['score'] || 0}['score']
+    end
+    @params['members'] = users_info
   end
 
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する

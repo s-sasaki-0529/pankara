@@ -6,7 +6,7 @@
       <th class='center cell-number'>時間</th>
       <th class='center'>お店</th>
       <th class='center'>機種</th>
-      <th class='center'>メンバー</th>
+      <th class='center'>歌唱数</th>
       <% if @current_user %><th width='32px'>編集</th><% end %>
     </tr>
   </thead>
@@ -16,19 +16,33 @@
       <td class='center'><%= @karaoke['plan'] %></td>
       <td class='center'><%= @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
-      <td class='center'>
-        <% @karaoke['members'].each do |member| %>
-          <span style="margin-left: 6px">
-            <%= user_link member['username'], member['screenname'] %>
-          <span>
-        <% end %>
-      </td>
+      <td class='center'><%= @karaoke.histories.count %></td>
       <% if @current_user %>
       <td width="32px">
         <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
       </td>
       <% end %>
     </tr>
+  </tbody>
+</table>
+
+<h4>メンバー</h4>
+<table id="karaoke_member_table" class="table sortable table-hover">
+  <thead>
+    <tr>
+      <th>ユーザ</th>
+      <th>歌唱曲数</th>
+      <th>最高点</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @karaoke['members'].each do |member| %>
+    <tr>
+      <td><%= user_link member['username'], member['screenname'] %></td>
+      <td><%= member['sang_count'] %></td>
+      <td><%= h member['max_score'] %></td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 
