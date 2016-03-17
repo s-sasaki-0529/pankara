@@ -10,6 +10,21 @@ class Attendance < Base
     @params = DB.new.get('attendance' , id)
   end
 
+
+  # modify - attendanceレコードを修正する
+  #--------------------------------------------------------------------
+  def modify(arg)
+    arg.select! do |k , v|
+      ['price' , 'memo'].include?(k)
+    end
+    DB.new(
+      :UPDATE => ['attendance' , arg.keys] ,
+      :WHERE => 'id = ?' ,
+      :SET => arg.values.push(@params['id'])
+    ).execute
+    @params = DB.new.get('attendance' , @params['id'])
+  end
+
   # delete - レコードを削除
   #....................................................................
   def delete
