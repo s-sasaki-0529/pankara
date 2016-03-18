@@ -24,18 +24,25 @@ class Song < Base
   end
 
   # sangcount - 歌唱回数を取得
-  # userの指定がない場合、全体を対象とする
+  # :target_user - 指定ユーザの歌唱回数のみ集計する
+  # :without_user - 指定ユーザの歌唱回数は数えない
   #---------------------------------------------------------------------
-  def sangcount(userid = nil)
-    db = DB.new(:SELECT => {'COUNT(*)' => 'count'} , :FROM => 'history')
-    if userid
-      db.join(['history' , 'attendance'])
-      db.where(['attendance.user = ?' , 'history.song = ?'])
-      db.set([userid , @params['id']])
-      db.option(['GROUP BY history.song' , 'ORDER BY count DESC'])
-    else
-      db.where('song = ?')
-      db.set(@params['id'])
+  def sangcount(opt = {})
+    db = DB.new(
+      :SELECT => {'COUNT(*)' => 'count'} ,
+      :FROM => 'history',
+      :JOIN => ['history' , 'attendance'] ,
+      :WHERE => 'history.song = ?' ,
+      :SET => @params['id'] ,
+      :OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC']
+    )
+
+    if target = opt[:target_user]
+      db.where 'attendance.user = ?'
+      db.set target
+    elsif without = opt[:without_user]
+      db.where 'attendance.user != ?'
+      db.set without
     end
 
     count = db.execute_column
@@ -43,34 +50,44 @@ class Song < Base
   end
 
   # tally_score - 得点の集計を得る
-  # useridの指定がない場合、全体を対象とする
+  # :score_type - 採点モードを指定
+  # :target_user - 指定ユーザの得点を集計する
+  # :without_user - 指定ユーザの得点は集計に含めない
   #---------------------------------------------------------------------
-  def tally_score(score_type , userid = nil)
+  def tally_score(opt = {})
     db = DB.new(
       :SELECT => {
-        'MAX(score)' => 'score_max' ,
-        'MIN(score)' => 'score_min' ,
-        'AVG(score)' => 'score_avg' ,
+        'MAX(history.score)' => 'score_max' ,
+        'MIN(history.score)' => 'score_min' ,
+        'AVG(history.score)' => 'score_avg' ,
       } ,
-      :FROM => 'history'
+      :FROM => 'history',
+      :WHERE => 'song = ?' ,
+      :SET => @params['id']
     )
-    where = ['song = ?' , 'score_type = ?']
-    set = [@params['id'] , score_type]
 
-    if userid
-      db.join(['history' , 'attendance'])
-      where.push 'attendance.id = ?'
-      set.push userid
+    if st = opt[:score_type]
+      db.where 'score_type = ?'
+      db.set st
     end
-    db.where(where)
-    db.set(set)
+
+    if target = opt[:target_user]
+      db.join ['history' , 'attendance']
+      db.where 'attendance.user = ?'
+      db.set target
+    elsif without = opt[:without_user]
+      db.join ['history' , 'attendance']
+      db.where 'attendance.user != ?'
+      db.set without
+    end
+
     db.execute_row
   end
 
   # history_list - この曲の歌唱履歴を取得
   # useridを省略した場合、全ユーザを対象にする
   #---------------------------------------------------------------------
-  def history_list(opt = nil)
+  def history_list(opt = {})
     db = DB.new(
       :SELECT => {
         'karaoke.id' => 'karaoke_id' ,
@@ -93,18 +110,18 @@ class Song < Base
       :OPTION => 'ORDER BY karaoke.datetime DESC' ,
     )
 
-    if opt[:limit]
-      db.set("LIMIT #{limit}")
+    if limit = opt[:limit]
+      db.option "LIMIT #{limit}"
     end
 
-    if opt[:target_user]
-      db.where('attendance.user = ?')
-      db.set(opt[:target_user])
+    if target = opt[:target_user]
+      db.where 'attendance.user = ?'
+      db.set target
     end
 
-    if opt[:other_user]
-      db.where('attendance.user != ?')
-      db.set(opt[:other_user])
+    if without = opt[:without_user]
+      db.where 'attendance.user != ?'
+      db.set without
     end
 
     result = db.execute_all
