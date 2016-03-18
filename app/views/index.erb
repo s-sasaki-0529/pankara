@@ -9,7 +9,7 @@
         <%= user_icon @user['username'] , '100%' , '100%' %>
       </div>
       <div id="div_myprofile">
-        <p>ユーザ名 <%= @user['screenname'] %></p>
+        <p>ユーザ名 <%= h @user['screenname'] %></p>
         <p>
           前回のカラオケ<br>
           <% if @recent_karaoke %>
@@ -39,7 +39,7 @@
               zenra.createThumbnail(
                 "<%= idx %>" ,
                 "<%= song['id'] %>" ,
-                "<%= song['name'] %>" ,
+                "<%= h song['name'] %>" ,
                 "<%= song['artist'] %>" ,
                 "<%= youtube_image song['url'] %>"
               );

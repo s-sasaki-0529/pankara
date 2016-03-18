@@ -2,7 +2,7 @@
 <% if @songs_list.size > 0 || @artist_list.size > 0 %>
   
   <% if @songs_list.size > 0 %>
-  <h3>"<%= @search_word %>" を含む楽曲一覧(<%= @songs_list.size %>件)</h3>
+  <h3>"<%= h @search_word %>" を含む楽曲一覧(<%= @songs_list.size %>件)</h3>
   <table id="search_song_table" class="table sortable table-hover">
     <thead>
       <tr>
@@ -22,7 +22,7 @@
   <% end %>
 
   <% if @artist_list.size > 0 %>
-  <h3>"<%= @search_word %>" を含む歌手一覧(<%= @artist_list.size %>件)</h3>
+  <h3>"<%= h @search_word %>" を含む歌手一覧(<%= @artist_list.size %>件)</h3>
   <table id="search_artist_table" class="table sortable table_hover">
     <thead>
       <tr>
@@ -40,7 +40,7 @@
   <% end %>
 
 <% elsif @search_word.size > 0 %>
-  <h3>"<%= @search_word %>" を含む楽曲、歌手が存在しません</h3>
+  <h3>"<%= h @search_word %>" を含む楽曲、歌手が存在しません</h3>
 <% else %>
   <h3>※検索ワードを入力してから検索ボタンを押してください</h3>
 <% end %>

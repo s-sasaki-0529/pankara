@@ -1,4 +1,4 @@
-<h4><%= @karaoke['name'] %></h4>
+<h4><%= h @karaoke['name'] %></h4>
 <table id="karaoke_detail_description" class="table">
   <thead>
     <tr>
@@ -14,7 +14,7 @@
     <tr>
       <td class='center'><%= @karaoke['datetime'] %></td>
       <td class='center'><%= @karaoke['plan'] %></td>
-      <td class='center'><%= @karaoke['store_full_name'] %></td>
+      <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
       <td class='center'><%= @karaoke.histories.count %></td>
       <% if @current_user %>
@@ -40,7 +40,7 @@
   <tbody>
   <% @karaoke['members'].each do |member| %>
     <tr>
-      <td class='center'><%= user_link member['username'], member['screenname'] %></td>
+      <td class='center'><%= user_link member['username'] , member['screenname'] %></td>
       <td class='center'><%= member['price'] %></td>
       <td class='center'><%= member['sang_count'] %></td>
       <td class='center'><%= h member['max_score'] %></td>
@@ -79,9 +79,9 @@
             zenra.createThumbnail(
               "<%= idx %>" ,
               "<%= history['song_id'] %>" ,
-              "<%= history['song_name'] %>" ,
-              "<%= history['artist_name'] %>" ,
-              "<%= youtube_image(history['song_url']) %>" ,
+              "<%= h history['song_name'] %>" ,
+              "<%= h history['artist_name'] %>" ,
+              "<%= youtube_image history['song_url'] %>" ,
               "<%= history['song_url'] %>"
             )
           ;</script>

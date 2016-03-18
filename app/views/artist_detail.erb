@@ -1,5 +1,5 @@
 <h2>
-  <%= @artist['name'] %>
+  <%= h @artist['name'] %>
 </h2>
 
 <h4>この歌手の楽曲一覧</h4>
@@ -21,8 +21,8 @@
             zenra.createThumbnail(
               "<%= idx %>" ,
               "<%= song['id'] %>" ,
-              "<%= song['name'] %>" ,
-              "<%= @artist['name'] %>" ,
+              "<%= h song['name'] %>" ,
+              "<%= h @artist['name'] %>" ,
               "<%= youtube_image song['url'] %>"
             );
           </script>

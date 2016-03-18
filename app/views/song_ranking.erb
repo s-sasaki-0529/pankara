@@ -19,8 +19,8 @@
             zenra.createThumbnail(
               "<%= rank %>" ,
               "<%= song['song_id'] %>" ,
-              "<%= song['song_name'] %>" ,
-              "<%= song['artist_name'] %>" ,
+              "<%= h song['song_name'] %>" ,
+              "<%= h song['artist_name'] %>" ,
               "<%= youtube_image song['song_url'] %>"
             );
           </script>

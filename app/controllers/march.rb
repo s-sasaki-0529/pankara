@@ -20,14 +20,10 @@ class March < Sinatra::Base
   # helpers - コントローラを補佐するメソッドを定義
   #---------------------------------------------------------------------
   helpers do
+    include Rack::Utils
     def h(content)
       if content.kind_of? String
-        content.gsub!('/' , '\/')
-        content.gsub!('\"' , '\\\"')
-        content.gsub!('\'' , '\\\'')
-        content.gsub!('<' , '\x3c')
-        content.gsub!('>' , '\x3e')
-        content.gsub!(/\r\n|\r|\n/, "<br />")
+        content = escape_html content
       elsif content.kind_of? Float
         content = sprintf "%.2f" , content
       end
@@ -61,6 +57,8 @@ class March < Sinatra::Base
       end
     end
     def user_link(username, screenname , with_icon = true , size = 32)
+      username = h username
+      screenname = h screenname
       link = "/user/#{username}"
       if with_icon
         img_tag = user_icon(username , "#{size}px" , "#{size}px")
@@ -70,15 +68,19 @@ class March < Sinatra::Base
       end
     end
     def karaoke_link(id, name)
+      name = h name
       return "<a href=/karaoke/detail/#{id}>#{name}</a>"
     end
     def song_link(id, name)
+      name = h name
       return "<a href=/song/#{id}>#{name}</a>"
     end
     def artist_link(id, name)
+      name = h name
       return "<a href=/artist/#{id}>#{name}</a>"
     end
     def user_icon(username , width , height)
+      username = h username
       src = Util.icon_file(username)
       return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
     end

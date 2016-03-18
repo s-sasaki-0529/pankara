@@ -1,5 +1,5 @@
 <h1>
-  <% if @target_user %><%= @target_user['screenname'] %>さんの<% end %>カラオケ一覧
+  <% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧
 </h1>
 <table id="karaokelist_table" class="table sortable table-hover linkcursor">
   <thead>
@@ -16,14 +16,14 @@
     <% @karaoke_list.each do |karaoke| %>
     <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
       <td><%= karaoke['datetime'] %></td>
-      <td><%= karaoke['name'] %></td>
+      <td><%= h karaoke['name'] %></td>
       <td class='center'><%= karaoke['plan'] %></td>
-      <td><%= karaoke['store_name'] %> <%= karaoke['branch_name'] %></td>
+      <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
       <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
       <% unless @target_user %>
       <td>
         <% karaoke['members'].each do |member| %>
-          <span style="display:none"><%= member['screenname'] %></span>
+          <span style="display:none"><%= h member['screenname'] %></span>
           <%= user_icon member['username'] , 32 , 32 %>
         <% end %>
       </td>
