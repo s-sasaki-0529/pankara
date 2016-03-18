@@ -62,6 +62,7 @@ if [ -z "$VALUE_P" ]; then
 fi
 
 mes "${VALUE_P}ポートでWebサーバを立ち上げます"
+bundle exec ruby "bin/scripts/set_config.rb" set run_mode develop
 if [ "$FLAG_F" -eq 1 ]; then
   bundle exec unicorn --port $VALUE_P
 else

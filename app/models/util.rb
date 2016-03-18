@@ -45,6 +45,11 @@ class Util
   # search_tube - 曲名と歌手名を指定し、Youtube動画のURLを取得する
   #----------------------------------------------------------------------
   def self.search_tube(song , artist)
+    # テスト実行時は取得しない
+    config = Util.read_config('run_mode')
+    config == 'ci' and return nil
+
+    # youtubeにアクセスし、「曲名 歌手名」で検索した1件目を取得
     word = "#{song} #{artist}"
     uri = URI.escape("https://www.youtube.com/results?search_query=#{word}")
     html = open(uri) do |f|
@@ -54,6 +59,8 @@ class Util
     html.scan(%r|"/watch\?v=(\w+?)"|) do
       return "https://www.youtube.com/watch?v=#{$1}"
     end
+
+    # 取得失敗時、歌手名を省略して再検索。それでもダメならnilを戻す
     if artist == ""
       return nil
     else
