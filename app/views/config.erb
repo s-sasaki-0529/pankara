@@ -1,0 +1,20 @@
+<% if @current_user %>
+<form method="POST" action="/config">
+  <h3>Twitter連携</h3>
+  <% if @twitter_token %>
+    <p>
+      認証済み(<%= @twitter_username %>)
+    </p>
+  <% else %>
+    <p>
+      まだ認証を行っていません
+      <a id='get_oauth_link' href="#" onclick="twitter.getOAuthToken">認証を行う</a>
+      <div id='oauth_form' style="display: none">
+        <input type="text" name="token" placeholder="生成されたトークン">
+        <input type="submit" name="done_oauth" value="送信">
+      </div>
+    </p>
+  <% end %>
+<%= csrftoken %>
+</form>
+<% end %>
