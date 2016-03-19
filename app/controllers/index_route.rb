@@ -7,6 +7,7 @@ require_relative './artist_route'
 require_relative './ranking_route'
 require_relative './user_route'
 require_relative './local_route'
+require_relative './common_route'
 
 class IndexRoute < March
 
@@ -24,26 +25,6 @@ class IndexRoute < March
     end
   end
 
-  # get '/player/:id' - youtubeプレイヤーを表示する
-  #---------------------------------------------------------------------
-  get '/player/:id' do
-    @url = Song.new(params[:id])['url']
-    erb :_player
-  end
-
-  # get '/search/:search_word' - 楽曲/歌手を検索する
-  #--------------------------------------------------------------------
-  get '/search/?' do
-    @search_word = params[:search_word] || ""
-    @songs_list = []
-    @artist_list = []
-    if @search_word.size > 0
-      @songs_list.concat(Song.list({:name_like => @search_word}))
-      @artist_list.concat(Artist.list({:name_like => @search_word}))
-    end
-    erb :search
-  end
-
   use AuthenticationRoute
   use KaraokeRoute
   use HistoryRoute
@@ -52,5 +33,6 @@ class IndexRoute < March
   use RankingRoute
   use UserRoute
   use LocalRoute
+  use CommonRoute
 
 end

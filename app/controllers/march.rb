@@ -94,16 +94,6 @@ class March < Sinatra::Base
       session[:logined] = User.new(user)
     end
     @current_user = session[:logined]
-
-    # 認証情報の確認
-
-   # logined = session[:logined]
-   # path = request.path_info
-   # unless logined || path == '/login'
-   #   redirect '/login'
-   # else
-   #   @current_user = logined
-   # end
   end
 
 end
