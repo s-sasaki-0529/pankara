@@ -229,6 +229,15 @@ bathtowel = {
 };
 
 /*
+  Twitter連携用オブジェクト
+*/
+twitter = {
+  getOAuthToken: function() {
+    $('#oauth_form').css('display' , '');
+  },
+};
+
+/*
   registerオブジェクト -カラオケ入力制御全般-
 */
 var register = (function() {
