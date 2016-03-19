@@ -16,11 +16,12 @@ require_relative 'attendance'
 require_relative 'friend'
 require_relative 'ranking'
 require_relative 'validate'
+require_relative 'twitter'
+require 'twitter_oauth'
 require 'uri'
 require 'open-uri'
 require 'json'
 require 'yaml'
-require 'oauth'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 class Util
@@ -68,17 +69,6 @@ class Util
     else
       return self.search_tube(song , "")
     end
-  end
-
-  # get_oauth_url - Twitter認証用のURLを生成する
-  #--------------------------------------------------------------------
-  def self.get_oauth_url(callback)
-    twitter_api = Util.read_secret('twitter_api')
-    key = twitter_api['key']
-    secret = twitter_api['secret']
-    consumer = OAuth::Consumer.new(key, secret, :site => "https://twitter.com")
-    request_token = consumer.get_request_token(:oauth_callback => callback)
-    return request_token.authorize_url
   end
 
   # read_secret - シークレット(gitで共有しない)情報を参照する

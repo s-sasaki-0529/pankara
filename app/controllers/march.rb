@@ -84,6 +84,12 @@ class March < Sinatra::Base
       src = Util.icon_file(username)
       return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
     end
+
+    def base_url
+      default_port = (request.scheme == "http") ? 80 : 443
+      port = (request.port == default_port) ? "" : ":#{request.port.to_s}"
+      "#{request.scheme}://#{request.host}#{port}"
+    end
   end
 
   # before - 全てのURLにおいて初めに実行される
