@@ -20,7 +20,9 @@ require 'uri'
 require 'open-uri'
 require 'json'
 require 'yaml'
+require 'oauth'
 CONFIG = 'config.yml'
+SECRET = '../secret.yml'
 class Util
 
   # Const - 定数管理
@@ -66,6 +68,24 @@ class Util
     else
       return self.search_tube(song , "")
     end
+  end
+
+  # get_oauth_url - Twitter認証用のURLを生成する
+  #--------------------------------------------------------------------
+  def self.get_oauth_url
+    twitter_api = Util.read_secret('twitter_api')
+    key = twitter_api['key']
+    secret = twitter_api['secret']
+    consumer = OAuth::Consumer.new(key, secret, :site => "https://twitter.com")
+    request_token = consumer.get_request_token
+    return request_token.authorize_url
+  end
+
+  # read_secret - シークレット(gitで共有しない)情報を参照する
+  #--------------------------------------------------------------------
+  def self.read_secret(key)
+    secret = YAML.load_file(SECRET)
+    secret[key]
   end
 
   # read_config - コンフィグを参照する
