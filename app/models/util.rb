@@ -124,6 +124,18 @@ class Util
     return hash
   end
 
+  # error - エラーメッセージを返却する
+  # RubyハッシュかJSONを選べるが、デフォルトはJSON
+  #---------------------------------------------------------------------
+  def self.error(mes , type = 'json')
+    e = {:result => 'error' , :info => mes}
+    if type == 'json'
+      Util.to_json(e)
+    else
+      e
+    end
+  end
+
   # write_log - ログを生成する
   #---------------------------------------------------------------------
   def self.write_log(type , log)

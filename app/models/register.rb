@@ -19,9 +19,18 @@ class Register < Base
   # create_karaoke - カラオケ記録を作成する
   #---------------------------------------------------------------------
   def create_karaoke(datetime , name , plan , store , product)
+
+    # 入力値を検証/補正
+    Validate.is_datetime?(datetime) or return Util.error('date time parse error')
+    plan = plan.to_i #時間が0はありえないので0なら拒否
+    plan == 0 and return Util.error('invalid plan')
+    name.strip!
+
+    # 店名、機種名からそれぞれのIDを取得
     store_id = self.create_store(store)
     product_id = self.create_product(product)
 
+    # karaokeレコードを挿入し、そのIDを取得
     db = DB.new(
       :INSERT => ['karaoke' , ['datetime' , 'name' , 'plan' , 'store' , 'product' , 'created_by']] ,
       :SET => [datetime , name , plan , store_id , product_id , @userid]
@@ -39,6 +48,9 @@ class Register < Base
   #---------------------------------------------------------------------
   def attend_karaoke(price = nil , memo = nil)
     @karaoke or return
+    price = price.to_i
+
+    # 既に登録済みの場合、そのIDを戻す
     @attendance = DB.new(
       :SELECT => 'id' ,
       :FROM => 'attendance' ,
@@ -46,10 +58,11 @@ class Register < Base
       :SET => [@userid , @karaoke]
     ).execute_column
 
+    # 未登録の場合はattendanceレコードを挿入し、そのIDを戻す
     if @attendance.nil?
       db = DB.new(
         :INSERT => ['attendance' , ['user' , 'karaoke' , 'price' , 'memo']] ,
-        :SET => [@userid , @karaoke , price , memo] 
+        :SET => [@userid , @karaoke , price , memo]
       )
       @attendance = db.execute_insert_id
     end
@@ -59,6 +72,11 @@ class Register < Base
   #---------------------------------------------------------------------
   def create_history(song , artist ,  key = 0 , score_type=nil , score=nil)
     @attendance or return
+    key = key.to_i
+    score and score = score.to_f
+    song.strip!
+    artist.strip!
+
     artist_id = create_artist(artist)
     song_id = create_song(artist_id , artist , song)
     scoretype_id = get_scoretype(score_type)
@@ -74,7 +92,7 @@ class Register < Base
     artist_id = DB.new(
       :SELECT => 'id' , :FROM => 'artist' , :WHERE => 'name = ?' , :SET => name
     ).execute_column
-    
+
     if artist_id
       artist_id
     else
@@ -92,7 +110,7 @@ class Register < Base
       :SELECT => 'id' , :FROM => 'song' , :WHERE => ['artist = ?' , 'name = ?'] ,
       :SET => [artist_id , song_name]
     ).execute_column
-    
+
     if song_id
       song_id
     else
@@ -107,11 +125,15 @@ class Register < Base
   # create_store - 店舗を新規登録。既出の場合IDを戻す
   #---------------------------------------------------------------------
   def create_store(store)
+
+    store['name'].strip!
+    store['branch'].strip!
+
     store_id = DB.new(
       :SELECT => 'id' , :FROM => 'store' , :WHERE => ['name = ?' , 'branch = ?'] ,
       :SET => [store['name'] , store['branch']]
     ).execute_column
-    
+
     if store_id
       store_id
     else
@@ -125,11 +147,15 @@ class Register < Base
   # create_product - 機種を新規登録。既出の場合IDを戻す
   #---------------------------------------------------------------------
   def create_product(product)
+
+    product['brand'].strip!
+    product['product'].strip!
+
     product_id = DB.new(
       :SELECT => 'id' , :FROM => 'product' , :WHERE => ['brand = ?' , 'product = ?'] ,
       :SET => [product['brand'] , product['product']]
     ).execute_column
-    
+
     if product_id
       product_id
     else

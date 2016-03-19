@@ -28,8 +28,8 @@ history_contents = [
   '採点',
 ]
 history_data = {
-  'song' => '心絵',
-  'artist' => 'ロードオブメジャー',
+  'song' => '  心絵   ',
+  'artist' => ' ロードオブメジャー',
   'score_type' => 'JOYSOUND 全国採点',
   'score' => 80
 }
