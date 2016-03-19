@@ -8,13 +8,15 @@
   <% else %>
     <p>
       まだ認証を行っていません
-      <a id='get_oauth_link' href="#" onclick="twitter.getOAuthToken">認証を行う</a>
-      <div id='oauth_form' style="display: none">
+      <% if @oauth_url %>
+        <p>Twitterの認証ページより生成されたトークンをテキストボックスに入力してください</p>
         <input type="text" name="token" placeholder="生成されたトークン">
         <input type="submit" name="done_oauth" value="送信">
-      </div>
+      <% else %>
+        <input type="submit" name="start_oauth" value="認証する">
+      <% end %>
     </p>
   <% end %>
-<%= csrftoken %>
+  <%= csrftoken %>
 </form>
 <% end %>
