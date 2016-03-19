@@ -23,7 +23,6 @@ class Register < Base
     # 入力値を検証/補正
     Validate.is_datetime?(datetime) or return Util.error('date time parse error')
     plan = plan.to_f #時間が0はありえないので0なら拒否
-    Util.debug(plan)
     plan < 0.5 and return Util.error('invalid plan')
     name.strip!
 
