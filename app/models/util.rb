@@ -72,12 +72,12 @@ class Util
 
   # get_oauth_url - Twitter認証用のURLを生成する
   #--------------------------------------------------------------------
-  def self.get_oauth_url
+  def self.get_oauth_url(callback)
     twitter_api = Util.read_secret('twitter_api')
     key = twitter_api['key']
     secret = twitter_api['secret']
     consumer = OAuth::Consumer.new(key, secret, :site => "https://twitter.com")
-    request_token = consumer.get_request_token
+    request_token = consumer.get_request_token(:oauth_callback => callback)
     return request_token.authorize_url
   end
 

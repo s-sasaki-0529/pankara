@@ -9,7 +9,7 @@
     <p>
       まだ認証を行っていません
       <% if @oauth_url %>
-        <script>window.open('<%= @oauth_url %>' , '_blank')</script>
+        <script>location.href = '<%= @oauth_url %>'</script>
         <p>Twitterの認証ページより生成されたトークンをテキストボックスに入力してください</p>
         <input type="text" name="token" placeholder="生成されたトークン">
         <input type="submit" name="done_oauth" value="送信">
