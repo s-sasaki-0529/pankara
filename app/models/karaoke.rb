@@ -132,8 +132,10 @@ class Karaoke < Base
     # ユーザーごとの集計
     users_info.each do |member|
       membersHistory = @histories.select {|h| h['userinfo'] == member}
-      member['sang_count'] = membersHistory.count
-      member['max_score'] = membersHistory.max_by {|h| h['score'] || 0}['score']
+      if membersHistory.size > 0
+        member['sang_count'] = membersHistory.count
+        member['max_score'] = membersHistory.max_by {|h| h['score'] || 0}['score']
+      end
     end
     @params['members'] = users_info
   end
