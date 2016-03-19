@@ -5,18 +5,20 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "mySQLのバックアップを作成し、現在日時で保存する"
-  echo "  Usage: zenra $PROGNAME [-m description] [-v]"
+  echo "  Usage: zenra $PROGNAME [-m description] [-v][-p]"
   echo "オプション"
   echo "  -m 先頭にコメントを付与する"
   echo "  -v 進捗メッセージを表示します"
+  echo "  -p 生成したバックアップをpushする"
   exit 1
 }
 
 # オプション解析
 FLAG_M=0
 FLAG_V=0
+FLAG_P=0
 VALUE_M=""
-while getopts hvm: OPT
+while getopts hvpm: OPT
 do
   case $OPT in
     h)  usage
@@ -26,6 +28,8 @@ do
         VALUE_M=$OPTARG
         ;;
     v)  FLAG_V=1
+        ;;
+    p)  FLAG_P=1
         ;;
   esac
 done
@@ -61,3 +65,11 @@ if [ $? -eq 0 ]; then
 fi
 
 mes "バックアップ($filename)を作成しました -$VALUE_M-"
+
+if [ "$FLAG_P" -eq 1 ]; then
+  cd $MARCHDIR/backup
+  git add $filename
+  git commit -m "ワイシャツサーバからの自動バックアップ"
+  git push origin master
+  mes "最新のバックアップをリモートリポジトリにpush"
+fi
