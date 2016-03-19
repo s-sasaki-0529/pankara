@@ -28,4 +28,17 @@ class CommonRoute < March
     erb :config
   end
 
+  # post '/config/?' - ユーザ設定ページ 設定を適用
+  #--------------------------------------------------------------------
+  post '/config/?' do
+    if params[:start_oauth]
+      url = Util.get_oauth_url
+      url and @oauth_url = url
+    elsif params[:done_oauth]
+
+    end
+
+    erb :config
+  end
+
 end
