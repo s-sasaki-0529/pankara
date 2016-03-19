@@ -7,10 +7,11 @@ TMPPATH="$BINDIR/scripts/tmp.sql"
 # ヘルプ
 usage() {
   echo "データベースを初期化"
-  echo "  Usage: zenra $PROGNAME [-b] [-d filename] [-v]"
+  echo "  Usage: zenra $PROGNAME [-b] [-d filename] [-r] [-v]"
   echo "オプション:"
   echo "  -b 最新のバックアップから復元"
   echo "  -d 指定したバックアップファイルから復元"
+  echo "  -r 各種ログファイルを初期化する"
   echo "  -v 進捗を標準出力"
   exit 1
 }
@@ -19,8 +20,9 @@ usage() {
 FLAG_B=0
 FLAG_D=0
 FLAG_V=0
+FLAG_R=0
 VALUE_D=""
-while getopts hbvd: OPT
+while getopts hbvrd: OPT
 do
   case $OPT in
   h)  usage
@@ -32,6 +34,8 @@ do
       VALUE_D=$OPTARG
       ;;
   v)  FLAG_V=1
+      ;;
+  r)  FLAG_R=1
       ;;
   esac
 done
@@ -47,12 +51,17 @@ mes () {
 mes "DBスキーマを再構築します"
 $MYSQL -e "source $BINDIR/scripts/init.sql"
 
-mes "ログファイルに記録します"
-info="init database $(date +"%Y_%m_%d_%H_%M")"
-echo $info >> $MARCHDIR/logs/sql.log
-echo $info >> $MARCHDIR/logs/stdout.log
-echo $info >> $MARCHDIR/logs/stderr.log
-echo $info >> $MARCHDIR/logs/cron.log
+if [ "$FLAG_R" -eq 1 ]; then
+  mes "ログファイルを初期化します"
+  rm $MARCHDIR/logs/*
+else
+  mes "ログファイルに記録します"
+  info="init database $(date +"%Y_%m_%d_%H_%M")"
+  echo $info >> $MARCHDIR/logs/sql.log
+  echo $info >> $MARCHDIR/logs/stdout.log
+  echo $info >> $MARCHDIR/logs/stderr.log
+  echo $info >> $MARCHDIR/logs/cron.log
+fi
 
 # 初期データの登録
 cd $MARCHDIR
