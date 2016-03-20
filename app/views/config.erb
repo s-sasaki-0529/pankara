@@ -1,10 +1,10 @@
 <% if @current_user %>
 <form method="POST" action="/config">
   <h3>Twitter連携</h3>
-  <% if @twitter_token %>
-    <p>
-      認証済み(<%= @twitter_username %>)
-    </p>
+  <% if @twitter_authed %>
+    <p>認証済み</p>
+    <p><img src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
+    <input type="submit" name="remove_oauth" value="認証解除">
   <% else %>
     <p>
       まだ認証を行っていません
