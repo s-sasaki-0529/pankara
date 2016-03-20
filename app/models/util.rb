@@ -71,30 +71,47 @@ class Util
     end
   end
 
+  # read_file - 指定したYAMLファイルを参照する
+  #--------------------------------------------------------------------
+  def self.read_file(file , key)
+    data = YAML.load_file(file)
+    data[key]
+  end
+
+  # write_file - 指定したYAMLファイルに書き込む
+  #--------------------------------------------------------------------
+  def self.write_file(file , key , val)
+    data = YAML.load_file(file)
+    if val
+      data[key] = val
+    else
+      data.delete(key)
+    end
+    open(file , "w"){|f| f.write(YAML.dump(data))}
+  end
+
   # read_secret - シークレット(gitで共有しない)情報を参照する
   #--------------------------------------------------------------------
   def self.read_secret(key)
-    secret = YAML.load_file(SECRET)
-    secret[key]
+    Util.read_file(SECRET , key)
+  end
+
+  # write_secret - シークレット(gitで共有しない)情報を参照する
+  #--------------------------------------------------------------------
+  def self.write_secret(key , value)
+    Util.write_file(SECRET , key , value)
   end
 
   # read_config - コンフィグを参照する
   #---------------------------------------------------------------------
   def self.read_config(key)
-    config = YAML.load_file(CONFIG)
-    config[key]
+    Util.read_file(CONFIG , key)
   end
 
   # set_config - コンフィグを設定する
   #---------------------------------------------------------------------
   def self.set_config(key , value)
-    config = YAML.load_file(CONFIG)
-    if value
-      config[key] = value
-    else
-      config.delete(key)
-    end
-    open(CONFIG , "w"){|f| f.write(YAML.dump(config))}
+    Util.write_file(CONFIG , key , value)
   end
 
   # to_json - RubyオブジェクトをJSONに変換する
