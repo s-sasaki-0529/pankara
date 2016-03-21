@@ -421,7 +421,7 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
+      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -442,7 +442,7 @@ var register = (function() {
           var attended = zenra.parseJSON(result);
          
           if (attended['attended']) {
-            zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
+            zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
               func_at_load: function() {
                 createWidgetForHistory();
 
@@ -456,7 +456,7 @@ var register = (function() {
           }
           // まだ参加していない場合出席情報を入力する
           else {
-            zenra.showDialog('出席情報入力' , 'input_dialog' , '/karaoke/input' , 'input_attendance' , 600 , {
+            zenra.showDialog('出席情報入力' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
               funcs: {
                 beforeClose: beforeClose
               }
@@ -473,7 +473,7 @@ var register = (function() {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
-          zenra.showDialog('カラオケ編集' , 'input_dialog' , '/karaoke/input' , 'input_karaoke' , 600 , {
+          zenra.showDialog('カラオケ編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
@@ -496,7 +496,7 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/history/input' , 'input_history' , 600 , {
+          zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
             func_at_load: function() {
               createWidgetForHistory();
               setHistoryToInput(history);
@@ -523,12 +523,12 @@ var register = (function() {
         memo: $('#memo').val()
       };
 
-      zenra.post('/karaoke/input' , data , {
+      zenra.post('/ajax/karaoke/create' , data , {
         success: function(result) {
           result_obj = zenra.parseJSON(result);
           karaoke_id = result_obj['karaoke_id'];
 
-          zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+          zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
 
@@ -548,8 +548,8 @@ var register = (function() {
         memo: $('#memo').val()
       };
 
-      zenra.post('/karaoke/input/attendance' , data , {});
-      zenra.transitionInDialog('input_dialog' , '/history/input' , 'input_history' , {
+      zenra.post('/ajax/attendance/create' , data , {});
+      zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
 
@@ -571,7 +571,7 @@ var register = (function() {
       };
 
       if (action == 'register') {
-        zenra.post('/history/input' , data , {
+        zenra.post('/ajax/history/create' , data , {
           success: function(result) {
             count += 1;
             $('#result').html('<p>' + count + '件入力されました</p>')
