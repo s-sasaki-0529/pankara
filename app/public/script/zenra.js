@@ -191,7 +191,7 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
     opt ,
     value
   );
-}
+};
 
 /*
   bathtowelオブジェクト -バスタオルの制御全般-
@@ -233,7 +233,7 @@ bathtowel = {
 */
 var register = (function() {
   var count = 0;
-  var closeFlg = false;
+  var close_flg = false;
   var karaoke_id = 0;
   var history_id = 0;
   var store_list = [];
@@ -264,10 +264,6 @@ var register = (function() {
     karaoke_id = 0;
   };
 
-  /*[method] 曲名のもしかしてリストの生成*/
-  function createMoshikashite() {
-  }
-
   /*[method] カラオケ入力欄にカラオケ情報をセットする*/
   function setKaraokeToInput(karaoke) {
     $('#name').val(karaoke['name']);
@@ -285,6 +281,10 @@ var register = (function() {
     $('#seekbar').slider('value' , history['songkey']);
     $('#score_type').val(history['score_type']);
     $('#score').val(history['score']);
+    
+    if (history['score_type'] > 0) {
+      $('#score_area').show();
+    }
   }
 
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
@@ -389,6 +389,15 @@ var register = (function() {
       else {
         zenra.setOptionMoshikashite('song' , 'minLength' , 2);
         zenra.setOptionMoshikashite('song' , 'source' , song_list);
+      }
+    });
+    
+    $('#score_type').change(function() {
+      if ($('#score_type').val() == 0) {
+        $('#score_area').hide();
+      }
+      else {
+        $('#score_area').show();
       }
     });
   }
@@ -575,7 +584,6 @@ var register = (function() {
           success: function(result) {
             count += 1;
             $('#result').html('<p>' + count + '件入力されました</p>')
-            createMoshikashite();
           }
         });
 
