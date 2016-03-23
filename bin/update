@@ -36,6 +36,7 @@ fi
 
 if [ "$FLAG_V" -eq 1 ]; then
   zenra stop -v
+  zenra backup -m "update実行前" -v
   echo "プログラムを更新します"
   git pull
   zenra init -b -v
