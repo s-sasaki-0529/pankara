@@ -1,0 +1,42 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "使用されていない楽曲/歌手/店舗を削除する [-v]"
+  echo "  Usage: zenra $PROGNAME"
+  echo "オプション"
+  echo "  -v 進捗メッセージを標準出力"
+  exit 1
+}
+
+# オプション解析
+FLAG_V=0
+while getopts vh OPT
+do
+  case $OPT in
+    h)  usage
+        exit 1
+        ;;
+    v)  FLAG_V=1
+        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# 進捗メッセージを表示
+mes () {
+  if [ "$FLAG_V" -eq 1 ]; then
+    echo $1
+  fi
+}
+
+# メイン処理
+cd $MARCHDIR
+mes "使用されていない楽曲/歌手/店舗を削除します"
+if [ "$FLAG_V" -eq 1 ]; then
+  bundle exec ruby "bin/scripts/cleanup.rb"
+else
+  bundle exec ruby "bin/scripts/cleanup.rb" > /dev/null
+fi
