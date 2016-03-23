@@ -4,7 +4,7 @@ PROGNAME=$(basename $0)
 
 # ヘルプ
 usage() {
-  echo "稼働しているWebサーバを停止する [-v]"
+  echo "使用されていない楽曲/歌手/店舗を削除する [-v]"
   echo "  Usage: zenra $PROGNAME"
   echo "オプション"
   echo "  -v 進捗メッセージを標準出力"
@@ -35,12 +35,9 @@ mes () {
 
 # メイン処理
 cd $MARCHDIR
-mes "既にサーバが起動している場合停止します"
-pid=$(ps -ax | grep "unicorn" | grep -v "grep" | awk '{print $1}')
-if [ -n "$pid" ]; then
-  kill -KILL $pid
-  mes "プロセス(${pid})を停止しました"
+mes "使用されていない楽曲/歌手/店舗を削除します"
+if [ "$FLAG_V" -eq 1 ]; then
+  bundle exec ruby "bin/scripts/cleanup.rb"
 else
-  mes "停止対象のプロセスはありませんでした"
+  bundle exec ruby "bin/scripts/cleanup.rb" > /dev/null
 fi
-

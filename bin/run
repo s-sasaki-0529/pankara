@@ -38,7 +38,8 @@ shift $((OPTIND - 1))
 # 進捗メッセージを表示
 mes () {
   if [ "$FLAG_V" -eq 1 ]; then
-    echo $1
+    datetime=$(date +"%Y/%m/%d %H:%M:%S")
+    echo "$datetime $1"
   fi
 }
 
