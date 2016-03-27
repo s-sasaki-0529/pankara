@@ -36,6 +36,7 @@
       <th class='center'>最高点</th>
       <th class='center'>平均点</th>
       <th class='center'>感想</th>
+      <th class='center'>編集</th>
     </tr>
   </thead>
   <tbody>
@@ -47,6 +48,11 @@
       <td class='center'><%= h member['max_score'] %></td>
       <td class='center'><%= h member['avg_score'] %></td>
       <td class='center'><%= h member['memo'] %></td>
+      <td class='center' width="32px">
+        <% if @current_user && @current_user['username'] == member['username'] %>
+          <img class="linkcursor" src="/image/edit.png" width="32" onclick="alert('未実装')">
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>

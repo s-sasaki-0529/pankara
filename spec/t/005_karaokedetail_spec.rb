@@ -25,9 +25,9 @@ describe 'カラオケ詳細ページ' do
   it 'カラオケの集計が正常に表示されるか' do
     col_table = table_to_hash('karaoke_member_table')
     expect(col_table.length).to eq 3
-    expect(col_table[0]['tostring']).to eq 'ないと,1600,25,97.00,81.57,へたれとちゃらさんと３人で'
-    expect(col_table[1]['tostring']).to eq 'へたれ,1600,23,97.00,82.50,緊張するんじゃあ'
-    expect(col_table[2]['tostring']).to eq 'ちゃら,1600,27,94.00,77.25,久しぶり！'
+    expect(col_table[0]['tostring']).to eq 'ないと,1600,25,97.00,81.57,へたれとちゃらさんと３人で,'
+    expect(col_table[1]['tostring']).to eq 'へたれ,1600,23,97.00,82.50,緊張するんじゃあ,'
+    expect(col_table[2]['tostring']).to eq 'ちゃら,1600,27,94.00,77.25,久しぶり！,'
   end
   it '歌唱履歴が正常に表示されるか' do
     history_table = table_to_hash('karaoke_detail_history')
