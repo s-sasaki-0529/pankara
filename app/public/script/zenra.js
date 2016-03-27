@@ -287,6 +287,7 @@ var register = (function() {
     $('#seekbar').slider('value' , history['songkey']);
     $('#score_type').val(history['score_type']);
     $('#score').val(history['score']);
+    $('#url').val(history['url']);
     
     if (history['score_type'] > 0) {
       $('#score_area').show();
@@ -514,8 +515,8 @@ var register = (function() {
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
             func_at_load: function() {
               createWidgetForHistory();
-              setHistoryToInput(history);
               createElementForEditHistory();
+              setHistoryToInput(history);
             } ,
             funcs: {
               beforeClose: beforeClose
