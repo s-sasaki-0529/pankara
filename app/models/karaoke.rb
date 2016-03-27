@@ -134,8 +134,12 @@ class Karaoke < Base
       membersHistory = @histories.select {|h| h['userinfo'] == member}
       if membersHistory.size > 0
         member['sang_count'] = membersHistory.count
-        member['max_score'] = membersHistory.max_by {|h| h['score'] || 0}['score']
-      end
+        scores = membersHistory.select {|h| h['score']}.map {|h| h['score']}
+        if scores.size > 0
+          member['max_score'] = scores.max
+          member['avg_score'] = scores.inject(0.0) {|r,h| r += h} / scores.size
+        end
+     end
     end
     @params['members'] = users_info
   end

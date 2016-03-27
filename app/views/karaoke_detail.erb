@@ -34,6 +34,7 @@
       <th class='center'>値段</th>
       <th class='center'>歌唱曲数</th>
       <th class='center'>最高点</th>
+      <th class='center'>平均点</th>
       <th class='center'>感想</th>
     </tr>
   </thead>
@@ -44,6 +45,7 @@
       <td class='center'><%= member['price'] %></td>
       <td class='center'><%= member['sang_count'] %></td>
       <td class='center'><%= h member['max_score'] %></td>
+      <td class='center'><%= h member['avg_score'] %></td>
       <td class='center'><%= h member['memo'] %></td>
     </tr>
   <% end %>
