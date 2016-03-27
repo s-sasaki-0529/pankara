@@ -259,9 +259,15 @@ var register = (function() {
 
   /*[Method] ダイアログを閉じる時に実施する処理*/
   function beforeClose() {
-    count = 0;
-    history_id = 0;
-    karaoke_id = 0;
+    if (window.confirm('終了してもよろしいですか')) {
+      count = 0;
+      history_id = 0;
+      karaoke_id = 0;
+
+      return true;
+    }
+    
+    return false;
   };
 
   /*[method] カラオケ入力欄にカラオケ情報をセットする*/
