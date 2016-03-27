@@ -27,9 +27,18 @@ class History < Base
       arg['song'] = song_id
     end
 
+    if arg['url']
+      song = Song.new(song_id)
+      result = song.modify(arg)
+      unless result
+        return nil
+      end
+    end
+
     arg.select! do |k , v|
       ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'].include?(k)
     end
+
     DB.new(
       :UPDATE => ['history' , arg.keys] ,
       :WHERE => 'id = ?' ,
