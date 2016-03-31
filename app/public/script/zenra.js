@@ -259,9 +259,15 @@ var register = (function() {
 
   /*[Method] ダイアログを閉じる時に実施する処理*/
   function beforeClose() {
-    count = 0;
-    history_id = 0;
-    karaoke_id = 0;
+    if (window.confirm('終了してもよろしいですか')) {
+      count = 0;
+      history_id = 0;
+      karaoke_id = 0;
+
+      return true;
+    }
+    
+    return false;
   };
 
   /*[method] カラオケ入力欄にカラオケ情報をセットする*/
@@ -281,6 +287,7 @@ var register = (function() {
     $('#seekbar').slider('value' , history['songkey']);
     $('#score_type').val(history['score_type']);
     $('#score').val(history['score']);
+    $('#url').val(history['url']);
     
     if (history['score_type'] > 0) {
       $('#score_area').show();
@@ -508,8 +515,8 @@ var register = (function() {
           zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
             func_at_load: function() {
               createWidgetForHistory();
-              setHistoryToInput(history);
               createElementForEditHistory();
+              setHistoryToInput(history);
             } ,
             funcs: {
               beforeClose: beforeClose

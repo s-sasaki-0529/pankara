@@ -176,4 +176,19 @@ class Song < Base
     db.execute_all
   end
 
+  # modify - 楽曲情報を修正する
+  #--------------------------------------------------------------------
+  def modify(arg)
+    song_arg = arg.select do |k , v|
+      ['url'].include?(k)
+    end
+
+    DB.new(
+      :UPDATE => ['song' , song_arg.keys] ,
+      :WHERE => 'id = ?' ,
+      :SET => song_arg.values.push(@params['id'])
+    ).execute
+    @params = DB.new.get('song' , @params['id'])
+  end
+
 end
