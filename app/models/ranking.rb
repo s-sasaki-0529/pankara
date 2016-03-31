@@ -6,16 +6,28 @@ class Ranking < Base
 
   # score - クラスメソッド: 得点のランキングを取得
   #--------------------------------------------------------------------
-  def self.score(score_type = 1 , limit = 20)
+  def self.score(opt = {})
+    score_type = opt[:score_type] || 1
+    limit = opt[:limit] || 20
+    user = opt[:user] || nil
+
     # history/attendanceテーブルを対象にランキングを取得
-    ranking = DB.new(
+    db = DB.new(
       :SELECT => ['user' , 'song' , 'score_type' , 'score'] ,
       :FROM => 'history' ,
       :JOIN => ['history' , 'attendance'] ,
       :WHERE => ['score_type = ?' , 'score IS NOT NULL'] ,
       :OPTION => ['ORDER BY score DESC' , "limit #{limit}"] ,
       :SET => score_type
-    ).execute_all
+    )
+    # ユーザ指定がある場合そのユーザのみを対象に
+    if user
+      attends = user.attend_ids
+      db.where_in(['history.attendance' , attends.length])
+      db.set(attends)
+    end
+
+    ranking = db.execute_all
 
     #該当データがない場合空配列を戻す
     ranking.empty? and return []
@@ -56,8 +68,11 @@ class Ranking < Base
       ] ,
       :OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC' , "LIMIT #{limit}"] ,
     )
+    # ユーザ指定がある場合、そのユーザのみを対象に
     if user = opt[:user]
-      attends = user.attend_ids  
+      attends = user.attend_ids
+      db.where_in(['history.attendance' , attends.length])
+      db.set(attends)
     end
     db.execute_all
   end
@@ -79,6 +94,12 @@ class Ranking < Base
       ] ,
       :OPTION => ['GROUP BY artist.id' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
     )
+    # ユーザ指定がある場合、そのユーザのみを対象に
+    if user = opt[:user]
+      attends = user.attend_ids
+      db.where_in(['history.attendance' , attends.length])
+      db.set(attends)
+    end
     db.execute_all
   end
 end
