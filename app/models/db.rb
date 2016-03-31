@@ -25,6 +25,7 @@ class DB
       arg[:SELECT] and select(arg[:SELECT])
       arg[:FROM] and from(arg[:FROM])
       arg[:WHERE] and where(arg[:WHERE])
+      arg[:WHERE_IN] and where_in(arg[:WHERE_IN])
       arg[:JOIN] and join(arg[:JOIN])
       arg[:INSERT] and insert(arg[:INSERT])
       arg[:UPDATE] and update(arg[:UPDATE])
@@ -83,6 +84,16 @@ class DB
   def where(params)
     params.kind_of?(String) and params = [params]
     @where.concat(params)
+  end
+
+  # where_in - WHEREのラッパーメソッド WHERE hoge in (? , ? , ?) を構築
+  # [String , Integer] のみサポート
+  #---------------------------------------------------------------------
+  def where_in(params)
+    key = params[0]
+    num = params[1]
+    qlist = Util.make_questions(num)
+    where("#{key} in (#{qlist})")
   end
 
   # join - JOIN文を作成する

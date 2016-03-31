@@ -36,6 +36,14 @@ class Artist < Base
     @params['songs'] = songs
   end
 
+  # download_image - 歌手の画像を検索し、ローカルに保存する
+  #--------------------------------------------------------------------
+  def download_image
+    url = Util.search_image(@params['name'] , {:thumbnail => 1})
+    path = "app/public/image/artists/#{@params['id']}.png" #強制png
+    system "wget '#{url}' -O '#{path}'"
+  end
+
   # self.list - 歌手の一覧を取得
   #--------------------------------------------------------------------
   def self.list(opt = nil)

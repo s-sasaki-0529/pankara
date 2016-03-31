@@ -38,8 +38,9 @@ class Ranking < Base
 
   # sang_count - クラスメソッド: 楽曲の歌唱数ランキングを取得
   #--------------------------------------------------------------------
-  def self.sang_count(limit = 20)
-    DB.new(
+  def self.sang_count(opt = {})
+    limit = opt[:limit] || 20
+    db = DB.new(
       :SELECT => {
         'song.id' => 'song_id' ,
         'song.name' => 'song_name' ,
@@ -54,13 +55,18 @@ class Ranking < Base
         ['song' , 'artist']
       ] ,
       :OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC' , "LIMIT #{limit}"] ,
-    ).execute_all
+    )
+    if user = opt[:user]
+      attends = user.attend_ids  
+    end
+    db.execute_all
   end
 
   # artist_sang_count - クラスメソッド: 歌手の歌唱数ランキングを取得
   #--------------------------------------------------------------------
-  def self.artist_sang_count(limit = 20)
-    DB.new(
+  def self.artist_sang_count(opt = {})
+    limit = opt[:limit] || 20
+    db = DB.new(
       :SELECT => {
         'artist.id' => 'artist_id' ,
         'artist.name' => 'artist_name' ,
@@ -72,6 +78,7 @@ class Ranking < Base
         ['song' , 'artist'] ,
       ] ,
       :OPTION => ['GROUP BY artist.id' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
-    ).execute_all
+    )
+    db.execute_all
   end
 end

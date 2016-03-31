@@ -19,14 +19,14 @@ class RankingRoute < March
   # get '/ranking/song' - 楽曲の歌唱回数ランキングを表示
   #---------------------------------------------------------------------
   get '/ranking/song' do
-    @songs = Ranking.sang_count
+    @songs = Ranking.sang_count({:user => @current_user})
     erb :song_ranking
   end
 
   # get '/ranking/artist' - 歌手別の歌唱回数ランキングを表示
   #---------------------------------------------------------------------
   get '/ranking/artist' do
-    @artists = Ranking.artist_sang_count
+    @artists = Ranking.artist_sang_count({:user => @current_user})
     erb :artist_ranking
   end
 

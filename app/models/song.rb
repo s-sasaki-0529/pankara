@@ -136,7 +136,6 @@ class Song < Base
   #--------------------------------------------------------------------
   def self.id_to_info(songs , opt = nil)
     songs.kind_of?(Array) or songs = [songs]
-    qlist = Util.make_questions(songs.length)
     song_info = DB.new(
       :SELECT => {
         'song.id' => 'song_id' ,
@@ -147,7 +146,7 @@ class Song < Base
       } ,
       :FROM => 'song' ,
       :JOIN => ['song' , 'artist'] ,
-      :WHERE => "song.id IN (#{qlist})" ,
+      :WHERE_IN => ['song.id' , songs.size] ,
       :SET => songs ,
     ).execute_all
     Util.array_to_hash(song_info , 'song_id')

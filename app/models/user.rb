@@ -185,7 +185,6 @@ class User < Base
   def timeline(limit = 10)
     friends = self.friend_list(Util::Const::Friend::FRIEND)
     friends.empty? and return []
-    qlist = Util.make_questions(friends.length)
     timeline = DB.new(
       :SELECT => {
         'attendance.karaoke' => 'karaoke_id' ,
@@ -197,7 +196,7 @@ class User < Base
       } ,
       :FROM => 'attendance' ,
       :JOIN => ['attendance' , 'karaoke'] ,
-      :WHERE => "attendance.user in (#{qlist})" ,
+      :WHERE_IN => ['attendance.user' , friends.length] ,
       :SET => friends.keys ,
       :OPTION => ["ORDER BY karaoke.datetime DESC" , "LIMIT #{limit}"]
     ).execute_all
@@ -232,12 +231,11 @@ class User < Base
   #---------------------------------------------------------------------
   def self.id_to_name(users)
     users.empty? and return []
-    qlist = Util.make_questions(users.length)
     name_map = {}
     table = DB.new(
       :SELECT => ['id' , 'username' , 'screenname'] ,
       :FROM => 'user' ,
-      :WHERE => "id in (#{qlist})" ,
+      :WHERE_IN => ["id" , users.length] ,
       :SET => users
     ).execute_all
     return Util.array_to_hash(table , 'id')
@@ -283,6 +281,17 @@ class User < Base
       score_type , 
       history['score']
     )
+  end
+
+  # attend_ids - 対応するattendanceの一覧を戻す
+  #---------------------------------------------------------------------
+  def attend_ids
+    DB.new(
+      :SELECT => 'id',
+      :FROM => 'attendance',
+      :WHERE => 'user = ?',
+      :SET => @params['id']
+    ).execute_columns
   end
 
   # attended? - カラオケにすでに参加済みか確認する

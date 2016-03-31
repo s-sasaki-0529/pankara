@@ -37,11 +37,10 @@ class Attendance < Base
       :WHERE => 'attendance.id = ?' ,
       :SET => @params['id'] ,
     ).execute_columns
-    qlist = Util.make_questions(histories.length)
     DB.new(
       :DELETE => 1 ,
       :FROM => 'history' ,
-      :WHERE => "id in ( #{qlist} )" ,
+      :WHERE_IN => ['id' , histories.length] ,
       :SET => histories
     ).execute
 

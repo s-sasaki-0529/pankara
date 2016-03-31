@@ -22,6 +22,7 @@ require 'uri'
 require 'open-uri'
 require 'json'
 require 'yaml'
+require 'searchbing'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 class Util
@@ -43,6 +44,19 @@ class Util
     user_icon = "/image/user_icon/#{username}.png"
     sample_icon = "/image/sample_icon.png"
     File.exist?("app/public/#{user_icon}") ? user_icon : sample_icon
+  end
+
+  # search_image - 画像をbing画像検索より取得
+  #---------------------------------------------------------------------
+  def self.search_image(word , opt = {})
+    apikey = Util.read_secret('bingsearch_api_key')
+    bing = Bing.new(apikey , 1 , 'Image')
+    result = bing.search(word)
+    if opt[:thumbnail]
+      result[0][:Image][0][:Thumbnail][:MediaUrl]
+    else
+      result[0][:Image][0][:MediaUrl]
+    end
   end
 
   # search_tube - 曲名と歌手名を指定し、Youtube動画のURLを取得する
