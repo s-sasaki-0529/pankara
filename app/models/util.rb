@@ -22,7 +22,7 @@ require 'uri'
 require 'open-uri'
 require 'json'
 require 'yaml'
-require 'searchbing'
+#require 'searchbing'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 class Util
