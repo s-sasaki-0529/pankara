@@ -28,7 +28,6 @@ class Attendance < Base
   # delete - レコードを削除
   #....................................................................
   def delete
-
     # 参照しているhistoryから削除する
     histories = DB.new(
       :SELECT => {'history.id' => 'id'} ,
@@ -37,13 +36,14 @@ class Attendance < Base
       :WHERE => 'attendance.id = ?' ,
       :SET => @params['id'] ,
     ).execute_columns
-    DB.new(
-      :DELETE => 1 ,
-      :FROM => 'history' ,
-      :WHERE_IN => ['id' , histories.length] ,
-      :SET => histories
-    ).execute
-
+    if histories.size > 0
+      DB.new(
+        :DELETE => 1 ,
+        :FROM => 'history' ,
+        :WHERE_IN => ['id' , histories.length] ,
+        :SET => histories
+      ).execute
+    end
     #attendanceレコードを削除
     DB.new(:DELETE => 1 , :FROM => 'attendance' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     @params = nil
