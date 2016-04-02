@@ -44,7 +44,9 @@ class Karaoke < Base
       :WHERE => 'id = ?' ,
       :SET => arg.values.push(@params['id'])
     ).execute
-    @params = DB.new.get('karaoke' , @params['id'])
+    old_params = @params
+    @params = DB.new.get('karaoke' , old_params['id'])
+    Util.write_log('event' , "【カラオケ修正】#{old_params} → #{@params}")
   end
 
   # delete - カラオケレコードを削除する
@@ -66,6 +68,7 @@ class Karaoke < Base
 
     # karaokeレコードを削除する
     DB.new(:DELETE => 1 , :FROM => 'karaoke' , :WHERE => 'id = ?' , :SET => @params['id']).execute
+    Util.write_log('event' , "【カラオケ削除】#{@params}")
     @params = nil
 
   end

@@ -45,13 +45,17 @@ class History < Base
       :WHERE => 'id = ?' ,
       :SET => arg.values.push(@params['id'])
     ).execute
-    @params = DB.new.get('history' , @params['id'])
+    old_params = @params
+    @params = DB.new.get('history' , old_params['id'])
+    Util.write_log('event' , "【歌唱履歴修正】#{old_params} → #{@params}")
   end
 
   # delete - カラオケレコードを削除する
   #--------------------------------------------------------------------
   def delete()
+    song = Song.new(@params['song'])
     DB.new(:DELETE => 1 , :FROM => 'history' , :WHERE => 'id = ?' , :SET => @params['id']).execute
+    Util.write_log('event' , "【歌唱履歴削除】#{@params} / #{song.params}")
     @params = nil
   end
 

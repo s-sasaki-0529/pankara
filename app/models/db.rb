@@ -202,15 +202,16 @@ class DB
   # execute - SQLを実行する
   #---------------------------------------------------------------------
   def execute
+    # 実行
     make
-    Util.write_log('sql' , "Execute SQL!!\n#{@params}")
     st = @@db.prepare(@sql)
     st.execute(*@params)
+    # ログ生成
     done_sql = @sql
     @params.each do |param|
       done_sql.sub!('?' , param.to_s)
     end
-    Util.write_log('sql' , "Done SQL!!\n#{done_sql}")
+    Util.write_log('sql' , done_sql)
     return st
   end
 
@@ -254,7 +255,6 @@ class DB
       @select = @select.empty? ? 'SELECT *' : @select
       @sql = [@select , @from , @join , where , @option].join(' ')
     end
-    Util.write_log('sql' , "Make SQL!!\n#{@sql}")
   end
 
 end

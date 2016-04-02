@@ -36,6 +36,9 @@ class Register < Base
       :SET => [datetime , name , plan , store_id , product_id , @userid]
     )
     @karaoke = db.execute_insert_id
+    log = "【カラオケ登録】#{@karaoke_name}(#{@karaoke}) #{datetime} / #{store}(#{store_id}) / #{product}(#{product_id}) / plan"
+    Util.write_log('event' , log)
+    return @karaoke
   end
 
   # set_karaoke - カラオケIDを設定する
@@ -84,6 +87,10 @@ class Register < Base
       :INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score']] ,
       :SET => [@attendance , song_id , key , scoretype_id , score] ,
     ).execute_insert_id
+
+    # log生成
+    log = "【歌唱履歴登録】#{@attendance} / #{song}(#{song_id}) / #{artist}(#{artist_id}) / #{score_type}(#{scoretype_id}) / #{key} / #{score}"
+    Util.write_log('event' , log)
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

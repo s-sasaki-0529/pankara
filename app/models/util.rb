@@ -181,14 +181,14 @@ class Util
   #---------------------------------------------------------------------
   def self.write_log(type , log)
     filepath = {
-      'sql' => 'logs/sql.log'
+      'sql' => 'logs/sql.log',
+      'event' => 'logs/event.log',
     }[type] or return
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
 
     File.open(filepath , 'a') do |f|
-      f.puts "---#{datetime}---"
+      f.puts datetime
       f.puts log
-      f.puts "----------------------"
     end
   end
 
