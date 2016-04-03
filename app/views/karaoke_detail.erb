@@ -1,27 +1,32 @@
-<h4><%= h @karaoke['name'] %></h4>
-<table id="karaoke_detail_description" class="table">
-  <thead>
+<div style="margin-bottom: 20px">
+  <h3 class='inline'><%= h @karaoke['name'] %></h3>
+  <% if @current_user %>
+  <span class='right'>
+    <h4 class='inline'>編集</h4>
+    <img style="margin-left:5px; margin-bottomo:8px" 
+          class="linkcursor" src="/image/edit.png" width="32" 
+          onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+  </span>
+  <% end %>
+</div>
+
+<table id="karaoke_detail_description" class='table'>
+  <thead style="background-color: rgb(255,255,204)">
     <tr>
       <th class='center cell-datetime'>日時</th>
       <th class='center cell-number'>時間</th>
       <th class='center'>お店</th>
       <th class='center'>機種</th>
       <th class='center'>歌唱数</th>
-      <% if @current_user %><th width='32px'>編集</th><% end %>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="background-color: white">
     <tr>
-      <td class='center'><%= @karaoke['datetime'] %></td>
+      <td class='center'><%= @karaoke['datetime'].to_s.split(' ')[0] %></td>
       <td class='center'><%= @karaoke['plan'] %></td>
       <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
       <td class='center'><%= @karaoke.histories.count %></td>
-      <% if @current_user %>
-      <td width="32px">
-        <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
-      </td>
-      <% end %>
     </tr>
   </tbody>
 </table>

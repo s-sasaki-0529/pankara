@@ -30,6 +30,16 @@ tr *.cell-datetime {
   vertical-align: center;
 }
 
+/*要素を右寄せにする*/
+.right {
+  float: right;
+}
+
+/*要素をインラインにする*/
+.inline {
+  display: inline;
+}
+
 /*テキストを右揃えにするクラス*/
 .right {
   text-align: right;
