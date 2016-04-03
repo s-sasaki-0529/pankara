@@ -136,13 +136,21 @@ class Karaoke < Base
     users_info.each do |member|
       membersHistory = @histories.select {|h| h['userinfo'] == member}
       if membersHistory.size > 0
+        # 歌唱回数
         member['sang_count'] = membersHistory.count
         scores = membersHistory.select {|h| h['score']}.map {|h| h['score']}
+        # 最も歌われた歌手
+        artists = membersHistory.map {|h| h['artist_id']}
+        member['most_sang_artist'] = artists.max_by {|v| artists.count(v)}
+        member['most_sang_artist_name'] = membersHistory.select do |h| 
+          h['artist_id'] == member['most_sang_artist']
+        end[0]['artist_name']
+        # 最高点と平均点
         if scores.size > 0
           member['max_score'] = scores.max
           member['avg_score'] = scores.inject(0.0) {|r,h| r += h} / scores.size
         end
-     end
+      end
     end
     @params['members'] = users_info
   end
