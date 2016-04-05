@@ -132,6 +132,18 @@ class Karaoke < Base
       history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
     end
 
+    # Todo リストを渡して集計するメソッドを作ったら良さそう
+
+    # 全体の集計
+    scores = @histories.select {|h| h['score']}.map {|h| h['score']}
+    if scores.size > 0
+      @params['max_score'] = scores.max
+      @params['avg_score'] = scores.inject(0.0) {|r,h| r += h} / scores.size
+    end
+    @params['sang_count'] = @histories.count
+    artists = @histories.map {|h| h['artist_name']}
+    @params['most_sang_artist_name'] = artists.max_by {|v| artists.count(v)}
+
     # ユーザーごとの集計
     users_info.each do |member|
       membersHistory = @histories.select {|h| h['userinfo'] == member}
@@ -142,6 +154,7 @@ class Karaoke < Base
         # 最も歌われた歌手
         artists = membersHistory.map {|h| h['artist_id']}
         member['most_sang_artist'] = artists.max_by {|v| artists.count(v)}
+        # Todo: artist_id使ってない
         member['most_sang_artist_name'] = membersHistory.select do |h| 
           h['artist_id'] == member['most_sang_artist']
         end[0]['artist_name']

@@ -45,6 +45,11 @@ tr *.cell-datetime {
   text-align: right;
 }
 
+/*オレンジ色*/
+.orange {
+  color: rgb(255,102,0);
+}
+
 /*トップ画面 タイムライン領域 */
 #div_timelines {
   height: 310px;
@@ -79,6 +84,35 @@ tr *.cell-datetime {
   width: 96px;
   height: 96px;
   margin: auto;
+}
+
+/*カラオケ詳細画面*/
+.karaoke-result-block {
+  margin: 10px 0px 10px 50px;
+  border-radius: 10px;    /* CSS3草案 */
+  -webkit-border-radius: 10px;  /* Safari,Google Chrome用 */
+  -moz-border-radius: 10px; /* Firefox用 */
+  width: 220px;
+  height: 110px;
+  background-color: rgb(255,255,102);
+  float: left;
+}
+.karaoke-result-block > .description {
+  font-size: 22px;
+}
+.karaoke-result-block > .result {
+  font-size: 36px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.karaoke-memo-block {
+  width: 760px !important;
+  overflow: scroll !important;
+}
+.karaoke-memo-block > .result {
+  font-size: 22px !important;
+  white-space: normal !important;
+  color: black !important;
 }
 
 /* 履歴入力画面の配置調整クラス */
