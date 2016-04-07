@@ -15,7 +15,7 @@ describe 'Historyの編集/削除' , :js => true do
     login 'sa2knight'
     visit url
     find('#karaoke_detail_history').all('th')[6].click
-    expect(headline).to eq 'ないと,,MISTAKE,ナナホシ管弦楽団,-3,全国採点,77.1,'
+    expect(headline).to eq 'ないと,,MISTAKE,ナナホシ管弦楽団,-3,全国採点,77.08,'
     wait_for_ajax 
   end
   
@@ -36,7 +36,7 @@ describe 'Historyの編集/削除' , :js => true do
     iscontain('変更後の曲名')
     find('#karaoke_detail_history').all('th')[6].click
     find('#karaoke_detail_history').all('th')[6].click
-    expect(headline).to eq 'ないと,,変更後の曲名,変更後の歌手名,-3,その他,100.0,'
+    expect(headline).to eq 'ないと,,変更後の曲名,変更後の歌手名,-3,その他,100.00,'
   end
 
   it '削除' do

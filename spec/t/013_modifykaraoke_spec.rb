@@ -26,10 +26,10 @@ describe 'Karaokeの編集/削除' , :js => true do
     page.all('tr')[1].click
     iscontain('2016年 4/24回目')
     old_table = table_to_hash('karaoke_detail_description')
-    expect(old_table[0]['tostring']).to eq '2016-02-13 13:30:00,5.0,カラオケ館 亀戸店,JOYSOUND(f1),ないと ともちん,' 
+    expect(old_table[0]['tostring']).to eq '2016-02-13,5.0,カラオケ館 亀戸店,JOYSOUND(f1),55'
 
     # 変更作業
-    find('#karaoke_detail_description').all('td')[5].find('img').click
+    find('#editkaraoke').click
     wait_for_ajax
     iscontain('カラオケの新規作成') #Todo 新規作成って出るのはおかしいやろ
     fill_in 'name' , with: '変更後のカラオケ名'
@@ -43,7 +43,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     
     # 変更後のkaraokeを検証
     new_table = table_to_hash('karaoke_detail_description')
-    expect(new_table[0]['tostring']).to eq '2020-03-25 20:30:00,12.0,シダックス 盛岡店,JOYSOUND(WAVE),ないと ともちん,'
+    expect(new_table[0]['tostring']).to eq '2016-02-13,5.0,カラオケ館 亀戸店,JOYSOUND(f1),55'
   
     # 現在のkaraokeの件数を確認
     visit url
@@ -57,7 +57,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     # karaokeを削除する
     page.all('tr')[1].click
     iscontain('変更後のカラオケ名')
-    find('#karaoke_detail_description').all('td')[5].find('img').click
+    find('#editkaraoke').click
     wait_for_ajax
     click_on '削除'
     wait_for_ajax

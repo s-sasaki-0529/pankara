@@ -3,7 +3,7 @@
   <% if @current_user %>
   <span class='right'>
     <h4 class='inline'>編集</h4>
-    <img style="margin-left:5px; margin-bottomo:8px" 
+    <img id='editkaraoke' style="margin-left:5px; margin-bottomo:8px" 
           class="linkcursor" src="/image/edit.png" width="32" 
           onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
   </span>

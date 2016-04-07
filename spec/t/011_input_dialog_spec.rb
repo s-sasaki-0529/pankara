@@ -64,7 +64,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     js 'register.onPushedRegisterHistoryButton("end");'
     
     karaoke = [
-      '2016-02-20 12:00:00',
+      '2016-02-20',
       '2.0',
       '歌広場 相模大野店',
       'JOYSOUND(MAX)',
