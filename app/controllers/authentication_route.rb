@@ -33,7 +33,9 @@ class AuthenticationRoute < March
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
       user = User.new(@params[:username])
-      Util.to_json({:result => 'success' , :session => session[:session_id] , :user => user['username'] , :screenname => user['screenname']})
+      session[:logined] = user
+      userinfo = {:username => user['username'] , :screenname => user['screenname']}
+      Util.to_json({:result => 'success' , :session => session[:session_id] , :user => userinfo})
     else
       Util.to_json({:result => 'error'})
     end
