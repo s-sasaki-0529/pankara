@@ -36,6 +36,6 @@ describe 'カラオケ一覧機能' do
   it 'リンクが正常か' , :js => true do
     visit '/karaoke/list'
     find('#karaokelist_table').all('tr')[3].click
-    expect(first('h4').text).to eq '2016年 2/24回目'
+    iscontain '2016年 2/24回目'
   end
 end

@@ -1,114 +1,116 @@
-<h4><%= h @karaoke['name'] %></h4>
-<table id="karaoke_detail_description" class="table">
-  <thead>
+<div style="margin-bottom: 20px">
+  <h3 class='inline'><%= h @karaoke['name'] %></h3>
+  <% if @current_user %>
+  <span class='right'>
+    <h4 class='inline'>編集</h4>
+    <img id='editkaraoke' style="margin-left:5px; margin-bottomo:8px" 
+          class="linkcursor" src="/image/edit.png" width="32" 
+          onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+  </span>
+  <% end %>
+</div>
+
+<table id="karaoke_detail_description" class='table'>
+  <thead style="background-color: rgb(255,255,204)">
     <tr>
       <th class='center cell-datetime'>日時</th>
       <th class='center cell-number'>時間</th>
       <th class='center'>お店</th>
       <th class='center'>機種</th>
       <th class='center'>歌唱数</th>
-      <% if @current_user %><th width='32px'>編集</th><% end %>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="background-color: white">
     <tr>
-      <td class='center'><%= @karaoke['datetime'] %></td>
+      <td class='center'><%= @karaoke['datetime'].to_s.split(' ')[0] %></td>
       <td class='center'><%= @karaoke['plan'] %></td>
       <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
       <td class='center'><%= @karaoke.histories.count %></td>
-      <% if @current_user %>
-      <td width="32px">
-        <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
-      </td>
-      <% end %>
     </tr>
   </tbody>
 </table>
 
-<h4>メンバー</h4>
-<table id="karaoke_member_table" class="table sortable table-hover">
-  <thead>
-    <tr>
-      <th class='center'>ユーザ</th>
-      <th class='center'>値段</th>
-      <th class='center'>歌唱曲数</th>
-      <th class='center'>最高点</th>
-      <th class='center'>平均点</th>
-      <th class='center'>感想</th>
-      <th class='center'>編集</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @karaoke['members'].each do |member| %>
-    <tr>
-      <td class='center'><%= user_link member['username'] , member['screenname'] %></td>
-      <td class='center'><%= member['price'] %></td>
-      <td class='center'><%= member['sang_count'] %></td>
-      <td class='center'><%= h member['max_score'] %></td>
-      <td class='center'><%= h member['avg_score'] %></td>
-      <td class='center'><%= h member['memo'] %></td>
-      <td class='center' width="32px">
-        <% if @current_user && @current_user['username'] == member['username'] %>
-          <img class="linkcursor" src="/image/edit.png" width="32" onclick="alert('未実装')">
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<h4>歌唱履歴</h4>
-<% if @current_user %>
-<p class='right linkcursor'>
-  <img src="/image/addsong.png" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)">
-</p>
-<% end %>
-<table id="karaoke_detail_history" class="table sortable table-hover">
-  <thead>
-    <tr>
-      <th class='center' width='140'>ユーザー</th>
-      <th class='center' width='160'>動画</th>
-      <th class='center' width='20%'>曲名</th>
-      <th class='center' width='20%'>歌手名</th>
-      <th class='center cell-number'>キー</th>
-      <th class='center' width='190'>採点モード</th>
-      <th class='cell-number'>採点</th>
-      <% if @current_user %><th class='center' width='32'>編集</th><% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @karaoke.histories.each_with_index do |history , idx| %>
-    <tr>
-      <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
-      <td id='thumbnail_<%= idx %>' class='center' width='160'>
-        <% if history['song_url'] %>
-          <script>
-            zenra.createThumbnail(
-              "<%= idx %>" ,
-              "<%= history['song_id'] %>" ,
-              "<%= h history['song_name'] %>" ,
-              "<%= h history['artist_name'] %>" ,
-              "<%= youtube_image history['song_url'] %>" ,
-              "<%= history['song_url'] %>"
-            )
-          ;</script>
-        <% else %>
-          未登録
-        <% end %>
-      </td>
-      <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
-      <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
-      <td class='center'><%= history['songkey'] %></td>
-      <td class='center' width='190'><%= history['scoretype_name'] %></td>
-      <td class='center'><%= h history['score'] %></td>
-      <% if @current_user %>
-      <td class='center' width='32'>
-        <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
-      </td>
-      <% end %>
-    </tr>
+<div id="tabs">
+  <ul>
+    <li>
+      <a href="#tabs-all">全員</a>
+    </li>
+    <% @karaoke['members'].each do |member| %>
+    <li>
+      <a href="#tabs-<%= member['userid'] %>">
+        <%= user_icon(member['username'] , 20 , 20) %>
+        <%= member['screenname'] %>
+      </a>
+    </li>
     <% end %>
-  </tbody>
-</table>
+  </ul>
+  <div id="tabs-all">
+    <div class="row">
+      <div class="karaoke-result-block center">
+        <p class='description'>歌った曲数</p>
+        <span class='result center orange'><%= @karaoke['sang_count'] %></span>
+        <span class='orange'>曲</span>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>一番歌われた歌手</p>
+        <p class='result orange'><%= @karaoke['most_sang_artist_name'] %></p>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>最高得点</p>
+        <span class='result orange'><%= h @karaoke['max_score'] %></span>
+        <span class='orange'>点</span>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>平均得点</p>
+        <span class='result orange'><%= h @karaoke['avg_score'] %></span>
+        <span class='orange'>点</span>
+      </div>
+    </div>
+    <% @histories = @karaoke.histories %>
+    <% @tag = "" %>
+    <%= erb :_historytable %>
+  </div>
+  <% @karaoke['members'].each do |member| %>
+  <div id="tabs-<%= member['userid'] %>">
+    <div class="row">
+      <div class="karaoke-result-block center">
+        <p class='description'>歌った曲数</p>
+        <span class='result center orange'><%= member['sang_count'] %></span>
+        <span class='orange'>曲</span>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>一番歌われた歌手</p>
+        <p class='result orange'><%= member['most_sang_artist_name'] %></p>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>最高得点</p>
+        <span class='result orange'><%= h member['max_score'] %></span>
+        <span class='orange'>点</span>
+      </div>
+      <div class="karaoke-result-block center">
+        <p class='description'>平均得点</p>
+        <span class='result orange'><%= h member['avg_score'] %></span>
+        <span class='orange'>点</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="karaoke-result-block center">
+        <p class='description'>値段</p>
+        <span class='result orange'><%= member['price'] %></span>
+        <span class='orange'>円</span>
+      </div>
+      <div class="karaoke-result-block karaoke-memo-block center">
+        <p class='description'>感想</p>
+        <span class='result orange'><%= member['memo'] %></span>
+      </div>
+    </div>
+    <!-- ToDo: ビューでこういったデータの書き換えを行うのはMVC分離の原則に反するので要修正 -->
+    <!-- JavaScriptで動的にテーブルの内容をフィルタリングするのが望ましいかも -->
+    <% @histories = @karaoke.histories.select {|h| h['userinfo']['userid'] == member['userid']} %>
+    <% @tag = member['userid'] %>
+    <%= erb :_historytable %>
+  </div>
+  <% end %>
+</div>
 <div class='center'>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>

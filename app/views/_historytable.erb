@@ -1,0 +1,47 @@
+<table id="karaoke_detail_history" class="table sortable table-hover">
+  <thead>
+    <tr>
+      <th class='center' width='140'>ユーザー</th>
+      <th class='center' width='160'>動画</th>
+      <th class='center' width='20%'>曲名</th>
+      <th class='center' width='20%'>歌手名</th>
+      <th class='center cell-number'>キー</th>
+      <th class='center' width='190'>採点モード</th>
+      <th class='cell-number'>採点</th>
+      <% if @current_user %><th class='center' width='32'>編集</th><% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @histories.each_with_index do |history , idx| %>
+    <tr>
+      <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
+      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='160'>
+        <% if history['song_url'] %>
+          <script>
+            zenra.createThumbnail(
+              '<%= "#{@tag}_#{idx}" %>' ,
+              "<%= history['song_id'] %>" ,
+              "<%= h history['song_name'] %>" ,
+              "<%= h history['artist_name'] %>" ,
+              "<%= youtube_image history['song_url'] %>" ,
+              "<%= history['song_url'] %>"
+            )
+          ;</script>
+        <% else %>
+          未登録
+        <% end %>
+      </td>
+      <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
+      <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
+      <td class='center'><%= history['songkey'] %></td>
+      <td class='center' width='190'><%= history['scoretype_name'] %></td>
+      <td class='center'><%= h history['score'] %></td>
+      <% if @current_user %>
+      <td class='center' width='32'>
+        <img class="linkcursor" src="/image/edit.png" width="32" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
+      </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
