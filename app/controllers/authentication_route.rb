@@ -27,4 +27,16 @@ class AuthenticationRoute < March
     end
   end
 
+  # post '/rpc/login' - RPCログインリクエスト
+  #---------------------------------------------------------------------
+  post '/rpc/login' do
+    auth = User.authenticate(@params[:username] , @params[:password])
+    if auth
+      user = User.new(@params[:username])
+      Util.to_json({:result => 'success' , :session => session[:session_id] , :user => user['username'] , :screenname => user['screenname']})
+    else
+      Util.to_json({:result => 'error'})
+    end
+  end
+
 end
