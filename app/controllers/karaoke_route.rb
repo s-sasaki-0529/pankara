@@ -21,9 +21,8 @@ class KaraokeRoute < March
     target_user = User.new('sa2knight')
     karaoke_list = target_user.get_karaoke
     karaoke_list.each do |k|
-      k['url'] = "#{request.host}/karaoke/detail/#{k['id']}"
+      k['url'] = "http://#{request.host}/karaoke/detail/#{k['id']}"
     end
-    Util.debug(karaoke_list)
     Util.to_json(karaoke_list)
   end
 
