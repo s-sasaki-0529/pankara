@@ -107,7 +107,6 @@ tr *.cell-datetime {
 }
 .karaoke-memo-block {
   width: 760px !important;
-  overflow: scroll !important;
 }
 .karaoke-memo-block > .result {
   font-size: 22px !important;

@@ -6,6 +6,8 @@
     <img id='editkaraoke' style="margin-left:5px; margin-bottomo:8px" 
           class="linkcursor" src="/image/edit.png" width="32" 
           onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+    <h4 class='inline'>追加</h4>
+    <img src="/image/edit.png" class="linkcursor right" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)"> 
   </span>
   <% end %>
 </div>
