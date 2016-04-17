@@ -15,7 +15,7 @@ class KaraokeRoute < March
     @current_user and redirect "/karaoke/user/#{@current_user['username']}"
   end
 
-  # post '/rpc/karaoke/list' - ユーザの一覧をJSONで返却
+  # post '/rpc/karaoke/list' - ユーザのカラオケ一覧をJSONで返却
   #---------------------------------------------------------------------
   post '/rpc/karaoke/list?' do
     target_user = @current_user
@@ -28,6 +28,14 @@ class KaraokeRoute < March
     else
       Util.to_json([])
     end
+  end
+
+  # post '/rpc/karaoke/detail/:id' - カラオケの詳細をJSONで返却
+  #---------------------------------------------------------------------
+  post '/rpc/karaoke/detail/?' do
+    karaoke = Karaoke.new(params[:id])
+    karaoke.get_history
+    Util.to_json(karaoke.members)
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
