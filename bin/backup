@@ -69,7 +69,7 @@ mes "バックアップ($filename)を作成しました -$VALUE_M-"
 
 if [ "$FLAG_P" -eq 1 ]; then
   cd $MARCHDIR/backup
-  git add $filename
+  git add "*"
   git commit -m "ワイシャツサーバからの自動バックアップ"
   git push origin master
   mes "最新のバックアップをリモートリポジトリにpush"
