@@ -37,7 +37,6 @@ class AuthenticationRoute < March
       userinfo = {:username => user['username'] , :screenname => user['screenname']}
       Util.to_json([{
         :result => 'success' , 
-        :session => session[:session_id] , 
         :username => user['username'] ,
         :screenname => user['screenname']
       }])

@@ -18,12 +18,16 @@ class KaraokeRoute < March
   # post '/rpc/karaoke/list' - ユーザの一覧をJSONで返却
   #---------------------------------------------------------------------
   post '/rpc/karaoke/list?' do
-    target_user = User.new('sa2knight')
-    karaoke_list = target_user.get_karaoke
-    karaoke_list.each do |k|
-      k['url'] = "http://#{request.host}/karaoke/detail/#{k['id']}"
+    target_user = @current_user
+    if target_user
+      karaoke_list = target_user.get_karaoke
+      karaoke_list.each do |k|
+        k['url'] = "http://#{request.host}/karaoke/detail/#{k['id']}"
+      end
+      Util.to_json(karaoke_list)
+    else
+      Util.to_json([])
     end
-    Util.to_json(karaoke_list)
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
