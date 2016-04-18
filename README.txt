@@ -1,2 +1,1 @@
-This is core project of "Project-Zenra".
-hogetest
+カラオケの記録をクラウドで取るやつ
