@@ -35,7 +35,7 @@ class KaraokeRoute < March
   post '/rpc/karaoke/detail/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.get_history
-    Util.to_json(karaoke.members)
+    Util.to_json(karaoke.histories)
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
