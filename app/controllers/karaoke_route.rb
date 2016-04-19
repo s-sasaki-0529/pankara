@@ -42,7 +42,7 @@ class KaraokeRoute < March
       h.delete('userinfo')
       histories[sname] << h
     end
-    Util.debug(histories)
+    Util.to_json(histories)
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
