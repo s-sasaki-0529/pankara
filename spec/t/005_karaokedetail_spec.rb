@@ -20,7 +20,7 @@ describe 'カラオケ詳細ページ' do
   it 'カラオケ概要が正常に表示されるか' do
     iscontain '祝本番環境リリースカラオケ'
     des_table = table_to_hash('karaoke_detail_description')
-    expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75'
+    expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
   end
   it 'カラオケの集計が正常に表示されるか' do
     #col_table = table_to_hash('karaoke_member_table')

@@ -1,15 +1,5 @@
 <div style="margin-bottom: 20px">
   <h3 class='inline'><%= h @karaoke['name'] %></h3>
-  <% if @current_user %>
-  <span class='right'>
-    <h4 class='inline'>編集</h4>
-    <img id='editkaraoke' style="margin-left:5px; margin-bottomo:8px" 
-          class="linkcursor" src="/image/edit.png" width="32" 
-          onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
-    <h4 class='inline'>追加</h4>
-    <img src="/image/edit.png" class="linkcursor right" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)"> 
-  </span>
-  <% end %>
 </div>
 
 <table id="karaoke_detail_description" class='table'>
@@ -20,6 +10,10 @@
       <th class='center'>お店</th>
       <th class='center'>機種</th>
       <th class='center'>歌唱数</th>
+      <% if @current_user %>
+      <th class='center'>編集</th>
+      <th class='center'>追加</th>
+      <% end %>
     </tr>
   </thead>
   <tbody style="background-color: white">
@@ -29,6 +23,16 @@
       <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
       <td class='center'><%= @karaoke.histories.count %></td>
+      <% if @current_user %>
+      <td class='center'>
+        <img id='editkaraoke' style="margin-left:5px; margin-bottomo:8px" 
+          class="linkcursor" src="/image/edit.png" width="32" 
+          onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+      </td>
+      <td class='center'>
+        <img src="/image/edit.png" class="linkcursor" width="32" onclick="register.createHistory(<%= @karaoke['id'] %>)"> 
+      </td>
+      <% end %>
     </tr>
   </tbody>
 </table>
