@@ -9,6 +9,7 @@ end
 
 # 定数定義
 url = '/karaoke/detail/8'
+song = {'1' => 'Hello, world!' , '3' => 'シャイン' , '5' => '決意の朝に'}
 
 # テスト実行
 describe 'カラオケ詳細ページ' do
@@ -22,18 +23,42 @@ describe 'カラオケ詳細ページ' do
     des_table = table_to_hash('karaoke_detail_description')
     expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
   end
-  it 'カラオケの集計が正常に表示されるか' do
+  it 'タブの切り替えができるか' , :js => true do
+    find('#tab_all').click
+    iscontain(song.values)
+    ['1' , '3' , '5'].each do |i|
+      find("#tab_#{i}").click
+      wait_for_ajax
+      iscontain song[i]
+      islack song.select {|n| n != i}.keys
+    end
     #col_table = table_to_hash('karaoke_member_table')
     #expect(col_table.length).to eq 3
     #expect(col_table[0]['tostring']).to eq 'ないと,1600,25,97.00,81.57,へたれとちゃらさんと３人で,'
     #expect(col_table[1]['tostring']).to eq 'へたれ,1600,23,97.00,82.50,緊張するんじゃあ,'
     #expect(col_table[2]['tostring']).to eq 'ちゃら,1600,27,94.00,77.25,久しぶり！,'
   end
+  it '集計が正常に表示されるか' , :js => true do
+    find('#tab_all').click
+    expect(find('#sang_count_all').text).to eq '75'
+    expect(find('#most_sang_artist_all').text).to eq '放課後ティータイム'
+    expect(find('#max_score_all').text).to eq '97.00'
+    expect(find('#avg_score_all').text).to eq '80.30'
+    find('#tab_1').click
+    expect(find('#sang_count_1').text).to eq '25'
+    expect(find('#most_sang_artist_1').text).to eq 'BUMP OF CHICKEN'
+    expect(find('#max_score_1').text).to eq '97.00'
+    expect(find('#avg_score_1').text).to eq '81.57'
+    expect(find('#price_1').text).to eq '1600'
+    expect(find('#memo_1').text).to eq 'へたれとちゃらさんと３人で'
+  end
   it '歌唱履歴が正常に表示されるか' do
-    #history_table = table_to_hash('karaoke_detail_history')
-    #expect(history_table.length).to eq 75
-    #expect(history_table[0]['tostring']).to eq 'ないと,,Hello, world!,BUMP OF CHICKEN,0,,,'
-    #expect(history_table[3]['tostring']).to eq 'ちゃら,,はなまるぴっぴはよいこだけ,A応P,0,,,'
+    history_table_all = table_to_hash('karaoke_detail_history_all')
+    history_table_5 = table_to_hash('karaoke_detail_history_5')
+    expect(history_table_all.length).to eq 75
+    expect(history_table_5.length).to eq 27
+    expect(history_table_all[0]['tostring']).to eq 'ないと,,Hello, world!,BUMP OF CHICKEN,0,,,'
+    expect(history_table_5[1]['tostring']).to eq 'ちゃら,,はなまるぴっぴはよいこだけ,A応P,0,,,'
   end
   it 'リンクが正常に登録されているか' do
     examine_userlink('ないと' , url)

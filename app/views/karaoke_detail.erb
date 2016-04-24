@@ -40,11 +40,11 @@
 <div id="tabs">
   <ul>
     <li>
-      <a href="#tabs-all">全員</a>
+      <a href="#tabs-all" id="tab_all">全員</a>
     </li>
     <% @karaoke['members'].each do |member| %>
     <li>
-      <a href="#tabs-<%= member['userid'] %>">
+      <a href="#tabs-<%= member['userid'] %>" id="tab_<%= member['userid'] %>">
         <%= user_icon(member['username'] , 20 , 20) %>
         <%= member['screenname'] %>
       </a>
@@ -55,67 +55,71 @@
     <div class="row">
       <div class="karaoke-result-block center">
         <p class='description'>歌った曲数</p>
-        <span class='result center orange'><%= @karaoke['sang_count'] %></span>
+        <span id='sang_count_all' class='result center orange'><%= @karaoke['sang_count'] %></span>
         <span class='orange'>曲</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>一番歌われた歌手</p>
-        <p class='result orange'><%= @karaoke['most_sang_artist_name'] %></p>
+        <p id='most_sang_artist_all' class='result orange'><%= @karaoke['most_sang_artist_name'] %></p>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
-        <span class='result orange'><%= h @karaoke['max_score'] %></span>
+        <span id='max_score_all' class='result orange'><%= h @karaoke['max_score'] %></span>
         <span class='orange'>点</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>平均得点</p>
-        <span class='result orange'><%= h @karaoke['avg_score'] %></span>
+        <span id='avg_score_all' class='result orange'><%= h @karaoke['avg_score'] %></span>
         <span class='orange'>点</span>
       </div>
     </div>
     <% @histories = @karaoke.histories %>
-    <% @tag = "" %>
+    <% @tag = "all" %>
+    <div id="history_all">
     <%= erb :_historytable %>
+    </div>
   </div>
   <% @karaoke['members'].each do |member| %>
   <div id="tabs-<%= member['userid'] %>">
     <div class="row">
       <div class="karaoke-result-block center">
         <p class='description'>歌った曲数</p>
-        <span class='result center orange'><%= member['sang_count'] %></span>
+        <span id="sang_count_<%= member['userid'] %>" class='result center orange'><%= member['sang_count'] %></span>
         <span class='orange'>曲</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>一番歌われた歌手</p>
-        <p class='result orange'><%= member['most_sang_artist_name'] %></p>
+        <p id="most_sang_artist_<%= member['userid'] %>" class='result orange'><%= member['most_sang_artist_name'] %></p>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
-        <span class='result orange'><%= h member['max_score'] %></span>
+        <span id="max_score_<%= member['userid'] %>" class='result orange'><%= h member['max_score'] %></span>
         <span class='orange'>点</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>平均得点</p>
-        <span class='result orange'><%= h member['avg_score'] %></span>
+        <span id="avg_score_<%= member['userid'] %>" class='result orange'><%= h member['avg_score'] %></span>
         <span class='orange'>点</span>
       </div>
     </div>
     <div class="row">
       <div class="karaoke-result-block center">
         <p class='description'>値段</p>
-        <span class='result orange'><%= member['price'] %></span>
+        <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] %></span>
         <span class='orange'>円</span>
       </div>
       <div class="karaoke-result-block karaoke-memo-block center">
         <p class='description'>感想</p>
-        <span class='result orange'><%= member['memo'] %></span>
+        <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] %></span>
       </div>
     </div>
     <!-- ToDo: ビューでこういったデータの書き換えを行うのはMVC分離の原則に反するので要修正 -->
     <!-- JavaScriptで動的にテーブルの内容をフィルタリングするのが望ましいかも -->
     <% @histories = @karaoke.histories.select {|h| h['userinfo']['userid'] == member['userid']} %>
     <% @tag = member['userid'] %>
+    <div id="history_<%= member['userid'] %>">
     <%= erb :_historytable %>
+    </div>
   </div>
   <% end %>
 </div>
