@@ -64,6 +64,11 @@ zenra.toJSON = function(obj) {
 
 /*
 showDialog - ダイアログを表示する
+title: ダイアログのタイトル
+dialog_id: ダイアログエレメントに割り振るID
+url: ダイアログの内容を取得するURL
+id: URL内で取得する要素のID
+opt: 拡張オプション
 */
 zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
   opt = opt || {}
@@ -484,6 +489,7 @@ var register = (function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
               createElementForEditKaraoke();
+              $('#input_karaoke_with_attendance').hide(); //料金,感想は不要なので非表示に
             } ,
             funcs: {
               beforeClose: beforeClose
