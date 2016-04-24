@@ -319,6 +319,16 @@ class User < Base
       return 'InvalidAuth'
     end
   end
+  
+  # sang? - 引数として与えられた楽曲を歌ったことがあるか確認する
+  #---------------------------------------------------------------------
+  def sang?(song)
+    histories.each do | history |
+      return true if history['song_name'] == song['name'] and history['artist_name'] == song['artist'] 
+    end
+
+    return false
+  end
 
   private
   # get_song - history['song']を元に曲情報を取得する
