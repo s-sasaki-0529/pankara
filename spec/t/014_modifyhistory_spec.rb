@@ -30,6 +30,7 @@ describe 'Historyの編集/削除' , :js => true do
     fill_in 'artist' , with: '変更後の歌手名'
     select 'DAM その他' , from: '採点方法'
     fill_in '採点' , with: '100'
+    wait_for_ajax
     click_on '保存'
     #Todo スライダ操作によるキー設定
     wait_for_ajax

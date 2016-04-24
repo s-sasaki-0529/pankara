@@ -105,6 +105,7 @@ module Rbase
     fill_in 'artist', with: history['artist']
     select history['score_type'], from: 'score_type'
     fill_in 'score', with: history['score']
+    wait_for_ajax
   end
   
   def input_history(value = 0)
@@ -115,6 +116,7 @@ module Rbase
     fill_in 'artist', with: "artist#{value}"
     select 'JOYSOUND 全国採点', from: 'score_type'
     fill_in 'score', with: score
+    wait_for_ajax
   end
 
   # 以下、ajax対応

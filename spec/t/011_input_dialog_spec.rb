@@ -100,8 +100,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
    
     20.times do |i|
       input_history i
-      execute_script 'register.onPushedRegisterHistoryButton("register");'
-      wait_for_ajax
+      js 'register.onPushedRegisterHistoryButton("register");'
     end
 
     js 'register.onPushedRegisterHistoryButton("end");'

@@ -320,14 +320,16 @@ class User < Base
     end
   end
   
-  # sang? - 引数として与えられた楽曲を歌ったことがあるか確認する
+  # get_histories_by_song - 指定した楽曲を歌ったときのhistoryを取得する
   #---------------------------------------------------------------------
-  def sang?(song)
+  def get_histories_by_song(song)
+    histories_by_song = []
+
     histories.each do | history |
-      return true if history['song_name'] == song['name'] and history['artist_name'] == song['artist'] 
+      histories_by_song.push history if history['song_name'] == song['name'] and history['artist_name'] == song['artist'] 
     end
 
-    return false
+    return histories_by_song
   end
 
   private

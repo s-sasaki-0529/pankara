@@ -345,19 +345,35 @@ var register = (function() {
       }
     });
 
-    // 曲名を入力すると歌手名が自動入力される
+    createInputSongEvent();
+    createInputArtistEvent();
+
+    $('#score_type').change(function() {
+      if ($('#score_type').val() == 0) {
+        $('#score_area').hide();
+      }
+      else {
+        $('#score_area').show();
+      }
+    });
+  }
+
+  /*[method] 曲名入力に関するイベントを作成する*/
+  function createInputSongEvent() {
     $('#song').blur(function() {
+      // 曲名を入力すると歌手名を自動入力する
       if ($(this).val() in song_obj) {
         $('#artist').val(song_obj[$(this).val()]);
       }
+
+      autoInputSongKey();
     });
 
     $('#artist').focus(function() {
       var temp_artist_list = [];
 
-      // 現在の曲名をキーとして持つ値をリスト化する
+      // 入力された曲を歌っている歌手名でもしかしてリストを生成
       if ($('#song').val() in song_obj) {
-
         for (key in song_obj) {
           if (key == $('#song').val()) {
             temp_artist_list.push(song_obj[key]);
@@ -372,8 +388,10 @@ var register = (function() {
         zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
       }
     });
+  }
 
-
+  /*[method] 歌手名入力に関するイベントを作成する*/
+  function createInputArtistEvent() {
     // 歌手名が入力されるとその歌手が歌っている曲でもしかしてリストを生成
     $('#artist').blur(function() {
       var temp_song_list = [];
@@ -392,16 +410,32 @@ var register = (function() {
         zenra.setOptionMoshikashite('song' , 'minLength' , 2);
         zenra.setOptionMoshikashite('song' , 'source' , song_list);
       }
+      
+      autoInputSongKey();
     });
-    
-    $('#score_type').change(function() {
-      if ($('#score_type').val() == 0) {
-        $('#score_area').hide();
+  }
+
+  /*[method] キーをajaxで取得して自動で入力する*/
+  function autoInputSongKey() {
+    // 曲名とアーティスト名が入力されたらキーを自動入力する
+    if ($('#song').val() != '' && $('#artist').val() != '') {
+      var song = {
+        name: $('#song').val() ,
+        artist: $('#artist').val()
       }
-      else {
-        $('#score_area').show();
-      }
-    });
+
+      zenra.post('/ajax/key' , song , {
+        success: function(result) {
+          var result_obj = zenra.parseJSON(result);
+          
+          if (result_obj['result'] == 'success') {
+            var songkey = result_obj['songkey'];
+
+            $('#seekbar').slider('value' , songkey);
+          }
+        }
+      });
+    }
   }
 
   /*[method] カラオケ編集画面用の要素を作成する*/

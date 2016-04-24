@@ -170,4 +170,23 @@ class LocalRoute < March
     end
   end
 
+  # post '/ajax/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す
+  #---------------------------------------------------------------------
+  post '/ajax/key' do
+    # テスト実行時は失敗を返す
+    config = Util.read_config('run_mode')
+    config == 'ci' and return Util.to_json({'result' => 'never sang'})
+
+    song = {}
+    song['name'] = params[:name]
+    song['artist'] = params[:artist]
+
+    histories = @current_user.get_histories_by_song song
+    unless histories.empty?
+      Util.to_json({'result' => 'success' , 'songkey' => histories[0]['songkey']})
+    else
+      Util.to_json({'result' => 'never sang'})
+    end
+  end
+
 end
