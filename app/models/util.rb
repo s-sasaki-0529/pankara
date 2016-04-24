@@ -27,6 +27,8 @@ CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 class Util
 
+  @@request = nil
+
   # Const - 定数管理
   #---------------------------------------------------------------------
   module Const
@@ -36,6 +38,25 @@ class Util
       FOLLOWED = 1
       NONE = 0
     end
+  end
+
+  # set_request - セション情報を設定
+  #--------------------------------------------------------------------
+  def self.set_request(request)
+    @@request = request
+  end
+
+  # url - URLを生成する
+  #---------------------------------------------------------------------
+  def self.url(*path)
+    url = "http://#{@@request.host}"
+    if @@request.port != 80
+      url += ":#{@@request.port}"
+    end
+    path.each do |p|
+      url += "/#{p}"
+    end
+    return url
   end
 
   # icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する

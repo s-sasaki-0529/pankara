@@ -100,6 +100,9 @@ class March < Sinatra::Base
       session[:logined] = User.new(user)
     end
     @current_user = session[:logined]
+
+    #リクエストパラメータをUtilクラスで参照できるようにする
+    Util.set_request request
   end
 
 end

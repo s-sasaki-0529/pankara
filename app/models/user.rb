@@ -311,9 +311,9 @@ class User < Base
   # 戻り値 Tweeted: 成功 Ineffective: 設定無効 InvalidAuth: 認証エラー
   #---------------------------------------------------------------------
   def tweet(text)
-    twitter = Twitter.new(self)
+    twitter = Twitter.new(@params['username'])
     if twitter && twitter.authed
-      twitter.tweet(text)
+      twitter.tweet("@null\n#{text}")
       return 'Tweeted'
     else
       return 'InvalidAuth'
