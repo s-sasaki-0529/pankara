@@ -32,7 +32,6 @@ class CommonRoute < March
       req_secret = session[:request_token_secret] || ''
       twitter = Twitter.new(@current_user['username'])
       twitter.get_access_token(req_token , req_secret , verifier)
-      twitter.tweet('て・ん・しょ・く・し・た・い')
     end
 
     # Twitterに既に認証済みの場合
