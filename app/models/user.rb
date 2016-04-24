@@ -307,6 +307,19 @@ class User < Base
     return attended.nil? ? false : true
   end
 
+  # tweet - ツイッターに投稿する。設定、認証状態の確認も行う
+  # 戻り値 Tweeted: 成功 Ineffective: 設定無効 InvalidAuth: 認証エラー
+  #---------------------------------------------------------------------
+  def tweet(text)
+    twitter = Twitter.new(self)
+    if twitter && twitter.authed
+      twitter.tweet(text)
+      return 'Tweeted'
+    else
+      return 'InvalidAuth'
+    end
+  end
+
   private
   # get_song - history['song']を元に曲情報を取得する
   #---------------------------------------------------------------------
