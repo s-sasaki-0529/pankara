@@ -6,7 +6,7 @@ require_relative './song_route'
 require_relative './artist_route'
 require_relative './ranking_route'
 require_relative './user_route'
-require_relative './local_route'
+require_relative './ajax_route'
 require_relative './common_route'
 
 class IndexRoute < March
