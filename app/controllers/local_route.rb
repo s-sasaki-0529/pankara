@@ -61,8 +61,12 @@ class LocalRoute < March
   post '/local/rpc/karaoke/delete/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
-    karaoke.delete
-    return success
+    result = karaoke.delete
+    if result
+      return success
+    else
+      return error('delete failed')
+    end
   end
 
   # post '/local/rpc/karaoke/modify/?' - カラオケを編集する

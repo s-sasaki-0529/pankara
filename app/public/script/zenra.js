@@ -28,18 +28,6 @@ zenra.post = function(url , data , opt) {
 };
 
 /*
-_ajaxsample - JSONを用いたAjax通信のサンプル
-*/
-zenra._ajaxsample = function() {
-  this.post('/local/rpc/storelist' , {} , {
-    success: function(result) {
-      storeList = zenra.parseJSON(result);
-      console.log(storeList);
-    }
-  });
-};
-
-/*
 get - 非同期で通信する
 */
 zenra.get = function(url , funcs) {
@@ -648,10 +636,18 @@ var register = (function() {
 
     /*[Method] カラオケ削除ボタン押下時の処理*/
     onPushedDeleteKaraokeButton : function() {
-      zenra.post(('/local/rpc/karaoke/delete/') , {id: karaoke_id} , {
-        success: function(result) {
-          location.href = '/'
-        }
+      if (! confirm('カラオケを削除します。よろしいですか？')) {
+        return;
+      }
+      zenra.post('/local/rpc/karaoke/delete/' , {id: karaoke_id} , {
+        success: function(json) {
+          result = zenra.parseJSON(json);
+          if (result['result'] == 'success') {
+            location.href = '/';
+          } else {
+            alert('カラオケの削除に失敗しました');
+          }
+        } ,
       });
     } ,
 

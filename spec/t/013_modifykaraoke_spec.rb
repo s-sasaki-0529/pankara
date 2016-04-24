@@ -43,7 +43,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     
     # 変更後のkaraokeを検証
     new_table = table_to_hash('karaoke_detail_description')
-    expect(new_table[0]['tostring']).to eq '2016-02-13,5.0,カラオケ館 亀戸店,JOYSOUND(f1),55,,'
+    expect(new_table[0]['tostring']).to eq '2020-03-25,12.0,シダックス 盛岡店,JOYSOUND(WAVE),55,,'
   
     # 現在のkaraokeの件数を確認
     visit url

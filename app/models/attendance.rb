@@ -35,19 +35,19 @@ class Attendance < Base
       :JOIN => ['history' , 'attendance'] ,
       :WHERE => 'attendance.id = ?' ,
       :SET => @params['id'] ,
-    ).execute_columns
+    ).execute_columns or return false
     if histories.size > 0
       DB.new(
         :DELETE => 1 ,
         :FROM => 'history' ,
         :WHERE_IN => ['id' , histories.length] ,
         :SET => histories
-      ).execute
+      ).execute or return false
     end
     #attendanceレコードを削除
     DB.new(:DELETE => 1 , :FROM => 'attendance' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     @params = nil
-
+    return true
   end
 
 end
