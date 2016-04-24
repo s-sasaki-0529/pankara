@@ -35,3 +35,4 @@ else
 fi
 cp -r coverage app/public/
 rm -rf coverage
+echo $'\a' 
