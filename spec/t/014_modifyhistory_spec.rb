@@ -15,6 +15,7 @@ describe 'Historyの編集/削除' , :js => true do
     login 'sa2knight'
     visit url
     find('#karaoke_detail_history_all').all('th')[6].click
+    wait_for_ajax
     expect(headline).to eq 'ないと,,MISTAKE,ナナホシ管弦楽団,-3,全国採点,77.08,'
     wait_for_ajax 
   end
