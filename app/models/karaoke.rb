@@ -43,10 +43,11 @@ class Karaoke < Base
       :UPDATE => ['karaoke' , arg.keys] , 
       :WHERE => 'id = ?' ,
       :SET => arg.values.push(@params['id'])
-    ).execute
+    ).execute or return false
     old_params = @params
     @params = DB.new.get('karaoke' , old_params['id'])
     Util.write_log('event' , "【カラオケ修正】#{old_params} → #{@params}")
+    return true
   end
 
   # delete - カラオケレコードを削除する
@@ -60,17 +61,17 @@ class Karaoke < Base
       :JOIN => ['attendance' , 'karaoke'] ,
       :WHERE => 'karaoke.id = ?' ,
       :SET => @params['id']
-    ).execute_columns
+    ).execute_columns or return false
     attendances.each do |id|
       attendance = Attendance.new(id)
-      attendance.delete
+      attendance.delete or return false
     end
 
     # karaokeレコードを削除する
     DB.new(:DELETE => 1 , :FROM => 'karaoke' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     Util.write_log('event' , "【カラオケ削除】#{@params}")
     @params = nil
-
+    return true
   end
 
   # get_members - カラオケに参加しているユーザ一覧を取得する
