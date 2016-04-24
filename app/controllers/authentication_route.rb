@@ -21,7 +21,6 @@ class AuthenticationRoute < March
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
       session[:logined] = User.new(@params[:username])
-      Util.debug(session[:logined].tweet('@null ログインしたよ'))
       redirect '/'
     else
       redirect '/login'
