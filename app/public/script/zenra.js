@@ -489,7 +489,6 @@ var register = (function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
               createElementForEditKaraoke();
-              $('#input_karaoke_with_attendance').hide(); //料金,感想は不要なので非表示に
             } ,
             funcs: {
               beforeClose: beforeClose
