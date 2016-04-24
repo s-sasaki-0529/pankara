@@ -28,9 +28,9 @@ class LocalRoute < March
     erb :_input_history
   end
 
-  # post '/local/rpc/songlist' - 楽曲一覧を戻す
+  # post '/ajax/songlist' - 楽曲一覧を戻す
   #---------------------------------------------------------------------
-  post '/local/rpc/songlist/?' do
+  post '/ajax/songlist/?' do
     hash = Hash.new
     Song.list.each do |s|
       hash[s['song_name']] = s['artist_name']
@@ -38,27 +38,27 @@ class LocalRoute < March
     return Util.to_json(hash)
   end
 
-  # post '/local/rpc/storelist' - 店と店舗のリストをJSONで戻す
+  # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す
   #---------------------------------------------------------------------
-  post '/local/rpc/storelist/?' do
+  post '/ajax/storelist/?' do
     Util.to_json(Store.list)
   end
 
-  # post '/local/rpc/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
+  # post '/ajax/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
   #---------------------------------------------------------------------
-  post '/local/rpc/karaokelist/?' do
+  post '/ajax/karaokelist/?' do
     params[:id].nil? ? Util.to_json(Karaoke.list_all) : Util.to_json(Karaoke.new(params[:id]).params)
   end
 
-  # post '/local/rpc/historylist/?' - 歌唱履歴の一覧もしくは指定した歌唱履歴を戻す
+  # post '/ajax/historylist/?' - 歌唱履歴の一覧もしくは指定した歌唱履歴を戻す
   #---------------------------------------------------------------------
-  post '/local/rpc/historylist/?' do
+  post '/ajax/historylist/?' do
     params[:id].nil? ? Util.to_json(History.recent_song) : Util.to_json(History.new(params[:id], true).params)
   end
 
-  # post '/local/rpc/karaoke/delete/?' - カラオケを削除する
+  # post '/ajax/karaoke/delete/?' - カラオケを削除する
   #--------------------------------------------------------------------
-  post '/local/rpc/karaoke/delete/?' do
+  post '/ajax/karaoke/delete/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     result = karaoke.delete
@@ -69,9 +69,9 @@ class LocalRoute < March
     end
   end
 
-  # post '/local/rpc/karaoke/modify/?' - カラオケを編集する
+  # post '/ajax/karaoke/modify/?' - カラオケを編集する
   #--------------------------------------------------------------------
-  post '/local/rpc/karaoke/modify/?' do
+  post '/ajax/karaoke/modify/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
@@ -79,18 +79,18 @@ class LocalRoute < March
     return result ? success : error('modify failed')
   end
 
-  # post '/local/rpc/history/delete/?' - 歌唱履歴を削除する
+  # post '/ajax/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
-  post '/local/rpc/history/delete/?' do
+  post '/ajax/history/delete/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     history.delete
     return success
   end
 
-  # post '/local/rpc/history/modify/?' - 歌唱履歴を編集する
+  # post '/ajax/history/modify/?' - 歌唱履歴を編集する
   #--------------------------------------------------------------------
-  post '/local/rpc/history/modify/?' do
+  post '/ajax/history/modify/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
