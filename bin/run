@@ -10,6 +10,7 @@ usage() {
   echo "  -u 指定したユーザ名でログイン"
   echo "  -p unicornを起動するポートを指定(デフォルト8080)"
   echo "  -f Webサーバをフォアグランド上で実行する(ログの取得をしない)"
+  echo "  -r runモードを指定する(デフォルト develop)"
   echo "  -v 進捗メッセージを標準出力"
   exit 1
 }
@@ -17,7 +18,7 @@ usage() {
 # オプション解析
 FLAG_F=0
 FLAG_V=0
-while getopts u:p:fhv OPT
+while getopts u:p:fhr:v OPT
 do
   case $OPT in
     h)  usage
@@ -28,6 +29,8 @@ do
     p)  VALUE_P=$OPTARG
       ;;
     f)  FLAG_F=1
+      ;;
+    r)  VALUE_R=$OPTARG
       ;;
     v)  FLAG_V=1
       ;;
@@ -63,7 +66,14 @@ if [ -z "$VALUE_P" ]; then
 fi
 
 mes "${VALUE_P}ポートでWebサーバを立ち上げます"
-bundle exec ruby "bin/scripts/set_config.rb" set run_mode develop
+if [ "$VALUE_R" = "ci" -o "$VALUE_R" = "yshirt" ]; then
+  mes "run mode を $VALUE_R にセット"
+  bundle exec ruby "bin/scripts/set_config.rb" set run_mode $VALUE_R
+else
+  mes "run mode を developにセット"
+  bundle exec ruby "bin/scripts/set_config.rb" set run_mode develop
+fi
+
 if [ "$FLAG_F" -eq 1 ]; then
   bundle exec unicorn --port $VALUE_P
 else
