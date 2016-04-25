@@ -39,10 +39,8 @@ ssh="ssh root@160.16.227.161"
 
 if [ $FLAG_S -eq 1 ]; then
   $ssh "export ZENRA=/home/zenra/March/; nohup zenra run -p 80 -r yshirt -v"
-
 elif [ $FLAG_E -eq 1 ]; then
   $ssh "zenra stop -v"
-
 elif [ $FLAG_U -eq 1 ]; then
-  $ssh "export ZENRA=/home/zenra/March/; nohup zenra update -p 80 -v"
+  $ssh "export ZENRA=/home/zenra/March/; nohup zenra update -p 80 -r yshirt -v"
 fi
