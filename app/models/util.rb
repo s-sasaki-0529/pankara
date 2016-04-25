@@ -84,8 +84,7 @@ class Util
   #----------------------------------------------------------------------
   def self.search_tube(song , artist)
     # テスト実行時は取得しない
-    config = Util.read_config('run_mode')
-    config == 'ci' and return nil
+    Util.run_mode == 'ci' and return nil
 
     # youtubeにアクセスし、「曲名 歌手名」で検索した1件目を取得
     word = "#{song} #{artist}"
@@ -184,6 +183,12 @@ class Util
       hash[i[key]].delete(key)
     end
     return hash
+  end
+
+  # run_mode - 現在のrun modeを取得
+  #--------------------------------------------------------------------
+  def self.run_mode
+    Util.read_config('run_mode')
   end
 
   # error - エラーメッセージを返却する

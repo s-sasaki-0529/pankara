@@ -174,8 +174,7 @@ class LocalRoute < March
   #---------------------------------------------------------------------
   post '/ajax/key' do
     # テスト実行時は失敗を返す
-    config = Util.read_config('run_mode')
-    config == 'ci' and return Util.to_json({'result' => 'never sang'})
+    Util.run_mode == 'ci' and return Util.to_json({'result' => 'never sang'})
 
     song = {}
     song['name'] = params[:name]

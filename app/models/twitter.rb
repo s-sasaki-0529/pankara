@@ -10,9 +10,8 @@ class Twitter < Base
   #---------------------------------------------------------------------
   def initialize(username)
 
-    # テスト実行時はツイッター連携しない
-    config = Util.read_config('run_mode')
-    config == 'ci' and return nil
+    # 本番環境のみで動作
+    Util.run_mode == 'yshirt' or return nil
 
     @username = username
     twitter_api = Util.read_secret('twitter_api')
