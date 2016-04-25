@@ -38,7 +38,7 @@ if [ -z "$VALUE_P" ]; then
 fi
 
 if [ "${VALUE_R}X" = "X" ];
-  VALUE_R=develop
+  VALUE_R="develop"
 fi
 
 if [ "$FLAG_V" -eq 1 ]; then
