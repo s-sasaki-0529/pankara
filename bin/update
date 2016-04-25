@@ -24,6 +24,7 @@ do
     v)  FLAG_V=1
         ;;
     r)  VALUE_R=$OPTARG
+        ;;
     p)  VALUE_P=$OPTARG
         ;;
   esac
