@@ -8,13 +8,14 @@ usage() {
   echo "  Usage: zenra $PROGNAME [-p port] [-v]"
   echo "オプション"
   echo "  -p unicornのポート番号(デフォルト8080)"
+  echo "  -r run modeを指定"
   echo "  -v 進捗を標準出力"
   exit 1
 }
 
 # オプション解析
 FLAG_V=0
-while getopts hvp: OPT
+while getopts hvp:r: OPT
 do
   case $OPT in
     h)  usage
@@ -22,6 +23,7 @@ do
         ;;
     v)  FLAG_V=1
         ;;
+    r)  VALUE_R=$OPTARG
     p)  VALUE_P=$OPTARG
         ;;
   esac
@@ -34,16 +36,20 @@ if [ -z "$VALUE_P" ]; then
   VALUE_P=8080
 fi
 
+if [ "${VALUE_R}X" = "X" ];
+  VALUE_R=develop
+fi
+
 if [ "$FLAG_V" -eq 1 ]; then
   zenra stop -v
   zenra backup -m "update実行前" -v
   echo "プログラムを更新します"
   git pull
   zenra init -b -v
-  zenra run -p $VALUE_P -v
+  zenra run -p $VALUE_P -r $VALUE_R -v
 else
   zenra stop
   git pull
   zenra init -b
-  zenra run -p $VALUE_P
+  zenra run -p $VALUE_P -r $VALUE_R
 fi
