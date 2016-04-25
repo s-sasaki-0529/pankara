@@ -37,7 +37,7 @@ if [ -z "$VALUE_P" ]; then
   VALUE_P=8080
 fi
 
-if [ "${VALUE_R}X" = "X" ];
+if [ "${VALUE_R}X" = "X" ]; then
   VALUE_R="develop"
 fi
 
