@@ -46,12 +46,23 @@ class Artist < Base
 
   # self.list - 歌手の一覧を取得
   #--------------------------------------------------------------------
-  def self.list(opt = nil)
+  def self.list(opt = {})
     db = DB.new(:FROM => 'artist')
+
     # 曲名で曖昧検索
     if opt[:name_like]
       db.where('artist.name like ?')
       db.set("%#{opt[:name_like]}%")
+    end
+
+    # 楽曲登録数を取得
+    if opt[:song_num]
+      db.select(
+        'COUNT(song.id)' => 'song_num',
+        'artist.id' => 'id',
+        'artist.name' => 'name',)
+      db.flexible_join({:target => 'song' , :from => 'song' , :to => 'artist'})
+      db.option(['GROUP BY song.artist' , 'ORDER BY artist.name'])
     end
 
     db.execute_all

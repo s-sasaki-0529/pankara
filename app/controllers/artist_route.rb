@@ -10,5 +10,12 @@ class ArtistRoute < March
     @artist.songs_with_count(user)
     erb :artist_detail
   end
+
+  # get '/artist_list' - 歌手一覧を表示
+  #--------------------------------------------------------------------
+  get '/artist_list' do
+    @artistlist = Artist.list({:song_num => 1})
+    erb :artist_list
+  end
   
 end

@@ -108,6 +108,21 @@ class DB
     @join = sql.join(' ')
   end
 
+  # flexible_join - JOIN文を柔軟に作成する
+  # Hash / Array[Hash: のみサポート
+  #--------------------------------------------------------------------
+  def flexible_join(params)
+    params.kind_of?(Hash) and params = [params]
+    sql = []
+    params.each do |set|
+      target = set[:target]
+      join_from = set[:from]
+      join_to = set[:to]
+      sql.push "JOIN #{target} ON #{join_from}.#{join_to} = #{join_to}.id"
+    end
+    @join = sql.join(' ')
+  end
+
   # insert - INSERT文を作成する
   # [String , Array[String]] / [String , String] のみサポート
   #---------------------------------------------------------------------

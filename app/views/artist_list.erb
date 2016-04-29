@@ -1,0 +1,20 @@
+<h2>
+  アーティスト一覧
+</h2>
+
+<table id="artistlist_table" class="table sortable">
+  <thead>
+    <tr>
+      <th>歌手名</th>
+      <th>登録曲数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @artistlist.each do |artist| %>
+    <tr>
+      <td><%= artist_link artist['id'], artist['name'] %></td>
+      <td><%= artist['song_num'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
