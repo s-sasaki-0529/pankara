@@ -1,6 +1,8 @@
 *.swp
+*.swn
 *.gem
 *.rbc
+*.swo
 Gemfile.lock
 config.yml
 /.config
