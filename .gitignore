@@ -1,6 +1,8 @@
 *.swp
 *.gem
 *.rbc
+Gemfile.lock
+config.yml
 /.config
 /coverage/
 /InstalledFiles
@@ -16,9 +18,8 @@ app/public/coverage
 .dat*
 .repl_history
 build/
-/log
-/log/*.log
-/log/sql.log
+/logs
+logs/*.log
 
 ## Documentation cache and generated files:
 /.yardoc/
