@@ -62,7 +62,7 @@ class Artist < Base
         'artist.id' => 'id',
         'artist.name' => 'name',)
       db.flexible_join({:target => 'song' , :from => 'song' , :to => 'artist'})
-      db.option(['GROUP BY song.artist' , 'ORDER BY artist.name'])
+      db.option(['GROUP BY song.artist' , 'ORDER BY song_num DESC'])
     end
 
     db.execute_all
