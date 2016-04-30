@@ -30,12 +30,16 @@ class ScoreType < Base
   # id_to_name - 指定したIDに対応する採点モード名を戻す
   #---------------------------------------------------------------------
   def self.id_to_name(id , wanthash = false)
-    @@list.empty? and self.List
+    if @@list.empty? || Util.run_mode == 'ci'
+      self.List
+    end
+
     id.kind_of?(String) and id = id.to_i
     if wanthash
       @@list[id] ? @@list[id] : {'brand' => '' , 'name' => ''}
     else
       @@list[id] ? @@list[id]['name'] : ""
     end
+
   end
 end

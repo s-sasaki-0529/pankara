@@ -28,6 +28,7 @@ SECRET = '../secret.yml'
 class Util
 
   @@request = nil
+  @@run_mode = nil
 
   # Const - 定数管理
   #---------------------------------------------------------------------
@@ -188,7 +189,10 @@ class Util
   # run_mode - 現在のrun modeを取得
   #--------------------------------------------------------------------
   def self.run_mode
-    Util.read_config('run_mode')
+    if @@run_mode.nil?
+      @@run_mode = Util.read_config('run_mode')
+    end
+    @@run_mode
   end
 
   # error - エラーメッセージを返却する

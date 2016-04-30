@@ -58,10 +58,7 @@ if [ "$FLAG_R" -eq 1 ]; then
 else
   mes "ログファイルに記録します"
   info="init database $(date +"%Y_%m_%d_%H_%M")"
-  echo $info >> $MARCHDIR/logs/sql.log
-  echo $info >> $MARCHDIR/logs/stdout.log
-  echo $info >> $MARCHDIR/logs/stderr.log
-  echo $info >> $MARCHDIR/logs/cron.log
+  echo $info >> $MARCHDIR/logs/event.log
 fi
 
 # 初期データの登録
@@ -72,7 +69,9 @@ if [ "$FLAG_B" -eq 1 ]; then
   filepath="backup/$dump"
   $MYSQL < "$filepath"
 elif [ "$FLAG_D" -eq 1 ]; then
-  mes "テーブルをバックアップ($VALUE_D)を用いて初期化します"
+  info="テーブルをバックアップ($VALUE_D)を用いて初期化します"
+  mes $info
+  echo $info >> $MARCHDIR/logs/event.log
   filepath="backup/$VALUE_D"
   $MYSQL < "$filepath"
 fi
