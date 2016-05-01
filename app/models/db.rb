@@ -5,8 +5,6 @@ require 'mysql'
 require_relative 'util'
 class DB
 
-  @@db = nil
-  
   # initialize - インスタンス生成
   #---------------------------------------------------------------------
   def initialize(arg = nil)
@@ -38,8 +36,6 @@ class DB
   # connect - mysqlサーバへの接続を行う
   #---------------------------------------------------------------------
   def self.connect
-    @@db = Mysql.new('127.0.0.1' , 'root' , 'zenra' , 'march')
-    @@db.charset = 'utf8'
   end
 
   # select - SELECT文を作成する
@@ -219,8 +215,11 @@ class DB
   def execute
     # 実行
     make
-    st = @@db.prepare(@sql)
+    db = Mysql.new('127.0.0.1' , 'root' , 'zenra' , 'march')
+    db.charset = 'utf8'
+    st = db.prepare(@sql)
     st.execute(*@params)
+    db.close
     # ログ生成
     done_sql = @sql
     @params.each do |param|
