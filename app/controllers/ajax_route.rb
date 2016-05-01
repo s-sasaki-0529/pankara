@@ -32,7 +32,8 @@ class LocalRoute < March
   #---------------------------------------------------------------------
   post '/ajax/songlist/?' do
     hash = Hash.new
-    Song.list.each do |s|
+    song_list = Song.list({:artist_info => true})
+    song_list.each do |s|
       hash[s['song_name']] = s['artist_name']
     end
     return Util.to_json(hash)

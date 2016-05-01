@@ -16,7 +16,7 @@ class CommonRoute < March
     @songs_list = []
     @artist_list = []
     if @search_word.size > 0
-      @songs_list.concat(Song.list({:name_like => @search_word}))
+      @songs_list.concat(Song.list({:name_like => @search_word , :artist_info => true}))
       @artist_list.concat(Artist.list({:name_like => @search_word}))
     end
     erb :search

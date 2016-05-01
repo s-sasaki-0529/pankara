@@ -121,14 +121,10 @@ class Karaoke < Base
     users_info = self.get_members
 
     # historiesに含まれる楽曲情報を取得
-    # Todo: ここループでSong.newしててクッソ無駄
+    song_id_list = @histories.map {|h| h['song']}
+    songs_info = Song.list({:songs => song_id_list, :artist_info => true , :want_hash => true})
     @histories.each do | history |
-      song = Song.new(history['song'])
-      history['song_id'] = song.params['id']
-      history['song_name'] = song.params['name']
-      history['song_url'] = song.params['url']
-      history['artist_id'] = song.params['artist']
-      history['artist_name'] = song.params['artist_name']
+      history.merge! songs_info[history['song']] || {}
       history['userinfo'] = users_info.find { |user| user['attendance'] == history['attendance'] }
       history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
     end

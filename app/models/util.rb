@@ -181,7 +181,6 @@ class Util
     hash = {}
     array.each do |i|
       hash[i[key]] = i
-      hash[i[key]].delete(key)
     end
     return hash
   end

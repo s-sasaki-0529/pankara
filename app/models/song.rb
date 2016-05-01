@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------
-# Song - 個々の楽曲に関する情報を操作
+# Song - 楽曲に関する情報を操作
 #----------------------------------------------------------------------
 require_relative 'util'
 class Song < Base
@@ -9,6 +9,44 @@ class Song < Base
   def initialize(id)
     @params = DB.new.get('song' , id)
     self.artist
+  end
+
+  # list - クラスメソッド 楽曲の一覧を取得
+  # opt[:songs] - Array 取得する楽曲をIDで指定
+  # opt[:name_like] - String 楽曲名で部分検索
+  # opt[:artist_info] - Bool 歌手情報を取得するか
+  # opt[:want_hash] - Bool song_idをkeyにしたハッシュに変換
+  #--------------------------------------------------------------------
+  def self.list(opt = {})
+    db = DB.new(:FROM => 'song')
+    select = {'song.id' => 'song_id', 'song.name' => 'song_name', 'song.url' => 'song_url'}
+
+    # ArtistInfoも付与
+    if opt[:artist_info]
+      select.merge!({'artist.id' => 'artist_id', 'artist.name' => 'artist_name'})
+      db.join(['song' , 'artist'])
+    end
+    db.select(select)
+
+    # SongIDを指定
+    if songs = opt[:songs]
+      db.where_in(['song.id' , songs.length])
+      db.set(songs)
+    end
+
+    # 楽曲名で部分検索
+    if word = opt[:name_like]
+      db.where('song.name like ?')
+      db.set("%#{word}%")
+    end
+
+    # 実行結果を配列、もしくはハッシュで戻す
+    list = db.execute_all
+    if opt[:want_hash]
+      Util.array_to_hash(list , 'song_id')
+    else
+      list
+    end
   end
 
   # artist - 歌手名を取得
@@ -48,6 +86,8 @@ class Song < Base
     count = db.execute_column
     return (count.nil?) ? 0 : count
   end
+
+  # songlist
 
   # tally_score - 得点の集計を得る
   # :score_type - 採点モードを指定
@@ -150,30 +190,6 @@ class Song < Base
       :SET => songs ,
     ).execute_all
     Util.array_to_hash(song_info , 'song_id')
-  end
-
-  # self.list - 楽曲一覧を戻す
-  #--------------------------------------------------------------------
-  def self.list(opt = {})
-    #Todo デフォルトでは歌手情報は取得しないようにする
-    db = DB.new(
-      :SELECT => {
-        'song.id' => 'song_id' ,
-        'song.name' => 'song_name' ,
-        'song.url' => 'song_url' ,
-        'artist.id' => 'artist_id' ,
-        'artist.name' => 'artist_name' ,
-      } ,
-      :FROM => 'song' ,
-      :JOIN => ['song' , 'artist']
-    )
-
-    if opt[:name_like]
-      db.where("song.name like ?")
-      db.set("%#{opt[:name_like]}%")
-    end
-
-    db.execute_all
   end
 
   # modify - 楽曲情報を修正する
