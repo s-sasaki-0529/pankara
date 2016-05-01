@@ -2,7 +2,7 @@
 
 @path = `echo $ZENRA`
 @path.chomp!
-worker_processes 2
+worker_processes 1 
 working_directory @path
 timeout 30
 stderr_path "#{@path}/logs/stderr.log"
