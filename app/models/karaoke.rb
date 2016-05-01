@@ -96,36 +96,35 @@ class Karaoke < Base
   # get_history - カラオケ記録に対応した歌唱履歴を取得する
   #---------------------------------------------------------------------
   def get_history
+
+    # karaokeに参加しているユーザ一覧を取得
+    users_info = Util.array_to_hash(self.get_members , 'attendance')
+
     #Todo: ３テーブルのJOINは効率悪すぎる。参加ユーザを取得するメソッドを実装すべき
+
     @histories = DB.new(
       :SELECT => {
         'history.id' => 'history_id' ,
         'history.created_at' => 'history_datetime' ,
+        'history.attendance' => 'history_attendance' ,
         'history.song' => 'song' ,
         'history.songkey' => 'songkey' ,
         'history.score_type' => 'score_type' ,
         'history.score' => 'score',
-        'attendance.id' => 'attendance'
       } ,
       :FROM => 'history' ,
-      :JOIN => [
-        ['history' , 'attendance'] ,
-        ['attendance' , 'karaoke']
-      ] ,
-      :WHERE => 'attendance.karaoke = ?' ,
-      :SET => @params['id'] ,
+      :WHERE_IN => ['history.attendance' , users_info.length] ,
+      :SET => users_info.keys ,
       :OPTION => 'ORDER BY history.created_at'
     ).execute_all
-
-    # karaokeに参加しているユーザ一覧を取得
-    users_info = self.get_members
 
     # historiesに含まれる楽曲情報を取得
     song_id_list = @histories.map {|h| h['song']}
     songs_info = Song.list({:songs => song_id_list, :artist_info => true , :want_hash => true})
     @histories.each do | history |
       history.merge! songs_info[history['song']] || {}
-      history['userinfo'] = users_info.find { |user| user['attendance'] == history['attendance'] }
+      # Todo ほとんど同じユーザなのにhistoryごとにuserinfoが入るのは無駄だな
+      history['userinfo'] = users_info[history['history_attendance']]
       history['scoretype_name'] = ScoreType.id_to_name(history['score_type'])
     end
 
@@ -142,8 +141,8 @@ class Karaoke < Base
     @params['most_sang_artist_name'] = artists.max_by {|v| artists.count(v)}
 
     # ユーザーごとの集計
-    users_info.each do |member|
-      membersHistory = @histories.select {|h| h['userinfo'] == member}
+    users_info.values.each do |member|
+      membersHistory = @histories.select {|h| h['history_attendance'] == member['attendance']}
       if membersHistory.size > 0
         # 歌唱回数
         member['sang_count'] = membersHistory.count
@@ -162,7 +161,7 @@ class Karaoke < Base
         end
       end
     end
-    @params['members'] = users_info
+    @params['members'] = users_info.values
   end
 
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
