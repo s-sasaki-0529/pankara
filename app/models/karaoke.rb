@@ -106,8 +106,7 @@ class Karaoke < Base
 
     # karaokeに参加しているユーザ一覧を取得
     users_info = Util.array_to_hash(self.get_members , 'attendance')
-
-    #Todo: ３テーブルのJOINは効率悪すぎる。参加ユーザを取得するメソッドを実装すべき
+    @params['members'] = users_info.values
 
     @histories = DB.new(
       :SELECT => {
@@ -124,6 +123,7 @@ class Karaoke < Base
       :SET => users_info.keys ,
       :OPTION => 'ORDER BY history.created_at'
     ).execute_all
+    @histories.empty? and return []
 
     # historiesに含まれる楽曲情報を取得
     song_id_list = @histories.map {|h| h['song']}
