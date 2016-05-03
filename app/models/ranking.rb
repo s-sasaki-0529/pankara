@@ -49,32 +49,34 @@ class Ranking < Base
   end
 
   # sang_count - クラスメソッド: 楽曲の歌唱数ランキングを取得
+  # opt[:limit] - 取得件数を指定
+  # opt[:user] - 対象ユーザを指定。idでなくUserインスタンス
   #--------------------------------------------------------------------
   def self.sang_count(opt = {})
     limit = opt[:limit] || 20
+
+    # 歌唱履歴より、song列ごとの件数上位limitレコードを取得
     db = DB.new(
-      :SELECT => {
-        'song.id' => 'song_id' ,
-        'song.name' => 'song_name' ,
-        'song.artist' => 'artist_id' ,
-        'song.url' => 'song_url' ,
-        'artist.name' => 'artist_name' ,
-        'count(*)' => 'count'
-      } ,
-      :FROM => 'history' ,
-      :JOIN => [
-        ['history' , 'song'] ,
-        ['song' , 'artist']
-      ] ,
-      :OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC' , "LIMIT #{limit}"] ,
+      :SELECT => {'song' => 'song_id' , 'COUNT(song)' => 'count'},
+      :FROM => 'history',
+      :OPTION => ['GROUP BY song' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
     )
-    # ユーザ指定がある場合、そのユーザのみを対象に
+
+    # ユーザ指定がある場合、そのユーザの歌唱回数のみで集計
     if user = opt[:user]
-      attends = user.attend_ids
-      db.where_in(['history.attendance' , attends.length])
+      attend_ids = user.attend_ids
+      db.where_in(['attendance' , attend_ids.length])
       db.set(attends)
     end
-    db.execute_all
+
+    ranking = db.execute_all
+
+    # 楽曲、アーティストの情報を取得
+    songs_ids = ranking.map {|s| s['song_id']}
+    songs_info = Song.list(:songs => songs_ids, :artist_info => true, :want_hash => true)
+    ranking.each { |r| r.merge!(songs_info[r['song_id']] || {}) }
+
+    return ranking
   end
 
   # artist_sang_count - クラスメソッド: 歌手の歌唱数ランキングを取得
