@@ -333,17 +333,20 @@ class User < Base
       return 'InvalidAuth'
     end
   end
-  
-  # get_histories_by_song - 指定した楽曲を歌ったときのhistoryを取得する
-  #---------------------------------------------------------------------
-  def get_histories_by_song(song)
-    histories_by_song = []
 
-    histories.each do | history |
-      histories_by_song.push history if history['song_name'] == song['name'] and history['artist_name'] == song['artist'] 
-    end
-
-    return histories_by_song
+  # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得
+  #--------------------------------------------------------------------
+  def search_songkey(id)
+    attend_ids = self.attend_ids
+    attend_ids.empty? and return false
+    DB.new(
+      :SELECT => 'songkey',
+      :FROM => 'history',
+      :WHERE => 'song = ?',
+      :WHERE_IN => ['attendance' , attend_ids.length],
+      :SET => [id].concat(attend_ids),
+      :OPTION => ['ORDER BY id DESC' , 'LIMIT 1']
+    ).execute_column
   end
 
   private

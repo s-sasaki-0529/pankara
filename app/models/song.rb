@@ -49,6 +49,19 @@ class Song < Base
     end
   end
 
+  # name_to_id - 曲名と歌手名の組み合わせから、song_id / artist_idを戻す
+  # 曲名、歌手名の組み合わせはユニークである前提
+  #--------------------------------------------------------------------
+  def self.name_to_id(song_name , artist_name)
+    DB.new(
+      :SELECT => {'song.id' => 'song_id', 'artist.id' => 'artist_id'},
+      :FROM => 'song',
+      :JOIN => ['song' , 'artist'],
+      :WHERE => ['song.name = ?' , 'artist.name = ?'],
+      :SET => [song_name , artist_name]
+    ).execute_row
+  end
+
   # artist - 歌手名を取得
   #---------------------------------------------------------------------
   def artist

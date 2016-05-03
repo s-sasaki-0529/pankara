@@ -175,17 +175,13 @@ class LocalRoute < March
   #---------------------------------------------------------------------
   post '/ajax/key' do
     # テスト実行時は失敗を返す
-    Util.run_mode == 'ci' and return Util.to_json({'result' => 'never sang'})
-
-    song = {}
-    song['name'] = params[:name]
-    song['artist'] = params[:artist]
-
-    histories = @current_user.get_histories_by_song song
-    unless histories.empty?
-      Util.to_json({'result' => 'success' , 'songkey' => histories[0]['songkey']})
+    Util.run_mode == 'ci' and return error('never sang')
+    song = Song.name_to_id(params[:name], params[:artist]) or return error('never sang')
+    key = @current_user.search_songkey(song['song_id'])
+    if key
+      Util.to_json('result' => 'success' , 'songkey' => key)
     else
-      Util.to_json({'result' => 'never sang'})
+      error('never sang')
     end
   end
 
