@@ -1,6 +1,8 @@
 require_relative '../rbase'
 include Rbase
 
+url = '/history'
+
 # テスト用データベース構築
 init = proc do
   `zenra init -d 2016_03_14_21_21`
@@ -13,7 +15,7 @@ describe '歌手詳細ページ' do
   before(:all,&init)
   before do
     login 'sa2knight'
-    visit '/history'
+    visit url
   end
   it '歌手の楽曲一覧が正常に表示されるか' do
     examine_artistlink 'BUMP OF CHICKEN'
@@ -25,8 +27,8 @@ describe '歌手詳細ページ' do
   it 'リンクが正常に登録されているか' do
     songs = ['走れ' , '君に届け' , 'ロミオとシンデレラ']
     songs.each do |song|
-      examine_artistlink 'BUMP OF CHICKEN'
-      examine_songlink(song , 'BUMP OF CHICKEN')
+      examine_artistlink('BUMP OF CHICKEN' , url)
+      examine_songlink(song , 'BUMP OF CHICKEN' , url)
     end
   end
 end
