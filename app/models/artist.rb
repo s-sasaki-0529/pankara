@@ -12,9 +12,9 @@ class Artist < Base
 
   # songs - 楽曲一覧を取得
   #---------------------------------------------------------------------
-  def songs
+  def songs(opt = {})
     @params['songs'] = DB.new(
-      :SELECT => {'song.id' => 'song_id' , 'song.name' => 'song_name'} ,
+      :SELECT => {'song.id' => 'song_id' , 'song.name' => 'song_name' , 'song.url' => 'song_url'} ,
       :FROM => 'song' ,
       :WHERE => 'song.artist = ?' ,
       :SET => @params['id'] ,
@@ -24,16 +24,39 @@ class Artist < Base
   # songs_with_count - 楽曲の一覧と歌唱回数を取得
   #---------------------------------------------------------------------
   def songs_with_count(userid = nil)
-    db = DB.new(:SELECT => 'id' , :FROM => 'song' , :WHERE => 'artist = ?' , :SET => @params['id'])
-    id_list = db.execute_columns
-    songs = []
-    id_list.each do |id|
-      song = Song.new(id)
-      song.params['sangcount'] = song.sangcount({:without_user => userid})
-      userid and song.params['my_sangcount'] = song.sangcount({:target_user => userid})
-      songs.push song
+
+    @params['songs'] or self.songs
+    song_ids = @params['songs'].map { |s| s['song_id'] }
+
+    # 全体の歌唱回数集計
+    db = DB.new(
+      :SELECT => {'song' => 'song_id', 'COUNT(song)' => 'count'},
+      :FROM => 'history',
+      :WHERE_IN => ['song' , song_ids.length],
+      :SET => song_ids,
+      :OPTION => ['GROUP BY song' , 'ORDER BY count DESC']
+    )
+    db.execute_all
+    sang_counts = Util.array_to_hash(db.execute_all , 'song_id')
+    @params['songs'].each do |s|
+      id = s['song_id']
+      s['sang_count'] = sang_counts[id] ? sang_counts[id]['count'] : 0
     end
-    @params['songs'] = songs
+
+    # 指定ユーザの歌唱回数集計
+    if userid
+      user = User.new(:id => userid)
+      attend_ids = user.attend_ids
+      db.where_in(['attendance' , attend_ids.length])
+      db.set(attend_ids)
+      sang_counts_as_user = Util.array_to_hash(db.execute_all , 'song_id')
+      @params['songs'].each do |s|
+        id = s['song_id']
+        s['sang_count_as_user'] = sang_counts_as_user[id] ? sang_counts_as_user[id]['count'] : 0
+        s['sang_count'] -= s['sang_count_as_user']  #全体の歌った回数から自身の歌った回数を引く
+      end
+    end
+
   end
 
   # download_image - 歌手の画像を検索し、ローカルに保存する

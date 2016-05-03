@@ -88,6 +88,7 @@ class Song < Base
       :OPTION => ['GROUP BY history.song' , 'ORDER BY count DESC']
     )
 
+    #Todo 全体 - 自分 = 自分以外になるのでは！？
     if target = opt[:target_user]
       db.where 'attendance.user = ?'
       db.set target
@@ -99,8 +100,6 @@ class Song < Base
     count = db.execute_column
     return (count.nil?) ? 0 : count
   end
-
-  # songlist
 
   # tally_score - 得点の集計を得る
   # :score_type - 採点モードを指定

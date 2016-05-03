@@ -4,7 +4,7 @@
 require_relative 'util'
 class User < Base
 
-  # initialize(user) - usernameをインスタンスを生成
+  # initialize(user) - インスタンスを生成
   # User.new('sa2knight') - usernameがsa2knightのユーザを生成
   # User.new({:id => 1}) - idが1のユーザを生成
   #---------------------------------------------------------------------
