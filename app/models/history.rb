@@ -69,7 +69,7 @@ class History < Base
       :DISTINCT => true ,
       :SELECT => 'song' ,
       :FROM => 'history' ,
-      :OPTION => ['ORDER BY history.created_at' , "LIMIT #{limit}"]
+      :OPTION => ['ORDER BY history.id DESC' , "LIMIT #{limit}"]
     ).execute_columns
     songs.empty? and return []
 

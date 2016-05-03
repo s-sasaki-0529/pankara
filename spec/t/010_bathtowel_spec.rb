@@ -27,16 +27,16 @@ describe 'バスタオル' , :js => true do
   end
   it 'オンマウスで楽曲情報が表示されるか' do
     execute_script '$("#slider > li:first > img").trigger("mouseenter")'
-    expect(page.find('#bathtowel_info').text).to eq 'オンリーロンリーグローリー (BUMP OF CHICKEN)'
+    expect(page.find('#bathtowel_info').text).to eq 'シュガーソングとビターステップ (UNISON SQUARE GARDEN)'
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
     execute_script '$("#slider > li:first > img").trigger("click")'
     wait_for_ajax
-    expect(page.find('#ui-id-1').text).to eq 'オンリーロンリーグローリー (BUMP OF CHICKEN)'
+    expect(page.find('#ui-id-1').text).to eq 'シュガーソングとビターステップ (UNISON SQUARE GARDEN)'
     iframes = youtube_links()
     expect(iframes.length).to eq 1
-    expect(iframes[0]).to eq 'https://www.youtube.com/embed/WxByhSOkLDM'
+    expect(iframes[0]).to eq 'https://www.youtube.com/embed/3exsRhw3xt8'
     execute_script '$(".ui-dialog-title").trigger("click")'
-    expect(find('h2').text).to eq 'オンリーロンリーグローリー / BUMP OF CHICKEN'
+    expect(find('h2').text).to eq 'シュガーソングとビターステップ / UNISON SQUARE GARDEN'
   end
 end
