@@ -1,7 +1,9 @@
 #----------------------------------------------------------------------
 # ScoreType - 採点モードに関する情報
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
 class Attendance < Base
 
   # initialize イニシャライズ

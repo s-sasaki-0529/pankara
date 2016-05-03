@@ -1,7 +1,9 @@
 #----------------------------------------------------------------------
 # Product - 個々の機種に関する情報を操作
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
 class Product < Base
 
   @@list = {}

@@ -1,7 +1,17 @@
 #----------------------------------------------------------------------
 # User - 個々のユーザアカウントに関する情報を操作
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
+require_relative 'karaoke'
+require_relative 'user'
+require_relative 'score_type'
+require_relative 'product'
+require_relative 'register'
+require_relative 'twitter'
+require_relative 'friend'
+
 class User < Base
 
   # initialize(user) - インスタンスを生成

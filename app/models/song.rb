@@ -1,7 +1,10 @@
 #----------------------------------------------------------------------
 # Song - 楽曲に関する情報を操作
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
+require_relative 'score_type'
 class Song < Base
 
   # initialize - インスタンスを生成し、曲名、歌手名を取得する

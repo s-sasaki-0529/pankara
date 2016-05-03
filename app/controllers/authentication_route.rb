@@ -1,4 +1,5 @@
 require_relative './march'
+require_relative '../models/user'
 
 class AuthenticationRoute < March
 

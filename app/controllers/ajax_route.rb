@@ -1,4 +1,9 @@
 require_relative './march'
+require_relative '../models/product'
+require_relative '../models/score_type'
+require_relative '../models/song'
+require_relative '../models/karaoke'
+require_relative '../models/history'
 
 class LocalRoute < March
 

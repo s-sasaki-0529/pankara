@@ -1,7 +1,11 @@
 #----------------------------------------------------------------------
 # Ranking - 各種ランキングを生成するクラス
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'user'
+require_relative 'song'
+require_relative 'db'
 class Ranking < Base
 
   # score - クラスメソッド: 得点のランキングを取得

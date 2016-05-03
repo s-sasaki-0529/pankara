@@ -1,7 +1,9 @@
 #----------------------------------------------------------------------
 # Friend - 友達関係について整理するクラス
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
 class Friend < Base
 
   @@list = Hash.new { |h,k| h[k] = Hash.new(0) }

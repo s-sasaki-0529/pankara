@@ -1,4 +1,5 @@
 require_relative './march'
+require_relative '../models/song'
 
 class SongRoute < March
 

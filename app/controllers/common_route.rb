@@ -1,4 +1,6 @@
 require_relative './march'
+require_relative '../models/song'
+require_relative '../models/twitter'
 
 class CommonRoute < March
 

@@ -1,7 +1,12 @@
 #----------------------------------------------------------------------
 # History - 個々の歌唱履歴に関する情報を操作
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
+require_relative 'song'
+require_relative 'register'
+
 class History < Base
 
   # initialize - historyを取得

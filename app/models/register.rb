@@ -1,7 +1,10 @@
 #----------------------------------------------------------------------
 # Register - 歌唱履歴を作成する
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require_relative 'db'
+require_relative 'validate'
 class Register < Base
 
   attr_accessor :karaoke , :with_url

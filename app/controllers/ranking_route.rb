@@ -1,4 +1,6 @@
 require_relative './march'
+require_relative '../models/ranking'
+require_relative '../models/score_type'
 
 class RankingRoute < March
 

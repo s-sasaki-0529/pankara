@@ -1,7 +1,9 @@
 #----------------------------------------------------------------------
 # Twitter - ツイッターとの認証連携全般
 #----------------------------------------------------------------------
+require_relative 'base'
 require_relative 'util'
+require 'twitter_oauth'
 class Twitter < Base
 
   attr_reader :authed
