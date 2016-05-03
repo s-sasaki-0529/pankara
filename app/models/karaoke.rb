@@ -197,4 +197,27 @@ class Karaoke < Base
     return list
   end
 
+  # list - カラオケレコードの一覧を取得(list_allの簡易版)
+  #--------------------------------------------------------------------
+  def self.list(opt = {})
+    db = DB.new(
+      :SELECT => {
+        'id' => 'karaoke_id',
+        'name' => 'karaoke_name',
+        'datetime' => 'karaoke_datetime',
+        'plan' => 'karaoke_plan',
+        'store' => 'karaoke_store',
+        'product' => 'karaoke_product',
+      },
+      :FROM => 'karaoke',
+    )
+
+    # 対象のkaraokeを指定
+    if ids = opt[:ids]
+      db.where_in(['id' , ids.length])
+      db.set(ids)
+    end
+
+    db.execute_all
+  end
 end

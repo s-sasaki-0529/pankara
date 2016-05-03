@@ -31,7 +31,7 @@
     <% @histories.each do |history| %>
       <tr>
         <td><%= song_link history['song'], history['song_name'] %></td>
-        <td><%= artist_link history['artist'], history['artist_name'] %></td>
+        <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
       </tr>
     <% end %>
     </tr>

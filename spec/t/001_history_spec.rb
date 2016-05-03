@@ -38,8 +38,8 @@ describe '歌唱履歴ページ' do
     visit url
     tables = table_to_hash('history_table')
     expect(tables[0]['tostring']).to eq "2016-01-02,歌唱履歴テスト用カラオケ2,亜麻色の髪の乙女,島谷ひとみ,-5"
-    expect(tables[1]['tostring']).to eq "2016-01-01,歌唱履歴テスト用カラオケ1,天体観測,BUMP OF CHICKEN,0"
-    expect(tables[2]['tostring']).to eq "2016-01-01,歌唱履歴テスト用カラオケ1,RPG,SEKAI NO OWARI,-1"
+    expect(tables[1]['tostring']).to eq "2016-01-01,歌唱履歴テスト用カラオケ1,RPG,SEKAI NO OWARI,-1"
+    expect(tables[2]['tostring']).to eq "2016-01-01,歌唱履歴テスト用カラオケ1,天体観測,BUMP OF CHICKEN,0"
   end
   it 'リンクが正常に登録されているか' do
     login 'sa2knight'

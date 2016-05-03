@@ -20,33 +20,41 @@ class User < Base
     @params and reset_input_info
   end
 
-  # histories - 歌唱履歴を取得、limitを指定するとその行数だけ取得
+  # histories - ユーザの歌唱履歴と関連情報を取得
   #---------------------------------------------------------------------
   def histories(limit = 0)
+
+    # attendance / karaoke 一覧を取得
+    attend_info = self.attend_ids(:want_karaoke => true)
+    attend_ids = attend_info.map {|a| a['id']}
+    karaoke_ids = attend_info.map {|a| a['karaoke']}
+    ak_map = {}
+    attend_ids.each_with_index {|a,i| ak_map[a] = karaoke_ids[i]}
+
+    # 歌唱履歴を取得
     db = DB.new(
-      :SELECT => {
-        'karaoke.id' => 'karaoke_id' ,
-        'karaoke.name' => 'karaoke_name' ,
-        'karaoke.datetime' => 'datetime' ,
-        'history.song' => 'song' ,
-        'history.songkey' => 'songkey'
-      } ,
+      :SELECT => ['song' , 'songkey' , 'attendance'],
       :FROM => 'history' ,
-      :JOIN => [
-        ['history' , 'attendance'] ,
-        ['attendance' , 'karaoke']
-      ] ,
-      :WHERE => 'attendance.user = ?' ,
-      :SET => @params['id'] ,
-      :OPTION => 'ORDER BY datetime DESC' ,
+      :WHERE_IN => ['attendance' , attend_ids.length],
+      :SET => attend_ids ,
+      :OPTION => 'ORDER BY id desc'
     )
     db.option("LIMIT #{limit}") if limit > 0
     histories = db.execute_all
-    histories.each do | history |
-      song = Song.new(history['song'])
-      history['song_name'] = song.params['name']
-      history['artist'] = song.params['artist']
-      history['artist_name'] = song.params['artist_name']
+
+    # カラオケ情報を取得、attendanceと関連付け
+    karaoke_info = Util.array_to_hash(Karaoke.list(:ids => karaoke_ids) , 'karaoke_id')
+
+    # 各々の歌唱履歴に対応する楽曲、歌手情報を取得
+    songs = histories.map {|h| h['song']}
+    songs_info = Song.list(:songs => songs, :artist_info => true , :want_hash => true)
+
+    # それぞれをマージ
+    histories.each do | h |
+      song = h['song']
+      karaoke = ak_map[h['attendance']]
+      h.merge!(songs_info[song] || {})
+      h.merge!(karaoke_info[karaoke] || {})
     end
     return histories
   end
@@ -284,14 +292,20 @@ class User < Base
   end
 
   # attend_ids - 対応するattendanceの一覧を戻す
+  # opt[:want_karaoke] - attendance.id => karaoke.id のハッシュに変換
   #---------------------------------------------------------------------
-  def attend_ids
-    DB.new(
-      :SELECT => 'id',
+  def attend_ids(opt = {})
+    attend = DB.new(
+      :SELECT => ['id' , 'karaoke'],
       :FROM => 'attendance',
       :WHERE => 'user = ?',
       :SET => @params['id']
-    ).execute_columns
+    ).execute_all
+    if opt[:want_karaoke]
+      attend
+    else
+      attend.map {|a| a['id']}
+    end
   end
 
   # attended? - カラオケにすでに参加済みか確認する

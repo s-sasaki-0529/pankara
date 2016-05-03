@@ -12,10 +12,10 @@
   <tbody>
     <% @histories.each do |history| %>
     <tr>
-      <td class='center'><%= history['datetime'] %></td>
+      <td class='center'><%= history['karaoke_datetime'] %></td>
       <td class='center'><%= karaoke_link history['karaoke_id'] , history['karaoke_name'] %></td>
-      <td class='center'><%= song_link history['song'], history['song_name'] %></td>
-      <td class='center'><%= artist_link history['artist'], history['artist_name'] %></td>
+      <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
+      <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
       <td class='center'><%= history['songkey'] %></td>
     </tr>
     <% end %>

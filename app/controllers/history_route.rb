@@ -14,7 +14,7 @@ class HistoryRoute < March
     @user = User.new(params[:username])
     @histories = @user.histories
     @histories.each do |h|
-      h['datetime'] = h['datetime'].to_s.split(' ')[0]
+      h['karaoke_datetime'] = h['karaoke_datetime'].to_s.split(' ')[0]
     end
     erb :history
   end
