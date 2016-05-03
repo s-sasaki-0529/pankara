@@ -216,8 +216,7 @@ class Util
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
 
     File.open(filepath , 'a') do |f|
-      f.puts datetime
-      f.puts log
+      f.puts "[#{datetime}] #{log}"
     end
   end
 

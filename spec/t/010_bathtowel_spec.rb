@@ -27,16 +27,16 @@ describe 'バスタオル' , :js => true do
   end
   it 'オンマウスで楽曲情報が表示されるか' do
     execute_script '$("#slider > li:first > img").trigger("mouseenter")'
-    expect(page.find('#bathtowel_info').text).to eq 'カノン (宮野真守)'
+    expect(page.find('#bathtowel_info').text).to eq 'オンリーロンリーグローリー (BUMP OF CHICKEN)'
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
     execute_script '$("#slider > li:first > img").trigger("click")'
     wait_for_ajax
-    expect(page.find('#ui-id-1').text).to eq 'カノン (宮野真守)'
+    expect(page.find('#ui-id-1').text).to eq 'オンリーロンリーグローリー (BUMP OF CHICKEN)'
     iframes = youtube_links()
     expect(iframes.length).to eq 1
-    expect(iframes[0]).to eq 'https://www.youtube.com/embed/a6zJ9tWZgbM'
+    expect(iframes[0]).to eq 'https://www.youtube.com/embed/WxByhSOkLDM'
     execute_script '$(".ui-dialog-title").trigger("click")'
-    expect(find('h2').text).to eq 'カノン / 宮野真守'
+    expect(find('h2').text).to eq 'オンリーロンリーグローリー / BUMP OF CHICKEN'
   end
 end

@@ -62,25 +62,37 @@ class History < Base
   # recent_song - 最近歌われた楽曲のリストを戻す
   #---------------------------------------------------------------------
   def self.recent_song(limit = 20)
+    # 最近20件のhistoryを取得
+    # その楽曲名、歌手名、URLを取得
+
     songs = DB.new(
       :DISTINCT => true ,
+      :SELECT => 'song' ,
+      :FROM => 'history' ,
+      :OPTION => ['ORDER BY history.created_at' , "LIMIT #{limit}"]
+    ).execute_columns
+    songs.empty? and return []
+
+    songs_info = DB.new(
       :SELECT => {
           'song.id' => 'id' ,
           'song.name' => 'name' ,
           'song.url' => 'url' ,
           'artist.name' => 'artist'
       } ,
-      :FROM => 'history' ,
-      :JOIN => [ ['history' , 'song'] , ['song' , 'artist'] ] ,
+      :FROM => 'song' ,
+      :JOIN => ['song' , 'artist'] ,
       :WHERE => 'song.url IS NOT NULL' ,
-      :OPTION => ['ORDER BY history.created_at DESC' , "LIMIT #{limit}"]
+      :WHERE_IN => ['song.id' , songs.length] ,
+      :SET => songs
     ).execute_all #現在はURLがyoutubeであることが前提。今後はプレーヤー化できるかの情報も必要になる
-    songs.empty? and return []
+    songs_info.empty? and return []
 
-    while songs.length < limit
-      songs = (songs + songs).each_slice(limit).to_a[0]
+    # 重複を排除した結果limitを下回った場合、limistになるまで同じデータを繰り返す
+    while songs_info.length < limit
+      songs_info = (songs_info + songs_info).each_slice(limit).to_a[0]
     end
-    return songs
+    return songs_info
   end
 
 end
