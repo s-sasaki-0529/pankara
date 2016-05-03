@@ -38,7 +38,7 @@ class Ranking < Base
 
     #songから楽曲情報を取得
     songs = ranking.collect {|row| row['song']}
-    songs_info = Song.id_to_info(songs.uniq)
+    songs_info = Util.array_to_hash(Song.list(:songs => songs.uniq, :artist_info => true) , 'song_id')
 
     #各種情報をランキングにマージ
     ranking.each do |row|
