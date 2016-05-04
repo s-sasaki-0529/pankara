@@ -1,5 +1,15 @@
 <% if @current_user %>
-<form method="POST" action="/config">
+
+<!-- Todo: 画像のアップロードはjQueryでやったほうが良いかも。クライアント側で内容チェックできると尚良 -->
+<form method="POST" action="/config/icon" enctype="multipart/form-data">
+  <h3>アイコン設定</h3>
+  <p><%= user_icon @current_user['username'] , 48 , 48%></p>
+  <input type="file" name="icon_file">
+  <input type="submit" name="upload_icon_file" value="アップロード">
+  <%= csrftoken %>
+</form>
+
+<form method="POST" action="/config/twitter">
   <h3>Twitter連携</h3>
   <% if @twitter_authed %>
     <p>認証済み</p>

@@ -52,6 +52,24 @@ class Util
     File.exist?("app/public/#{user_icon}") ? user_icon : sample_icon
   end
 
+  # save_icon_file - 画像ファイルとユーザ名を指定し、アイコンファイルを上書きする
+  #--------------------------------------------------------------------
+  def self.save_icon_file(image , username)
+    accept_type = ['image/jpg' , 'image/jpeg' , 'image/png' , 'image/gif']
+    type = image[:type]
+    file = image[:tempfile]
+    # Todo: 画像サイズによる分岐
+    if accept_type.include?(type)
+      filepath = "app/public/image/user_icon/#{username}.png"
+      File.open(filepath , 'wb') do |f|
+        f.write file.read
+      end
+    else
+      return "アップロードできるファイルは、jpg/png/gifのみです"
+    end
+    return 'success'
+  end
+
   # search_image - 画像をbing画像検索より取得
   #---------------------------------------------------------------------
   def self.search_image(word , opt = {})

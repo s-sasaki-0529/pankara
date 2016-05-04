@@ -28,15 +28,7 @@ class CommonRoute < March
   #--------------------------------------------------------------------
   get '/config/?' do
 
-    # 認証情報が付与されていて、これから認証を行う場合
-    if params[:oauth_token] && verifier = params[:oauth_verifier]
-      req_token = session[:request_token] || ''
-      req_secret = session[:request_token_secret] || ''
-      twitter = Twitter.new(@current_user['username'])
-      twitter.get_access_token(req_token , req_secret , verifier)
-    end
-
-    # Twitterに既に認証済みの場合
+    # Twitterの認証状態を取得
     twitter = Twitter.new(@current_user['username'])
     if twitter.authed
       @twitter_authed = true
@@ -47,9 +39,30 @@ class CommonRoute < March
     erb :config
   end
 
-  # post '/config/?' - ユーザ設定ページ 設定を適用
+  # post '/config/icon/?' - アイコンファイルのアップロード
   #--------------------------------------------------------------------
-  post '/config/?' do
+  post '/config/icon/?' do
+    if params[:icon_file] && @current_user
+      result = Util.save_icon_file(params[:icon_file] , @current_user['username'])
+    end
+    redirect '/config/'
+  end
+
+  # get '/config/twitter/?' - ツイッター連携のリダイレクト先
+  #--------------------------------------------------------------------
+  get '/config/twitter/?' do
+    if params[:oauth_token] && verifier = params[:oauth_verifier]
+      req_token = session[:request_token] || ''
+      req_secret = session[:request_token_secret] || ''
+      twitter = Twitter.new(@current_user['username'])
+      twitter.get_access_token(req_token , req_secret , verifier)
+    end
+    redirect '/config/'
+  end
+
+  # post '/config/twitter/?' - ツイッター連携の設定を適用
+  #--------------------------------------------------------------------
+  post '/config/twitter/?' do
 
     username = @current_user['username']
 
@@ -63,9 +76,8 @@ class CommonRoute < March
     # Twitter認証解除リクエスト
     elsif params[:remove_oauth]
       Util.write_secret(username , nil)
-      redirect '/config'
+      redirect '/config/'
     end
-
     erb :config
   end
 

@@ -78,7 +78,7 @@ class March < Sinatra::Base
       name = h name
       return "<a href=/artist/#{id}>#{name}</a>"
     end
-    def user_icon(username , width , height)
+    def user_icon(username , width = 32 , height = 32)
       username = h username
       src = Util.icon_file(username)
       return "<img src='#{src}' alt='ユーザアイコン' width='#{width}' height='#{height}'>"
