@@ -337,10 +337,10 @@ class User < Base
   def tweet(text)
     twitter = Twitter.new(@params['username'])
     if twitter && twitter.authed
-      twitter.tweet("@null\n#{text}")
-      return 'Tweeted'
+      twitter.tweet(text)
+      return true
     else
-      return 'InvalidAuth'
+      return false
     end
   end
 

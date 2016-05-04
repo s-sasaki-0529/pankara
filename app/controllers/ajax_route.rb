@@ -166,10 +166,10 @@ class LocalRoute < March
     history['score_type'] = params[:score_type].to_i
 
     if @current_user
-      tweet = "#{history['song']}(#{history['artist']})を歌いました"
-      url = Util.url('karaoke' , 'detail' , karaoke_id)
+      #tweet = "#{history['song']}(#{history['artist']})を歌いました"
+      #url = Util.url('karaoke' , 'detail' , karaoke_id)
       @current_user.register_history karaoke_id, history
-      @current_user.tweet("#{tweet} #{url}")
+      #@current_user.tweet("#{tweet} #{url}")
       Util.to_json({'result' => 'success'})
     else
       Util.to_json({'result' => 'invalid current user'})
