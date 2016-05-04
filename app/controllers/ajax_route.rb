@@ -128,10 +128,7 @@ class LocalRoute < March
 
     if @current_user
       karaoke_id = @current_user.register_karaoke karaoke
-      tweet = "#{@current_user['screenname']}さんがカラオケに行きました"
-      url = Util.url('karaoke' , 'detail' , karaoke_id)
       @current_user.register_attendance karaoke_id, attendance
-      @current_user.tweet("#{tweet} #{url}")
       Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
     else
       Util.to_json({'result' => 'invalid current user'})
@@ -166,10 +163,7 @@ class LocalRoute < March
     history['score_type'] = params[:score_type].to_i
 
     if @current_user
-      #tweet = "#{history['song']}(#{history['artist']})を歌いました"
-      #url = Util.url('karaoke' , 'detail' , karaoke_id)
       @current_user.register_history karaoke_id, history
-      #@current_user.tweet("#{tweet} #{url}")
       Util.to_json({'result' => 'success'})
     else
       Util.to_json({'result' => 'invalid current user'})

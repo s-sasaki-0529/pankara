@@ -269,6 +269,11 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
+    if true #現在はツイートを強制
+      tweet = "#{@params['screenname']}さんがカラオケに行きました"
+      url = Util.url('karaoke' , 'detail' , karaoke_id)
+      self.tweet("#{tweet} #{url}")
+    end
     karaoke_id
   end
 
@@ -299,6 +304,12 @@ class User < Base
       score_type , 
       history['score']
     )
+
+    if false #現在はTweet無効
+      tweet = "#{history['song']}(#{history['artist']})を歌いました"
+      url = Util.url('karaoke' , 'detail' , karaoke_id)
+      self.tweet("#{tweet} #{url}")
+    end
   end
 
   # attend_ids - 対応するattendanceの一覧を戻す
@@ -331,17 +342,25 @@ class User < Base
     return attended.nil? ? false : true
   end
 
+  # twitter_account - Twitter認証済みの場合のみ、Twitterオブジェクトを戻す
+  #--------------------------------------------------------------------
+  def twitter_account
+    twitter = Twitter.new(@params['username'])
+    if twitter && twitter.authed
+      return twitter
+    else
+      return nil
+    end
+  end
+
   # tweet - ツイッターに投稿する。設定、認証状態の確認も行う
   # 戻り値 Tweeted: 成功 Ineffective: 設定無効 InvalidAuth: 認証エラー
   #---------------------------------------------------------------------
   def tweet(text)
-    twitter = Twitter.new(@params['username'])
-    if twitter && twitter.authed
+    if twitter = self.twitter_account
       twitter.tweet(text)
-      return true
-    else
-      return false
     end
+    return twitter
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得
