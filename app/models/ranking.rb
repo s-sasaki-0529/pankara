@@ -70,7 +70,7 @@ class Ranking < Base
     if user = opt[:user]
       attend_ids = user.attend_ids
       db.where_in(['attendance' , attend_ids.length])
-      db.set(attends)
+      db.set(attend_ids)
     end
 
     ranking = db.execute_all
