@@ -4,6 +4,7 @@
 @path.chomp!
 worker_processes 1 
 working_directory @path
-timeout 300
+timeout 30
+preload_app true
 stderr_path "#{@path}/logs/stderr.log"
 stdout_path "#{@path}/logs/stdout.log"
