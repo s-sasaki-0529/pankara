@@ -28,6 +28,15 @@ class CommonRoute < March
   #--------------------------------------------------------------------
   get '/config/?' do
 
+    #TwitterAPIからのリダイレクト
+    if params[:oauth_token] && verifier = params[:oauth_verifier]
+      req_token = session[:request_token] || ''
+      req_secret = session[:request_token_secret] || ''
+      twitter = Twitter.new(@current_user['username'])
+      twitter.get_access_token(req_token , req_secret , verifier)
+      redirect '/config/'
+    end
+
     # Twitterの認証状態を取得
     twitter = Twitter.new(@current_user['username'])
     if twitter.authed
@@ -51,13 +60,6 @@ class CommonRoute < March
   # get '/config/twitter/?' - ツイッター連携のリダイレクト先
   #--------------------------------------------------------------------
   get '/config/twitter/?' do
-    if params[:oauth_token] && verifier = params[:oauth_verifier]
-      req_token = session[:request_token] || ''
-      req_secret = session[:request_token_secret] || ''
-      twitter = Twitter.new(@current_user['username'])
-      twitter.get_access_token(req_token , req_secret , verifier)
-    end
-    redirect '/config/'
   end
 
   # post '/config/twitter/?' - ツイッター連携の設定を適用

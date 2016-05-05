@@ -305,7 +305,7 @@ class User < Base
       history['score']
     )
 
-    if false #現在はTweet無効
+    if @params['username'] == 'sa2knight' #現在は試験的にsa2knightのみツイート
       tweet = "#{history['song']}(#{history['artist']})を歌いました"
       url = Util.url('karaoke' , 'detail' , karaoke_id)
       self.tweet("#{tweet} #{url}")
