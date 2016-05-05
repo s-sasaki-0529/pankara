@@ -30,7 +30,7 @@
           未登録
         <% end %>
       </td>
-      <td class='center'><%= song_link song['id'], song['song_name'] %></td>
+      <td class='center'><%= song_link song['song_id'], song['song_name'] %></td>
       <% if @current_user %><td class='center'><%= song['sang_count_as_user'] %></td><% end %>
       <td class='center'><%= song['sang_count'] %></td>
     </tr>
