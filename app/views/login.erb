@@ -1,7 +1,35 @@
-<h4>ログインしてください</h4>
-<form method="POST" action="login">
-  <p>ユーザ名: <input type="text" name="username"></p>
-  <p>パスワード: <input type="password" name="password"></p>
-  <p><input type="submit" id="login_button" value="ログイン">
-  <%= csrftoken %>
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <h4>ログインしてください</h4>
+      <form method="POST" action="login">
+        <p>ユーザ名: <input type="text" name="username"></p>
+        <p>パスワード: <input type="password" name="password"></p>
+        <p><input type="submit" id="login_button" value="ログイン">
+        <%= csrftoken %>
+      </form>
+    </div>
+    <div class="col-sm-9">
+      <h3>パンダリンのカラオケランド(仮)とは</h3>
+      <p>
+        パンダリンのカラオケランド、通称「パンカラ」は、あなたのカラオケでの歌唱記録を管理、共有するWebサービスです。
+      </p>
+      <p>
+        例えば、<a href="/karaoke/detail/8" target="_blank">コチラ</a>のように、カラオケの日時、場所、時間、機種、メンバー、歌唱履歴などを一元管理します。入力したカラオケ記録は、様々な視点から集計(予定)され、それをユーザ間で共有することでカラオケをより楽しむことができるようになります。
+      </p>
+      <h3>テストユーザ募集</h3>
+      <p>
+        現在、パンカラでは本環境を用いたテストユーザーを募集しています。テストユーザになった方には、実際にカラオケに行った際に本サービスを通してカラオケを記録し、各機能を利用していただきたいと思います。
+      </p>
+      <p>
+        ご協力いただけるという方は、以下のいずれかのツイッターアカウントに対してリプライもしくはDMを送るようお願いします。
+      </p>
+      <ul>
+        <li><a href="https://twitter.com/Sa2Knight" target="_blank">@sa2knight</a> ※鍵垢のためフォロワーのみ</li>
+        <li><a href="https://twitter.com/unagi_pai21" target="_blank">@unagi_pai21</a></li>
+        <li><a href="https://twitter.com/backkomestage" target="_blank">@backkomestage</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
