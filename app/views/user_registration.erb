@@ -1,0 +1,25 @@
+<h4>新規登録</h4>
+<form method="POST" action="/user/registration">
+  <table border="0">
+    <tr>
+      <td>ニックネーム：</td>
+      <td><input type="text" name="screenname" value="<%= @params[:screenname] %>" autofocus/></td>
+    </tr>
+    <tr>
+      <td>ユーザ名：</td>
+      <td><input type="text" name="username" value="<%= @params[:username] %>"/></td>
+    </tr>
+    <tr>
+      <td>パスワード：</td>
+      <td><input type="password" name="password"/></td>
+    </tr>
+    <tr>
+      <td>再入力：</td>
+      <td><input type="password" name="repassword"/></td>
+    </tr>
+    <tr>
+      <td><input type="submit" id="register_button" value="登録"/></td>
+    </tr>
+  </table>
+  <%= csrftoken %>
+</form>
