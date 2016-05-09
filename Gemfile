@@ -3,12 +3,14 @@ gem "sinatra"
 gem "pry" 
 gem "ruby-mysql"
 gem "unicorn" 
-gem "watir-webdriver"
-gem 'rspec'
-gem 'capybara'
-gem 'capybara-webkit'
-gem 'headless'
-gem 'simplecov'
 gem 'twitter_oauth'
 gem 'get-twitter-oauth-token'
 gem 'searchbing'
+group :develop do
+  gem "watir-webdriver"
+  gem 'rspec'
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'headless'
+  gem 'simplecov'
+end
