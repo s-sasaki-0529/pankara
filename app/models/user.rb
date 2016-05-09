@@ -235,8 +235,11 @@ class User < Base
   # create - クラスメソッド ユーザを新規登録
   #---------------------------------------------------------------------
   def self.create(name , pw , screenname)
+    result = Validate.validate_user_info(name , pw , screenname)
+    (result[:result] == 'error') and return result
+
     db = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => name)
-    db.execute_row and return
+    db.execute_row and return Util.error('そのユーザ名はすでに使われています。' , 'hash')
 
     FileUtils.cp('app/public/image/sample_icon.png' , "app/public/image/user_icon/#{name}.png")  unless File.exists? "app/public/image/user_icon/#{name}.png"
 
@@ -244,6 +247,8 @@ class User < Base
       :INSERT => ['user' , ['username' , 'password' , 'screenname']] ,
       :SET => [name , pw , screenname] ,
     ).execute_insert_id
+
+    return result
   end
 
   # id_to_name - クラスメソッド useridに対応するusername,screennameを戻す

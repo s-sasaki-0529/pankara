@@ -1,4 +1,7 @@
 <h4>新規登録</h4>
+<% if @params[:reason] %>
+  <p style="color: #ff0000"><%= h @params[:reason] %></p>
+<% end %>
 <form method="POST" action="/user/registration">
   <table border="0">
     <tr>

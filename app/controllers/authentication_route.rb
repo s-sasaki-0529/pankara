@@ -16,6 +16,12 @@ class AuthenticationRoute < March
     redirect '/login'
   end
 
+  # get '/user/registration' - ユーザの新規登録画面を表示
+  #---------------------------------------------------------------------
+  get '/user/registration' do
+    erb :user_registration
+  end
+
   # post '/login' - ログインリクエスト
   #---------------------------------------------------------------------
   post '/login' do
@@ -46,19 +52,20 @@ class AuthenticationRoute < March
     end
   end
 
-  # get '/user/registration' - ユーザの新規登録画面を表示
-  #---------------------------------------------------------------------
-  get '/user/registration' do
-    erb :user_registration
-  end
-
   # post '/user/registration' - ユーザの登録をリクエスト
   #---------------------------------------------------------------------
   post '/user/registration' do
-    if User.new(@params[:username]).params.nil? and @params[:password] == @params[:repassword]
-      User.create(@params[:username] , @params[:password] , @params[:screenname])
-      erb :registration_successful
+    if @params[:password] == @params[:repassword]
+      ret = User.create(@params[:username] , @params[:password] , @params[:screenname])
+      
+      if ret[:result] == 'successful' 
+        erb :registration_successful
+      else
+        @params[:reason] = ret[:info]
+        erb :user_registration
+      end
     else
+      @params[:reason] = '再入力したパスワードが異なっています。'
       erb :user_registration
     end
   end
