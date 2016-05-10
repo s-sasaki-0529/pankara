@@ -19,6 +19,10 @@ class Attendance < Base
     arg.select! do |k , v|
       ['price' , 'memo'].include?(k)
     end
+
+    # @todo 後々削除
+    return if arg['price'].empty? and arg['memo'].empty?
+
     DB.new(
       :UPDATE => ['attendance' , arg.keys] ,
       :WHERE => 'id = ?' ,

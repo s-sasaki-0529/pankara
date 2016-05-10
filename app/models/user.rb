@@ -346,9 +346,10 @@ class User < Base
     end
   end
 
-  # attended? - カラオケにすでに参加済みか確認する
+  # get_attendance_id_at_karaoke - カラオケIDを元に参加済みのattendanceのIDを取得する
+  # 参加していないカラオケの場合はnilを返す
   #---------------------------------------------------------------------
-  def attended?(karaoke_id)
+  def get_attendance_id_at_karaoke(karaoke_id)
     attended = DB.new(
       :SELECT => ['id'] ,
       :FROM => 'attendance' ,
@@ -356,7 +357,7 @@ class User < Base
       :SET => [@params['id'] , karaoke_id]
     ).execute_column
 
-    return attended.nil? ? false : true
+    return attended
   end
 
   # twitter_account - Twitter認証済みの場合のみ、Twitterオブジェクトを戻す
