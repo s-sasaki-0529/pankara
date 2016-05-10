@@ -201,11 +201,7 @@ class Util
   #---------------------------------------------------------------------
   def self.error(mes , type = 'json')
     e = {:result => 'error' , :info => mes}
-    if type == 'json'
-      Util.to_json(e)
-    else
-      e
-    end
+    type == 'json' ? Util.to_json(e) : e
   end
 
   # write_log - ログを生成する
