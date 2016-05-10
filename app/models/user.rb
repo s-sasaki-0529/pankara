@@ -235,7 +235,7 @@ class User < Base
   # create - クラスメソッド ユーザを新規登録
   #---------------------------------------------------------------------
   def self.create(name , pw , screenname)
-    result = Validate.validate_user_info(name , pw , screenname)
+    result = validate_user_info(name , pw , screenname)
     (result[:result] == 'error') and return result
 
     db = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => name)
@@ -249,6 +249,16 @@ class User < Base
     ).execute_insert_id
 
     return result
+  end
+  
+  # validate_user_info - 入力されたユーザ情報がフォーマットに沿っているか確認する
+  #---------------------------------------------------------------------
+  def self.validate_user_info(name , password , screenname)
+    Validate.is_in_range?(screenname , 2 , 16) or return Util.error('ニックネームは2文字以上16文字以下で入力してください。' , 'hash')
+    Validate.include_special_character?(screenname) and return Util.error('<>$#%&"\'!はニックネームに使用できません。' , 'hash')
+    Validate.is_username?(name) or return Util.error('ユーザ名は4文字以上16文字以下の半角英数字で入力してください。' , 'hash')
+    Validate.is_password?(password) or return Util.error('パスワードは4文字以上の半角英数字で入力してください。' , 'hash')
+    return {:result => 'successful'}
   end
 
   # id_to_name - クラスメソッド useridに対応するusername,screennameを戻す
