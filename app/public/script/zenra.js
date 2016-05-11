@@ -566,9 +566,10 @@ var register = (function() {
         product: $('#product').val() ,
         price: $('#price').val() ,
         memo: $('#memo').val() ,
-        twitter: $('#tweet-checkbox').prop('checked') ,
       };
-
+      if ($('#tweet-checkbox').prop('checked')) {
+        data.twitter = 1;
+      }
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(result) {
           result_obj = zenra.parseJSON(result);
@@ -614,8 +615,10 @@ var register = (function() {
         songkey: $('#seekbar').slider('value') ,
         score: $('#score').val() ,
         score_type: $('#score_type').val() ,
-        twitter: $('#tweet-checkbox').prop('checked') ,
       };
+      if ($('#tweet-checkbox').prop('checked')) {
+        data.twitter = 1;
+      }
 
       if (action == 'register') {
         zenra.post('/ajax/history/create' , data , {

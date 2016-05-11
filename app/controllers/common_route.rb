@@ -57,11 +57,6 @@ class CommonRoute < March
     redirect '/config/'
   end
 
-  # get '/config/twitter/?' - ツイッター連携のリダイレクト先
-  #--------------------------------------------------------------------
-  get '/config/twitter/?' do
-  end
-
   # post '/config/twitter/?' - ツイッター連携の設定を適用
   #--------------------------------------------------------------------
   post '/config/twitter/?' do

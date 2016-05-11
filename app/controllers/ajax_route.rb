@@ -137,11 +137,11 @@ class LocalRoute < March
     attendance = {}
     attendance['price'] = params[:price].to_i
     attendance['memo'] = params[:memo]
-    twitter = params[:twitter]
+    opt = {:tweet => params[:twitter]}
 
     if @current_user
-      karaoke_id = @current_user.register_karaoke karaoke
-      @current_user.register_attendance karaoke_id, attendance
+      karaoke_id = @current_user.register_karaoke(karaoke , opt)
+      @current_user.register_attendance(karaoke_id , attendance)
       Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
     else
       Util.to_json({'result' => 'invalid current user'})
@@ -155,7 +155,6 @@ class LocalRoute < March
     karaoke_id = params[:karaoke_id]
     attendance['price'] = params[:price].to_i
     attendance['memo'] = params[:memo]
-    twitter = params[:twitter]
 
     if @current_user
       @current_user.register_attendance karaoke_id, attendance
@@ -175,9 +174,9 @@ class LocalRoute < March
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
-
+    opt = {:tweet => params[:twitter]}
     if @current_user
-      @current_user.register_history karaoke_id, history
+      @current_user.register_history(karaoke_id , history , opt)
       Util.to_json({'result' => 'success'})
     else
       Util.to_json({'result' => 'invalid current user'})

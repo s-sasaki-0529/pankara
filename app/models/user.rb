@@ -15,6 +15,7 @@ require_relative 'friend'
 class User < Base
 
   # initialize(user) - インスタンスを生成
+  # 正しいコンストラクタ引数が届くこと前提
   # User.new('sa2knight') - usernameがsa2knightのユーザを生成
   # User.new({:id => 1}) - idが1のユーザを生成
   #---------------------------------------------------------------------
@@ -28,6 +29,7 @@ class User < Base
       @params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
     end
     @params and reset_input_info
+    @params['has_twitter'] = Twitter.new(params['username']).authed
   end
 
   # histories - ユーザの歌唱履歴と関連情報を取得
@@ -306,7 +308,6 @@ class User < Base
   def register_history(karaoke_id , history , opt = {})
     @register.set_karaoke karaoke_id
     @register.attend_karaoke
-
     if history['score_type'] > 0
       score_type = ScoreType.id_to_name(history['score_type'], true)
     else
@@ -365,6 +366,7 @@ class User < Base
   def twitter_account
     twitter = Twitter.new(@params['username'])
     if twitter && twitter.authed
+      @params['has_twitter'] = true
       return twitter
     else
       return nil
