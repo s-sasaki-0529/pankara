@@ -278,7 +278,7 @@ class User < Base
 
   # register_karaoke - 入力されたカラオケをDBに登録する
   #---------------------------------------------------------------------
-  def register_karaoke(karaoke)
+  def register_karaoke(karaoke , opt = {})
     karaoke_id = @register.create_karaoke(
       karaoke['datetime'], 
       karaoke['name'], 
@@ -286,7 +286,7 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
-    if true #現在はツイートを強制
+    if opt[:tweet]
       tweet = "#{@params['screenname']}さんがカラオケに行きました"
       url = Util.url('karaoke' , 'detail' , karaoke_id)
       self.tweet("#{tweet} #{url}")
@@ -303,7 +303,7 @@ class User < Base
 
   # register_history - 入力された歌唱履歴をDBに登録する
   #---------------------------------------------------------------------
-  def register_history(karaoke_id, history)
+  def register_history(karaoke_id , history , opt = {})
     @register.set_karaoke karaoke_id
     @register.attend_karaoke
 
@@ -322,7 +322,7 @@ class User < Base
       history['score']
     )
 
-    if @params['username'] == 'sa2knight' #現在は試験的にsa2knightのみツイート
+    if opt[:tweet]
       tweet = "#{history['song']}(#{history['artist']})を歌いました"
       url = Util.url('karaoke' , 'detail' , karaoke_id)
       self.tweet("#{tweet} #{url}")

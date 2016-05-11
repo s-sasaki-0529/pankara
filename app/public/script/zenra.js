@@ -565,7 +565,8 @@ var register = (function() {
         branch: $('#branch').val() ,
         product: $('#product').val() ,
         price: $('#price').val() ,
-        memo: $('#memo').val()
+        memo: $('#memo').val() ,
+        twitter: $('#tweet-checkbox').prop('checked') ,
       };
 
       zenra.post('/ajax/karaoke/create' , data , {
@@ -613,6 +614,7 @@ var register = (function() {
         songkey: $('#seekbar').slider('value') ,
         score: $('#score').val() ,
         score_type: $('#score_type').val() ,
+        twitter: $('#tweet-checkbox').prop('checked') ,
       };
 
       if (action == 'register') {

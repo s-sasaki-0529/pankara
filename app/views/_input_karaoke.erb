@@ -67,6 +67,12 @@
         <textarea id="memo" name="memo" cols=60 rows=3></textarea>
       </div>
     </div>
+    <% if @twitter %>
+    <div>
+      <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
+      <label for="tweet-checkbox"> ツイートする</label>
+    </div>
+    <% end %>
     <div id="buttons">
       <input id="button1" type="button" value="" />
     </div>
