@@ -83,7 +83,17 @@ class LocalRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
+    
+    # @todo attendanceの編集のためにargを用意している。以下同様後々削除
+    attendance_arg = arg.dup
+
     result = karaoke.modify(arg)
+    
+    # @todo attendanceの情報を単独で変更できるようにするときに、以下のattendanceの編集処理は移動させる
+    attendance_id = @current_user.get_attendance_id_at_karaoke(params[:id])
+    attendance = Attendance.new(attendance_id)
+    attendance.modify(attendance_arg)
+
     return result ? success : error('modify failed')
   end
 
@@ -109,8 +119,8 @@ class LocalRoute < March
   # post '/ajax/attended/' - カラオケに参加済みか確認する
   #--------------------------------------------------------------------
   post '/ajax/attended' do
-    attended = @current_user.attended? params[:karaoke_id]
-    return Util.to_json({:attended => attended})
+    attended = @current_user.get_attendance_id_at_karaoke params[:karaoke_id]
+    return attended ? Util.to_json({:attended => true}) : Util.to_json({:attended => false})
   end
 
   # post '/ajax/karaoke/create' - カラオケ記録を登録する

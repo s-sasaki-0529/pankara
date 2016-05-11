@@ -644,7 +644,9 @@ var register = (function() {
         plan: $('#plan').val() ,
         store_name: $('#store').val() ,
         store_branch: $('#branch').val() ,
-        product: $('#product').val()
+        product: $('#product').val() ,
+        price: $('#price').val() ,
+        memo: $('#memo').val()
       });
 
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
