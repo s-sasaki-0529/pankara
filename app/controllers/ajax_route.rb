@@ -130,8 +130,8 @@ class LocalRoute < March
     karaoke['name'] = params[:name]
     karaoke['datetime'] = params[:datetime]
     karaoke['plan'] = params[:plan]
-    karaoke['store'] = params[:store]
-    karaoke['branch'] = params[:branch]
+    karaoke['store'] = params[:store_name]
+    karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
     attendance = {}
@@ -169,8 +169,8 @@ class LocalRoute < March
   post '/ajax/history/create' do
     history = {}
     karaoke_id = params[:karaoke_id]
-    history['song'] = params[:song]
-    history['artist'] = params[:artist]
+    history['song'] = params[:song_name]
+    history['artist'] = params[:artist_name]
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
