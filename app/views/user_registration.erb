@@ -1,9 +1,9 @@
-<h4>新規登録</h4>
+<h4>ユーザの新規登録</h4>
 <% if @params[:reason] %>
   <p style="color: #ff0000"><%= h @params[:reason] %></p>
 <% end %>
 <form method="POST" action="/user/registration">
-  <table border="0">
+  <table class="user_registration_table" border="0">
     <tr>
       <td>ニックネーム：</td>
       <td><input type="text" name="screenname" value="<%= @params[:screenname] %>" autofocus/></td>
@@ -21,7 +21,7 @@
       <td><input type="password" name="repassword"/></td>
     </tr>
     <tr>
-      <td><input type="submit" id="register_button" value="登録"/></td>
+      <td><input type="submit" id="registration_button" value="登録"/></td>
     </tr>
   </table>
   <%= csrftoken %>
