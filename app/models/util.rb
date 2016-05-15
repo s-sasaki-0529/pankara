@@ -31,6 +31,12 @@ class Util
     @@request = request
   end
 
+  # get_request - セション情報を取得
+  #--------------------------------------------------------------------
+  def self.get_request
+    @@request
+  end
+
   # url - URLを生成する
   #---------------------------------------------------------------------
   def self.url(*path)
