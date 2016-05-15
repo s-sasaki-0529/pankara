@@ -105,8 +105,12 @@ tr *.cell-datetime {
   overflow: hidden;
   white-space: nowrap;
 }
+.karaoke-price-block {
+  cursor: pointer !important;
+}
 .karaoke-memo-block {
   width: 760px !important;
+  cursor: pointer !important;
 }
 .karaoke-memo-block > .result {
   font-size: 22px !important;

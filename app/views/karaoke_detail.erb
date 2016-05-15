@@ -103,12 +103,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block karaoke-price-block center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
         <p class='description'>値段</p>
         <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] %></span>
         <span class='orange'>円</span>
       </div>
-      <div class="karaoke-result-block karaoke-memo-block center">
+      <div class="karaoke-result-block karaoke-memo-block center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
         <p class='description'>感想</p>
         <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] %></span>
       </div>

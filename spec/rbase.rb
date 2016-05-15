@@ -95,8 +95,6 @@ module Rbase
     fill_in 'store', with: '歌広場'
     fill_in 'branch', with: '相模大野店'
     select 'JOYSOUND MAX', from: 'product'
-    fill_in 'price', with: '620'
-    fill_in 'memo', with: '楽しかった'
   end
 
   def input_history_with_data(history, num = 0)

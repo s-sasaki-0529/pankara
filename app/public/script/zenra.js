@@ -285,6 +285,12 @@ var register = (function() {
     }
   }
 
+  /*[method] 参加入力欄に情報をセットする*/
+  function setAttendanceToInput(attendance) {
+    $('#price').val(attendance['price']);
+    $('#memo').val(attendance['memo']);
+  }
+  
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
   function createWidgetForKaraoke() {
     // お店のもしかしてリスト作成
@@ -446,6 +452,24 @@ var register = (function() {
     $('#buttons').append(button3);
   }
   
+  /*[method] 参加情報入力画面用の要素を作成する*/
+  function createElementForEditAttendance(karaoke_id , action) {
+    var action_button = $('<input>').attr('id' , 'action_button').attr('type' , 'button');
+    var cancel_button = $('<input>').attr('id' , 'cancel_button').attr('type' , 'button');
+
+    if (action == 'registration') {
+      action_button.attr('onclick' , 'register.submintAttendanceRegistrationRequest(' + karaoke_id + ');').val('次へ');
+    }
+    else {
+      action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
+    }
+
+    cancel_button.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    var buttons = $('#buttons');
+    buttons.append(action_button);
+    buttons.append(cancel_button);
+  }
+  
   /*[method] 歌唱履歴編集画面用の要素を作成する*/
   function createElementForEditHistory(karaoke_id , history_id) {
     var label = $('<label></label>').attr('for' , 'score').html('URL:');
@@ -488,6 +512,16 @@ var register = (function() {
 
     return data;
   }
+  
+  /*[method] 入力された参加情報データを取得する*/
+  function getAttendanceData() {
+    var data = {
+      price: $('#price').val() ,
+      memo: $('#memo').val() ,
+    };
+
+    return data;
+  }
 
   return {
     /*[Method] カラオケ入力画面を表示する*/
@@ -510,15 +544,7 @@ var register = (function() {
           beforeClose: beforeClose
         } ,
         func_at_load: function() {
-          var input_attendance = $('#input_attendance').attr('class' , 'input_dialog');
-          var buttons = $('<div></div>').attr('id' , 'buttons');
-          var nextButton = $('<input>').attr('id' , 'nextButton').attr('type' , 'button');
-          var cancelButton = $('<input>').attr('id' , 'cancelButton').attr('type' , 'button');
-          nextButton.attr('onclick' , 'register.submintAttendanceRegistrationRequest(' + karaoke_id + ');').val('次へ');
-          cancelButton.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
-          buttons.append(nextButton);
-          buttons.append(cancelButton);
-          input_attendance.append(buttons);
+          createElementForEditAttendance(karaoke_id , 'registration');
         }
       });
     } ,
@@ -573,19 +599,20 @@ var register = (function() {
     
     /*[Method] 参加情報編集画面を表示する*/
     editAttendance : function(karaoke_id) {
-      zenra.showDialog('参加情報編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
-        funcs: {
-          beforeClose: beforeClose
-        } ,
-        func_at_load: function() {
-          var buttons = $('<div></div>').attr('id' , 'buttons');
-          var saveButton = $('<input>').attr('id' , 'saveButton').attr('type' , 'button');
-          var cancelButton = $('<input>').attr('id' , 'cancelButton').attr('type' , 'button');
-          nextButton.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
-          cancelButton.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
-          buttons.append(saveButton);
-          buttons.append(cancelButton);
-          $('#input_attendance').append(buttons);
+      zenra.post('/ajax/attendance' , {id: karaoke_id} , {
+        success: function(result) {
+          var attendance = zenra.parseJSON(result);
+      
+          zenra.showDialog('参加情報編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
+            funcs: {
+              beforeClose: beforeClose
+            } ,
+            func_at_load: function() {
+              createElementForEditAttendance(karaoke_id , 'edit');
+
+              setAttendanceToInput(attendance);
+            }
+          });
         }
       });
     } ,
@@ -670,7 +697,20 @@ var register = (function() {
 
     /*[Method] 参加情報編集リクエストを送信する*/
     submintAttendanceEditRequest : function(karaoke_id) {
-      console.log('edit attedance' + karaoke_id);
+      var json_data = zenra.toJSON(getAttendanceData());
+      
+      zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
+        success: function(json_result) {
+          result = zenra.parseJSON(json_result);
+
+          if (result['result'] == 'success') {
+            location.href = ('/karaoke/detail/' + karaoke_id);
+          }
+          else {
+            alert('参加情報の編集に失敗しました');
+          }
+        }
+      });
     } ,
 
     /*[Method] 歌唱履歴登録リクエストを送信する*/

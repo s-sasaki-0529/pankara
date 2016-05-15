@@ -297,8 +297,9 @@ class User < Base
   end
 
   # register_attendance - 入力された出席情報をDBに登録する
+  # attendanceの引数を与えないと値段、感想は空で登録できる
   #---------------------------------------------------------------------
-  def register_attendance(karaoke_id, attendance)
+  def register_attendance(karaoke_id, attendance = {})
     @register.set_karaoke karaoke_id
     @register.attend_karaoke(attendance['price'] , attendance['memo'])
   end
@@ -350,15 +351,15 @@ class User < Base
   # get_attendance_id_at_karaoke - カラオケIDを元に参加済みのattendanceのIDを取得する
   # 参加していないカラオケの場合はnilを返す
   #---------------------------------------------------------------------
-  def get_attendance_id_at_karaoke(karaoke_id)
-    attended = DB.new(
-      :SELECT => ['id'] ,
+  def get_attendance_at_karaoke(karaoke_id)
+    attendance = DB.new(
+      :SELECT => ['id' , 'price' , 'memo'] ,
       :FROM => 'attendance' ,
       :WHERE => ['user = ?' , 'karaoke = ?'] ,
       :SET => [@params['id'] , karaoke_id]
-    ).execute_column
+    ).execute_row
 
-    return attended
+    return attendance
   end
 
   # twitter_account - Twitter認証済みの場合のみ、Twitterオブジェクトを戻す
