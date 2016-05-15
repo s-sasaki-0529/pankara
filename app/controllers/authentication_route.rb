@@ -6,6 +6,7 @@ class AuthenticationRoute < March
   # get '/login' - ログイン画面へのアクセス
   #---------------------------------------------------------------------
   get '/login' do
+    @callback = params[:callback]
     erb :login
   end
 
