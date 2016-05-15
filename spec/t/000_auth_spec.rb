@@ -31,4 +31,15 @@ describe '認証系ページ' do
     visit '/logout'
     iscontain message
   end
+  it 'ログイン成功時に直前のページにリダイレクト' do
+    visit '/logout'
+    visit '/artist_list'
+    iscontain 'アーティスト一覧'
+    link 'ログイン'
+    iscontain message
+    fill_in 'username' , with: 'march_user'
+    fill_in 'password' , with: 'march_user'
+    find('#login_button').click
+    iscontain 'アーティスト一覧'
+  end
 end

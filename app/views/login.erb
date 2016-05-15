@@ -2,10 +2,11 @@
   <div class="row">
     <div class="col-sm-3">
       <h4>ログインしてください</h4>
-      <form method="POST" action="login">
+      <form method="POST">
         <p>ユーザ名: <input type="text" name="username"></p>
         <p>パスワード: <input type="password" name="password"></p>
         <p><input type="submit" id="login_button" value="ログイン"></p>
+        <input type="hidden" name="callback" value="<%= @callback %>">
         <%= csrftoken %>
       </form>
     </div>

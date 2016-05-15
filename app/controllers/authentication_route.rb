@@ -6,6 +6,7 @@ class AuthenticationRoute < March
   # get '/login' - ログイン画面へのアクセス
   #---------------------------------------------------------------------
   get '/login' do
+    @callback = params[:callback]
     erb :login
   end
 
@@ -28,9 +29,13 @@ class AuthenticationRoute < March
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
       session[:logined] = User.new(@params[:username])
-      redirect '/'
+      if callback = params[:callback]
+        redirect callback
+      else
+        redirect '/'
+      end
     else
-      redirect '/login'
+      redirect Util.request.url
     end
   end
 
