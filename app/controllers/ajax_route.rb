@@ -157,19 +157,17 @@ class LocalRoute < March
     end
   end
 
-  # post '/ajax/attendance/create' - 出席情報のみ登録する
+  # post '/ajax/attendance/create' - 参加情報を値段と感想は空のまま登録する
   #---------------------------------------------------------------------
   post '/ajax/attendance/create' do
     attendance = {}
     karaoke_id = params[:karaoke_id]
-    attendance['price'] = params[:price].to_i
-    attendance['memo'] = params[:memo]
 
     if @current_user
-      @current_user.register_attendance karaoke_id, attendance
+      @current_user.register_attendance karaoke_id
       Util.to_json({'result' => 'success'})
     else
-      Util.to_json({'result' => 'invalid current user'})
+      Util.error('invalid current user')
     end
   end
   

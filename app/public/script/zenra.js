@@ -551,28 +551,15 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      // 既にカラオケに参加済みか確認する
-      zenra.post('/ajax/attended' , {karaoke_id: karaoke_id} , {
-        success: function(result) {
-          var attended = zenra.parseJSON(result);
-         
-          if (attended['attended']) {
-            zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
-              func_at_load: function() {
-                createWidgetForHistory();
+      zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
+        func_at_load: function() {
+          createWidgetForHistory();
 
-                $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-                $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
-              } ,
-              funcs: {
-                beforeClose: beforeClose
-              }
-            });
-          }
-          // まだ参加していない場合参加情報を入力する
-          else {
-            register.createAttendance(karaoke_id);
-          }
+          $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
+          $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
+        } ,
+        funcs: {
+          beforeClose: beforeClose
         }
       });
     } ,
@@ -678,21 +665,8 @@ var register = (function() {
 
     /*[Method] 参加情報登録リクエストを送信する*/
     submintAttendanceRegistrationRequest : function(karaoke_id) {
-      var data = {
-        karaoke_id: karaoke_id ,
-        price: $('#price').val() ,
-        memo: $('#memo').val()
-      };
-
-      zenra.post('/ajax/attendance/create' , data , {});
-      zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
-        func_at_load: function() {
-          createWidgetForHistory();
-
-          $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-          $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
-        }
-      });
+      var data = {karaoke_id: karaoke_id};
+      zenra.post('/ajax/attendance/create' , data , {async: false});
     } ,
 
     /*[Method] 参加情報編集リクエストを送信する*/
@@ -723,6 +697,9 @@ var register = (function() {
       }
 
       if (action == 'continue') {
+        // 参加情報の登録リクエストを送信する
+        register.submintAttendanceRegistrationRequest(karaoke_id);
+      
         zenra.post('/ajax/history/create' , data , {
           success: function(result) {
             count += 1;
