@@ -31,9 +31,9 @@ class Util
     @@request = request
   end
 
-  # get_request - セション情報を取得
+  # request - セション情報を取得
   #--------------------------------------------------------------------
-  def self.get_request
+  def self.request
     @@request
   end
 
@@ -111,6 +111,17 @@ class Util
       return nil
     else
       return self.search_tube(song , "")
+    end
+  end
+
+  # login_url - ログインページヘのURLを生成する
+  #--------------------------------------------------------------------
+  def self.login_url
+    path = @@request.path
+    if path == '/login'
+      return path
+    else
+      return "/login?callback=#{path}"
     end
   end
 

@@ -21,7 +21,7 @@ class IndexRoute < March
       @song_list = History.recent_song
       erb :index
     else
-      erb :login
+      redirect '/login'
     end
   end
 
