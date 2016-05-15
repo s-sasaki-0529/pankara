@@ -17,8 +17,6 @@ karaoke_contents = [
   '店',
   '店舗',
   '機種',
-  '値段',
-  '感想'
 ]
 history_contents = [
   '曲名', 
@@ -51,17 +49,18 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   
   it 'ダイアログの画面が正常に遷移されるか' do
     input_karaoke
-    js 'register.onPushedRegisterKaraokeButton("create");'
+    click_on '次へ'
     iscontain history_contents
   end
 
   it '入力内容が正しく登録されるか' do
     input_karaoke
-    js 'register.onPushedRegisterKaraokeButton("create");'
+    click_on '次へ'
    
     input_history_with_data history_data, 1
-    js 'register.onPushedRegisterHistoryButton("register");'
-    js 'register.onPushedRegisterHistoryButton("end");'
+    click_on '続けて登録'
+    wait_for_ajax
+    click_on '終了'
     
     karaoke = [
       '2016-02-20',
@@ -85,25 +84,27 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
   it '入力された件数が正しく表示されるか' do
     input_karaoke
-    js 'register.onPushedRegisterKaraokeButton("create");'
+    click_on '次へ'
    
     3.times do |i|
       input_history i
-      js 'register.onPushedRegisterHistoryButton("register");'
+      click_on '続けて登録'
       iscontain "#{i + 1}件入力されました"
+      wait_for_ajax
     end
   end
   
   it '20件登録されるか' do
     input_karaoke
-    js 'register.onPushedRegisterKaraokeButton("create");'
+    click_on '次へ'
    
     20.times do |i|
       input_history i
-      js 'register.onPushedRegisterHistoryButton("register");'
+      click_on '続けて登録'
+      wait_for_ajax
     end
 
-    js 'register.onPushedRegisterHistoryButton("end");'
+    click_on '終了'
   
     histories = []
     20.times do |i|

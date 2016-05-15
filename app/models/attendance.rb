@@ -20,15 +20,20 @@ class Attendance < Base
       ['price' , 'memo'].include?(k)
     end
 
-    # @todo 後々削除
-    return if arg['price'].empty? and arg['memo'].empty?
-
-    DB.new(
+    result = DB.new(
       :UPDATE => ['attendance' , arg.keys] ,
       :WHERE => 'id = ?' ,
       :SET => arg.values.push(@params['id'])
     ).execute
-    @params = DB.new.get('attendance' , @params['id'])
+
+    if result
+      old_params = @params
+      @params = DB.new.get('attendance' , old_params['id'])
+      Util.write_log('event' , "【参加情報修正】#{old_params} → #{@params}")
+      return true
+    else
+      return false
+    end
   end
 
   # delete - レコードを削除

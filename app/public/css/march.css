@@ -105,8 +105,12 @@ tr *.cell-datetime {
   overflow: hidden;
   white-space: nowrap;
 }
+.karaoke-price-block {
+  cursor: pointer !important;
+}
 .karaoke-memo-block {
   width: 760px !important;
+  cursor: pointer !important;
 }
 .karaoke-memo-block > .result {
   font-size: 22px !important;
@@ -134,4 +138,9 @@ tr *.cell-datetime {
 }
 .input_dialog #buttons input {
   margin-right: 20px;
+}
+
+/* ユーザ登録画面の入力フォーム調整クラス */
+.user_registration_table tr {
+  height: 30px;
 }

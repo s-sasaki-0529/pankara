@@ -5,18 +5,21 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "インテグレーションテストを実施"
-  echo "  Usage: zenra $PROGNAME [-t testcode]"
+  echo "  Usage: zenra $PROGNAME [-s seed] [-t testcode]"
   echo "オプション"
+  echo "  -s シードを指定することでテスト順序を固定に"
   echo "  -t 通し番号を指定して特定のテストのみ行う"
   exit 1
 }
 
 # オプション解析
-while getopts t:h OPT
+while getopts s:t:h OPT
 do
   case $OPT in
   h)  usage
       exit 1
+      ;;
+  s)  VALUE_S=$OPTARG
       ;;
   t)  VALUE_T=$OPTARG
       ;;
@@ -28,11 +31,17 @@ shift $((OPTIND - 1))
 cd $MARCHDIR
 bundle exec ruby "bin/scripts/set_config.rb" set run_mode ci
 bundle exec ruby "bin/scripts/set_config.rb" unset auto_login
-if [ -n "$VALUE_T" ]; then
-  bundle exec rspec spec/t/${VALUE_T}*
-else
-  bundle exec rspec
+
+if [ -n "$VALUE_S" ]; then
+  seed="--seed $VALUE_S"
 fi
+
+if [ -n "$VALUE_T" ]; then
+  bundle exec rspec spec/t/${VALUE_T}* $seed
+else
+  bundle exec rspec $seed
+fi
+
 cp -r coverage app/public/
 rm -rf coverage
 echo $'\a' 

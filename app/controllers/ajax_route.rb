@@ -52,6 +52,14 @@ class LocalRoute < March
     Util.to_json(Store.list)
   end
 
+  # post '/ajax/attendance' - 参加情報をJSONで戻す
+  #---------------------------------------------------------------------
+  post '/ajax/attendance' do
+    attendance = @current_user.get_attendance_at_karaoke(params[:id])
+    
+    return attendance ? Util.to_json(attendance) : error('get attendance failed')
+  end
+  
   # post '/ajax/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
   #---------------------------------------------------------------------
   post '/ajax/karaokelist/?' do
@@ -83,17 +91,21 @@ class LocalRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
-    
-    # @todo attendanceの編集のためにargを用意している。以下同様後々削除
-    attendance_arg = arg.dup
 
     result = karaoke.modify(arg)
-    
-    # @todo attendanceの情報を単独で変更できるようにするときに、以下のattendanceの編集処理は移動させる
-    attendance_id = @current_user.get_attendance_id_at_karaoke(params[:id])
-    attendance = Attendance.new(attendance_id)
-    attendance.modify(attendance_arg)
+    return result ? success : error('modify failed')
+  end
+  
+  # post '/ajax/attendance/modify/?' - 参加情報を編集する
+  #--------------------------------------------------------------------
+  post '/ajax/attendance/modify/?' do
+    attendance_info = @current_user.get_attendance_at_karaoke(params[:id])
+    attendance_info or return error('not found attendance')
 
+    attendance = Attendance.new(attendance_info['id'])
+    arg = Util.to_hash(params[:params])
+    result = attendance.modify(arg)
+    
     return result ? success : error('modify failed')
   end
 
@@ -119,7 +131,7 @@ class LocalRoute < March
   # post '/ajax/attended/' - カラオケに参加済みか確認する
   #--------------------------------------------------------------------
   post '/ajax/attended' do
-    attended = @current_user.get_attendance_id_at_karaoke params[:karaoke_id]
+    attended = @current_user.get_attendance_at_karaoke params[:karaoke_id]
     return attended ? Util.to_json({:attended => true}) : Util.to_json({:attended => false})
   end
 
@@ -130,37 +142,32 @@ class LocalRoute < March
     karaoke['name'] = params[:name]
     karaoke['datetime'] = params[:datetime]
     karaoke['plan'] = params[:plan]
-    karaoke['store'] = params[:store]
-    karaoke['branch'] = params[:branch]
+    karaoke['store'] = params[:store_name]
+    karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
-    attendance = {}
-    attendance['price'] = params[:price].to_i
-    attendance['memo'] = params[:memo]
     opt = {:tweet => params[:twitter]}
 
     if @current_user
       karaoke_id = @current_user.register_karaoke(karaoke , opt)
-      @current_user.register_attendance(karaoke_id , attendance)
+      @current_user.register_attendance(karaoke_id)
       Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
     else
       Util.to_json({'result' => 'invalid current user'})
     end
   end
 
-  # post '/ajax/attendance/create' - 出席情報のみ登録する
+  # post '/ajax/attendance/create' - 参加情報を値段と感想は空のまま登録する
   #---------------------------------------------------------------------
   post '/ajax/attendance/create' do
     attendance = {}
     karaoke_id = params[:karaoke_id]
-    attendance['price'] = params[:price].to_i
-    attendance['memo'] = params[:memo]
 
     if @current_user
-      @current_user.register_attendance karaoke_id, attendance
+      @current_user.register_attendance karaoke_id
       Util.to_json({'result' => 'success'})
     else
-      Util.to_json({'result' => 'invalid current user'})
+      Util.error('invalid current user')
     end
   end
   
@@ -169,8 +176,8 @@ class LocalRoute < March
   post '/ajax/history/create' do
     history = {}
     karaoke_id = params[:karaoke_id]
-    history['song'] = params[:song]
-    history['artist'] = params[:artist]
+    history['song'] = params[:song_name]
+    history['artist'] = params[:artist_name]
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
