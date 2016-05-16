@@ -1,5 +1,7 @@
 require_relative "../../app/models/util"
-DB.connect
+require_relative "../../app/models/song"
+require_relative "../../app/models/artist"
+require_relative "../../app/models/store"
 
 # song
 songs = DB.new(:SELECT => 'id' , :FROM => 'song').execute_columns
