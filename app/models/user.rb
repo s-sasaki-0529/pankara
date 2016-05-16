@@ -288,7 +288,7 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
-    if opt[:tweet]
+    if opt[:tweet] && opt[:tweet] == "1"
       tweet = "#{@params['screenname']}さんがカラオケに行きました"
       url = Util.url('karaoke' , 'detail' , karaoke_id)
       self.tweet("#{tweet} #{url}")
@@ -324,7 +324,7 @@ class User < Base
       history['score']
     )
 
-    if opt[:tweet]
+    if opt[:tweet] && opt[:tweet] == "1"
       tweet = "#{history['song']}(#{history['artist']})を歌いました"
       url = Util.url('karaoke' , 'detail' , karaoke_id)
       self.tweet("#{tweet} #{url}")
