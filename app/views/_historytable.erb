@@ -1,6 +1,7 @@
 <table id="karaoke_detail_history_<%= @tag %>" class="table sortable table-hover">
   <thead>
     <tr>
+      <th class='center'>#</th>
       <th class='center' width='140'>ユーザー</th>
       <th class='center' width='160'>動画</th>
       <th class='center' width='20%'>曲名</th>
@@ -14,6 +15,7 @@
   <tbody>
     <% @histories.each_with_index do |history , idx| %>
     <tr>
+      <td class='center'><%= idx + 1 %></td>
       <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
       <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='160'>
         <% if history['song_url'] %>
