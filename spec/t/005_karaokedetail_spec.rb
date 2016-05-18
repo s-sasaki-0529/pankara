@@ -41,12 +41,12 @@ describe 'カラオケ詳細ページ' do
   it '集計が正常に表示されるか' , :js => true do
     find('#tab_all').click
     expect(find('#sang_count_all').text).to eq '75'
-    expect(find('#most_sang_artist_all').text).to eq '放課後ティータイム'
+    expect(find('#sang_artist_count_all').text).to eq '64'
     expect(find('#max_score_all').text).to eq '97.00'
     expect(find('#avg_score_all').text).to eq '80.30'
     find('#tab_1').click
     expect(find('#sang_count_1').text).to eq '25'
-    expect(find('#most_sang_artist_1').text).to eq 'BUMP OF CHICKEN'
+    expect(find('#sang_artist_count_1').text).to eq '24'
     expect(find('#max_score_1').text).to eq '97.00'
     expect(find('#avg_score_1').text).to eq '81.57'
     expect(find('#price_1').text).to eq '1600'

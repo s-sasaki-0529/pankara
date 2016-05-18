@@ -59,8 +59,9 @@
         <span class='orange'>曲</span>
       </div>
       <div class="karaoke-result-block center">
-        <p class='description'>一番歌われた歌手</p>
-        <p id='most_sang_artist_all' class='result orange'><%= @karaoke['most_sang_artist_name'] %></p>
+        <p class='description'>歌った歌手数</p>
+        <span id='sang_artist_count_all' class='result orange'><%= @karaoke['artist_count'] %></span>
+        <span class='orange'>組</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
@@ -88,8 +89,9 @@
         <span class='orange'>曲</span>
       </div>
       <div class="karaoke-result-block center">
-        <p class='description'>一番歌われた歌手</p>
-        <p id="most_sang_artist_<%= member['userid'] %>" class='result orange'><%= member['most_sang_artist_name'] %></p>
+        <p class='description'>歌った歌手数</p>
+        <span id="sang_artist_count_<%= member['userid'] %>" class='result orange'><%= member['artist_count'] %></span>
+        <span class='orange'>組</span>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
