@@ -71,6 +71,7 @@
           <% if @current_user %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= user_icon(@current_user['username'] , 24 , 24) %>
               <%= h @current_user['screenname'] %> <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
