@@ -67,33 +67,48 @@ describe 'カラオケ詳細ページ' do
   describe 'Attendnaceの編集' , :js => true do
     it '値段' do
       find('#tab_1').click
-      iscontain '1600 円'
-      find('#price_1').click
-      wait_for_ajax
+      expect(find('#price_1').text).to eq '1600'
+
+      find('#price_1').click; wait_for_ajax
       fill_in 'price' , with: '1234567'
-      click_on '保存'
-      wait_for_ajax
+      click_on '保存'; wait_for_ajax
       find('#tab_1').click
-      islack '1600 円'
-      iscontain '1234567 円'
+      expect(find('#price_1').text).to eq '1234567'
+
+      find('#price_1').click; wait_for_ajax
+      fill_in 'price' , with: '1600'
+      click_on '保存'; wait_for_ajax
+      find('#tab_1').click
+      expect(find('#price_1').text).to eq '1600'
     end
     it '感想' do
+      old = 'へたれとちゃらさんと３人で'
       find('#tab_1').click
-      iscontain 'へたれとちゃらさんと３人で'
-      find('#memo_1').click
-      wait_for_ajax
-      fill_in 'memo' , with: '変更後のメモ'
-      click_on '保存'
-      wait_for_ajax
+      expect(find('#memo_1').text).to eq old
+
+      js('register.editAttendance(8)')
+      fill_in 'memo' , with: '変更後のテキスト'
+      click_on '保存'; wait_for_ajax
       find('#tab_1').click
-      islack 'へたれとちゃらさんと３人で'
-      iscontain '変更後のメモ'
+      expect(find('#memo_1').text).to eq '変更後のテキスト'
+
+      js('register.editAttendance(8)')
+      fill_in 'memo' , with: old
+      click_on '保存'; wait_for_ajax
+      find('#tab_1').click
+      expect(find('#memo_1').text).to eq old
     end
   end
-  describe '歌唱履歴の追加' do
-    it '参加済みユーザで登録' do
-    end
-    it '未参加ユーザで登録' do
-    end
+  it '歌唱履歴登録' , :js => true do
+      expect(table_to_hash('karaoke_detail_history_all').length).to eq 75
+      js('register.createHistory(8)')
+      fill_in 'song' , with: '新しい楽曲'
+      fill_in 'artist' , with: '新しい歌手'
+      click_on '続けて登録'; wait_for_ajax
+      click_on '終了'; wait_for_ajax
+      expect(table_to_hash('karaoke_detail_history_all').length).to eq 76
+      js('register.editHistory(8 , 428)')
+      click_on '削除'; wait_for_ajax
+      expect(table_to_hash('karaoke_detail_history_all').length).to eq 75
   end
 end
