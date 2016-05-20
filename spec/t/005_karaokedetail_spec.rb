@@ -67,4 +67,36 @@ describe 'カラオケ詳細ページ' do
     examine_songlink('Dragon Night' , 'SEKAI NO OWARI' , url)
     examine_artistlink('サイキックラバー' , url)
   end
+  describe 'Attendnace情報の変更' , :js => true do
+    it '値段を書き換える' do
+      find('#tab_1').click
+      iscontain '1600 円'
+      find('#price_1').click
+      wait_for_ajax
+      fill_in 'price' , with: '1234567'
+      click_on '保存'
+      wait_for_ajax
+      find('#tab_1').click
+      islack '1600 円'
+      iscontain '1234567 円'
+    end
+    it '感想を書き換える' do
+      find('#tab_1').click
+      iscontain 'へたれとちゃらさんと３人で'
+      find('#memo_1').click
+      wait_for_ajax
+      fill_in 'memo' , with: '変更後のメモ'
+      click_on '保存'
+      wait_for_ajax
+      find('#tab_1').click
+      islack 'へたれとちゃらさんと３人で'
+      iscontain '変更後のメモ'
+    end
+  end
+  describe '歌唱履歴を追加登録できるか' do
+    it '参加済みユーザで登録' do
+    end
+    it '未参加ユーザで登録' do
+    end
+  end
 end
