@@ -60,7 +60,7 @@ module Rbase
 
   def examine_karaokelink(name , referer = nil)
     link name
-    iscontain name #あんまよくないこれ
+    expect(page.all('h3')[0].text).to eq name
     referer and visit referer
   end
 
