@@ -12,8 +12,9 @@ class HistoryRoute < March
   # get '/history/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
   get '/history/:username' do
+    opt = {}
     @user = User.new(params[:username])
-    @histories = @user.histories
+    @histories = @user.histories(opt)
     @histories.each do |h|
       h['karaoke_datetime'] = h['karaoke_datetime'].to_s.split(' ')[0]
     end

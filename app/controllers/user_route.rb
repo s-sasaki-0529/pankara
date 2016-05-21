@@ -13,7 +13,7 @@ class UserRoute < March
   end
   get '/user/:username' do
     @user = User.new(params[:username])
-    @histories = @user.histories 5
+    @histories = @user.histories(:limit => 5 , :page => 1)
     @karaoke_list = @user.get_karaoke 5
     @most_sang_song = @user.get_most_sang_song
     @most_sang_artist = @user.get_most_sang_artist

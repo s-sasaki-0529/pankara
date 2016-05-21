@@ -2,7 +2,8 @@
 <table id="history_table" class="table sortable table-hover linkcursor">
   <thead>
     <tr>
-      <th class='center cell-datetime'>日時</th>
+      <th class='cell-number'>No</th>
+      <th class='center' width='10%'>日時</th>
       <th class='center'>内容</th>
       <th class='center' width='30%'>曲名</th>
       <th class='center' width='30%'>歌手名</th>
@@ -12,6 +13,7 @@
   <tbody>
     <% @histories.each do |history| %>
     <tr>
+      <td class='center'><%= history['number'] %></td>
       <td class='center'><%= history['karaoke_datetime'] %></td>
       <td class='center'><%= karaoke_link history['karaoke_id'] , history['karaoke_name'] %></td>
       <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>

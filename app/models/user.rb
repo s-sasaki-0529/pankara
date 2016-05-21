@@ -34,7 +34,7 @@ class User < Base
 
   # histories - ユーザの歌唱履歴と関連情報を取得
   #---------------------------------------------------------------------
-  def histories(limit = 0)
+  def histories(opt = {})
 
     # attendance / karaoke 一覧を取得
     attend_info = self.attend_ids(:want_karaoke => true)
@@ -51,7 +51,11 @@ class User < Base
       :SET => attend_ids ,
       :OPTION => 'ORDER BY id desc'
     )
-    db.option("LIMIT #{limit}") if limit > 0
+
+    if opt[:limit] && opt[:page]
+      from = (opt[:page] - 1) * opt[:limit]
+      db.option("LIMIT #{from} , #{opt[:limit]}")
+    end
     histories = db.execute_all
 
     # カラオケ情報を取得、attendanceと関連付け
@@ -62,11 +66,12 @@ class User < Base
     songs_info = Song.list(:songs => songs, :artist_info => true , :want_hash => true)
 
     # それぞれをマージ
-    histories.each do | h |
+    histories.each_with_index do |h , i|
       song = h['song']
       karaoke = ak_map[h['attendance']]
       h.merge!(songs_info[song] || {})
       h.merge!(karaoke_info[karaoke] || {})
+      h['number'] = histories.count - i
     end
     return histories
   end
