@@ -1,20 +1,20 @@
 <div class='center'>
-  <ul class="pagination" style="margin-top: 0">
+  <ul id="pager" class="pagination" style="margin-top: 0">
 
-    <li class="<%= "disabled" if @pager.current_page == 1 %>"><a href="?page=1">«</a></li>
+    <li id="pager_first_page" class="<%= "disabled" if @pager.current_page == 1 %>"><a href="?page=1">«</a></li>
 
     <% if @pager.current_page > 1 %>
-    <li><a href="?page=<%= @pager.current_page - 1 %>">前のページ</a></li>
+    <li id="pager_prev_page"><a href="?page=<%= @pager.current_page - 1 %>">前のページ</a></li>
     <% end %>
 
     <% 1.upto(@pager.page_num) do |i| %>
-    <li class="<%= "disabled" if @pager.current_page == i %>"><a href="?page=<%= i %>"><%= i %></a></li>
+    <li id="pager_page_<%= i %>" class="<%= "disabled" if @pager.current_page == i %>"><a href="?page=<%= i %>"><%= i %></a></li>
     <% end %>
 
     <% if @pager.current_page < @pager.page_num %>
-    <li><a href="?page=<%= @pager.current_page + 1 %>">次のページ</a></li>
+    <li id="pager_next_page"><a href="?page=<%= @pager.current_page + 1 %>">次のページ</a></li>
     <% end %>
 
-    <li class="<%= "disabled" if @pager.current_page == @pager.page_num %>"><a href="?page=<%= @pager.page_num %>">»</a></li>
+    <li id="pager_last_page" class="<%= "disabled" if @pager.current_page == @pager.page_num %>"><a href="?page=<%= @pager.page_num %>">»</a></li>
   </ul>
 </div>
