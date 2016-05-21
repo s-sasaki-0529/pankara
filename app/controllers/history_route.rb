@@ -12,7 +12,10 @@ class HistoryRoute < March
   # get '/history/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
   get '/history/:username' do
-    opt = {}
+    opt = {:limit => 50 , :page => 1}
+    if params[:page] && params[:page].to_i > 1
+      opt[:page] = params[:page].to_i
+    end
     @user = User.new(params[:username])
     @histories = @user.histories(opt)
     @histories.each do |h|

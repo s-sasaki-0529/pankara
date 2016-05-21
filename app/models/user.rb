@@ -43,7 +43,7 @@ class User < Base
     ak_map = {}
     attend_ids.each_with_index {|a,i| ak_map[a] = karaoke_ids[i]}
 
-    # 歌唱履歴を取得
+    # 歌唱履歴を全て取得し、場号を振る
     db = DB.new(
       :SELECT => ['song' , 'songkey' , 'attendance'],
       :FROM => 'history' ,
@@ -51,12 +51,14 @@ class User < Base
       :SET => attend_ids ,
       :OPTION => 'ORDER BY id desc'
     )
+    histories = db.execute_all
+    histories.each_with_index {|h,i| h['number'] = histories.count - i}
 
+    # 取得範囲を制限
     if opt[:limit] && opt[:page]
       from = (opt[:page] - 1) * opt[:limit]
-      db.option("LIMIT #{from} , #{opt[:limit]}")
+      histories = histories[from , opt[:limit]]
     end
-    histories = db.execute_all
 
     # カラオケ情報を取得、attendanceと関連付け
     karaoke_info = Util.array_to_hash(Karaoke.list(:ids => karaoke_ids) , 'karaoke_id')
@@ -71,7 +73,6 @@ class User < Base
       karaoke = ak_map[h['attendance']]
       h.merge!(songs_info[song] || {})
       h.merge!(karaoke_info[karaoke] || {})
-      h['number'] = histories.count - i
     end
     return histories
   end
