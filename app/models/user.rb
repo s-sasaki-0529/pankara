@@ -11,6 +11,7 @@ require_relative 'product'
 require_relative 'register'
 require_relative 'twitter'
 require_relative 'friend'
+require_relative 'pager'
 
 class User < Base
 
@@ -54,10 +55,10 @@ class User < Base
     histories = db.execute_all
     histories.each_with_index {|h,i| h['number'] = histories.count - i}
 
-    # 取得範囲を制限
-    if opt[:limit] && opt[:page]
-      from = (opt[:page] - 1) * opt[:limit]
-      histories = histories[from , opt[:limit]]
+    if pager = opt[:pager] #ページャ利用
+      histories = pager.getData(histories)
+    elsif limit = opt[:limit] # ページャは利用しないが取得件数を制限
+      histories = histories[0 , limit]
     end
 
     # カラオケ情報を取得、attendanceと関連付け

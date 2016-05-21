@@ -1,0 +1,9 @@
+<div class='center'>
+  <ul class="pagination" style="margin-top: 0">
+    <li class="<%= "disabled" if @pager.current_page == 1 %>"><a href="?page=1">«</a></li>
+    <% 1.upto(@pager.page_num) do |i| %>
+    <li class="<%= "disabled" if @pager.current_page == i %>"><a href="?page=<%= i %>"><%= i %></a></li>
+    <% end %>
+    <li class="<%= "disabled" if @pager.current_page == @pager.page_num %>"><a href="?page=<%= @pager.page_num %>">»</a></li>
+  </ul>
+</div>
