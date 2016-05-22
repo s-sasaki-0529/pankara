@@ -31,6 +31,10 @@ module Rbase
     expect(page.find("#" + id).text).to eq text
   end
 
+  def examine_value(id , value)
+    expect(page.find("#" + id).value).to eq value
+  end
+
   def id_to_element(id)
     page.find("\##{id}")
   end
