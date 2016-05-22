@@ -47,5 +47,16 @@ describe 'Attendanceの編集' , :js => true do
     iscontain '10000'
     iscontain '変更後の感想'
   end
+
+  it '他人の感想は編集不可' do
+    find('#tab_1').click
+
+    iscontain '1600'
+    iscontain 'へたれとちゃらさんと３人で'
+ 
+    #参加情報編集ダイアログは表示されない
+    find('#memo_1').click
+    islack '参加情報編集'
+  end
 end
 
