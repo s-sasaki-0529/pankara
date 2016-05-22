@@ -36,9 +36,9 @@ mes () {
 # メイン処理
 cd $MARCHDIR
 mes "既にサーバが起動している場合停止します"
-pid=$(cat tmp/unicorn.pid 2>/dev/null)
+pid=$(cat shared/tmp/unicorn.pid 2>/dev/null)
 if [ -n "$pid" ]; then
-  kill -QUIT $pid
+  kill -QUIT $pid 2>/dev/null
   mes "プロセス($pid)を終了しました"
 else
   mes "停止対象のプロセスはありませんでした"

@@ -5,10 +5,9 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "Webサーバを立ち上げ、サービスを開始する"
-  echo "  Usage: zenra $PROGNAME [-u username] [-p port] [-f] [-v]"
+  echo "  Usage: zenra $PROGNAME [-u username] [-f] [-v]"
   echo "オプション"
   echo "  -u 指定したユーザ名でログイン"
-  echo "  -p unicornを起動するポートを指定(デフォルト8080)"
   echo "  -f Webサーバをフォアグランド上で実行する(ログの取得をしない)"
   echo "  -r runモードを指定する(デフォルト develop)"
   echo "  -v 進捗メッセージを標準出力"
@@ -61,11 +60,7 @@ if [ -n "$VALUE_U" ]; then
 else
   bundle exec ruby "bin/scripts/set_config.rb" "unset" "auto_login"
 fi
-if [ -z "$VALUE_P" ]; then
-  VALUE_P=8080
-fi
 
-mes "${VALUE_P}ポートでWebサーバを立ち上げます"
 if [ "$VALUE_R" = "ci" -o "$VALUE_R" = "yshirt" ]; then
   mes "run mode を $VALUE_R にセット"
   bundle exec ruby "bin/scripts/set_config.rb" set run_mode $VALUE_R
@@ -74,8 +69,9 @@ else
   bundle exec ruby "bin/scripts/set_config.rb" set run_mode develop
 fi
 
+mes "unicornを起動"
 if [ "$FLAG_F" -eq 1 ]; then
-  bundle exec unicorn --port $VALUE_P
+  bundle exec unicorn -c unicorn.rb
 else
-  bundle exec unicorn -c unicorn.rb -D --port $VALUE_P
+  bundle exec unicorn -c unicorn.rb -D
 fi
