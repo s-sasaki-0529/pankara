@@ -7,7 +7,6 @@ usage() {
   echo "プログラムを更新してWebサーバを立ち上げる"
   echo "  Usage: zenra $PROGNAME [-p port] [-v]"
   echo "オプション"
-  echo "  -p unicornのポート番号(デフォルト8080)"
   echo "  -r run modeを指定"
   echo "  -v 進捗を標準出力"
   exit 1
@@ -15,7 +14,7 @@ usage() {
 
 # オプション解析
 FLAG_V=0
-while getopts hvp:r: OPT
+while getopts hvr: OPT
 do
   case $OPT in
     h)  usage
@@ -25,17 +24,12 @@ do
         ;;
     r)  VALUE_R=$OPTARG
         ;;
-    p)  VALUE_P=$OPTARG
-        ;;
   esac
 done
 shift $((OPTIND - 1))
 
 # メイン処理
 cd $MARCHDIR
-if [ -z "$VALUE_P" ]; then
-  VALUE_P=8080
-fi
 
 if [ "${VALUE_R}X" = "X" ]; then
   VALUE_R="develop"
@@ -47,10 +41,10 @@ if [ "$FLAG_V" -eq 1 ]; then
   echo "プログラムを更新します"
   git pull
   zenra init -b -v -r
-  zenra run -p $VALUE_P -r $VALUE_R -v
+  zenra run -r $VALUE_R -v
 else
   zenra stop
   git pull
   zenra init -b -r
-  zenra run -p $VALUE_P -r $VALUE_R
+  zenra run -r $VALUE_R
 fi
