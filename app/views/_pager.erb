@@ -1,3 +1,4 @@
+<% if @pager && @pager.page_num > 1 %>
 <div class='center'>
   <ul id="pager" class="pagination" style="margin-top: 0">
 
@@ -18,3 +19,4 @@
     <li id="pager_last_page" class="<%= "disabled" if @pager.current_page == @pager.page_num %>"><a href="?page=<%= @pager.page_num %>">»</a></li>
   </ul>
 </div>
+<% end %>

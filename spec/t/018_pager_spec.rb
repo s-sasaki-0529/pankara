@@ -21,7 +21,7 @@ describe 'ページャ機能全般' do
 
   it '指定したページ' do
     1.upto(5).each do |i|
-      find("#pager_page_#{i} > a").click
+      all("#pager_page_#{i} > a")[0].click
       examine_page(i)
     end
   end
@@ -29,18 +29,18 @@ describe 'ページャ機能全般' do
   it '先頭ページ' do
     visit '?page=5'
     examine_page(5)
-    find("#pager_first_page > a").click
+    all("#pager_first_page > a")[0].click
     examine_page(1)
   end
 
   it '末尾ページ' do
-    find("#pager_last_page > a").click
+    all("#pager_last_page > a")[0].click
     examine_page(5)
   end
 
   it '次のページ' do
     1.upto(4) do |i|
-      find("#pager_next_page > a").click
+      all("#pager_next_page > a")[0].click
       examine_page(i + 1)
     end
     islack('次のページ')
@@ -49,7 +49,7 @@ describe 'ページャ機能全般' do
   it '前のページ' do
     visit '?page=5'
     4.downto(1) do |i|
-      find("#pager_prev_page > a").click
+      all("#pager_prev_page > a")[0].click
       examine_page(i)
     end
     islack('前のページ')
