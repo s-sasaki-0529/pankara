@@ -22,6 +22,8 @@ app/public/coverage
 build/
 /logs
 logs/*.log
+shared/tmp/unicorn.pid
+shared/tmp/unicorn.sock
 
 ## Documentation cache and generated files:
 /.yardoc/
