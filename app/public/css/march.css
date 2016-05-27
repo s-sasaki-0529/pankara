@@ -105,12 +105,8 @@ tr *.cell-datetime {
   overflow: hidden;
   white-space: nowrap;
 }
-.karaoke-price-block {
-  cursor: pointer !important;
-}
 .karaoke-memo-block {
   width: 760px !important;
-  cursor: pointer !important;
 }
 .karaoke-memo-block > .result {
   font-size: 22px !important;
@@ -143,4 +139,9 @@ tr *.cell-datetime {
 /* ユーザ登録画面の入力フォーム調整クラス */
 .user_registration_table tr {
   height: 30px;
+}
+
+/* オンカーソル時にポインタを切り替えたい要素用クラス */
+.pointer {
+  cursor: pointer
 }

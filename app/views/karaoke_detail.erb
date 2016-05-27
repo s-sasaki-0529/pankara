@@ -105,12 +105,20 @@
       </div>
     </div>
     <div class="row">
-      <div class="karaoke-result-block karaoke-price-block center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <% if @current_user and @current_user['id'] == member['userid'] %>
+      <div class="karaoke-result-block center pointer" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <% else %>
+      <div class="karaoke-result-block center">
+      <% end %>
         <p class='description'>値段</p>
         <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] %></span>
         <span class='orange'>円</span>
       </div>
-      <div class="karaoke-result-block karaoke-memo-block center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <% if @current_user and @current_user['id'] == member['userid'] %>
+      <div class="karaoke-result-block karaoke-memo-block pointer center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <% else %>
+      <div class="karaoke-result-block karaoke-memo-block center">
+      <% end %>
         <p class='description'>感想</p>
         <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] %></span>
       </div>
