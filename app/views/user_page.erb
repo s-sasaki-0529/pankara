@@ -37,11 +37,16 @@
     </tr>
   </tbody>
 </table>
+
 <h4>一番歌っている曲</h4>
 <%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / <%= @most_sang_song['counter'] %>回
 
-<h4>一番歌っている歌手</h4>
-<%= artist_link @most_sang_artist['artist_id'], @most_sang_artist['artist_name'] %> / <%= @most_sang_artist['artist_count'] %>回
+<% if @sang_artists_json %>
+<h4>よく歌うアーティストベスト１０</h4>
+<div id="user_sang_artists_chart"></div>
+<div class="hide" id="user_sang_artists_json"><%= @sang_artists_json %></div>
+<script>zenra.createPieChart("#user_sang_artists_chart" , "#user_sang_artists_json");</script>
+<% end %>
 
 <h4>最高点数</h4>
 <%= h @max_score['score'] %> / <%= song_link @max_score['song'], @max_score['song_name']%> / <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 採点方法: <%= @max_score['scoretype_name'] %>

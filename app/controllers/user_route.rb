@@ -16,8 +16,12 @@ class UserRoute < March
     @histories = @user.histories(:limit => 5 , :page => 1)
     @karaoke_list = @user.get_karaoke 5
     @most_sang_song = @user.get_most_sang_song
-    @most_sang_artist = @user.favorite_artists(:limit => 1)[0]
     @max_score = @user.get_max_score
+    sang_artists = @user.favorite_artists(:limit => 10, :want_rate => true)
+    if sang_artists.size > 0
+      @most_sang_artist = sang_artists[0]
+      @sang_artists_json = Util.to_json(sang_artists.map {|a| [a['artist_name'] , a['artist_count_rate']]})
+    end
     erb :user_page
   end
 

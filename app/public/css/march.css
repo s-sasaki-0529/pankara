@@ -40,6 +40,11 @@ tr *.cell-datetime {
   display: inline;
 }
 
+/*要素を非表示にする*/
+.hide {
+  display: none;
+}
+
 /*テキストを右揃えにするクラス*/
 .right {
   text-align: right;
