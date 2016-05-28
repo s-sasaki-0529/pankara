@@ -9,6 +9,9 @@ require 'yaml'
 #require 'searchbing'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
+IMGDIR = 'app/public/image'
+ICONDIR = "#{IMGDIR}/user_icon"
+YOUTUBE = "https://www.youtube.com"
 class Util
 
   @@request = nil
@@ -55,7 +58,17 @@ class Util
   def self.icon_file(username)
     user_icon = "/image/user_icon/#{username}.png"
     sample_icon = "/image/sample_icon.png"
-    File.exist?("app/public/#{user_icon}") ? user_icon : sample_icon
+    File.exist?("#{ICONDIR}/#{username}.png") ? user_icon : sample_icon
+  end
+
+  # create_user_icon - サンプルユーザアイコンを指定したユーザに適用する
+  #--------------------------------------------------------------------
+  def self.create_user_icon(username)
+    if File.exists? "#{ICONDIR}/#{username}.png"
+      return false
+    else
+      FileUtils.cp("#{IMGDIR}/sample_icon.png" , "#{ICONDIR}/#{name}.png")
+    end
   end
 
   # save_icon_file - 画像ファイルとユーザ名を指定し、アイコンファイルを上書きする
@@ -64,9 +77,8 @@ class Util
     accept_type = ['image/jpg' , 'image/jpeg' , 'image/png' , 'image/gif']
     type = image[:type]
     file = image[:tempfile]
-    # Todo: 画像サイズによる分岐
     if accept_type.include?(type)
-      filepath = "app/public/image/user_icon/#{username}.png"
+      filepath = "#{ICONDIR}/#{username}.png"
       File.open(filepath , 'wb') do |f|
         f.write file.read
       end
@@ -97,13 +109,13 @@ class Util
 
     # youtubeにアクセスし、「曲名 歌手名」で検索した1件目を取得
     word = "#{song} #{artist}"
-    uri = URI.escape("https://www.youtube.com/results?search_query=#{word}")
+    uri = URI.escape("#{YOUTUBE}/results?search_query=#{word}")
     html = open(uri) do |f|
       charset = f.charset
       f.read
     end
     html.scan(%r|"/watch\?v=(\w+?)"|) do
-      return "https://www.youtube.com/watch?v=#{$1}"
+      return "#{YOUTUBE}/watch?v=#{$1}"
     end
 
     # 取得失敗時、歌手名を省略して再検索。それでもダメならnilを戻す

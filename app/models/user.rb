@@ -261,8 +261,7 @@ class User < Base
 
     db = DB.new(:FROM => 'user' , :WHERE => 'username = ?' , :SET => name)
     db.execute_row and return Util.error('そのユーザ名はすでに使われています。' , 'hash')
-
-    FileUtils.cp('app/public/image/sample_icon.png' , "app/public/image/user_icon/#{name}.png")  unless File.exists? "app/public/image/user_icon/#{name}.png"
+    Util.create_user_icon(name)
 
     DB.new(
       :INSERT => ['user' , ['username' , 'password' , 'screenname']] ,
