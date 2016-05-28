@@ -1,35 +1,39 @@
 <h1>
   <% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧
 </h1>
-<table id="karaokelist_table" class="table sortable table-hover linkcursor">
-  <thead>
-    <tr>
-      <th class='cell-datetime'>日時</th>
-      <th>内容</th>
-      <th class='cell-number'>時間</th>
-      <th>お店</th>
-      <th>機種</th>
-      <% unless @target_user %><th>メンバー</th><% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @karaoke_list.each do |karaoke| %>
-    <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-      <td><%= karaoke['datetime'] %></td>
-      <td><%= h karaoke['name'] %></td>
-      <td class='center'><%= karaoke['plan'] %></td>
-      <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
-      <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
-      <% unless @target_user %>
-      <td>
-        <% karaoke['members'].each do |member| %>
-          <span style="display:none"><%= h member['screenname'] %></span>
-          <%= user_icon member['username'] , 32 , 32 %>
-        <% end %>
-      </td>
-      <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
 
+<% if @karaoke_list.size > 0 %>
+  <table id="karaokelist_table" class="table sortable table-hover linkcursor">
+    <thead>
+      <tr>
+        <th class='cell-datetime'>日時</th>
+        <th>内容</th>
+        <th class='cell-number'>時間</th>
+        <th>お店</th>
+        <th>機種</th>
+        <% unless @target_user %><th>メンバー</th><% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @karaoke_list.each do |karaoke| %>
+      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+        <td><%= karaoke['datetime'] %></td>
+        <td><%= h karaoke['name'] %></td>
+        <td class='center'><%= karaoke['plan'] %></td>
+        <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
+        <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+        <% unless @target_user %>
+        <td>
+          <% karaoke['members'].each do |member| %>
+            <span style="display:none"><%= h member['screenname'] %></span>
+            <%= user_icon member['username'] , 32 , 32 %>
+          <% end %>
+        </td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  カラオケの記録がありません
+<% end %>
