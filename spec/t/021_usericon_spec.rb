@@ -8,7 +8,8 @@ end
 
 # ファイルをアップロードする
 def upload(filepath)
-  
+  post_file = Rack::Test::UploadedFile.new(filepath)
+  post "icon", "icon_file" => post_file
 end
 
 # テスト実行
@@ -18,10 +19,26 @@ describe 'ユーザアイコンの設定' do
     login 'test'
     visit 'config'
   end
-  it '正常パターン' do
+  describe '正常パターン' do
+    it 'jpeg' do
+    end
+    it 'png' do
+    end
+    it 'gif' do
+    end
   end
-  it 'jpeg/gif/pngのみ対応' do
+  describe '256 * 256 以上のファイルはダメ' do
+    it 'jpeg' do
+    end
+    it 'png' do
+    end
+    it 'gif' do
+    end
   end
-  it '256 * 256までのみ対応' do
+  describe 'jpeg/png/gif以外のファイルはダメ' do
+    it 'テキストファイル' do
+    end
+    it '拡張子偽装' do
+    end
   end
 end
