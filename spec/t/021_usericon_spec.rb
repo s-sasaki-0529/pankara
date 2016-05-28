@@ -1,44 +1,52 @@
 require_relative '../rbase'
 include Rbase
 
-# テスト用データベース構築
-init = proc do
-  `zenra init -d 2016_05_28_19_02`
-end
+# 定数を定義
+USER = 'test'
+SUCCESS = 'アイコンファイルを変更しました'
+SIZEOVER = 'アップロードできるファイルサイズは256×256までです'
+TYPEERROR = 'アップロードできるファイルは、jpg/png/gifのみです'
 
 # ファイルをアップロードする
-def upload(filepath)
-  post_file = Rack::Test::UploadedFile.new(filepath)
-  post "icon", "icon_file" => post_file
+def upload(filename , type)
+  file = Rack::Test::UploadedFile.new("spec/common/#{filename}" , type)
+  image = {:type => file.content_type, :tempfile => file.tempfile}
+  return Util.save_icon_file(image , USER)
 end
 
 # テスト実行
 describe 'ユーザアイコンの設定' do
-  before(:all , &init)
-  before do
-    login 'test'
-    visit 'config'
-  end
-  describe '正常パターン' do
-    it 'jpeg' do
+  
+  context '正常アップロード' do
+    example 'jpegファイルをアップロード' do
+      expect(upload('jpg.jpg' , 'image/jpeg')).to eq SUCCESS
     end
-    it 'png' do
+    example 'pngファイルをアップロード' do
+      expect(upload('png.png' , 'image/png')).to eq SUCCESS
     end
-    it 'gif' do
-    end
-  end
-  describe '256 * 256 以上のファイルはダメ' do
-    it 'jpeg' do
-    end
-    it 'png' do
-    end
-    it 'gif' do
+    example 'gifファイルをアップロード' do
+      expect(upload('gif.gif' , 'image/gif')).to eq SUCCESS
     end
   end
-  describe 'jpeg/png/gif以外のファイルはダメ' do
-    it 'テキストファイル' do
+  
+  context 'ファイルサイズチェック' do
+    example 'サイズオーバーしたjpegファイル' do
+      expect(upload('large_jpg.jpg' , 'image/jpeg')).to eq SIZEOVER
     end
-    it '拡張子偽装' do
+    example 'サイズオーバーしたpngファイル' do
+      expect(upload('large_png.png' , 'image/png')).to eq SIZEOVER 
+    end
+    example 'サイズオーバーしたgifファイル' do
+      expect(upload('large_gif.gif' , 'image/gif')).to eq SIZEOVER
+    end
+  end
+  
+  context 'ファイルタイプチェック' do
+    example 'テキストファイル' do
+      expect(upload('text.txt' , 'text/plain')).to eq TYPEERROR
+    end
+    example 'コンテントタイプを偽造したテキストファイル' do
+      expect(upload('text.txt' , 'image/png')).to eq SIZEOVER 
     end
   end
 end
