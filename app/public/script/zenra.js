@@ -652,18 +652,27 @@ var register = (function() {
       }
       
       zenra.post('/ajax/karaoke/create' , data , {
-        success: function(result) {
-          result_obj = zenra.parseJSON(result);
-          var karaoke_id = result_obj['karaoke_id'];
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+          
+          if (response['result']) {
+            var karaoke_id = response['karaoke_id'];
 
-          zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
-            func_at_load: function() {
-              createWidgetForHistory();
+            zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
+              func_at_load: function() {
+                createWidgetForHistory();
 
-              $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-              $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
-            }
-          });
+                $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
+                $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
+              }
+            });
+          }
+          else {
+            alert('カラオケの登録に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('カラオケの登録に失敗しました。サーバにアクセスできません。');
         }
       });
     } ,
@@ -673,11 +682,18 @@ var register = (function() {
       var json_data = zenra.toJSON(getKaraokeData());
     
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
-        success: function(json_result) {
-          result = zenra.parseJSON(json_result);
-          if (result['result'] == 'success') {
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+          
+          if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
+          else {
+            alert('カラオケの編集に失敗しました');
+          }
+        } ,
+        error: function() {
+          alert('カラオケの編集に失敗しました。サーバにアクセスできません。');
         }
       });
     } ,
@@ -693,10 +709,10 @@ var register = (function() {
       var json_data = zenra.toJSON(getAttendanceData());
       
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
-        success: function(json_result) {
-          result = zenra.parseJSON(json_result);
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
 
-          if (result['result'] == 'success') {
+          if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
@@ -720,18 +736,26 @@ var register = (function() {
         register.submintAttendanceRegistrationRequest(karaoke_id);
       
         zenra.post('/ajax/history/create' , data , {
-          success: function(result) {
-            count += 1;
-            $('#result').html('<p>' + count + '件入力されました</p>')
+          success: function(json_response) {
+            response = zenra.parseJSON(json_response);
+            
+            if (response['result'] == 'success') {
+              count += 1;
+              $('#result').html('<p>' + count + '件入力されました</p>');
+            }
+            else {
+              alert('歌唱履歴の登録に失敗しました。');
+            }
+          } ,
+          error: function() {
+            alert('歌唱履歴の登録に失敗しました。サーバにアクセスできません。');
           }
         });
 
         resetHistory();
       }
       else if (action == 'end') {
-        if (count > 0) {
-          location.href = ('/karaoke/detail/' + karaoke_id);
-        }
+        location.href = ('/karaoke/detail/' + karaoke_id);
 
         zenra.closeDialog('input_dialog');
       }
@@ -743,8 +767,18 @@ var register = (function() {
       var json_data = zenra.toJSON(getHistoryData());
 
       zenra.post('/ajax/history/modify/', {id: history_id, params: json_data} , {
-        success: function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+          
+          if (response['result'] == 'success') {
+            location.href = ('/karaoke/detail/' + karaoke_id);
+          }
+          else {
+            alert('歌唱履歴の編集に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('歌唱履歴の編集に失敗しました。サーバにアクセスできません。');
         }
       });
     } ,
@@ -755,22 +789,35 @@ var register = (function() {
         return;
       }
       zenra.post('/ajax/karaoke/delete/' , {id: karaoke_id} , {
-        success: function(json) {
-          result = zenra.parseJSON(json);
-          if (result['result'] == 'success') {
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+
+          if (response['result'] == 'success') {
             location.href = '/';
           } else {
-            alert('カラオケの削除に失敗しました');
+            alert('カラオケの削除に失敗しました。');
           }
         } ,
+        error: function() {
+          alert('カラオケの削除に失敗しました。サーバにアクセスできません。');
+        }
       });
     } ,
 
     /*[Method] 歌唱履歴削除リクエストを送信する*/
     submitHistoryDeleteRequest : function(karaoke_id , history_id) {
       zenra.post('/ajax/history/delete/' , {id: history_id} , {
-        success: function(result) {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+
+          if (response['result'] == 'success') {
+            location.href = ('/karaoke/detail/' + karaoke_id);
+          } else {
+            alert('歌唱履歴の削除に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('歌唱履歴の削除に失敗しました。サーバにアクセスできません。');
         }
       });
     } ,
