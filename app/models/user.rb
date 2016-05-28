@@ -39,6 +39,7 @@ class User < Base
 
     # attendance / karaoke 一覧を取得
     attend_info = self.attend_ids(:want_karaoke => true)
+    attend_info.size > 0 or return []
     attend_ids = attend_info.map {|a| a['id']}
     karaoke_ids = attend_info.map {|a| a['karaoke']}
     ak_map = {}
