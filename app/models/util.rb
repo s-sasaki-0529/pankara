@@ -61,6 +61,15 @@ class Util
     File.exist?("#{ICONDIR}/#{username}.png") ? user_icon : sample_icon
   end
 
+  # image_size - 指定したファイルが画像ファイルであった場合、その幅と高さを戻す
+  #--------------------------------------------------------------------
+  def self.image_size(filepath)
+    file_info = `file #{filepath}`
+    file_info.match(/image data/) or return nil
+    params = file_info.split(' ')
+    return {:width => params[4].to_i, :height => params[6].to_i}
+  end
+
   # create_user_icon - サンプルユーザアイコンを指定したユーザに適用する
   #--------------------------------------------------------------------
   def self.create_user_icon(username)
@@ -79,13 +88,21 @@ class Util
     file = image[:tempfile]
     if accept_type.include?(type)
       filepath = "#{ICONDIR}/#{username}.png"
-      File.open(filepath , 'wb') do |f|
+      tmppath = "#{ICONDIR}/#{username}?.png"
+      File.open(tmppath , 'wb') do |f|
         f.write file.read
+      end
+      size = Util.image_size(tmppath)
+      if size && size[:width] <= 256 && size[:height] <= 256
+        FileUtils.move(tmppath , filepath)
+      else
+        FileUtils.rm(tmppath)
+        return "アップロードできるファイルサイズは256×256までです"
       end
     else
       return "アップロードできるファイルは、jpg/png/gifのみです"
     end
-    return 'success'
+    return 'アイコンファイルを変更しました'
   end
 
   # search_image - 画像をbing画像検索より取得

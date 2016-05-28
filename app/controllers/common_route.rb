@@ -52,9 +52,9 @@ class CommonRoute < March
   #--------------------------------------------------------------------
   post '/config/icon/?' do
     if params[:icon_file] && @current_user
-      result = Util.save_icon_file(params[:icon_file] , @current_user['username'])
+      @mod_icon_result = Util.save_icon_file(params[:icon_file] , @current_user['username'])
     end
-    redirect '/config/'
+    erb :config
   end
 
   # post '/config/twitter/?' - ツイッター連携の設定を適用
