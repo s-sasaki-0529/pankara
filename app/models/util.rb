@@ -63,11 +63,19 @@ class Util
 
   # image_size - 指定したファイルが画像ファイルであった場合、その幅と高さを戻す
   #--------------------------------------------------------------------
-  def self.image_size(filepath)
+  def self.image_size(filepath , type)
     file_info = `file #{filepath}`
-    file_info.match(/image data/) or return nil
     params = file_info.split(' ')
-    return {:width => params[4].to_i, :height => params[6].to_i}
+    if type == 'image/jpg' || type == 'image/jpeg'
+      size = params[-3].split('x')
+      return {:width => size[0].to_i, :height => size[1].to_i}
+    elsif type == 'image/png'
+      return {:width => params[4].to_i, :height => params[6].to_i}
+    elsif type == 'image/gif'
+      return {:width => params[6].to_i, :height => params[8].to_i}
+    else
+      return nil
+    end
   end
 
   # create_user_icon - サンプルユーザアイコンを指定したユーザに適用する
@@ -92,7 +100,7 @@ class Util
       File.open(tmppath , 'wb') do |f|
         f.write file.read
       end
-      size = Util.image_size(tmppath)
+      size = Util.image_size(tmppath , type)
       if size && size[:width] <= 256 && size[:height] <= 256
         FileUtils.move(tmppath , filepath)
       else
