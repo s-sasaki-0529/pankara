@@ -55,6 +55,11 @@ tr *.cell-datetime {
   color: rgb(255,102,0);
 }
 
+/*赤色*/
+.red {
+  color: rgb(255,0,0);
+}
+
 /*トップ画面 タイムライン領域 */
 #div_timelines {
   height: 310px;
