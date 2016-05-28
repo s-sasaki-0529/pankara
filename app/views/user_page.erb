@@ -1,52 +1,63 @@
 <h1><%= h @user['screenname'] %>さんのユーザページ</h1>
 
 <h4>最近のカラオケ</h4>
-<table id="recent_karaoke" class="table table-hover linkcursor">
-  <thead>
-    <tr>
-      <th class="cell-datetime">日時</th>
-      <th>カラオケ名</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @karaoke_list.each do |karaoke| %>
-      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-        <td><%= karaoke['datetime'] %></td>
-        <td><%= h karaoke['name'] %></td>
-      </tr>
-    <% end %>
-    </tr>
-  </tbody>
-</table>
-
-<h4>最近歌った曲</h4>
-<table id="recent_sang" class="table table-hover linkcursor">
-  <tbody>
+<% if @karaoke_list.size > 0 %>
+  <table id="recent_karaoke" class="table table-hover linkcursor">
     <thead>
       <tr>
-        <th>曲</th>
-        <th>歌手</th>
+        <th class="cell-datetime">日時</th>
+        <th>カラオケ名</th>
       </tr>
     </thead>
-    <% @histories.each do |history| %>
-      <tr>
-        <td><%= song_link history['song'], history['song_name'] %></td>
-        <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+    <tbody>
+      <% @karaoke_list.each do |karaoke| %>
+        <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+          <td><%= karaoke['datetime'] %></td>
+          <td><%= h karaoke['name'] %></td>
+        </tr>
+      <% end %>
       </tr>
-    <% end %>
-    </tr>
-  </tbody>
-</table>
-
-<h4>一番歌っている曲</h4>
-<%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / <%= @most_sang_song['counter'] %>回
-
-<% if @sang_artists_json %>
-<h4>よく歌うアーティストベスト１０</h4>
-<div id="user_sang_artists_chart"></div>
-<div class="hide" id="user_sang_artists_json"><%= @sang_artists_json %></div>
-<script>zenra.createPieChart("#user_sang_artists_chart" , "#user_sang_artists_json");</script>
+    </tbody>
+  </table>
+<% else %>
+  カラオケ記録がありません
 <% end %>
 
-<h4>最高点数</h4>
-<%= h @max_score['score'] %> / <%= song_link @max_score['song'], @max_score['song_name']%> / <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 採点方法: <%= @max_score['scoretype_name'] %>
+<h4>最近歌った曲</h4>
+<% if @histories.size > 0 %>
+  <table id="recent_sang" class="table table-hover linkcursor">
+    <tbody>
+      <thead>
+        <tr>
+          <th>曲</th>
+          <th>歌手</th>
+        </tr>
+      </thead>
+      <% @histories.each do |history| %>
+        <tr>
+          <td><%= song_link history['song'], history['song_name'] %></td>
+          <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+        </tr>
+      <% end %>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>一番歌っている曲</h4>
+  <%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / 
+  <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / 
+  <%= @most_sang_song['counter'] %>回
+
+  <h4>よく歌うアーティストベスト１０</h4>
+  <div id="user_sang_artists_chart"></div>
+  <div class="hide" id="user_sang_artists_json"><%= @sang_artists_json %></div>
+  <script>zenra.createPieChart("#user_sang_artists_chart" , "#user_sang_artists_json");</script>
+
+  <h4>最高点数</h4>
+  <%= h @max_score['score'] %> / 
+  <%= song_link @max_score['song'], @max_score['song_name']%> / 
+  <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 
+  採点方法: <%= @max_score['scoretype_name'] %>
+<% else %>
+  歌唱履歴がありません
+<% end %>

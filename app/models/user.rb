@@ -129,6 +129,7 @@ class User < Base
   #--------------------------------------------------------------------
   def favorite_artists(opt = {})
     attend_ids = self.attend_ids
+    attend_ids.size > 0 or return []
     db = DB.new(
       :SELECT => {
         'artist.id' => 'artist_id',
