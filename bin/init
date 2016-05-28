@@ -65,7 +65,7 @@ fi
 cd $MARCHDIR
 if [ "$FLAG_B" -eq 1 ]; then
   mes "テーブルを最新のバックアップを用いて初期化します"
-  dump=$(ls backup -1 | sort -r | head -1)
+  dump=`zenra backup -r`
   filepath="backup/$dump"
   $MYSQL < "$filepath"
 elif [ "$FLAG_D" -eq 1 ]; then
