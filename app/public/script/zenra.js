@@ -243,6 +243,56 @@ bathtowel = {
 };
 
 /*
+  cookieオブジェクト -クッキーに関する制御全般-
+*/
+var cookie = {
+ 
+  /*[Method] クッキーを設定する*/
+  setCookie : function(name , value) {
+    document.cookie = name + '=' + encodeURIComponent(value);
+  } ,
+
+  /*[Method] クッキーを連想配列にして取得する*/
+  getCookies : function() {
+    var result = new Array();
+  
+    var all_cookies = document.cookie;
+    if (all_cookies == '') {
+      return;
+    }
+  
+    cookies = all_cookies.split('; ');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].split('=');
+  
+      result[cookie[0]] = decodeURIComponent(cookie[1]);
+    }
+  
+    return result;
+  } ,
+
+  /*[Method] 指定したクッキーが設定されているか返す*/
+  isExist : function(name) {
+    var all_cookies = document.cookie;
+    if (all_cookies == '') {
+      return false;
+    }
+  
+    cookies = all_cookies.split('; ');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].split('=');
+  
+      if (cookie[0] == name) {
+        return true;
+      }
+    }
+  
+    return false;
+  }
+
+};
+
+/*
   registerオブジェクト -カラオケ入力制御全般-
 */
 var register = (function() {
@@ -541,6 +591,15 @@ var register = (function() {
 
     return data;
   }
+  
+  /*[method] 採点方法にクッキーの値を設定する*/
+  function setScoreTypeFromCookie() {
+    if (cookie.isExist('score_type')) {
+      var cookies = cookie.getCookies();
+      $('#score_type').val(cookies['score_type']);
+      $('#score_area').show();
+    }
+  }
 
   return {
     /*[Method] カラオケ入力画面を表示する*/
@@ -573,6 +632,7 @@ var register = (function() {
       zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
         func_at_load: function() {
           createWidgetForHistory();
+          setScoreTypeFromCookie();
 
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
           $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
@@ -752,6 +812,7 @@ var register = (function() {
           }
         });
 
+        cookie.setCookie('score_type' , $('#score_type').val());
         resetHistory();
       }
       else if (action == 'end') {
