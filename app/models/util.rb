@@ -101,7 +101,7 @@ class Util
         f.write file.read
       end
       size = Util.image_size(tmppath , type)
-      if size && size[:width] <= 256 && size[:height] <= 256
+      if size && 0 < size[:width] && size[:width] <= 256 && 0 < size[:height] && size[:height] <= 256
         FileUtils.move(tmppath , filepath)
       else
         FileUtils.rm(tmppath)
