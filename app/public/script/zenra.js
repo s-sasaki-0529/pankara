@@ -63,6 +63,25 @@ zenra.toJSON = function(obj) {
 }
 
 /*
+createPieChart - 円グラフを生成する
+targetSelecter: 描画対象要素のセレクタ
+dataSelecter: 対象データのJSONを持つ要素のセレクタ
+opt: 拡張オプション
+*/
+zenra.createPieChart = function(targetSelecter , dataSelecter , opt) {
+  //対象要素内のJSON文字列からオブジェクトを生成
+  data = zenra.parseJSON($(dataSelecter).text());
+  //円グラフを描画
+  c3.generate({
+    bindto: targetSelecter,
+    data: {
+      columns: data,
+      type: 'pie',
+    }
+  });
+}
+
+/*
 showDialog - ダイアログを表示する
 title: ダイアログのタイトル
 dialog_id: ダイアログエレメントに割り振るID

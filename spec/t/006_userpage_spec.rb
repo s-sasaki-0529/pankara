@@ -80,7 +80,7 @@ describe 'ユーザページ機能' do
     visit url
     
     iscontain 'Butter-Fly / 和田光司 / 2回'
-    iscontain 'Aqua Timez / 3回'
+    #iscontain 'Aqua Timez / 3回' Todo グラフをテスト
     iscontain '82.00 / 心絵 / ロードオブメジャー / 採点方法: 全国採点'
   end
   it 'リンクが正常に登録されているか' , :js => true do

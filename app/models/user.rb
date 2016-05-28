@@ -105,6 +105,7 @@ class User < Base
   # get_most_sang_song - 最も歌っている曲を取得する 
   #---------------------------------------------------------------------
   def get_most_sang_song
+    #Todo: インスタンス変数にする意味ある？
     @most_sang_song = DB.new(
       :SELECT => {'history.song' => 'song' , 'COUNT(*)' => 'counter'} ,
       :FROM => 'history' ,
@@ -123,30 +124,39 @@ class User < Base
     return @most_sang_song
   end
 
-  # get_most_sang_artist - 最も歌っている歌手を取得する 
-  #---------------------------------------------------------------------
-  def get_most_sang_artist
-    @most_sang_artist = DB.new(
-      :SELECT => {'song.artist' => 'artist', 'COUNT(*)' => 'counter'} ,
-      :FROM => 'history' ,
+  # favorite_artists - よく歌う歌手を取得する
+  #--------------------------------------------------------------------
+  def favorite_artists(opt = {})
+    attend_ids = self.attend_ids
+    db = DB.new(
+      :SELECT => {
+        'artist.id' => 'artist_id',
+        'artist.name' => 'artist_name',
+        'count(artist.id)' => 'artist_count'
+      },
+      :FROM => 'history',
       :JOIN => [
-        ['history' , 'attendance'] ,
-        ['history' , 'song'] ,
-      ] ,
-      :WHERE => 'attendance.user = ?' ,
-      :SET => @params['id'] ,
-      :OPTION => ['GROUP BY artist', 'ORDER BY counter DESC, history.created_at DESC'] ,
-    ).execute_row
+        ['history' , 'song'],
+        ['song' , 'artist'],
+      ],
+      :WHERE_IN => ['history.attendance' , attend_ids.length],
+      :SET => attend_ids,
+      :OPTION => ['GROUP BY artist.id' , 'ORDER BY artist_count DESC']
+    )
 
-		unless @most_sang_artist.nil?
-			@most_sang_artist['artist_name'] = DB.new(
-				:SELECT => 'name' , :FROM => 'artist' , :WHERE => 'id = ?' , :SET => @most_sang_artist['artist']
-			).execute_column
-		else
-			@most_sang_artist = {}
-		end
+    # オプション: 取得するアーティスの上限を設定
+    if opt[:limit]
+      db.option("limit #{opt[:limit]}")
+    end
+    artists = db.execute_all
 
-    return @most_sang_artist
+    # オプション: 該当アーティスト全体の歌唱回数に対する割合を計算
+    if opt[:want_rate]
+      all_sang_count = artists.inject(0) {|sum , a| sum += a['artist_count']}
+      artists.each {|a| a['artist_count_rate'] = (a['artist_count'].to_f / all_sang_count * 100).round(1)}
+    end
+
+    return artists
   end
 
   # get_max_score - 最高スコアとその曲情報を取得する 
