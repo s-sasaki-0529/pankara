@@ -5,11 +5,12 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "mySQLのバックアップを作成し、現在日時で保存する"
-  echo "  Usage: zenra $PROGNAME [-m description] [-v][-p]"
+  echo "  Usage: zenra $PROGNAME [-m description] [-v][-p][-r]"
   echo "オプション"
   echo "  -m 先頭にコメントを付与する"
   echo "  -v 進捗メッセージを表示します"
   echo "  -p 生成したバックアップをpushする"
+  echo "  -r 最新のバックアップファイルのファイル名を表示"
   exit 1
 }
 
@@ -17,8 +18,9 @@ usage() {
 FLAG_M=0
 FLAG_V=0
 FLAG_P=0
+FLAG_R=0
 VALUE_M=""
-while getopts hvpm: OPT
+while getopts hvprm: OPT
 do
   case $OPT in
     h)  usage
@@ -30,6 +32,8 @@ do
     v)  FLAG_V=1
         ;;
     p)  FLAG_P=1
+        ;;
+    r)  FLAG_R=1
         ;;
   esac
 done
@@ -43,20 +47,26 @@ mes () {
   fi
 }
 
-# メイン処理
 cd $MARCHDIR
 
+# 【オプション】最新のバックアップファイル名を取得
+if [ $FLAG_R -eq 1 ]; then
+  echo `ls backup/ -1 | tail -n 1`
+  exit
+fi
+
+# バックアップ生成理由は必須
 if [ $FLAG_M -eq 0 ]; then
   mes "バックアップ生成理由を指定してください"
   exit 1
 fi
 
+# バックアップを生成する。最新のバックアップと差異が無かった場合削除
 cat "backup/$(ls backup -1 | sort -r | head -1)" | sed -n '8,320p' > "/tmp/old_dump"
 filename=$(date +"%Y_%m_%d_%H_%M")
 filepath="backup/$(date +"%Y_%m_%d_%H_%M")"
 echo "-- $VALUE_M" > "$filepath"
 mysqldump --single-transaction -u root --password=zenra march >> "$filepath"
-
 cat "$filepath" | sed -n '8,320p' > "/tmp/new_dump"
 diff "/tmp/old_dump" "/tmp/new_dump" > /dev/null
 if [ $? -eq 0 ]; then
@@ -64,9 +74,9 @@ if [ $? -eq 0 ]; then
   rm "$filepath"
   exit 1
 fi
-
 mes "バックアップ($filename)を作成しました -$VALUE_M-"
 
+# 【オプション】バックアップをリポジトリにPUSH
 if [ "$FLAG_P" -eq 1 ]; then
   cd $MARCHDIR/backup
   git add "*"
