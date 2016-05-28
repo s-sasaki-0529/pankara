@@ -48,10 +48,13 @@ class Artist < Base
     # 指定ユーザの歌唱回数集計
     if userid
       user = User.new(:id => userid)
+      sang_counts_as_user = {}
       attend_ids = user.attend_ids
-      db.where_in(['attendance' , attend_ids.length])
-      db.set(attend_ids)
-      sang_counts_as_user = Util.array_to_hash(db.execute_all , 'song_id')
+      if attend_ids.size > 0
+        db.where_in(['attendance' , attend_ids.length])
+        db.set(attend_ids)
+        sang_counts_as_user = Util.array_to_hash(db.execute_all , 'song_id')
+      end
       @params['songs'].each do |s|
         id = s['song_id']
         s['sang_count_as_user'] = sang_counts_as_user[id] ? sang_counts_as_user[id]['count'] : 0
