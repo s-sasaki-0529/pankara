@@ -655,7 +655,7 @@ var register = (function() {
         success: function(json_response) {
           response = zenra.parseJSON(json_response);
           
-          if (response['result']) {
+          if (response['result'] == 'success') {
             var karaoke_id = response['karaoke_id'];
 
             zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {

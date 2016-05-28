@@ -149,9 +149,14 @@ class LocalRoute < March
     opt = {:tweet => params[:twitter]}
 
     if @current_user
-      karaoke_id = @current_user.register_karaoke(karaoke , opt)
-      @current_user.register_attendance(karaoke_id)
-      Util.to_json({'result' => 'success', 'karaoke_id' => karaoke_id})
+      result = @current_user.register_karaoke(karaoke , opt)
+     
+      if result.kind_of?(Integer)
+        @current_user.register_attendance(result)
+        Util.to_json({'result' => 'success', 'karaoke_id' => result})
+      else
+        result
+      end
     else
       Util.to_json({'result' => 'invalid current user'})
     end
