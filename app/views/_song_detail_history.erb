@@ -7,7 +7,7 @@
     <th class='center'>ユーザ</th>
     <th class='center'>キー</th>
     <th class='center'>採点モード</th>
-    <th class='cell-number'>得点</th>
+    <th class='center'>得点</th>
   </thead>
   <tbody>
     <% @info.each do |i| %>
@@ -17,7 +17,7 @@
       <td class='center'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
       <td class='center'><%= i['songkey'] %></td>
       <td class='center'><%= i['scoretype_name'] %></td>
-      <td class='center'><%= h i['score'] %></td>
+      <td class='center' width='8%'><%= h i['score'] %></td>
     </tr>
     <% end %>
   </tbody>
