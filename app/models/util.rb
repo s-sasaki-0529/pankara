@@ -208,7 +208,7 @@ class Util
   # read_update_info - 更新情報ファイルを参照する
   #--------------------------------------------------------------------
   def self.read_update_info
-    File.open('update_info').read
+    File.open('update_text').read
   end
 
   # to_json - RubyオブジェクトをJSONに変換する
