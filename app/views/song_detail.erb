@@ -1,109 +1,71 @@
-<h1 class='center'>
-  <%= h @song['name'] %> /
-  <%= artist_link @song['artist'], @song['artist_name'] %>
-</h1>
-
 <div class="row">
-  <div id="history_column" class="col-xs-3">
-    <p>歌唱履歴予定地</p>
+
+  <div id="sang_count_chart_column" class="col-xs-3">
+    歌唱回数遷移予定地
   </div>
+
   <div id="youtube_column" class="col-xs-6">
+    <h2 class='center' style="margin-top: -5px">
+      <%= h @song['name'] %></br><%= artist_link @song['artist'], @song['artist_name'] %>
+    </h2>
     <% if @song['url'] %>
       <%= movie_player @song['url'] , 560 , 315 %>
     <% end %>
   </div>
+
   <div id="score_column" class="col-xs-3">
     <p>スコアグラフ予定地</p>
   </div>
 </div>
 
-<div class="row">
-  <div id="sang_count_chart_column" class="col-xs-9">
-    歌唱回数遷移グラフ予定地
+<div class="row" style="padding-top: 25px">
+  <div id="history_column" class="col-xs-9">
+    <div id="history_tabs" style="display: none;">
+      <ul>
+        <% if @current_user %>
+        <li><a href="#tabs-user">あなたの歌唱履歴</a></li>
+        <% end %>
+        <li><a href="#tabs-all">みんなの歌唱履歴</a></li>
+      </ul>
+      <% if @current_user %>
+      <div id="tabs-user">
+        <% @info = @my_history %>
+        <%= erb :_song_detail_history %>
+      </div>
+      <% end %>
+      <div id="tabs-all">
+        <% @info = @history %>
+        <%= erb :_song_detail_history %>
+      </div>
+    </div>
   </div>
   <div id="bbs_column" class="col-xs-3">
-    BBS予定地
+    <h4>この曲が歌われた回数</h4>
+    <p id="sangcount">みんな: <%= @sangcount %></p>
+    <% if @current_user %><p id="my_sangcount">あなた: <%= @my_sangcount %></p><% end %>
+
+    <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
+    <% if @score['score_max'] %>
+      <p id="maxscore">最高: <%= h @score['score_max'] %></p>
+      <p id="minscore">最低: <%= h @score['score_min'] %></p>
+      <p id="avgscore">平均: <%= h @score['score_avg'] %></p>
+    <% else %>
+      みんなの採点履歴がありません
+    <% end %>
+
+    <% if @current_user %>
+      <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
+      <% if @my_score['score_max'] %>
+        <p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
+        <p id="my_minscore">最低: <%= h @my_score['score_min'] %></p>
+        <p id="my_avgscore">平均: <%= h @my_score['score_avg'] %></p>
+      <% else %>
+       あなたの 採点履歴がありません
+      <% end %>
+    <% end %>
   </div>
 </div>
 
-<h4>この曲が歌われた回数</h4>
-<p id="sangcount">みんな: <%= @sangcount %></p>
-<% if @current_user %><p id="my_sangcount">あなた: <%= @my_sangcount %></p><% end %>
-
-<h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-<% if @score['score_max'] %>
-  <p id="maxscore">最高: <%= h @score['score_max'] %></p>
-  <p id="minscore">最低: <%= h @score['score_min'] %></p>
-  <p id="avgscore">平均: <%= h @score['score_avg'] %></p>
-<% else %>
-  みんなの採点履歴がありません
-<% end %>
-
-<% if @current_user %>
-  <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
-  <% if @my_score['score_max'] %>
-    <p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
-    <p id="my_minscore">最低: <%= h @my_score['score_min'] %></p>
-    <p id="my_avgscore">平均: <%= h @my_score['score_avg'] %></p>
-  <% else %>
-   あなたの 採点履歴がありません
-  <% end %>
-<% end %>
-
-<h4>この曲のみんなの歌唱履歴</h4>
-<% if @history.size > 0 %>
-  <table id="songdetail_allhistory_table" class="table sortable table-striped">
-    <thead>
-      <th class='center cell-datetime'>日付</th>
-      <th class='center'>内容</th>
-      <th class='center'>ユーザ</th>
-      <th class='center cell-number'>キー</th>
-      <th class='center'>採点モード</th>
-      <th class='center cell-number'>得点</th>
-    </thead>
-    <tbody>
-      <% @history.each do |sang| %>
-      <tr>
-        <td class='center'><%= sang['datetime'] %></td>
-        <td class='center'><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-        <td class='center'><%= user_link sang['username'] , sang['user_screenname'] %></td>
-        <td class='center'><%= sang['songkey'] %></td>
-        <td class='center'><%= sang['scoretype_name'] %></td>
-        <td class='center'><%= h sang['score'] %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  歌唱履歴がありません
-<% end %>
-
-<% if @current_user %>
-  <h4>この曲のあなたの歌唱履歴</h4>
-  <% if @my_history.size > 0 %>
-    <table id="songdetail_myhistory-table" class="table sortable table-striped">
-      <thead>
-        <th class='cell-datetime'>日付</th>
-        <th class='center'>内容</th>
-        <th class='center'>ユーザ</th>
-        <th class='cell-number'>キー</th>
-        <th class='center'>採点モード</th>
-        <th class='cell-number'>得点</th>
-      </thead>
-      <tbody>
-        <% @my_history.each do |sang| %>
-        <tr>
-          <td class='center'><%= sang['datetime'] %></td>
-          <td class='center'><%= karaoke_link sang['karaoke_id'], sang['karaoke_name'] %></td>
-          <td class='center'><%= user_link sang['username'] , sang['user_screenname'] %></td>
-          <td class='center'><%= sang['songkey'] %></td>
-          <td class='center'><%= sang['scoretype_name'] %></td>
-          <td class='center'><%= h sang['score'] %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    歌唱履歴がありません
-  <% end %>
-<% end %>
+<script>
+  $('#history_tabs').tabs().show()
+</script>

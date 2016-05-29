@@ -10,9 +10,11 @@ end
 # テスト実行
 describe '楽曲詳細ページ' do
   before(:all,&init)
-  it '得点の集計が正常に表示されるか' do
+  before do
     login 'sa2knight'
     visit '/history'
+  end
+  it '得点の集計が正常に表示されるか' do
     examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
     examine_text('my_sangcount' , 'あなた: 14')
     examine_text('my_maxscore' , '最高: 97.00')
@@ -35,16 +37,12 @@ describe '楽曲詳細ページ' do
     examine_text('avgscore' , '平均: 92.84')
   end
   it 'Youtubeがインラインで表示されているか' do
-    login 'sa2knight'
-    visit 'history'
     examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
     db = DB.new(:SELECT => 'url' , :FROM => 'song' , :WHERE => 'name = ?' , :SET => 'オンリーロンリーグローリー')
     tube = db.execute_column
     expect(youtube_links[0].slice(/\w+$/)).to eq tube.slice(/\w+$/)
   end
-  it 'リンクが正常に登録されているか' do
-    login 'sa2knight'
-    visit 'history'
+  it 'リンクが正常に登録されているか' , :js => true do
     examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
     song_url = page.current_path
     examine_karaokelink('祝本番環境リリースカラオケ' , song_url)
