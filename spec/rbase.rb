@@ -45,7 +45,8 @@ module Rbase
 
   def examine_songlink(name , artist , referer = nil)
     link name
-    iscontain "#{name} / #{artist}"
+    expect(current_url.scan(%r|song/.+$|).empty?).to eq false
+    iscontain [name , artist]
     referer and visit referer
   end
 
