@@ -37,6 +37,6 @@ describe 'バスタオル' , :js => true do
     expect(iframes.length).to eq 1
     expect(iframes[0]).to eq 'https://www.youtube.com/embed/3exsRhw3xt8'
     execute_script '$(".ui-dialog-title").trigger("click")'
-    expect(find('h2').text).to eq 'シュガーソングとビターステップ / UNISON SQUARE GARDEN'
+    expect(find('h1').text).to eq 'シュガーソングとビターステップ / UNISON SQUARE GARDEN'
   end
 end
