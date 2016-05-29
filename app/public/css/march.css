@@ -88,6 +88,13 @@ tr *.cell-datetime {
   text-align: center;
 }
 
+/*ログイン画面の更新情報エリア*/
+#update_information {
+  resize: none;
+  width: 100%;
+  height: 200px;
+}
+
 /*トップ画面 ログインユーザのアイコン領域*/
 #top_my_icon {
   border: 1px solid;
@@ -154,4 +161,18 @@ tr *.cell-datetime {
 /* オンカーソル時にポインタを切り替えたい要素用クラス */
 .pointer {
   cursor: pointer
+}
+
+/*楽曲詳細画面の歌唱履歴タブ*/
+#history_tabs {
+  font-size: 14px;
+}
+#history_tabs .ui-tabs-panel {
+  height: 260px;
+  overflow-y: auto;
+  padding-top: 5px;
+  padding-bottom: 0px;
+}
+.song-detail-history-table > tbody > tr > td {
+  padding: 8px;
 }

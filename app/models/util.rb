@@ -101,7 +101,7 @@ class Util
         f.write file.read
       end
       size = Util.image_size(tmppath , type)
-      if size && size[:width] <= 256 && size[:height] <= 256
+      if size && 0 < size[:width] && size[:width] <= 256 && 0 < size[:height] && size[:height] <= 256
         FileUtils.move(tmppath , filepath)
       else
         FileUtils.rm(tmppath)
@@ -203,6 +203,12 @@ class Util
   #---------------------------------------------------------------------
   def self.set_config(key , value)
     Util.write_file(CONFIG , key , value)
+  end
+
+  # read_update_info - 更新情報ファイルを参照する
+  #--------------------------------------------------------------------
+  def self.read_update_info
+    File.open('update_text').read
   end
 
   # to_json - RubyオブジェクトをJSONに変換する

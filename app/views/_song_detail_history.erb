@@ -1,0 +1,30 @@
+<% if @info && @info.size > 0 %>
+
+<table class='song-detail-history-table table sortable'>
+  <thead>
+    <th class='center'>日付</th>
+    <th class='center'>内容</th>
+    <th class='center'>ユーザ</th>
+    <th class='center'>キー</th>
+    <th class='center'>採点モード</th>
+    <th class='center'>得点</th>
+  </thead>
+  <tbody>
+    <% @info.each do |i| %>
+    <tr>
+      <td class='center' width='15%'><%= date(i['datetime']) %></td>
+      <td class='center'><%= karaoke_link i['karaoke_id'] , i['karaoke_name'] %>
+      <td class='center'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
+      <td class='center'><%= i['songkey'] %></td>
+      <td class='center'><%= i['scoretype_name'] %></td>
+      <td class='center' width='8%'><%= h i['score'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+
+<p>歌唱履歴がありません</p>
+
+<% end %>

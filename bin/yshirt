@@ -35,7 +35,7 @@ shift $((OPTIND - 1))
 
 # メイン処理
 cd $MARCHDIR
-ssh="ssh root@160.16.227.161 -p 4545"
+ssh="ssh yshirt"
 
 if [ $FLAG_S -eq 1 ]; then
   $ssh "export ZENRA=/home/zenra/March/; nohup zenra run -r yshirt -v"

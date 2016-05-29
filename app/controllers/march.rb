@@ -28,6 +28,9 @@ class March < Sinatra::Base
       end
       content
     end
+    def date(datetime)
+      datetime.to_s.split(' ')[0]
+    end
     def csrftoken
       name = 'authenticity_token'
       token = session['csrf']

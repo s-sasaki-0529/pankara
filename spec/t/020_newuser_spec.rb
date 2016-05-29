@@ -24,7 +24,7 @@ describe '新規登録したユーザで各ページを閲覧' do
     visit 'history'
     iscontain '歌唱履歴がありません'
   end
-  it '楽曲詳細画面' do
+  it '楽曲詳細画面' , :js => true do
     visit 'song/1'
     iscontain 'あなたの 採点履歴がありません'
     iscontain '歌唱履歴がありません'
