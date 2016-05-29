@@ -3,10 +3,18 @@
   <%= artist_link @song['artist'], @song['artist_name'] %>
 </h1>
 
-<div>
-  <% if @song['url'] %>
-    <%= movie_player @song['url'] , 560 , 315 %>
-  <% end %>
+<div class="row">
+  <div id="history_column" class="col-xs-3">
+    <p>歌唱履歴予定地</p>
+  </div>
+  <div id="youtube_column" class="col-xs-6">
+    <% if @song['url'] %>
+      <%= movie_player @song['url'] , 560 , 315 %>
+    <% end %>
+  </div>
+  <div id="score_column" class="col-xs-3">
+    <p>スコアグラフ予定地</p>
+  </div>
 </div>
 
 <h4>この曲が歌われた回数</h4>
