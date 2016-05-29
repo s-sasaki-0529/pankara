@@ -12,7 +12,7 @@ url = '/karaoke/detail/8'
 song = {'1' => 'Hello, world!' , '3' => 'シャイン' , '5' => '決意の朝に'}
 
 # テスト実行
-describe 'カラオケ詳細ページ' do
+describe 'カラオケ詳細ページ' , :js => true do
   before(:all,&init)
   before do
     login 'sa2knight'
@@ -24,7 +24,7 @@ describe 'カラオケ詳細ページ' do
       des_table = table_to_hash('karaoke_detail_description')
       expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
     end
-    it 'タブの切り替え' , :js => true do
+    it 'タブの切り替え' do
       find('#tab_all').click
       iscontain(song.values)
       ['1' , '3' , '5'].each do |i|
@@ -34,7 +34,7 @@ describe 'カラオケ詳細ページ' do
         islack song.select {|n| n != i}.keys
       end
     end
-    it '集計/値段/感想' , :js => true do
+    it '集計/値段/感想' do
       find('#tab_all').click
       expect(find('#sang_count_all').text).to eq '75'
       expect(find('#sang_artist_count_all').text).to eq '64'
@@ -50,11 +50,12 @@ describe 'カラオケ詳細ページ' do
     end
     it '歌唱履歴' do
       history_table_all = table_to_hash('karaoke_detail_history_all')
+      find('#tab_5').click
       history_table_5 = table_to_hash('karaoke_detail_history_5')
       expect(history_table_all.length).to eq 75
       expect(history_table_5.length).to eq 27
       expect(history_table_all[0]['tostring']).to eq '1,ないと,,Hello, world!,BUMP OF CHICKEN,0,,,'
-      expect(history_table_5[1]['tostring']).to eq '2,ちゃら,,はなまるぴっぴはよいこだけ,A応P,0,,,'
+      expect(history_table_5[1]['tostring']).to eq '2,ちゃら,未登録,はなまるぴっぴはよいこだけ,A応P,0,,,'
     end
     it 'ユーザリンク/楽曲リンク/歌手リンク' do
       examine_userlink('ないと' , url)
@@ -64,7 +65,7 @@ describe 'カラオケ詳細ページ' do
       examine_artistlink('サイキックラバー' , url)
     end
   end
-  describe 'Attendnaceの編集' , :js => true do
+  describe 'Attendnaceの編集' do
     it '値段' do
       find('#tab_1').click
       expect(find('#price_1').text).to eq '1600'
