@@ -25,6 +25,7 @@ class DB
       arg[:WHERE] and where(arg[:WHERE])
       arg[:WHERE_IN] and where_in(arg[:WHERE_IN])
       arg[:JOIN] and join(arg[:JOIN])
+      arg[:FLEXIBLE_JOIN] and flexible_join(arg[:FLEXIBLE_JOIN])
       arg[:INSERT] and insert(arg[:INSERT])
       arg[:UPDATE] and update(arg[:UPDATE])
       arg[:DELETE] and delete()
