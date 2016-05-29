@@ -118,6 +118,7 @@ zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
     $(window).scrollTop(scroll);
 
     func_at_load();
+    $('#' + id).tooltip('disable');
   });
 
   //オプション: タイトルバーにオンマウス時のカーソル
@@ -146,6 +147,7 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
   jQuery.removeData(div);
   div.load(url + " #" + id , function(date , status) {
     func_at_load();
+    $('#' + id).tooltip('disable');
   });
 };
 
@@ -542,7 +544,7 @@ var register = (function() {
   /*[method] 歌唱履歴編集画面用の要素を作成する*/
   function createElementForEditHistory(karaoke_id , history_id) {
     var label = $('<label></label>').attr('for' , 'score').html('URL:');
-    var input = $('<input>').attr('id' , 'url').attr('type' , 'url').attr('name' , 'url').attr('size' , '50');
+    var input = $('<input id="url" type="url" name="url" size="50" title="曲の動画を変更する場合はURLを変更してください。">');
     $('#url_area').html(label).append(input);
     
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
