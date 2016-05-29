@@ -88,6 +88,13 @@ tr *.cell-datetime {
   text-align: center;
 }
 
+/*ログイン画面の更新情報エリア*/
+#update_information {
+  resize: none;
+  width: 100%;
+  height: 200px;
+}
+
 /*トップ画面 ログインユーザのアイコン領域*/
 #top_my_icon {
   border: 1px solid;

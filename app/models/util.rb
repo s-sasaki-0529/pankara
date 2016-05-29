@@ -205,6 +205,12 @@ class Util
     Util.write_file(CONFIG , key , value)
   end
 
+  # read_update_info - 更新情報ファイルを参照する
+  #--------------------------------------------------------------------
+  def self.read_update_info
+    File.open('update_info').read
+  end
+
   # to_json - RubyオブジェクトをJSONに変換する
   #---------------------------------------------------------------------
   def self.to_json(data)

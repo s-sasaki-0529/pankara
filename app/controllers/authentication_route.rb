@@ -7,6 +7,7 @@ class AuthenticationRoute < March
   #---------------------------------------------------------------------
   get '/login' do
     @callback = params[:callback]
+    @update_info = Util.read_update_info
     erb :login
   end
 
