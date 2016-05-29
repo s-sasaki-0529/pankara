@@ -2,6 +2,7 @@ require_relative "../../app/models/util"
 require_relative "../../app/models/song"
 require_relative "../../app/models/artist"
 require_relative "../../app/models/store"
+require_relative "../../app/models/karaoke"
 
 # song
 songs = DB.new(:SELECT => 'id' , :FROM => 'song').execute_columns
@@ -32,3 +33,19 @@ trash_stores.each do |id|
   puts "店舗削除 #{store['name']}(#{store['branch']})"
 end
 trash_stores.empty? or DB.new(:DELETE => 1 , :FROM => 'store' , :WHERE_IN => ["id" , trash_stores.length], :SET => trash_stores).execute
+
+# karaoke
+karaoke_list = DB.new(:SELECT => ['id' , 'name'] , :FROM => 'karaoke' , :WHERE => 'DATE_ADD(created_at, INTERVAL 48 HOUR) < NOW()').execute_all
+karaoke_list.each do |karaoke|
+  attend_list = DB.new(:SELECT => 'id' , :FROM => 'attendance' , :WHERE => 'karaoke = ?' , :SET => karaoke['id']).execute_columns
+  if attend_list.empty?
+    puts "カラオケ削除 #{karaoke['name']}"
+    Karaoke.new(karaoke['id']).delete
+  else
+    histories = DB.new(:SELECT => 'id' , :FROM => 'history' , :WHERE_IN => ['attendance' , attend_list.length] , :SET => attend_list).execute_all
+    if histories.empty?
+      puts "カラオケ削除 #{karaoke['name']}"
+      Karaoke.new(karaoke['id']).delete
+    end
+  end
+end
