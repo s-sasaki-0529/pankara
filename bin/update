@@ -40,11 +40,11 @@ if [ "$FLAG_V" -eq 1 ]; then
   zenra backup -m "update実行前" -v
   echo "プログラムを更新します"
   git pull
-  zenra init -b -v -r
-  zenra run -r $VALUE_R -v
+  zenra init -b -v
+  zenra run $VALUE_R -v
 else
   zenra stop
   git pull
-  zenra init -b -r
-  zenra run -r $VALUE_R
+  zenra init -b
+  zenra run $VALUE_R
 fi
