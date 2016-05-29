@@ -22,9 +22,6 @@ class HistoryRoute < March
     # ユーザクラスから歌唱履歴を取得して一覧表示
     @user = User.new(params[:username])
     @histories = @user.histories(opt)
-    @histories.each do |h|
-      h['karaoke_datetime'] = h['karaoke_datetime'].to_s.split(' ')[0]
-    end
     erb :history
 
   end
