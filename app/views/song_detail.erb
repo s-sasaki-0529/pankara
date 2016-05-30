@@ -1,7 +1,7 @@
 <div class="row">
 
   <div id="sang_count_chart_column" class="col-xs-3">
-    歌唱回数遷移予定地
+    <div id="sang_count_chart"></div>
   </div>
 
   <div id="youtube_column" class="col-xs-6">
@@ -66,6 +66,9 @@
   </div>
 </div>
 
+<div id="sang_count_chart_data" class="hide"><%= @sang_count_chart_data %></div>
+
 <script>
-  $('#history_tabs').tabs().show()
+  $('#history_tabs').tabs().show();
+  zenra.createBarChart("#sang_count_chart" , "#sang_count_chart_data");
 </script>
