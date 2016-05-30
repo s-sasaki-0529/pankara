@@ -5,16 +5,16 @@
     <p id="result"></p>
     <div>
       <label for="song">曲名:</label>
-      <input id="song" type="text" name="song" value="" size="30" autofocus/>
+      <input id="song" title="曲名を入力してください。" type="text" name="song" value="" size="30" autofocus/>
     </div>
     <div>
       <label for="artist">歌手:</label>
-      <input id="artist" type="text" name="artist" value="" size="30"/>
+      <input id="artist" title="歌手名を入力してください。" type="text" name="artist" value="" size="30"/>
     </div>
     <div>
       <label for="slidervalue">キー:</label>
       <p id="slidervalue" name="key"></p>
-      <p id="seekbar" name="seekbar" style="width:350px"></p>
+      <p id="seekbar" title="キーを設定してください。" name="seekbar" style="width:350px"></p>
       <div style="width:350px">
         <p style="float:left">-6</p>
         <p align="right">6</p>
@@ -22,7 +22,7 @@
     </div>
     <div>
      <label for="score_type">採点方法:</label>
-     <p><select id="score_type" name="socre_type">
+     <p><select id="score_type" title="採点方法を選択してください。" name="socre_type">
        <option value="0"></option>
        <% @score_type.each do |value| %>
          <option value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></option>
@@ -31,12 +31,12 @@
     </div>
     <div id="score_area" style="display: none">
       <label for="score">採点:</label>
-      <input id="score" type="text" name="score" value="" size="10"/>点
+      <input id="score" title="採点結果を入力してください。" type="text" name="score" value="" size="10"/>点
     </div>
     <div id="url_area">
     </div>
     <div>
-      <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
+      <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
       <label for="tweet-checkbox"> ツイートする</label>
     </div>
     <div id="buttons">

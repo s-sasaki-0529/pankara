@@ -4,15 +4,15 @@
     <p>カラオケの新規作成</p>
     <div>
       <label for="name">カラオケ名:</label>
-      <input id="name" type="text" name="name" value="" size="30"/>
+      <input id="name" title="カラオケに好きな名前を付けられます。" type="text" name="name" value="" size="30"/>
     </div>
     <div>
       <label for="datetime">日時:</label>
-      <input id="datetime" name="datetime" type="datetime" value="" size="20" required/>
+      <input id="datetime" title="カラオケにいった日時を入力してください。" name="datetime" type="datetime" value="" size="20" required/>
     </div>
     <div>
       <label for="plan">時間:</label>
-      <p><select id="plan" name="plan">
+      <p><select id="plan" title="カラオケの利用時間を入力してください。" name="plan">
         <option value="0.5">00時間30分</option>
         <option value="1">01時間00分</option>
         <option value="1.5">01時間30分</option>
@@ -41,15 +41,15 @@
     </div>
     <div>
       <label for="store">店:</label>
-      <input id="store" type="text" name="store" value="" size="40"/>
+      <input id="store" title="利用したカラオケ店名を入力してください。" type="text" name="store" value="" size="40"/>
     </div>
     <div>
       <label for="branch">店舗:</label>
-      <input id="branch" type="text" name="branch" value="" size="40"/>
+      <input id="branch" title="利用した店舗名を入力してください。" type="text" name="branch" value="" size="40"/>
     </div>
     <div>
       <label for="product">機種:</label>
-      <p><select id="product"name="product">
+      <p><select id="product"title="利用した機種名を入力してください。" name="product">
         <% @products.each do |product| %>
           <option value="<%= product['id'] %>">
             <%= product['brand'] %> <%= product['product'] %>
@@ -58,7 +58,7 @@
       </select></p>
     </div>
     <div>
-      <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
+      <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
       <label for="tweet-checkbox"> ツイートする</label>
     </div>
     <div id="buttons">
@@ -69,11 +69,11 @@
   <div id="input_attendance" class="input_dialog">
     <div>
       <label for="price">値段:</label>
-      <input id="price" type="text" name="price" value="" size="10">円
+      <input id="price" title="値段を入力してください。" type="text" name="price" value="" size="10">円
     </div>
     <div class="most_under_input">
       <p><label for="memo">感想:</label></p>
-      <textarea id="memo" name="memo" cols=60 rows=3></textarea>
+      <textarea id="memo" title="感想を入力してください。" name="memo" cols=60 rows=3></textarea>
     </div>
     <div id="buttons">
     </div>

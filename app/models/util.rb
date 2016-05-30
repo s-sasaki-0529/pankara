@@ -230,6 +230,21 @@ class Util
     set_config(key , nil)
   end
 
+  # monthly_array - 2016/01から現在月までのデータを管理するための配列を戻す
+  # 現在は2016年のみ対応に。いずれ広げる
+  # ex) [{:month => '2016-01'} , {:month => '2016-02'} ...]
+  def self.monthly_array(opt = {})
+    monthly = []
+    today = "2016-#{sprintf("%02d" , Date.today.mon)}"
+    1.upto(12) do |m|
+      month = "2016-#{sprintf("%02d" , m)}"
+      monthly.push :month => month
+      break if month == today
+    end
+    opt[:desc] and monthly.reverse!
+    return monthly
+  end
+
   # make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する
   #---------------------------------------------------------------------
   def self.make_questions(num)
