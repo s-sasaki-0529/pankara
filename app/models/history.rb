@@ -37,7 +37,7 @@ class History < Base
       song = Song.new(song_id)
       result = song.modify(arg)
       unless result
-        return nil
+        return false
       end
     end
 
@@ -53,6 +53,7 @@ class History < Base
     old_params = @params
     @params = DB.new.get('history' , old_params['id'])
     Util.write_log('event' , "【歌唱履歴修正】#{old_params} → #{@params}")
+    return true
   end
 
   # delete - カラオケレコードを削除する

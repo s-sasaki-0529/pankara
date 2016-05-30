@@ -80,6 +80,39 @@ zenra.createPieChart = function(targetSelecter , dataSelecter , opt) {
 }
 
 /*
+createStickChart - 棒グラフを生成する
+targetSelecter: 病害対象要素のセレクタ
+dataSelecter: 対象データのJSONを持つ要素のセレクタ
+opt: 拡張オプション
+*/
+zenra.createBarChart = function(targetSelecter , dataSelecter , opt) {
+
+  //ベースとなるデータをJSONから取得
+  data = zenra.parseJSON($(dataSelecter).text());
+
+  //データを元にユーザ一覧を生成
+  users = [];
+  data.forEach(function(e) {users = users.concat(Object.keys(e))});
+  users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
+  console.log(users);
+
+  //棒グラフを生成する
+  c3.generate({
+    bindto: targetSelecter,
+    data: {
+      json: data,
+      keys: {x: '_month', value: users},
+      type: 'bar',
+      groups: [users],
+    },
+    axis: {
+      rotated: true,
+      x: {type: 'category'}
+    }
+  });
+};
+
+/*
 showDialog - ダイアログを表示する
 title: ダイアログのタイトル
 dialog_id: ダイアログエレメントに割り振るID
