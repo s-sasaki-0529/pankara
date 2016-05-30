@@ -1,13 +1,19 @@
+<h2 class='center' style="margin-top: -5px">
+  <%= h @song['name'] %> / <%= artist_link @song['artist'], @song['artist_name'] %>
+</h2>
+
 <div class="row">
 
   <div id="sang_count_chart_column" class="col-xs-3">
+    <p>
+      歌唱回数
+      <span id="sangcount">みんな: <%= @sangcount %></span>
+      <% if @current_user %><span id="my_sangcount">あなた: <%= @my_sangcount %></span><% end %>
+    </p>
     <div id="sang_count_chart"></div>
   </div>
 
   <div id="youtube_column" class="col-xs-6">
-    <h2 class='center' style="margin-top: -5px">
-      <%= h @song['name'] %></br><%= artist_link @song['artist'], @song['artist_name'] %>
-    </h2>
     <% if @song['url'] %>
       <%= movie_player @song['url'] , 560 , 315 %>
     <% end %>
@@ -40,10 +46,6 @@
     </div>
   </div>
   <div id="bbs_column" class="col-xs-3">
-    <h4>この曲が歌われた回数</h4>
-    <p id="sangcount">みんな: <%= @sangcount %></p>
-    <% if @current_user %><p id="my_sangcount">あなた: <%= @my_sangcount %></p><% end %>
-
     <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
     <% if @score['score_max'] %>
       <p id="maxscore">最高: <%= h @score['score_max'] %></p>
