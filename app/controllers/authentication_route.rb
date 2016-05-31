@@ -18,9 +18,9 @@ class AuthenticationRoute < March
     redirect '/login'
   end
 
-  # get '/user/registration' - ユーザの新規登録画面を表示
+  # get '/registration' - ユーザの新規登録画面を表示
   #---------------------------------------------------------------------
-  get '/user/registration' do
+  get '/registration' do
     erb :user_registration
   end
 
@@ -58,9 +58,9 @@ class AuthenticationRoute < March
     end
   end
 
-  # post '/user/registration' - ユーザの登録をリクエスト
+  # post '/registration' - ユーザの登録をリクエスト
   #---------------------------------------------------------------------
-  post '/user/registration' do
+  post '/registration' do
     if @params[:password] == @params[:repassword]
       ret = User.create(@params[:username] , @params[:password] , @params[:screenname])
       

@@ -16,7 +16,7 @@ def register_user(sname , name , pwd , repwd)
 end
 
 # 定数定義
-url = '/user/registration'
+url = '/registration'
 message = 'ユーザの新規登録'
 
 # テスト実行
