@@ -13,6 +13,7 @@ class History < Base
   #--------------------------------------------------------------------
   def initialize(id , withInfo = false)
     @params = DB.new.get('history' , id)
+    @params['score'] and @params['score'] = sprintf('%.2f',@params['score'])
     if withInfo
       songInfo = Song.new(@params['song']).params
       @params['song_name'] = songInfo['name']
