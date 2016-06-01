@@ -19,7 +19,7 @@ class SongRoute < March
     end
 
     # 歌唱回数グラフ用データを作成
-    sang_histories = @song.tally_sang_count()
+    sang_histories = @song.monthly_sang_count()
     sang_histories.empty? and return erb :song_detail
     monthly_data = Util.monthly_array(:desc => true)
     monthly_data.each do |m|

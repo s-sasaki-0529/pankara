@@ -158,6 +158,11 @@ class User < Base
       artists.each {|a| a['artist_count_rate'] = (a['artist_count'].to_f / all_sang_count * 100).round(1)}
     end
 
+    # オプション: JSONで返却
+    if opt[:json]
+      return Util.to_json(artists)
+    end
+
     return artists
   end
 
