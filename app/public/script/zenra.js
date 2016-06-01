@@ -107,10 +107,8 @@ zenra.createFavoriteArtistsPieChart = function(targetSelecter) {
   zenra.post('/ajax/user/artist/favorite' , {} , {
     success: function(json) {
       response = zenra.parseJSON(json);
-      result = response.result;
-      data = response.info;
-      if (result == 'success') {
-        zenra.createPieChart(targetSelecter , data);
+      if (response.result == 'success') {
+        zenra.createPieChart(targetSelecter , response.info);
       }
     },
   });
