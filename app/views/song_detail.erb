@@ -68,9 +68,7 @@
   </div>
 </div>
 
-<div id="sang_count_chart_data" class="hide"><%= @sang_count_chart_data %></div>
-
 <script>
   $('#history_tabs').tabs().show();
-  zenra.createBarChart("#sang_count_chart" , "#sang_count_chart_data");
+  zenra.createMonthlySangCountBarChart(<%= @song['id'] %> , "#sang_count_chart");
 </script>
