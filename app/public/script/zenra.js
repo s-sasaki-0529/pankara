@@ -206,6 +206,26 @@ zenra.transitionInDialog = function(dialog_id , url , id , opt) {
 };
 
 /*
+dialogSetEvent - ダイアログにイベントを設定する
+*/
+zenra.dialogSetEvent = function(dialog_id , event_obj) {
+  var dialog_events = ['beforeClose' , 'close'];
+
+  var events = {};
+  Object.keys(event_obj).forEach(function(key) {
+    for (var i = 0; i < dialog_events.length; i++) {
+      if (key == dialog_events[i]) {
+        events[key] = event_obj[key];
+        return;
+      }
+    }
+  });
+
+  var div = $('#' + dialog_id);
+  div.dialog(events);
+};
+
+/*
 createThumbnail - youtubeのサムネイルを生成する
 */
 zenra.createThumbnail = function(idx , id , song , artist , image) {
@@ -691,7 +711,7 @@ var register = (function() {
           setScoreTypeFromCookie();
 
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-          $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
+          $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('登録して終了');
         } ,
         funcs: {
           beforeClose: beforeClose
@@ -779,8 +799,8 @@ var register = (function() {
                 createWidgetForHistory();
 
                 $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-                $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('終了');
-              }
+                $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('登録して終了');
+              } ,
             });
           }
           else {
@@ -847,35 +867,40 @@ var register = (function() {
         data.twitter = 1;
       }
 
-      if (action == 'continue') {
-        // 参加情報の登録リクエストを送信する
-        register.submintAttendanceRegistrationRequest(karaoke_id);
+      // 参加情報の登録リクエストを送信する
+      register.submintAttendanceRegistrationRequest(karaoke_id);
       
-        zenra.post('/ajax/history/create' , data , {
-          success: function(json_response) {
-            response = zenra.parseJSON(json_response);
+      zenra.post('/ajax/history/create' , data , {
+        success: function(json_response) {
+          response = zenra.parseJSON(json_response);
+          
+          if (response['result'] == 'success') {
+            count += 1;
+            $('#result').html('<p>' + count + '件入力されました</p>');
             
-            if (response['result'] == 'success') {
-              count += 1;
-              $('#result').html('<p>' + count + '件入力されました</p>');
+            if (action == 'end') {
+              count = 0;
+              
+              zenra.dialogSetEvent('input_dialog' , {
+                beforeClose: function() { return true; } ,
+              });
+              zenra.closeDialog('input_dialog');
+             
+              location.href = ('/karaoke/detail/' + karaoke_id);
             }
-            else {
-              alert('歌唱履歴の登録に失敗しました。');
-            }
-          } ,
-          error: function() {
-            alert('歌唱履歴の登録に失敗しました。サーバにアクセスできません。');
           }
-        });
+          else {
+            alert('歌唱履歴の登録に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('歌唱履歴の登録に失敗しました。サーバにアクセスできません。');
+        }
+      });
 
-        cookie.setCookie('score_type' , $('#score_type').val());
-        resetHistory();
-      }
-      else if (action == 'end') {
-        location.href = ('/karaoke/detail/' + karaoke_id);
-
-        zenra.closeDialog('input_dialog');
-      }
+      cookie.setCookie('score_type' , $('#score_type').val());
+      resetHistory();
+      
     } ,
 
 

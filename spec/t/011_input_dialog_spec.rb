@@ -58,9 +58,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     click_on '次へ'
    
     input_history_with_data history_data, 1
-    click_on '続けて登録'
-    wait_for_ajax
-    click_on '終了'
+    click_on '登録して終了'; wait_for_ajax
     
     karaoke = [
       '2016-02-20',
@@ -104,7 +102,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       wait_for_ajax
     end
 
-    click_on '終了'
+    click_on '登録して終了'
   
     histories = []
     20.times do |i|
