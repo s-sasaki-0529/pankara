@@ -1,7 +1,9 @@
+<!-- カラオケタイトル -->
 <div style="margin-bottom: 20px">
   <h3 class='inline'><%= h @karaoke['name'] %></h3>
 </div>
 
+<!-- カラオケ 基本情報 -->
 <table id="karaoke_detail_description" class='table'>
   <thead style="background-color: rgb(255,255,204)">
     <tr>
@@ -37,11 +39,16 @@
   </tbody>
 </table>
 
+<!-- タブ -->
 <div id="karaoke_detail_tabs" style="display: none;">
   <ul>
+    <!-- タブ タイトル 全員 -->
+    <% if @karaoke['members'].count >= 2 %>
     <li>
       <a href="#tabs-all" id="tab_all">全員</a>
     </li>
+    <% end %>
+    <!-- タブ タイトル ユーザ -->
     <% @karaoke['members'].each do |member| %>
     <li>
       <a href="#tabs-<%= member['userid'] %>" id="tab_<%= member['userid'] %>">
@@ -51,6 +58,9 @@
     </li>
     <% end %>
   </ul>
+
+  <!-- タブ コンテンツ 全員 -->
+  <% if @karaoke['members'].count >= 2 %>
   <div id="tabs-all">
     <div class="row">
       <div class="karaoke-result-block center">
@@ -80,6 +90,9 @@
     <%= erb :_historytable %>
     </div>
   </div>
+  <% end %>
+
+  <!-- タブ コンテンツ ユーザー -->
   <% @karaoke['members'].each do |member| %>
   <div id="tabs-<%= member['userid'] %>">
     <div class="row">
@@ -136,6 +149,7 @@
 <div class='center'>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
 <script>
+  //タブを生成してから要素を表示する
   $('#karaoke_detail_tabs').tabs();
   $('#karaoke_detail_tabs').show();
 </script>
