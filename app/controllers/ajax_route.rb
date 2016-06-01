@@ -9,8 +9,8 @@ class LocalRoute < March
 
   # success - 正常を通知するJSONを戻す
   #--------------------------------------------------------------------
-  def success
-    return Util.to_json({:result => 'success'})
+  def success(data = nil)
+    return Util.to_json({:result => 'success' , :info => data})
   end
 
   # error - 異常を通知するJSONを戻す
@@ -44,6 +44,33 @@ class LocalRoute < March
       hash[s['song_name']] = s['artist_name']
     end
     return Util.to_json(hash)
+  end
+
+  # post '/ajax/song/tally/monthly/count/?' - 指定した楽曲の月ごとの歌唱回数を戻す
+  #--------------------------------------------------------------------
+  post '/ajax/song/tally/monthly/count/?' do
+    song = Song.new(params['song']) or return error('invalid song id')
+    sang_histories = song.monthly_sang_count or return error('no history')
+    sang_histories.empty? and return error('no history')
+    monthly_data = Util.monthly_array(:desc => true)
+    monthly_data.each do |m|
+      month = m[:month]
+      sang_histories[month] and sang_histories[month].each do |u|
+        screen_name = u['user_screenname']
+        m[screen_name] or m[screen_name] = 0
+        m[screen_name] += 1
+      end
+      m[:_month] = m[:month]
+      m.delete(:month)
+    end
+    return success(monthly_data)
+  end
+
+  # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
+  post '/ajax/user/artist/favorite/?' do
+    user = @current_user or return error('invalid user')
+    favorite_artists = user.favorite_artists(:limit => 10, :want_rate => true) or return error('no artists')
+    return success(favorite_artists.map { |a| [a['artist_name'] , a['artist_count_rate']] })
   end
 
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す

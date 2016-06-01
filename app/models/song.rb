@@ -104,9 +104,9 @@ class Song < Base
     return (count.nil?) ? 0 : count
   end
 
-  # tally_sang_count - 月別の歌唱回数の集計を取得
+  # monthly_sang_count - 月別の歌唱回数の集計を取得
   #--------------------------------------------------------------------
-  def tally_sang_count(opt = {})
+  def monthly_sang_count(opt = {})
     # 該当曲が歌われたattendの一覧を取得
     attend_list = DB.new(
       :SELECT => 'attendance',

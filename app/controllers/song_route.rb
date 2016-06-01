@@ -18,22 +18,6 @@ class SongRoute < March
       @my_history   = @song.history_list({:limit => 10 , :target_user => user})
     end
 
-    # 歌唱回数グラフ用データを作成
-    sang_histories = @song.tally_sang_count()
-    sang_histories.empty? and return erb :song_detail
-    monthly_data = Util.monthly_array(:desc => true)
-    monthly_data.each do |m|
-      month = m[:month]
-      sang_histories[month] and sang_histories[month].each do |u|
-        screen_name = u['user_screenname']
-        m[screen_name] or m[screen_name] = 0
-        m[screen_name] += 1
-      end
-      m[:_month] = m[:month]
-      m.delete(:month)
-    end
-    @sang_count_chart_data = Util.to_json monthly_data
-
     erb :song_detail
   end
 
