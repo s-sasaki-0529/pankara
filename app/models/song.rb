@@ -151,11 +151,6 @@ class Song < Base
       month and monthly_data[month].push attend2user[attend]
     end
 
-    # オプション jsonで返却
-    if opt[:json]
-      return Util.to_json(monthly_data)
-    end
-
     return monthly_data
   end
 
