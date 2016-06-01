@@ -3,7 +3,7 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init -d 2016_03_13_22_01`
+  `zenra init -d 2016_05_31_04_00`
   `zenra mysql -e "update song set url = '' where id = 7"`
 end
 
@@ -24,14 +24,21 @@ describe 'カラオケ詳細ページ' , :js => true do
       des_table = table_to_hash('karaoke_detail_description')
       expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
     end
-    it 'タブの切り替え' do
-      find('#tab_all').click
-      iscontain(song.values)
-      ['1' , '3' , '5'].each do |i|
-        find("#tab_#{i}").click
-        wait_for_ajax
-        iscontain song[i]
-        islack song.select {|n| n != i}.keys
+    describe 'タブの切り替え' do
+      it 'ヒトカラの場合「全員」タブは表示されない' do
+        visit '/karaoke/detail/62'
+        islack '全員'
+      end
+      it '多カラの場合ユーザごとのタブを切り替えられる' do
+        iscontain '全員'
+        find('#tab_all').click
+        iscontain(song.values)
+        ['1' , '3' , '5'].each do |i|
+          find("#tab_#{i}").click
+          wait_for_ajax
+          iscontain song[i]
+          islack song.select {|n| n != i}.keys
+        end
       end
     end
     it '集計/値段/感想' do
@@ -107,8 +114,9 @@ describe 'カラオケ詳細ページ' , :js => true do
       fill_in 'artist' , with: '新しい歌手'
       click_on '登録して終了'; wait_for_ajax
       expect(table_to_hash('karaoke_detail_history_all').length).to eq 76
-      js('register.editHistory(8 , 428)')
+      js('register.editHistory(8 , 906)')
       click_on '削除'; wait_for_ajax
+      islack '新しい楽曲'
       expect(table_to_hash('karaoke_detail_history_all').length).to eq 75
   end
 end
