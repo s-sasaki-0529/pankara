@@ -66,10 +66,8 @@ targetSelecter: 描画対象要素のセレクタ
 dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
-zenra.createPieChart = function(targetSelecter , dataSelecter , opt) {
-  //対象要素内のJSON文字列からオブジェクトを生成
-  data = zenra.parseJSON($(dataSelecter).text());
-  //円グラフを描画
+zenra.createPieChart = function(targetSelecter , data, opt) {
+  console.log(data);
   c3.generate({
     bindto: targetSelecter,
     data: {
@@ -78,6 +76,23 @@ zenra.createPieChart = function(targetSelecter , dataSelecter , opt) {
     }
   });
 }
+
+/*
+createFavoriteArtistsPieChart - お気に入り歌手ベスト10の構成を円グラフで表示する
+targetSelecter: 描画対象要素のセレクタ
+*/
+zenra.createFavoriteArtistsPieChart = function(targetSelecter) {
+  zenra.post('/ajax/user/artist/favorite' , {} , {
+    success: function(json) {
+      response = zenra.parseJSON(json);
+      result = response.result;
+      data = response.info;
+      if (result == 'success') {
+        zenra.createPieChart(targetSelecter , data);
+      }
+    },
+  });
+};
 
 /*
 createStickChart - 棒グラフを生成する

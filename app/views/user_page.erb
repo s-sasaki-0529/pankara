@@ -50,8 +50,7 @@
 
   <h4>よく歌うアーティストベスト１０</h4>
   <div id="user_sang_artists_chart"></div>
-  <div class="hide" id="user_sang_artists_json"><%= @sang_artists_json %></div>
-  <script>zenra.createPieChart("#user_sang_artists_chart" , "#user_sang_artists_json");</script>
+  <script>zenra.createFavoriteArtistsPieChart('#user_sang_artists_chart');</script>
 
   <h4>最高点数</h4>
   <%= h @max_score['score'] %> / 
