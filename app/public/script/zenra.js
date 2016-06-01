@@ -78,6 +78,28 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
 }
 
 /*
+createStickChart - 棒グラフを生成する
+targetSelecter: 病害対象要素のセレクタ
+dataSelecter: 対象データのJSONを持つ要素のセレクタ
+opt: 拡張オプション
+*/
+zenra.createBarChart = function(targetSelecter , key , values) {
+  c3.generate({
+    bindto: targetSelecter,
+    data: {
+      json: data,
+      keys: {x: key, value: values},
+      type: 'bar',
+      groups: [values],
+    },
+    axis: {
+      rotated: true,
+      x: {type: 'category'}
+    }
+  });
+};
+
+/*
 createFavoriteArtistsPieChart - お気に入り歌手ベスト10の構成を円グラフで表示する
 targetSelecter: 描画対象要素のセレクタ
 */
@@ -95,35 +117,23 @@ zenra.createFavoriteArtistsPieChart = function(targetSelecter) {
 };
 
 /*
-createStickChart - 棒グラフを生成する
-targetSelecter: 病害対象要素のセレクタ
-dataSelecter: 対象データのJSONを持つ要素のセレクタ
-opt: 拡張オプション
+createMonthlySangCountBarChart - 対象楽曲の月ごとの歌われた回数を棒グラフで表示する
+song: songID
+targetSelecter: 描画対象要素のセレクタ
 */
-zenra.createBarChart = function(targetSelecter , dataSelecter , opt) {
-
-  //ベースとなるデータをJSONから取得
-  data = zenra.parseJSON($(dataSelecter).text());
-
-  //データを元にユーザ一覧を生成
-  users = [];
-  data.forEach(function(e) {users = users.concat(Object.keys(e))});
-  users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
-  console.log(users);
-
-  //棒グラフを生成する
-  c3.generate({
-    bindto: targetSelecter,
-    data: {
-      json: data,
-      keys: {x: '_month', value: users},
-      type: 'bar',
-      groups: [users],
+zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
+  zenra.post('/ajax/song/tally/monthly/count' , {song: song} , {
+    success: function(json) {
+      response = zenra.parseJSON(json);
+      if (response.result == 'success') {
+        //データを元にユーザ一覧を生成
+        data = response.info;
+        users = [];
+        data.forEach(function(e) {users = users.concat(Object.keys(e))});
+        users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
+      }
+      zenra.createBarChart(targetSelecter , '_month' , users);
     },
-    axis: {
-      rotated: true,
-      x: {type: 'category'}
-    }
   });
 };
 

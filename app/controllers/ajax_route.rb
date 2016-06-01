@@ -50,8 +50,20 @@ class LocalRoute < March
   #--------------------------------------------------------------------
   post '/ajax/song/tally/monthly/count/?' do
     song = Song.new(params['song']) or return error('invalid song id')
-    monthly_count = song.monthly_sang_count or return error('no history')
-    return success(monthly_count)
+    sang_histories = song.monthly_sang_count or return error('no history')
+    sang_histories.empty? and return error('no history')
+    monthly_data = Util.monthly_array(:desc => true)
+    monthly_data.each do |m|
+      month = m[:month]
+      sang_histories[month] and sang_histories[month].each do |u|
+        screen_name = u['user_screenname']
+        m[screen_name] or m[screen_name] = 0
+        m[screen_name] += 1
+      end
+      m[:_month] = m[:month]
+      m.delete(:month)
+    end
+    return success(monthly_data)
   end
 
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
