@@ -136,6 +136,23 @@ zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
 };
 
 /*
+createAggregatedScoreBarChart - 対象楽曲の得点集計を棒グラフで表示する
+song: songID
+scoreType: score_type
+targetSelecter: 描画対象のセレクタ
+*/
+zenra.createAggregatedScoreBarChart = function(song, scoreType, targetSelecter) {
+  zenra.post('/ajax/song/tally/score' , {song: song, score_type: scoreType} , {
+    success: function(json) {
+      response = zenra.parseJSON(json);
+      if (response.result == 'success') {
+        console.log(response.info);
+      }
+    },
+  });
+};
+
+/*
 showDialog - ダイアログを表示する
 title: ダイアログのタイトル
 dialog_id: ダイアログエレメントに割り振るID

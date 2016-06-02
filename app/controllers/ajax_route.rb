@@ -74,6 +74,23 @@ class LocalRoute < March
     return success(favorite_artists.map { |a| [a['artist_name'] , a['artist_count_rate']] })
   end
 
+  # post '/ajax/song/tally/score/?' - 指定した楽曲、採点モードの採点集計を戻す
+  #--------------------------------------------------------------------
+  post '/ajax/song/tally/score/?' do
+    song = Song.new(params[:song]) or return error('no song')
+    score_type = params[:score_type] or return error('no score type')
+    user = @current_user ? @current_user.params['id'] : nil
+    agg_score = song.tally_score(:score_type => score_type, :without_user => user)
+    agg_score.keys.each { |k| agg_score[k] and agg_score[k] = sprintf('%.2f' , agg_score[k]) }
+    if user
+      agg_myscore = song.tally_score(:score_type => score_type, :target_user => user)
+      agg_myscore.keys.each { |k| agg_myscore[k] and agg_myscore[k] = sprintf('%.2f' , agg_myscore[k]) }
+      return success(:user => agg_myscore, :all => agg_score)
+    else
+      return success(:all => agg_score)
+    end
+  end
+
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す
   #---------------------------------------------------------------------
   post '/ajax/storelist/?' do
