@@ -34,6 +34,11 @@ class History < Base
       arg['song'] = song_id
     end
 
+    if arg['score_type'] == "0"
+      arg['score_type'] = nil
+      arg['score'] = nil
+    end
+
     if arg['url']
       song = Song.new(song_id)
       result = song.modify(arg)
