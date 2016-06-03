@@ -20,7 +20,8 @@
   </div>
 
   <div id="score_column" class="col-xs-3">
-    <p>スコアグラフ予定地</p>
+    <p>得点集計(JOYSOUND 全国採点)</p>
+    <div id="score_bar_chart"></div>
   </div>
 </div>
 
@@ -71,4 +72,5 @@
 <script>
   $('#history_tabs').tabs().show();
   zenra.createMonthlySangCountBarChart(<%= @song['id'] %> , "#sang_count_chart");
+  zenra.createAggregatedScoreBarChart(<%= @song['id'] %> , 1 , "#score_bar_chart");
 </script>

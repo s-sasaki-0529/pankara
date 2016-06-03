@@ -11,9 +11,9 @@ zenra = {};
 post - 情報を非同期で送信する
 */
 zenra.post = function(url , data , opt) {
-  beforeSend = opt['beforeSend'] || function(){};
-  success = opt['success'] || function(){};
-  error = opt['error'] || function(){};
+  var beforeSend = opt['beforeSend'] || function(){};
+  var success = opt['success'] || function(){};
+  var error = opt['error'] || function(){};
   data['authenticity_token'] = $('#authenticity_token').val();
   $.ajax({
     type: "POST" ,
@@ -29,7 +29,7 @@ zenra.post = function(url , data , opt) {
 get - 非同期で通信する
 */
 zenra.get = function(url , funcs) {
-  funcs = funcs || {};
+  var funcs = funcs || {};
   $.ajax({
     type: "GET" ,
     url: url ,
@@ -67,7 +67,6 @@ dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
 zenra.createPieChart = function(targetSelecter , data, opt) {
-  console.log(data);
   c3.generate({
     bindto: targetSelecter,
     data: {
@@ -83,7 +82,9 @@ targetSelecter: 病害対象要素のセレクタ
 dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
-zenra.createBarChart = function(targetSelecter , key , values) {
+zenra.createBarChart = function(targetSelecter , data , key , values , groups , opt) {
+  var param = {rotated: false , max: null , min: null};
+  $.extend(param , opt);
   c3.generate({
     bindto: targetSelecter,
     data: {
@@ -93,9 +94,13 @@ zenra.createBarChart = function(targetSelecter , key , values) {
       groups: [values],
     },
     axis: {
-      rotated: true,
-      x: {type: 'category'}
-    }
+      rotated: param['rotated'],
+      x: {type: 'category'},
+      y: {
+        max: param['max'],
+        min: param['min'],
+      },
+    },
   });
 };
 
@@ -125,12 +130,34 @@ zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
       response = zenra.parseJSON(json);
       if (response.result == 'success') {
         //データを元にユーザ一覧を生成
-        data = response.info;
+        var data = response.info;
         users = [];
         data.forEach(function(e) {users = users.concat(Object.keys(e))});
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
-      zenra.createBarChart(targetSelecter , '_month' , users);
+      zenra.createBarChart(targetSelecter , data , '_month' , users , [users] , {rotated: true});
+    },
+  });
+};
+
+/*
+createAggregatedScoreBarChart - 対象楽曲の得点集計を棒グラフで表示する
+song: songID
+scoreType: score_type
+targetSelecter: 描画対象のセレクタ
+*/
+zenra.createAggregatedScoreBarChart = function(song, scoreType, targetSelecter) {
+  zenra.post('/ajax/song/tally/score' , {song: song, score_type: scoreType} , {
+    success: function(json) {
+      var response = zenra.parseJSON(json);
+      if (response.result == 'success') {
+        var data = response.info;
+        console.log(data);
+        var values = ['あなた' , 'みんな'];
+        var g1 = ['あなた'];
+        var g2 = ['みんな'];
+        zenra.createBarChart(targetSelecter , data , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
+      }
     },
   });
 };
@@ -144,9 +171,9 @@ id: URL内で取得する要素のID
 opt: 拡張オプション
 */
 zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
-  opt = opt || {}
-  funcs = opt['funcs'] || {};
-  func_at_load = opt['func_at_load'] || function(){};
+  var opt = opt || {}
+  var funcs = opt['funcs'] || {};
+  var func_at_load = opt['func_at_load'] || function(){};
 
   var dialog = $('<div>').attr('id' , dialog_id);
   var scroll = $(window).scrollTop();
@@ -193,8 +220,8 @@ zenra.closeDialog = function(id) {
 transitionInDialog - ダイアログ内の画面を遷移する
 */
 zenra.transitionInDialog = function(dialog_id , url , id , opt) {
-  opt = opt || {};
-  func_at_load = opt['func_at_load'] || function(){};
+  var opt = opt || {};
+  var func_at_load = opt['func_at_load'] || function(){};
 
   var div = $('#' + dialog_id);
 
@@ -286,7 +313,7 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
 /*
   bathtowelオブジェクト -バスタオルの制御全般-
 */
-bathtowel = {
+var bathtowel = {
 
   /*[Method] バスタオルの初期設定*/
   init : function () {
@@ -337,7 +364,7 @@ var cookie = {
       return;
     }
   
-    cookies = all_cookies.split('; ');
+    var cookies = all_cookies.split('; ');
     for (var i = 0; i < cookies.length; i++) {
       var cookie = cookies[i].split('=');
   
@@ -398,7 +425,7 @@ var register = (function() {
   /*[Method] ダイアログを閉じる時に実施する処理*/
   function beforeClose() {
     if (window.confirm('終了してもよろしいですか')) {
-      count = 0;
+      var count = 0;
 
       return true;
     }
@@ -441,10 +468,10 @@ var register = (function() {
     // お店のもしかしてリスト作成
     zenra.post('/ajax/storelist' , {} , {
       success: function(result) {
-        branch_list = zenra.parseJSON(result);
+        var branch_list = zenra.parseJSON(result);
 
         // オブジェクトのキーをお店リストとして取得
-        store_list = [];
+        var store_list = [];
         for (key in branch_list) {
           store_list.push(key);
         }
@@ -474,11 +501,11 @@ var register = (function() {
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/songlist' , {} , {
       success: function(result) {
-        song_obj = zenra.parseJSON(result);
+        var song_obj = zenra.parseJSON(result);
 
         // オブジェクトを曲名リストと歌手名リストに分割
-        song_list = [];
-        artist_list = [];
+        var song_list = [];
+        var artist_list = [];
         for (key in song_obj) {
           song_list.push(key);
 
@@ -789,7 +816,7 @@ var register = (function() {
       
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
           
           if (response['result'] == 'success') {
             var karaoke_id = response['karaoke_id'];
@@ -819,7 +846,7 @@ var register = (function() {
     
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
           
           if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
@@ -846,7 +873,7 @@ var register = (function() {
       
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
 
           if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
@@ -872,7 +899,7 @@ var register = (function() {
       
       zenra.post('/ajax/history/create' , data , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
           
           if (response['result'] == 'success') {
             count += 1;
@@ -910,7 +937,7 @@ var register = (function() {
 
       zenra.post('/ajax/history/modify/', {id: history_id, params: json_data} , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
           
           if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
@@ -932,7 +959,7 @@ var register = (function() {
       }
       zenra.post('/ajax/karaoke/delete/' , {id: karaoke_id} , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
 
           if (response['result'] == 'success') {
             location.href = '/';
@@ -950,7 +977,7 @@ var register = (function() {
     submitHistoryDeleteRequest : function(karaoke_id , history_id) {
       zenra.post('/ajax/history/delete/' , {id: history_id} , {
         success: function(json_response) {
-          response = zenra.parseJSON(json_response);
+          var response = zenra.parseJSON(json_response);
 
           if (response['result'] == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
