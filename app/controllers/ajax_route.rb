@@ -96,9 +96,10 @@ class LocalRoute < March
     # グラフ生成用にデータを加工
     avg_data = {:name => '平均', :みんな => agg_score['score_avg'], :あなた => agg_myscore['score_avg']}
     max_data = {:name => '最高', :みんな => agg_score['score_max'], :あなた => agg_myscore['score_max']}
+    min_data = {:name => '最低', :みんな => agg_score['score_min'], :あなた => agg_myscore['score_min']}
 
     # まとめてJSONで返却
-    return success([avg_data , max_data])
+    return success([min_data , avg_data , max_data])
   end
 
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す

@@ -82,7 +82,9 @@ targetSelecter: 病害対象要素のセレクタ
 dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
-zenra.createBarChart = function(targetSelecter , key , values) {
+zenra.createBarChart = function(targetSelecter , data , key , values , groups , opt) {
+  var param = {rotated: false , max: null , min: null};
+  $.extend(param , opt);
   c3.generate({
     bindto: targetSelecter,
     data: {
@@ -92,9 +94,13 @@ zenra.createBarChart = function(targetSelecter , key , values) {
       groups: [values],
     },
     axis: {
-      rotated: true,
-      x: {type: 'category'}
-    }
+      rotated: param['rotated'],
+      x: {type: 'category'},
+      y: {
+        max: param['max'],
+        min: param['min'],
+      },
+    },
   });
 };
 
@@ -129,7 +135,7 @@ zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
         data.forEach(function(e) {users = users.concat(Object.keys(e))});
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
-      zenra.createBarChart(targetSelecter , '_month' , users);
+      zenra.createBarChart(targetSelecter , data , '_month' , users , [users] , {rotated: true});
     },
   });
 };
@@ -147,6 +153,10 @@ zenra.createAggregatedScoreBarChart = function(song, scoreType, targetSelecter) 
       if (response.result == 'success') {
         var data = response.info;
         console.log(data);
+        var values = ['あなた' , 'みんな'];
+        var g1 = ['あなた'];
+        var g2 = ['みんな'];
+        zenra.createBarChart(targetSelecter , data , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
       }
     },
   });
