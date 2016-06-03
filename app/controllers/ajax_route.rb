@@ -78,17 +78,27 @@ class LocalRoute < March
   #--------------------------------------------------------------------
   post '/ajax/song/tally/score/?' do
     song = Song.new(params[:song]) or return error('no song')
-    score_type = params[:score_type] or return error('no score type')
+    score_type = params[:score_type].to_i or return error('no score type')
     user = @current_user ? @current_user.params['id'] : nil
+
+    # みんなの得点集計を取得
     agg_score = song.tally_score(:score_type => score_type, :without_user => user)
+    # 得点を小数点以下第二位で四捨五入
     agg_score.keys.each { |k| agg_score[k] and agg_score[k] = sprintf('%.2f' , agg_score[k]) }
+
+    # あなたの得点集計を取得
+    agg_myscore = {'score_max' => nil, 'score_min' => nil, 'score_avg' => nil}
     if user
       agg_myscore = song.tally_score(:score_type => score_type, :target_user => user)
       agg_myscore.keys.each { |k| agg_myscore[k] and agg_myscore[k] = sprintf('%.2f' , agg_myscore[k]) }
-      return success(:user => agg_myscore, :all => agg_score)
-    else
-      return success(:all => agg_score)
     end
+
+    # グラフ生成用にデータを加工
+    avg_data = {:name => '平均', :みんな => agg_score['score_avg'], :あなた => agg_myscore['score_avg']}
+    max_data = {:name => '最高', :みんな => agg_score['score_max'], :あなた => agg_myscore['score_max']}
+
+    # まとめてJSONで返却
+    return success([avg_data , max_data])
   end
 
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す
