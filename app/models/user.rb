@@ -336,12 +336,6 @@ class User < Base
       score_type , 
       history['score']
     )
-
-    if opt[:tweet] && opt[:tweet] == "1"
-      tweet = "#{history['song']}(#{history['artist']})を歌いました"
-      url = Util.url('karaoke' , 'detail' , karaoke_id)
-      self.tweet("#{tweet} #{url}")
-    end
   end
 
   # attend_ids - 対応するattendanceの一覧を戻す
@@ -401,6 +395,14 @@ class User < Base
   #--------------------------------------------------------------------
   def tweet_karaoke(karaoke_id)
     tweet = "#{@params['screenname']}さんがカラオケに行きました"
+    url = Util.url('karaoke' , 'detail' , karaoke_id)
+    self.tweet("#{tweet} #{url}")
+  end
+
+  # tweet_history - ツイッターに歌唱履歴についてツイートする
+  #--------------------------------------------------------------------
+  def tweet_history(karaoke_id , history)
+    tweet = "#{history['song']}(#{history['artist']})を歌いました"
     url = Util.url('karaoke' , 'detail' , karaoke_id)
     self.tweet("#{tweet} #{url}")
   end
