@@ -425,7 +425,7 @@ var register = (function() {
   /*[Method] ダイアログを閉じる時に実施する処理*/
   function beforeClose() {
     if (window.confirm('終了してもよろしいですか')) {
-      var count = 0;
+      count = 0;
 
       return true;
     }
@@ -471,7 +471,7 @@ var register = (function() {
         var branch_list = zenra.parseJSON(result);
 
         // オブジェクトのキーをお店リストとして取得
-        var store_list = [];
+        store_list = [];
         for (key in branch_list) {
           store_list.push(key);
         }
@@ -501,11 +501,11 @@ var register = (function() {
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/songlist' , {} , {
       success: function(result) {
-        var song_obj = zenra.parseJSON(result);
+        song_obj = zenra.parseJSON(result);
 
         // オブジェクトを曲名リストと歌手名リストに分割
-        var song_list = [];
-        var artist_list = [];
+        song_list = [];
+        artist_list = [];
         for (key in song_obj) {
           song_list.push(key);
 
