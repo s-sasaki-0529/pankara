@@ -147,8 +147,9 @@ class LocalRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
-
+    twitter = arg["twitter"]
     result = karaoke.modify(arg)
+    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id])
     return result ? success : error('modify failed')
   end
   
@@ -180,7 +181,9 @@ class LocalRoute < March
     history = History.new(params[:id])
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
-    result = history.modify(arg)
+    twitter = arg['twitter']
+    result = history.modify(arg.dup)
+    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg)
     return result ? success : error('modify failed')
   end
 
@@ -202,13 +205,11 @@ class LocalRoute < March
     karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
-    opt = {:tweet => params[:twitter]}
-
     if @current_user
-      result = @current_user.register_karaoke(karaoke , opt)
+      result = @current_user.register_karaoke(karaoke)
      
       if result.kind_of?(Integer)
-        @current_user.register_attendance(result)
+        params[:twitter] and @current_user.tweet_karaoke(result)
         Util.to_json({'result' => 'success', 'karaoke_id' => result})
       else
         result
@@ -237,14 +238,15 @@ class LocalRoute < March
   post '/ajax/history/create' do
     history = {}
     karaoke_id = params[:karaoke_id]
-    history['song'] = params[:song_name]
-    history['artist'] = params[:artist_name]
+    history['song_name'] = params[:song_name]
+    history['artist_name'] = params[:artist_name]
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
-    opt = {:tweet => params[:twitter]}
+    twitter = params[:twitter]
     if @current_user
-      @current_user.register_history(karaoke_id , history , opt)
+      @current_user.register_history(karaoke_id , history)
+      twitter and @current_user.tweet_history(karaoke_id , history)
       Util.to_json({'result' => 'success'})
     else
       Util.to_json({'result' => 'invalid current user'})
