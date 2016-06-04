@@ -330,9 +330,9 @@ class User < Base
     end
 
     @register.create_history(
-      history['song'],  
-      history['artist'], 
-      history['songkey'], 
+      history['song_name'],
+      history['artist_name'],
+      history['songkey'],
       score_type , 
       history['score']
     )
@@ -402,7 +402,7 @@ class User < Base
   # tweet_history - ツイッターに歌唱履歴についてツイートする
   #--------------------------------------------------------------------
   def tweet_history(karaoke_id , history)
-    tweet = "#{history['song']}(#{history['artist']})を歌いました"
+    tweet = "#{history['song_name']}(#{history['artist_name']})を歌いました"
     url = Util.url('karaoke' , 'detail' , karaoke_id)
     self.tweet("#{tweet} #{url}")
   end

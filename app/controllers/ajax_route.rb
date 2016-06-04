@@ -181,7 +181,9 @@ class LocalRoute < March
     history = History.new(params[:id])
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
-    result = history.modify(arg)
+    twitter = arg['twitter']
+    result = history.modify(arg.dup)
+    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg)
     return result ? success : error('modify failed')
   end
 
@@ -236,8 +238,8 @@ class LocalRoute < March
   post '/ajax/history/create' do
     history = {}
     karaoke_id = params[:karaoke_id]
-    history['song'] = params[:song_name]
-    history['artist'] = params[:artist_name]
+    history['song_name'] = params[:song_name]
+    history['artist_name'] = params[:artist_name]
     history['songkey'] = params[:songkey]
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
