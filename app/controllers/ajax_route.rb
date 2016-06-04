@@ -147,8 +147,9 @@ class LocalRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
-
+    twitter = arg["twitter"]
     result = karaoke.modify(arg)
+    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id])
     return result ? success : error('modify failed')
   end
   
@@ -202,13 +203,11 @@ class LocalRoute < March
     karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
-    opt = {:tweet => params[:twitter]}
-
     if @current_user
-      result = @current_user.register_karaoke(karaoke , opt)
+      result = @current_user.register_karaoke(karaoke)
      
       if result.kind_of?(Integer)
-        @current_user.register_attendance(result)
+        params[:twitter] and @current_user.tweet_karaoke(result)
         Util.to_json({'result' => 'success', 'karaoke_id' => result})
       else
         result

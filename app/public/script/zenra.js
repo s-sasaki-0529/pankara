@@ -667,7 +667,9 @@ var register = (function() {
       price: $('#price').val() ,
       memo: $('#memo').val() ,
     };
-
+    if ($('#tweet-checkbox').prop('checked')) {
+      data.twitter = 1;
+    }
     return data;
   }
     
@@ -809,11 +811,7 @@ var register = (function() {
     /*[Method] カラオケ情報登録リクエストを送信する*/
     submitKaraokeRegistrationRequest : function() {
       var data = getKaraokeData();
-      
-      if ($('#tweet-checkbox').prop('checked')) {
-        data.twitter = 1;
-      }
-      
+
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
@@ -843,7 +841,7 @@ var register = (function() {
     /*[Method] カラオケ情報編集リクエストを送信する*/
     submitKaraokeEditRequest : function(karaoke_id) {
       var json_data = zenra.toJSON(getKaraokeData());
-    
+
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);

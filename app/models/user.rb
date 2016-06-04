@@ -306,11 +306,6 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
-    if opt[:tweet] && opt[:tweet] == "1"
-      tweet = "#{@params['screenname']}さんがカラオケに行きました"
-      url = Util.url('karaoke' , 'detail' , karaoke_id)
-      self.tweet("#{tweet} #{url}")
-    end
     karaoke_id
   end
 
@@ -400,6 +395,14 @@ class User < Base
       twitter.tweet(text)
     end
     return twitter
+  end
+
+  # tweet_karaoke - ツイッターにカラオケについてツイートする
+  #--------------------------------------------------------------------
+  def tweet_karaoke(karaoke_id)
+    tweet = "#{@params['screenname']}さんがカラオケに行きました"
+    url = Util.url('karaoke' , 'detail' , karaoke_id)
+    self.tweet("#{tweet} #{url}")
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得
