@@ -683,7 +683,9 @@ var register = (function() {
       score_type: $('#score_type').val() ,
       url: $('#url').val()
     };
-
+    if ($('#tweet-checkbox').prop('checked')) {
+      data.twitter = 1;
+    }
     return data;
   }
   
@@ -887,10 +889,6 @@ var register = (function() {
     submitHistoryRegistrationRequest : function(action , karaoke_id) {
       var data = getHistoryData();
       data.karaoke_id = karaoke_id;
-
-      if ($('#tweet-checkbox').prop('checked')) {
-        data.twitter = 1;
-      }
 
       // 参加情報の登録リクエストを送信する
       register.submintAttendanceRegistrationRequest(karaoke_id);
