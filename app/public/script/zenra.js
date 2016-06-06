@@ -83,7 +83,7 @@ dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
 zenra.createBarChart = function(targetSelecter , data , key , values , groups , opt) {
-  var param = {rotated: false , max: null , min: null};
+  var param = {rotated: false , max: null , min: null , color: null};
   $.extend(param , opt);
   c3.generate({
     bindto: targetSelecter,
@@ -91,7 +91,7 @@ zenra.createBarChart = function(targetSelecter , data , key , values , groups , 
       json: data,
       keys: {x: key, value: values},
       type: 'bar',
-      groups: [values],
+      groups: groups,
     },
     axis: {
       rotated: param['rotated'],
@@ -100,6 +100,9 @@ zenra.createBarChart = function(targetSelecter , data , key , values , groups , 
         max: param['max'],
         min: param['min'],
       },
+    },
+    color: {
+      pattern: param['color'],
     },
   });
 };
@@ -162,10 +165,17 @@ zenra.scoreBarChart = (function() {
         if (response.result == 'success') {
           var scoreTypeName = response.info.score_type_name;
           var scores = response.info.scores
-          var values = ['あなた' , 'みんな'];
-          var g1 = ['あなた'];
-          var g2 = ['みんな'];
-          zenra.createBarChart(targetSelecter , scores , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
+          var values = [];
+          var colors = [];
+          if (scores[0]['あなた']) {
+            values.push('あなた');
+            colors.push('rgb(31,119,180)');
+          }
+          if (scores[0]['みんな']) {
+            values.push('みんな');
+            colors.push('rgb(255,127,14)');
+          }
+          zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
           $('#score_type_name').text(scoreTypeName);
         }
         isBusy = false;
