@@ -146,21 +146,58 @@ song: songID
 scoreType: score_type
 targetSelecter: 描画対象のセレクタ
 */
-zenra.createAggregatedScoreBarChart = function(song, scoreType, targetSelecter) {
-  zenra.post('/ajax/song/tally/score' , {song: song, score_type: scoreType} , {
-    success: function(json) {
-      var response = zenra.parseJSON(json);
-      if (response.result == 'success') {
-        var data = response.info;
-        console.log(data);
-        var values = ['あなた' , 'みんな'];
-        var g1 = ['あなた'];
-        var g2 = ['みんな'];
-        zenra.createBarChart(targetSelecter , data , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
-      }
-    },
-  });
-};
+zenra.scoreBarChart = (function() {
+
+  var currentScoreType = 1;
+  var targetSelecter;
+  var songId;
+  var scoreTypeNum;
+  var isBusy = false;
+
+  function _create() {
+    if (isBusy) return;
+    isBusy = true;
+    zenra.post('/ajax/song/tally/score' , {song: songId, score_type: currentScoreType} , {
+      success: function(json) {
+        var response = zenra.parseJSON(json);
+        if (response.result == 'success') {
+          var data = response.info;
+          var values = ['あなた' , 'みんな'];
+          var g1 = ['あなた'];
+          var g2 = ['みんな'];
+          zenra.createBarChart(targetSelecter , data , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
+        }
+        isBusy = false;
+      },
+    });
+  }
+
+  function _init(song , current , num , target) {
+    songId = song;
+    currentScoreType = current;
+    scoreTypeNum = num;
+    targetSelecter = target;
+    _create();
+  }
+
+  function _next() {
+    currentScoreType++;
+    if (currentScoreType == scoreTypeNum + 1) {
+      currentScoreType = 1;
+    }
+  }
+
+  function _prev() {
+    currentScoreType--;
+    if (currentScoreType == 0) {
+      currentScoreType = 1;
+    }
+  }
+
+  return {
+    init: _init,
+  };
+})();
 
 /*
 showDialog - ダイアログを表示する

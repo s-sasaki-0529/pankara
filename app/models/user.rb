@@ -325,7 +325,7 @@ class User < Base
     register.set_karaoke karaoke_id
     register.attend_karaoke
     if history['score_type'] > 0
-      score_type = ScoreType.id_to_name(history['score_type'], true)
+      score_type = ScoreType.id_to_name(history['score_type'], :hash => true)
     else
       score_type = nil
       history['score'] = nil
