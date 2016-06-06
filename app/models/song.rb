@@ -231,7 +231,7 @@ class Song < Base
 
     result = db.execute_all
     result.each do |sang|
-      sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'] , true).values.join("<br>")
+      sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'] , :hash => true).values.join("<br>")
     end
     return result
   end
