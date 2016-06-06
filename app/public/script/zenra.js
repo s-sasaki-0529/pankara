@@ -155,17 +155,18 @@ zenra.scoreBarChart = (function() {
   var isBusy = false;
 
   function _create() {
-    if (isBusy) return;
     isBusy = true;
     zenra.post('/ajax/song/tally/score' , {song: songId, score_type: currentScoreType} , {
       success: function(json) {
         var response = zenra.parseJSON(json);
         if (response.result == 'success') {
-          var data = response.info;
+          var scoreTypeName = response.info.score_type_name;
+          var scores = response.info.scores
           var values = ['あなた' , 'みんな'];
           var g1 = ['あなた'];
           var g2 = ['みんな'];
-          zenra.createBarChart(targetSelecter , data , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
+          zenra.createBarChart(targetSelecter , scores , 'name' , values , [g1 , g2] , {max: 100 , min: 60});
+          $('#score_type_name').text(scoreTypeName);
         }
         isBusy = false;
       },
@@ -181,21 +182,27 @@ zenra.scoreBarChart = (function() {
   }
 
   function _next() {
+    if (isBusy) return;
     currentScoreType++;
     if (currentScoreType == scoreTypeNum + 1) {
       currentScoreType = 1;
     }
+    _create();
   }
 
   function _prev() {
+    if (isBusy) return;
     currentScoreType--;
     if (currentScoreType == 0) {
-      currentScoreType = 1;
+      currentScoreType = scoreTypeNum;
     }
+    _create();
   }
 
   return {
     init: _init,
+    next: _next,
+    prev: _prev,
   };
 })();
 

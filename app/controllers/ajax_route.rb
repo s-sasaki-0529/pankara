@@ -81,6 +81,9 @@ class LocalRoute < March
     score_type = params[:score_type].to_i or return error('no score type')
     user = @current_user ? @current_user.params['id'] : nil
 
+    # ScoreTypeとScoreTypeNameの対応を取得
+    score_type_name = ScoreType.id_to_name(score_type , :hash => true).values.join(' ')
+
     # みんなの得点集計を取得
     agg_score = song.tally_score(:score_type => score_type, :without_user => user)
     # 得点を小数点以下第二位で四捨五入
@@ -99,7 +102,7 @@ class LocalRoute < March
     min_data = {:name => '最低', :みんな => agg_score['score_min'], :あなた => agg_myscore['score_min']}
 
     # まとめてJSONで返却
-    return success([min_data , avg_data , max_data])
+    return success(:score_type_name => score_type_name, :scores => [min_data , avg_data , max_data])
   end
 
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す

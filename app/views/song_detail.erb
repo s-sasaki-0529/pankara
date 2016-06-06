@@ -21,9 +21,9 @@
 
   <div id="score_column" class="col-xs-3">
     <p class='center' style="margin-left: 25px">
-      <img src="/image/arrow_left.png" width=16px class='pointer'>
-      JOYSOUND 全国採点集計
-      <img src="/image/arrow_right.png" width=16px class='pointer'>
+      <img src="/image/arrow_left.png" width=16px class='pointer' onclick='zenra.scoreBarChart.prev()'>
+      <span id="score_type_name">JOYSOUND 全国採点</span> 集計
+      <img src="/image/arrow_right.png" width=16px class='pointer' onclick='zenra.scoreBarChart.next()'>
     </p>
     <div id="score_bar_chart"></div>
   </div>
@@ -76,5 +76,5 @@
 <script>
   $('#history_tabs').tabs().show();
   zenra.createMonthlySangCountBarChart(<%= @song['id'] %> , "#sang_count_chart");
-  zenra.scoreBarChart.init(<%= @song['id'] %> , 1 , 7 , "#score_bar_chart");
+  zenra.scoreBarChart.init(<%= @song['id'] %> , 1 , <%= @score_type_num %> , "#score_bar_chart");
 </script>
