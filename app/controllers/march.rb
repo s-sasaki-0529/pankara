@@ -99,9 +99,10 @@ class March < Sinatra::Base
   before do
     # 自動ログイン(debug用)
     if (!session[:logined] && user = Util.read_config('auto_login'))
-      session[:logined] = User.new(user)
+      session[:logined] = user
     end
-    @current_user = session[:logined]
+
+    @current_user = User.new(session[:logined]) if session[:logined]
 
     #リクエストパラメータをUtilクラスで参照できるようにする
     Util.set_request request
