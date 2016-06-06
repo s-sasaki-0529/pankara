@@ -29,7 +29,6 @@ class User < Base
     elsif id
       @params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
     end
-    @params and reset_input_info
     @params['has_twitter'] = Twitter.new(params['username']).authed
   end
 
@@ -299,7 +298,8 @@ class User < Base
   # register_karaoke - 入力されたカラオケをDBに登録する
   #---------------------------------------------------------------------
   def register_karaoke(karaoke , opt = {})
-    karaoke_id = @register.create_karaoke(
+    register = Register.new(self)
+    karaoke_id = register.create_karaoke(
       karaoke['datetime'], 
       karaoke['name'], 
       karaoke['plan'].to_f,
@@ -313,15 +313,17 @@ class User < Base
   # attendanceの引数を与えないと値段、感想は空で登録できる
   #---------------------------------------------------------------------
   def register_attendance(karaoke_id, attendance = {})
-    @register.set_karaoke karaoke_id
-    @register.attend_karaoke(attendance['price'] , attendance['memo'])
+    register = Register.new(self)
+    register.set_karaoke karaoke_id
+    register.attend_karaoke(attendance['price'] , attendance['memo'])
   end
 
   # register_history - 入力された歌唱履歴をDBに登録する
   #---------------------------------------------------------------------
   def register_history(karaoke_id , history , opt = {})
-    @register.set_karaoke karaoke_id
-    @register.attend_karaoke
+    register = Register.new(self)
+    register.set_karaoke karaoke_id
+    register.attend_karaoke
     if history['score_type'] > 0
       score_type = ScoreType.id_to_name(history['score_type'], true)
     else
@@ -329,7 +331,7 @@ class User < Base
       history['score'] = nil
     end
 
-    @register.create_history(
+    register.create_history(
       history['song_name'],
       history['artist_name'],
       history['songkey'],
@@ -430,15 +432,6 @@ class User < Base
     history['song_name'] = song.params['name']
     history['artist'] = song.params['artist']
     history['artist_name'] = song.params['artist_name']
-  end
-
-  private
-  # reset_input_info - 入力情報を初期化する
-  #---------------------------------------------------------------------
-  def reset_input_info
-    @register = Register.new(self)
-    @register.with_url = true
-    @karaoke_id = 0
   end
 
 end

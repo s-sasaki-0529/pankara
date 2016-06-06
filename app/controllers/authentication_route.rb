@@ -29,7 +29,7 @@ class AuthenticationRoute < March
   post '/login' do
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
-      session[:logined] = User.new(@params[:username])
+      session[:logined] = @params[:username]
       if callback = params[:callback]
         redirect callback
       else
