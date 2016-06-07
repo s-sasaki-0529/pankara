@@ -67,4 +67,11 @@ class Twitter < Base
   def tweet(text)
     @twitter.update(text)
   end
+
+  # has_twitter? - 指定したユーザのTwitter連携情報が存在するかを戻す
+  #-------------------------------------------------------------------
+  def self.has_twitter?(userid)
+    token = Util.read_secret(userid)
+    return token ? true : false
+  end
 end
