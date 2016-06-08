@@ -35,10 +35,12 @@
     </div>
     <div id="url_area">
     </div>
+    <% if @twitter %>
     <div>
       <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
       <label for="tweet-checkbox"> ツイートする</label>
     </div>
+    <% end %>
     <div id="buttons">
       <input id="button1" type="button" value="" />
       <input id="button2" type="button" value="" />

@@ -23,7 +23,7 @@ class LocalRoute < March
   #---------------------------------------------------------------------
   get '/ajax/karaoke/dialog' do
     @products = Product.list
-    @twitter = @current_user ? @current_user.twitter_account : nil
+    @twitter = @current_user ? @current_user['has_twitter'] : nil
     erb :_input_karaoke
   end
 
@@ -31,7 +31,7 @@ class LocalRoute < March
   #---------------------------------------------------------------------
   get '/ajax/history/dialog' do
     @score_type = ScoreType.List
-    @twitter = @current_user ? @current_user.twitter_account : nil
+    @twitter = @current_user ? @current_user['has_twitter'] : nil
     erb :_input_history
   end
 
