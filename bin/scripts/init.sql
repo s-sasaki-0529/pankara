@@ -121,6 +121,22 @@ CREATE TABLE `song` (
 ) COMMENT '曲データ';
 
 -- ---
+-- Table 'tag'
+-- タグ
+-- ---
+
+DROP TABLE IF EXISTS `tag`;
+
+CREATE TABLE `tag` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `class` CHAR NOT NULL COMMENT '対象の種類(song=s)',
+  `object` INTEGER NOT NULL COMMENT '対象のid',
+  `name` MEDIUMTEXT NOT NULL COMMENT 'タグ',
+  `created_at` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`)
+) COMMENT 'タグ';
+
+-- ---
 -- Table 'history'
 -- 歌唱履歴
 -- ---
