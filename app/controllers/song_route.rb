@@ -9,9 +9,9 @@ class SongRoute < March
   get '/song/' do
 
     # 楽曲一覧を取得する。ログイン済みの場合そのユーザが歌った曲からのみ
-    songs_ids = []
+    song_ids = []
     @current_user and song_ids = @current_user.histories.map {|h| h['song']}.uniq
-    if songs_ids.empty?
+    if song_ids.empty?
       song_ids = Song.list.map {|s| s['song_id']}
     end
 
