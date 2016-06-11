@@ -33,12 +33,12 @@
   <div id="history_column" class="col-xs-9">
     <div id="history_tabs" style="display: none;">
       <ul>
-        <% if @current_user %>
+        <% if @current_user && @my_history && @my_history.size > 0 %>
         <li><a href="#tabs-user">あなたの歌唱履歴</a></li>
         <% end %>
         <li><a href="#tabs-all">みんなの歌唱履歴</a></li>
       </ul>
-      <% if @current_user %>
+      <% if @current_user  && @my_history && @my_history.size > 0 %>
       <div id="tabs-user">
         <% @info = @my_history %>
         <%= erb :_song_detail_history %>
