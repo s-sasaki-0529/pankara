@@ -57,39 +57,54 @@ describe '楽曲/歌手名検索機能' do
     login 'sa2knight'
   end
 
-  it '曲も歌手もヒットする場合'  do
-    search('光' , 1 , 2)
-    search('of' , 3 , 4)
-    search(' ' , 59 , 29)
-    table = table_to_hash('search_song_table')
-    expect(table[0]['tostring']).to eq 'Hello, world!,BUMP OF CHICKEN'
-    expect(table[5]['tostring']).to eq 'SECRET LOVER,一ノ瀬トキヤ'
-  end
+  describe '検索結果ページ' do
+    it '曲も歌手もヒット'  do
+      search('光' , 1 , 2)
+      search('of' , 3 , 4)
+      search(' ' , 59 , 29)
+      table = table_to_hash('search_song_table')
+      expect(table[0]['tostring']).to eq 'Hello, world!,BUMP OF CHICKEN'
+      expect(table[5]['tostring']).to eq 'SECRET LOVER,一ノ瀬トキヤ'
+    end
 
-  it '曲のみヒットする場合' do
-    search('メドレー' , 3 , 0)
-    search('song' , 2 , 0)
-  end
+    it '曲のみヒット' do
+      search('メドレー' , 3 , 0)
+      search('song' , 2 , 0)
+    end
 
-  it '歌手のみヒットする場合' do
-    search('雪音' , 0 , 5)
-    search('未来' , 0 , 2)
-  end
+    it '歌手のみヒット' do
+      search('雪音' , 0 , 5)
+      search('未来' , 0 , 2)
+    end
 
-  it '曲も歌手もヒットしない場合' do
-    search('SEKAI GA OWARU' , 0 , 0)
-    search('君が代' , 0 , 0)
-  end
+    it 'ヒット無し' do
+      search('SEKAI GA OWARU' , 0 , 0)
+      search('君が代' , 0 , 0)
+    end
 
-  it '何も入力しない場合' do
-    search('' , 0 , 0)
-  end
+    it '入力なし' do
+      search('' , 0 , 0)
+    end
 
-  it 'リンクが正しく設定されているか' do
-    search('0' , 2 , 1)
-    url = page.current_url
-    examine_songlink 'マジLOVE2000%' , 'ST☆RISH' , url
-    examine_artistlink '40mP' , url
+    it 'リンク' do
+      search('0' , 2 , 1)
+      url = page.current_url
+      examine_songlink 'マジLOVE2000%' , 'ST☆RISH' , url
+      examine_artistlink '40mP' , url
+    end
+  end
+  describe 'リダイレクト' do
+    it '楽曲' do
+      search('世界に一つだけの花' , -1 , -1)
+      expect(current_path).to eq '/song/62'
+      iscontain '世界に一つだけの花'
+    end
+
+    it 'アーティスト' do
+      search('KAT' , -1 , -1)
+      expect(current_path).to eq '/artist/143'
+      iscontain 'KAT-TUN'
+    end
   end
 
 end
