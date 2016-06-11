@@ -62,18 +62,20 @@ class User < Base
     end
 
     # カラオケ情報を取得、attendanceと関連付け
-    karaoke_info = Util.array_to_hash(Karaoke.list(:ids => karaoke_ids) , 'karaoke_id')
+    if opt[:song_info]
+      karaoke_info = Util.array_to_hash(Karaoke.list(:ids => karaoke_ids) , 'karaoke_id')
 
-    # 各々の歌唱履歴に対応する楽曲、歌手情報を取得
-    songs = histories.map {|h| h['song']}
-    songs_info = Song.list(:songs => songs, :artist_info => true , :want_hash => true)
+      # 各々の歌唱履歴に対応する楽曲、歌手情報を取得
+      songs = histories.map {|h| h['song']}
+      songs_info = Song.list(:songs => songs, :artist_info => true , :want_hash => true)
 
-    # それぞれをマージ
-    histories.each_with_index do |h , i|
-      song = h['song']
-      karaoke = ak_map[h['attendance']]
-      h.merge!(songs_info[song] || {})
-      h.merge!(karaoke_info[karaoke] || {})
+      # それぞれをマージ
+      histories.each_with_index do |h , i|
+        song = h['song']
+        karaoke = ak_map[h['attendance']]
+        h.merge!(songs_info[song] || {})
+        h.merge!(karaoke_info[karaoke] || {})
+      end
     end
     return histories
   end

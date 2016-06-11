@@ -17,7 +17,7 @@ class HistoryRoute < March
     # ページャ準備
     page = params[:page] ? params[:page].to_i : 1
     @pager = Pager.new(50 , page)
-    opt = {:pager => @pager}
+    opt = {:pager => @pager , :song_info => true}
 
     # ユーザクラスから歌唱履歴を取得して一覧表示
     @user = User.new(params[:username])
