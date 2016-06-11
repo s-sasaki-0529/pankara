@@ -4,6 +4,17 @@ require_relative '../models/score_type'
 
 class SongRoute < March
 
+  # get '/song' - ランダムで１曲表示
+  #--------------------------------------------------------------------
+  get '/song/' do
+    song_ids = Song.list.map {|s| s['song_id']}
+    if song_ids.empty?
+      redirect '/'
+    else
+      redirect "/song/#{song_ids.sample}"
+    end
+  end
+
   # get '/song/:id' - 曲情報を表示
   #---------------------------------------------------------------------
   get '/song/:id' do
