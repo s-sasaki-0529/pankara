@@ -53,7 +53,11 @@
   <div id="tag_column" class="col-xs-3">
     <table width="100%">
       <th>
-        <h4 class="inline">登録済みタグ</h4>
+          <% if @tags.size > 0 %>
+            登録済みタグ
+          <% else %>
+            タグが登録されていません
+          <% end %>
       </th>
       <th>
         <% if @tags.size < 5 %>
@@ -72,8 +76,6 @@
           </td>
         </tr>
         <% end %>
-      <% else %>
-        <p style="padding-top: 15px">タグが登録されていません</p>
       <% end %>
     </table>
   </div>

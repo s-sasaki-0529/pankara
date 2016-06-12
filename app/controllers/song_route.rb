@@ -38,9 +38,16 @@ class SongRoute < March
       @my_history   = @song.history_list({:limit => 10 , :target_user => user})
     end
     @tags = Tag.new('s' , params[:id]).list
-
     erb :song_detail
   end
 
+  # post '/song/:id/tag/remove' - 楽曲に登録されているタグを削除
+  #--------------------------------------------------------------------
+  post '/song/:id/tag/remove' do
+    id = params[:id]
+    tag = params[:tag_name]
+    id and tag and Tag.new('s' , id).remove(tag)
+    redirect "/song/#{id}"
+  end
   
 end
