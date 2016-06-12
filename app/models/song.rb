@@ -5,6 +5,7 @@ require_relative 'base'
 require_relative 'util'
 require_relative 'db'
 require_relative 'score_type'
+require_relative 'tag'
 class Song < Base
 
   # initialize - インスタンスを生成し、曲名、歌手名を取得する
@@ -234,6 +235,24 @@ class Song < Base
       sang['scoretype_name'] = ScoreType.id_to_name(sang['score_type'] , :hash => true).values.join("<br>")
     end
     return result
+  end
+
+  # tags - 登録されているタグ一覧を戻す
+  #--------------------------------------------------------------------
+  def tags
+    Tag.new('s' , @params['id']).list
+  end
+
+  # add_tag - タグを追加登録
+  #--------------------------------------------------------------------
+  def add_tag(name)
+    Tag.new('s' , @params['id']).add(name)
+  end
+
+  # remove_tag - タグを削除
+  #--------------------------------------------------------------------
+  def remove_tag(name)
+    Tag.new('s' , @params['id']).remove(name)
   end
 
   # modify - 楽曲情報を修正する

@@ -1,7 +1,6 @@
 require_relative './march'
 require_relative '../models/song'
 require_relative '../models/score_type'
-require_relative '../models/tag'
 
 class SongRoute < March
 
@@ -47,8 +46,9 @@ class SongRoute < March
   post '/song/:id/tag/add' do
     id = params[:id]
     tag = params[:tag_name]
-    id and tag and tag != "" and tag.split(/[\s　]/).each do |t|
-      Tag.new('s' , id).add(t) or return
+    song = Song.new(id)
+    song and tag and tag != "" and tag.split(/[\s　]/).each do |t|
+      song.add_tag(t) or return
     end
   end
 
@@ -58,8 +58,8 @@ class SongRoute < March
   post '/song/:id/tag/remove' do
     id = params[:id]
     tag = params[:tag_name]
-    id and tag and tag != "" and Tag.new('s' , id).remove(tag)
-    return "success"
+    song = Song.new(id)
+    song and tag and tag != "" and song.remove_tag(tag)
   end
   
 end
