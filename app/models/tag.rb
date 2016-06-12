@@ -36,6 +36,8 @@ class Tag < Base
     @list.include?(name) and return false
     # 既に５種類のタグが登録されている場合追加失敗
     @list.size == MAX and return false
+    # １８文字以上のタグは登録できない
+    name.length > 18 and return false
     # タグを追加する
     insert_id = DB.new(
       :INSERT => ['tag' , ['class' , 'object' , 'name']],
