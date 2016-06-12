@@ -13,6 +13,17 @@ class Tag < Base
     @id = id
   end
 
+  # list - タグの一覧を取得する
+  #--------------------------------------------------------------------
+  def list()
+    DB.new(
+      :SELECT => 'name',
+      :FROM => 'tag',
+      :WHERE => ['class = ?' , 'object = ?'],
+      :SET => [@class , @id]
+    ).execute_columns
+  end
+
   # add - タグを追加する
   #--------------------------------------------------------------------
   def add(name)
