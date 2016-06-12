@@ -2,20 +2,35 @@
 <% if @song_list.size > 0 %>
   
   <% if @song_list.size > 0 %>
-  <h3>"<%= h @tag %>" を含む楽曲一覧(<%= @song_list.size %>件)</h3>
-  <table id="search_song_table" class="table sortable table-hover">
-    <thead>
-      <tr>
-        <th>曲名</th>
-        <th>歌手名</th>
-      </tr>
-    </thead>
+  <h3>タグ "<%= h @tag %>" が登録された楽曲一覧(<%= @song_list.size %>件)</h3>
+  <table id="search_tag_table" class="table table-hover">
     <tbody>
-      <% @song_list.each do |song| %>
-      <tr>
-        <td><%= song_link song['song_id'] , song['song_name'] %></td>
-        <td><%= artist_link song['artist_id'] , song['artist_name'] %></td>
-      </tr>
+      <% @song_list.each_with_index do |song , idx| %>
+      <% if idx % 3 == 0 %>
+        <tr>
+      <% end %>
+        <td id="thumbnail_<%= idx %>" class='center' width='10%'>
+          <% if song['song_url'] %>
+          <script>
+          zenra.createThumbnail(
+            "<%= idx %>" ,
+            "<%= song['song_id'] %>" ,
+            "<%= h song['song_name'] %>" ,
+            "<%= h song['artist_name'] %>" ,
+            "<%= youtube_image song['song_url'] %>"
+          );
+          </script>
+          <% else %>
+          未登録
+          <% end %>
+        </td>
+        <td width='23%'>
+          <p><%= song_link song['song_id'] , song['song_name'] %></p>
+          <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+        </td>
+      <% if idx + 1 % 3 == 0 %>
+        </tr>
+      <% end %>
       <% end %>
     </tbody>
   </table>

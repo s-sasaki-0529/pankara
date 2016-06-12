@@ -182,3 +182,11 @@ tr *.cell-datetime {
   vertical-align: top;
   padding-top: 10px;
 }
+
+/*タグで楽曲検索画面*/
+#search_tag_table {
+  font-size: 14px;
+}
+#search_tag_table > tbody > tr > td {
+  padding: 4px;
+}
