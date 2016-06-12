@@ -5,11 +5,12 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "Webサーバを立ち上げ、サービスを開始する"
-  echo "  Usage: zenra $PROGNAME [-u username] [-f] [-v]"
+  echo "  Usage: zenra $PROGNAME [-u username] [-r] [-e] [-o] [-v]"
   echo "オプション"
   echo "  -u 指定したユーザ名でログイン"
-  echo "  -f Webサーバをフォアグランド上で実行する(ログの取得をしない)"
   echo "  -r runモードを指定する(デフォルト develop)"
+  echo "  -e Webサーバ起動後、標準エラー出力の内容を出力"
+  echo "  -o Webサーバ起動後、標準出力の内容を出力"
   echo "  -v 進捗メッセージを標準出力"
   exit 1
 }
@@ -17,7 +18,9 @@ usage() {
 # オプション解析
 FLAG_F=0
 FLAG_V=0
-while getopts u:p:fhr:v OPT
+FLAG_E=0
+FLAG_O=0
+while getopts u:p:eohr:v OPT
 do
   case $OPT in
     h)  usage
@@ -27,9 +30,11 @@ do
       ;;
     p)  VALUE_P=$OPTARG
       ;;
-    f)  FLAG_F=1
-      ;;
     r)  VALUE_R=$OPTARG
+      ;;
+    o)  FLAG_O=1
+      ;;
+    e)  FLAG_E=1
       ;;
     v)  FLAG_V=1
       ;;
@@ -70,8 +75,9 @@ else
 fi
 
 mes "unicornを起動"
-if [ "$FLAG_F" -eq 1 ]; then
-  bundle exec unicorn -c unicorn.rb
-else
-  bundle exec unicorn -c unicorn.rb -D
+bundle exec unicorn -c unicorn.rb -D
+if [ "$FLAG_E" -eq 1 ]; then
+  tail -f "logs/stderr.log"
+elif [ "$FLAG_O" -eq 1 ]; then
+  tail -f "logs/stdout.log"
 fi
