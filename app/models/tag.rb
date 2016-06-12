@@ -12,4 +12,14 @@ class Tag < Base
     @class = _class
     @id = id
   end
+
+  # add - タグを追加する
+  #--------------------------------------------------------------------
+  def add(name)
+    DB.new(
+      :INSERT => ['tag' , ['class' , 'object' , 'name']],
+      :SET => [@class , @id , name]
+    ).execute_insert_id
+  end
+
 end
