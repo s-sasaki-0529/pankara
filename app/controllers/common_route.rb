@@ -11,14 +11,13 @@ class CommonRoute < March
     erb :_player
   end
 
-  # get '/search/:search_word' - 楽曲/歌手を検索する
+  # get '/search/keyword/:search_word' - 楽曲/歌手を検索する
   #--------------------------------------------------------------------
-  get '/search/?' do
+  get '/search/keyword/?' do
     @search_word = params[:search_word] || ""
     @song_list = []
     @artist_list = []
 
-    # キーワード検索
     if @search_word.size > 0
       # 該当する楽曲と歌手の一覧を取得
       @song_list.concat(Song.list({:name_like => @search_word , :artist_info => true}))
