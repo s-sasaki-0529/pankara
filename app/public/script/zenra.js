@@ -1049,7 +1049,19 @@ zenra.addSongTag = function(id) {
   url_to = url_from + '/tag/add';
   jPrompt('追加するタグ名を入力してください', '', 'タグを新規登録', function(r) {
     data = {tag_name: r};
-    opt = {success: function() { location.href = url_from}};
+    opt = {success: function() { location.href = url_from }};
+    zenra.post(url_to , data , opt);
+  });
+};
+
+zenra.removeSongTag = function(id , tagName) {
+  url_from = '/song/' + id;
+  url_to = url_from + '/tag/remove';
+  mes = 'タグ [' + tagName + '] を削除します。よろしいですか？';
+  jConfirm(mes, '確認', function(r) {
+    if (!r) return;
+    data = {tag_name: tagName};
+    opt = {success: function() { location.href = url_from }};
     zenra.post(url_to , data , opt);
   });
 };

@@ -52,12 +52,13 @@ class SongRoute < March
   end
 
   # post '/song/:id/tag/remove' - 楽曲に登録されているタグを削除
+  # このURLは非同期で呼び出されるため、リダイレクトはクライアント側で行う
   #--------------------------------------------------------------------
   post '/song/:id/tag/remove' do
     id = params[:id]
     tag = params[:tag_name]
     id and tag and tag != "" and Tag.new('s' , id).remove(tag)
-    redirect "/song/#{id}"
+    return "success"
   end
   
 end

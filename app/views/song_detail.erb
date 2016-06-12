@@ -69,10 +69,9 @@
         <tr>
           <td style="vertical-align: top; padding-top: 10px"><a href="/search?tag=<%= h tag %>"><%= h tag %></a></td>
           <td style="vertical-align: top; padding-top: 10px">
-            <form method="POST" action="/song/<%= @song['id'] %>/tag/remove">
-              <input type="image" src="/image/delete_tag.png" width="16px">
-              <input type="hidden" name="tag_name" value="<%= tag %>">
-            </form>
+          <div onclick="zenra.removeSongTag(<%= @song['id'] %> , '<%= tag %>')">
+            <input type="image" src="/image/delete_tag.png" width="16px">
+          </div>
           </td>
         </tr>
         <% end %>
