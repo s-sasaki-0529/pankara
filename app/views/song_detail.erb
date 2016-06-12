@@ -53,10 +53,10 @@
   <div id="tag_column" class="col-xs-3">
     <table id="tag_list_table" width="100%">
       <th>
-        <p id="tag_list_header">登録済みタグ</p>
+        <p id="tag_list_header"></p>
       </th>
-        <p id="add_tag"></p>
       <th>
+        <p><a id="add_tag" class='hidden' href="#" onclick="zenra.addSongTag(<%= @song['id'] %>)">追加</a></p>
       </th>
     </table>
   </div>

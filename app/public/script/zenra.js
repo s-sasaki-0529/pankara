@@ -1066,6 +1066,13 @@ zenra.showSongTagList = function(id) {
       var tags = response.info;
       resetTagElements();
       tags.forEach(function(tag) { addTagElement(tag) });
+      var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';
+      $('#tag_list_header').text(title);
+      if (tags.length < 5) {
+        $('#add_tag').removeClass('hidden');
+      } else {
+        $('#add_tag').addClass('hidden');
+      }
     },
   });
 };
