@@ -1043,3 +1043,13 @@ var register = (function() {
   }
 
 })();
+
+zenra.addSongTag = function(id) {
+  url_from = '/song/' + id;
+  url_to = url_from + '/tag/add';
+  jPrompt('追加するタグ名を入力してください', '', 'タグを新規登録', function(r) {
+    data = {tag_name: r};
+    opt = {success: function() { location.href = url_from}};
+    zenra.post(url_to , data , opt);
+  });
+};

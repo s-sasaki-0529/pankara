@@ -41,12 +41,22 @@ class SongRoute < March
     erb :song_detail
   end
 
+  # post '/song/:id/tag/add' - 楽曲にタグを追加する
+  # このURLは非同期で呼び出されるため、リダイレクトはクライアント側で行う
+  #--------------------------------------------------------------------
+  post '/song/:id/tag/add' do
+    id = params[:id]
+    tag = params[:tag_name]
+    id and tag and tag != "" and Tag.new('s' , id).add(tag)
+    return "success"
+  end
+
   # post '/song/:id/tag/remove' - 楽曲に登録されているタグを削除
   #--------------------------------------------------------------------
   post '/song/:id/tag/remove' do
     id = params[:id]
     tag = params[:tag_name]
-    id and tag and Tag.new('s' , id).remove(tag)
+    id and tag and tag != "" and Tag.new('s' , id).remove(tag)
     redirect "/song/#{id}"
   end
   
