@@ -14,28 +14,6 @@ describe '楽曲詳細ページ' do
     login 'sa2knight'
     visit '/history'
   end
-  it '得点の集計が正常に表示されるか' do
-    examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
-    examine_text('my_sangcount' , 'あなた: 14')
-    examine_text('my_maxscore' , '最高: 97.00')
-    examine_text('my_minscore' , '最低: 88.39')
-    examine_text('my_avgscore' , '平均: 92.65')
-    examine_text('sangcount' , 'みんな: 5')
-    examine_text('maxscore' , '最高: 97.00')
-    examine_text('minscore' , '最低: 93.00')
-    examine_text('avgscore' , '平均: 94.60') 
-    login 'hetare'
-    visit '/history'
-    examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
-    examine_text('my_sangcount' , 'あなた: 2')
-    examine_text('my_maxscore' , '最高: 97.00')
-    examine_text('my_minscore' , '最低: 95.00')
-    examine_text('my_avgscore' , '平均: 96.00')
-    examine_text('sangcount' , 'みんな: 17')
-    examine_text('maxscore' , '最高: 97.00')
-    examine_text('minscore' , '最低: 88.39')
-    examine_text('avgscore' , '平均: 92.84')
-  end
   it 'Youtubeがインラインで表示されているか' do
     examine_songlink('オンリーロンリーグローリー' , 'BUMP OF CHICKEN')
     db = DB.new(:SELECT => 'url' , :FROM => 'song' , :WHERE => 'name = ?' , :SET => 'オンリーロンリーグローリー')

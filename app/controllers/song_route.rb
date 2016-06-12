@@ -1,6 +1,7 @@
 require_relative './march'
 require_relative '../models/song'
 require_relative '../models/score_type'
+require_relative '../models/tag'
 
 class SongRoute < March
 
@@ -30,12 +31,10 @@ class SongRoute < March
     user = @current_user ? @current_user.params['id'] : nil
     @song         = Song.new(params[:id])
     @sangcount    = @song.sangcount({:without_user => user})
-    @score        = @song.tally_score({:score_type => score_type , :without_user => user})
     @history      = @song.history_list({:limit => 10 , :without_user => user})
     @score_type_num = ScoreType.List.size
     if user
       @my_sangcount = @song.sangcount({:target_user => user})
-      @my_score     = @song.tally_score({:score_type => score_type , :target_user => user})
       @my_history   = @song.history_list({:limit => 10 , :target_user => user})
     end
 

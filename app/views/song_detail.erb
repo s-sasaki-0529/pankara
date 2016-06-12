@@ -50,26 +50,7 @@
       </div>
     </div>
   </div>
-  <div id="bbs_column" class="col-xs-3">
-    <h4>この曲のみんなの採点結果(全国採点オンライン２)</h4>
-    <% if @score['score_max'] %>
-      <p id="maxscore">最高: <%= h @score['score_max'] %></p>
-      <p id="minscore">最低: <%= h @score['score_min'] %></p>
-      <p id="avgscore">平均: <%= h @score['score_avg'] %></p>
-    <% else %>
-      みんなの採点履歴がありません
-    <% end %>
-
-    <% if @current_user %>
-      <h4>この曲のあなたの採点結果(全国採点オンライン２)</h4>
-      <% if @my_score['score_max'] %>
-        <p id="my_maxscore">最高: <%= h @my_score['score_max'] %></p>
-        <p id="my_minscore">最低: <%= h @my_score['score_min'] %></p>
-        <p id="my_avgscore">平均: <%= h @my_score['score_avg'] %></p>
-      <% else %>
-       あなたの 採点履歴がありません
-      <% end %>
-    <% end %>
+  <div id="tag_column" class="col-xs-3">
   </div>
 </div>
 
