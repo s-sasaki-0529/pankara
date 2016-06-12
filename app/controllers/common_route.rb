@@ -32,7 +32,7 @@ class CommonRoute < March
       end
     end
 
-    erb :search_tag
+    erb :search
   end
 
   # get '/search/tag/' - タグ検索
@@ -45,7 +45,7 @@ class CommonRoute < March
       song_ids = Tag.search('s' , @tag)
       song_ids.size > 0 and @song_list = Song.list(:artist_info => true, :songs => song_ids)
     end
-    erb :search
+    erb :search_word
   end
 
   # get '/config' - ユーザ設定ページ

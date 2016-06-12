@@ -1,0 +1,27 @@
+<div>
+<% if @song_list.size > 0 %>
+  
+  <% if @song_list.size > 0 %>
+  <h3>"<%= h @tag %>" を含む楽曲一覧(<%= @song_list.size %>件)</h3>
+  <table id="search_song_table" class="table sortable table-hover">
+    <thead>
+      <tr>
+        <th>曲名</th>
+        <th>歌手名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @song_list.each do |song| %>
+      <tr>
+        <td><%= song_link song['song_id'] , song['song_name'] %></td>
+        <td><%= artist_link song['artist_id'] , song['artist_name'] %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+<% elsif @tag.size > 0 %>
+  <h3>"<%= h @tag %>" を含む楽曲が存在しません</h3>
+<% else %>
+  <h3>タグを指定してください</h3>
+<% end %>
