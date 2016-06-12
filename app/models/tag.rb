@@ -38,9 +38,25 @@ class Tag < Base
       :INSERT => ['tag' , ['class' , 'object' , 'name']],
       :SET => [@class , @id , name]
     ).execute_insert_id
-    # 追加に成功した場合、タグリストを再生性
+    # 追加に成功した場合、タグリストを更新
     insert_id and get_list
     return insert_id
+  end
+
+  # remove - タグを削除
+  #--------------------------------------------------------------------
+  def remove(name)
+    # 存在しないタグを指定した場合失敗
+    @list.include?(name) or return false
+    # タグを削除する
+    result = DB.new(
+      :DELETE => 1,
+      :FROM => 'tag',
+      :WHERE => ['class = ?' , 'object = ?' , 'name = ?'],
+      :SET => [@class , @id , name]
+    ).execute
+    # 削除に成功した場合、タグリストを更新
+    result and get_list and return true
   end
 
 end
