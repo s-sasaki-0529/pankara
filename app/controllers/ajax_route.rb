@@ -46,6 +46,14 @@ class LocalRoute < March
     return Util.to_json(hash)
   end
 
+  # post '/ajax/song/tag/list' - 指定した楽曲のタグ一覧を戻す
+  #--------------------------------------------------------------------
+  post '/ajax/song/tag/list/?' do
+    song = Song.new(params['song']) or return error('invalid song id')
+    tags = song.tags or return error('fails get tags')
+    return success(tags)
+  end
+
   # post '/ajax/song/tally/monthly/count/?' - 指定した楽曲の月ごとの歌唱回数を戻す
   #--------------------------------------------------------------------
   post '/ajax/song/tally/monthly/count/?' do
