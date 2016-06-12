@@ -1,6 +1,7 @@
 require_relative './march'
 require_relative '../models/song'
 require_relative '../models/twitter'
+require_relative '../models/tag'
 
 class CommonRoute < March
 
@@ -31,6 +32,19 @@ class CommonRoute < March
       end
     end
 
+    erb :search_tag
+  end
+
+  # get '/search/tag/' - タグ検索
+  # 現在は楽曲のみにタグが振られていることを想定
+  #--------------------------------------------------------------------
+  get '/search/tag/' do
+    @tag = params[:tag] || ""
+    @song_list = []
+    if @tag.size > 0
+      song_ids = Tag.search('s' , @tag)
+      song_ids.size > 0 and @song_list = Song.list(:artist_info => true, :songs => song_ids)
+    end
     erb :search
   end
 

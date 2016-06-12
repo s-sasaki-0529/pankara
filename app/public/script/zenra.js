@@ -1051,7 +1051,7 @@ zenra.showSongTagList = function(id) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search?tag=' + tag + '">' + tag + '</a></td>');
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag + '">' + tag + '</a></td>');
     var $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
       zenra.removeSongTag(id , tag);
     });
