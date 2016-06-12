@@ -47,8 +47,9 @@ class SongRoute < March
   post '/song/:id/tag/add' do
     id = params[:id]
     tag = params[:tag_name]
-    id and tag and tag != "" and Tag.new('s' , id).add(tag)
-    return "success"
+    id and tag and tag != "" and tag.split(/[\s　]/).each do |t|
+      Tag.new('s' , id).add(t) or return
+    end
   end
 
   # post '/song/:id/tag/remove' - 楽曲に登録されているタグを削除
