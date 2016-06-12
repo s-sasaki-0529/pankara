@@ -51,6 +51,26 @@
     </div>
   </div>
   <div id="tag_column" class="col-xs-3">
+    <h4 class="inline">登録済みタグ</h4>
+    <% if @tags.size < 5 %>
+      <span class="right"><a href="#">追加</a></span>
+    <% end %>
+    <form method="POST" action="song/<%= @song['id'] %>/tag/remove">
+      <table width="100%">
+        <% if @tags.size > 0 %>
+          <% @tags.each do |tag| %>
+          <tr>
+            <td style="padding-top: 10px"><a href="/search?tag=<%= h tag %>"><%= h tag %></a></td>
+            <td style="padding-top: 10px">
+              <img src="/image/delete_tag.png" width="16px">
+            </td>
+          </tr>
+          <% end %>
+        <% else %>
+          <p style="padding-top: 15px">タグが登録されていません</p>
+        <% end %>
+      </table>
+    </form>
   </div>
 </div>
 
