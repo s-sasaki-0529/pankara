@@ -1044,24 +1044,48 @@ var register = (function() {
 
 })();
 
+zenra.showSongTagList = function(id) {
+  var url = '/ajax/song/tag/list';
+  var data = {song: id};
+  function resetTagElements() {
+  }
+  function addTagElement(tag) {
+    var $td1 = $('<td><a href="/search?tag=' + tag + '">' + tag + '</a></td>');
+    var $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
+      zenra.removeSongTag(id , tag);
+    });
+    var $td2 = $('<td>').append($removeIcon);
+    var $tr = $('<tr>').append($td1).append($td2);
+    $('#tag_list_table').append($tr);
+  }
+  zenra.post(url , data , {
+    success: function(json) {
+      var response = zenra.parseJSON(json);
+      if (response.result == 'error') return;
+      var tags = response.info;
+      tags.forEach(function(tag) { addTagElement(tag) });
+    },
+  });
+};
+
 zenra.addSongTag = function(id) {
-  url_from = '/song/' + id;
-  url_to = url_from + '/tag/add';
+  var url_from = '/song/' + id;
+  var url_to = url_from + '/tag/add';
   jPrompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
-    data = {tag_name: r};
-    opt = {success: function() { location.href = url_from }};
+    var data = {tag_name: r};
+    var opt = {success: function() { location.href = url_from }};
     zenra.post(url_to , data , opt);
   });
 };
 
 zenra.removeSongTag = function(id , tagName) {
-  url_from = '/song/' + id;
-  url_to = url_from + '/tag/remove';
-  mes = 'タグ [' + tagName + '] を削除します。よろしいですか？';
+  var url_from = '/song/' + id;
+  var url_to = url_from + '/tag/remove';
+  var mes = 'タグ [' + tagName + '] を削除します。よろしいですか？';
   jConfirm(mes, '確認', function(r) {
     if (!r) return;
-    data = {tag_name: tagName};
-    opt = {success: function() { location.href = url_from }};
+    var data = {tag_name: tagName};
+    var opt = {success: function() { location.href = url_from }};
     zenra.post(url_to , data , opt);
   });
 };

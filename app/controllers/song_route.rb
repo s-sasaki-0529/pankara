@@ -36,7 +36,6 @@ class SongRoute < March
       @my_sangcount = @song.sangcount({:target_user => user})
       @my_history   = @song.history_list({:limit => 10 , :target_user => user})
     end
-    @tags = Tag.new('s' , params[:id]).list
     erb :song_detail
   end
 

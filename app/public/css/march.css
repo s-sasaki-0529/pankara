@@ -176,3 +176,9 @@ tr *.cell-datetime {
 .song-detail-history-table > tbody > tr > td {
   padding: 8px;
 }
+
+/*楽曲詳細画面のタグ一覧*/
+#tag_list_table > tr > td {
+  vertical-align: top;
+  padding-top: 10px;
+}
