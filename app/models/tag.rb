@@ -59,4 +59,15 @@ class Tag < Base
     result and get_list and return true
   end
 
+  # search - 指定したタグを持つidを一覧する
+  #--------------------------------------------------------------------
+  def self.search(_class , name , opt = {})
+    DB.new(
+      :SELECT => 'object',
+      :FROM => 'tag',
+      :WHERE => ['class = ?' , 'name = ?'],
+      :SET => [_class , name],
+    ).execute_columns
+  end
+
 end
