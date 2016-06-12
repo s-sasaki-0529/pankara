@@ -1048,6 +1048,7 @@ zenra.showSongTagList = function(id) {
   var url = '/ajax/song/tag/list';
   var data = {song: id};
   function resetTagElements() {
+    $('.song-tag').remove();
   }
   function addTagElement(tag) {
     var $td1 = $('<td><a href="/search?tag=' + tag + '">' + tag + '</a></td>');
@@ -1055,7 +1056,7 @@ zenra.showSongTagList = function(id) {
       zenra.removeSongTag(id , tag);
     });
     var $td2 = $('<td>').append($removeIcon);
-    var $tr = $('<tr>').append($td1).append($td2);
+    var $tr = $('<tr class="song-tag">').append($td1).append($td2);
     $('#tag_list_table').append($tr);
   }
   zenra.post(url , data , {
@@ -1063,6 +1064,7 @@ zenra.showSongTagList = function(id) {
       var response = zenra.parseJSON(json);
       if (response.result == 'error') return;
       var tags = response.info;
+      resetTagElements();
       tags.forEach(function(tag) { addTagElement(tag) });
     },
   });
@@ -1085,7 +1087,7 @@ zenra.removeSongTag = function(id , tagName) {
   jConfirm(mes, '確認', function(r) {
     if (!r) return;
     var data = {tag_name: tagName};
-    var opt = {success: function() { location.href = url_from }};
+    var opt = {success: function() { zenra.showSongTagList(id) }};
     zenra.post(url_to , data , opt);
   });
 };
