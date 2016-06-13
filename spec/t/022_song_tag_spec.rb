@@ -30,7 +30,7 @@ describe 'タグ機能' , :js => true do
     end
   end
 
-  describe 'タグ削除' do
+  it 'タグ削除' do
   end
 
   describe 'タグ検索' do
@@ -41,8 +41,12 @@ describe 'タグ機能' , :js => true do
       iscontain 'タグ "VOCALOID" が登録された楽曲一覧(103件)'
     end
     it '楽曲ページヘのリンク' do
+      visit '/search/tag/?tag=VOCALOID'
+      examine_songlink 'カミサマネジマキ' , 'kemu'
     end
     it '歌手ページヘのリンク' do
+      visit '/search/tag/?tag=VOCALOID'
+      examine_artistlink 'ジミーサムP'
     end
   end
 end
