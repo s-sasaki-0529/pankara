@@ -9,24 +9,49 @@ end
 # テスト実行
 describe 'タグ機能' , :js => true do
   before(:all , &init)
-  before do
-  end
 
-  describe 'タグ表示' do
-    it 'タグなし' do
-    end
-    it 'タグが１個以上５個未満' do
-    end
-    it 'タグが５個' do
-    end
+  # タグを登録
+  def add_tag(tag)
+    js "$('#add_tag').click();"; wait_for_ajax
+    script = "$('#popup_prompt').val('#{tag}')"
+    js script; wait_for_ajax
+    find('#popup_ok').click; wait_for_ajax
   end
 
   describe 'タグ登録' do
     it '単一登録' do
+      visit '/song/83'; wait_for_ajax
+      islack 'シンフォギア'
+      iscontain 'タグが登録されていません'
+      islack '登録済みタグ'
+      add_tag 'シンフォギア'
+      iscontain ['シンフォギア' , '登録済みタグ']
+      islack 'タグが登録されていません'
+      visit '/search/tag/?tag=%E3%82%B7%E3%83%B3%E3%83%95%E3%82%A9%E3%82%AE%E3%82%A2'
+      iscontain 'タグ "シンフォギア" が登録された楽曲一覧(1件)'
     end
     it '複数登録' do
+      tags = ['サザンオールスターズ' , '桑田佳祐' , 'my_dream' , 'TSUNAMI' , '２０００年']
+      visit '/song/163'; wait_for_ajax
+      islack tags
+      add_tag tags.join(' ')
+      iscontain tags
     end
     it '複数登録(５個以上)' do
+      visit '/song/276'; wait_for_ajax
+      add_tag "001 002 003 004 005 006 007 008"
+      iscontain ['001' , '002' , '003' , '004' , '005']
+      islack ['006' , '007' , '008']
+      islack '追加'
+    end
+    it 'キャンセル' do
+      visit '/song/354'; wait_for_ajax
+      islack '新しいタグ'
+      js "$('#add_tag').click();"; wait_for_ajax
+      script = "$('#popup_prompt').val('新しいタグ')"
+      js script; wait_for_ajax
+      find('#popup_cancel').click; wait_for_ajax
+      islack '新しいタグ'
     end
   end
 
