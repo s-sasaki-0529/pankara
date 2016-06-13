@@ -3,7 +3,7 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init -d 2016_06_12_04_00`
+  `zenra init -d 2016_06_13_00_24`
 end
 
 # テスト実行
@@ -35,6 +35,10 @@ describe 'タグ機能' , :js => true do
 
   describe 'タグ検索' do
     it 'タグ検索へのリンク' do
+      visit '/song/231'
+      iscontain ['VOCALOID' , '初音ミク']
+      link 'VOCALOID'
+      iscontain 'タグ "VOCALOID" が登録された楽曲一覧(103件)'
     end
     it '楽曲ページヘのリンク' do
     end
