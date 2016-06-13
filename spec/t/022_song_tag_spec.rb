@@ -30,7 +30,25 @@ describe 'タグ機能' , :js => true do
     end
   end
 
-  it 'タグ削除' do
+  describe 'タグ削除' do
+    it '削除' do
+      visit '/search/tag/?tag=%E5%B7%A1%E9%9F%B3%E3%83%AB%E3%82%AB' #巡音ルカ
+      iscontain 'タグ "巡音ルカ" が登録された楽曲一覧(7件)'
+      examine_songlink 'Reboot' , 'ジミーサムP'; wait_for_ajax
+      all('#tag_list_table > tbody > tr > td > img')[2].click; wait_for_ajax
+      iscontain 'タグ [巡音ルカ] を削除します。よろしいですか？'
+      find('#popup_ok').click; wait_for_ajax
+      islack '巡音ルカ'
+      visit '/search/tag/?tag=%E5%B7%A1%E9%9F%B3%E3%83%AB%E3%82%AB' #巡音ルカ
+      iscontain 'タグ "巡音ルカ" が登録された楽曲一覧(6件)'
+    end
+    it 'キャンセル' do
+      visit '/song/270'; wait_for_ajax
+      iscontain 'がくっぽいど'
+      all('#tag_list_table > tbody > tr > td > img')[1].click; wait_for_ajax
+      find('#popup_cancel').click; wait_for_ajax
+      iscontain 'がくっぽいど'
+    end
   end
 
   describe 'タグ検索' do
