@@ -226,7 +226,9 @@ zenra.createThumbnail = function(idx , id , song , artist , image) {
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {
       var opt = {title_cursor: 'pointer' , draggable: false};
-      dialog.show($img.attr('info') , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
+      
+      player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
+      player_dialog.show('/player/' + id , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
         location.href = '/song/' + id
       });
@@ -276,29 +278,31 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
 
 /*
   dialogオブジェクト -ダイアログ制御用オブジェクト-
+  title: ダイアログのタイトル
+  dialog_id: ダイアログエレメントに割り振るID
 */
-var dialog = {
-    
+var dialog = function(title , dialog_id , width) {
+    this.title = title;
+    this.dialog_id = dialog_id;
+    this.width = width;
+
     /*
     show - ダイアログを表示する
-    title: ダイアログのタイトル
-    dialog_id: ダイアログエレメントに割り振るID
+    opt: 拡張オプション
     url: ダイアログの内容を取得するURL
     id: URL内で取得する要素のID
-    opt: 拡張オプション
     */
-    show : function(title , dialog_id , url , id , width , opt) {
-      var opt = opt || {}
-      var funcs = opt['funcs'] || {};
-      var func_at_load = opt['func_at_load'] || function(){};
-    
-      var dialog = $('<div>').attr('id' , dialog_id);
+    this.show = function(url , id , opt) {
+      opt = opt || {};
+      funcs = opt['funcs'] || {};
+      func_at_load = opt['func_at_load'] || function(){};
+      var dialog = $('<div>').attr('id' , this.dialog_id);
       var scroll = $(window).scrollTop();
       dialog.dialog({
-        title: title ,
+        title: this.title ,
         modal: true ,
         height: "auto" ,
-        width: width ,
+        width: this.width ,
         resizable: opt['resizable'] || false ,
         draggable: opt['draggable'] == false ? false : true ,
         close: function(event) {
@@ -323,36 +327,36 @@ var dialog = {
       $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
     
       dialog.html(div);
-    } ,
+    };
     
     /*
     close - ダイアログを閉じる
     */
-    close : function(id) {
-      var div = $('#' + id);
+    this.close = function() {
+      var div = $('#' + this.dialog_id);
       div.dialog('close');
-    } ,
+    };
 
     /*
     transition - ダイアログ内の画面を遷移する
     */
-    transition : function(dialog_id , url , id , opt) {
+    this.transition = function(url , id , opt) {
       var opt = opt || {};
       var func_at_load = opt['func_at_load'] || function(){};
     
-      var div = $('#' + dialog_id);
+      var div = $('#' + this.dialog_id);
     
       jQuery.removeData(div);
       div.load(url + " #" + id , function(date , status) {
         func_at_load();
         $('#' + id).tooltip('disable');
       });
-    } ,
+    };
     
     /*
     setEvent - ダイアログにイベントを設定する
     */
-    setEvent : function(dialog_id , event_obj) {
+    this.setEvent = function(event_obj) {
       var dialog_events = ['beforeClose' , 'close'];
     
       var events = {};
@@ -365,9 +369,9 @@ var dialog = {
         }
       });
     
-      var div = $('#' + dialog_id);
+      var div = $('#' + this.dialog_id);
       div.dialog(events);
-    } ,
+    };
 };
 
 /*
@@ -466,6 +470,7 @@ var register = (function() {
   var song_obj = [];
   var song_list = [];
   var artist_list = [];
+  var input_dialog;
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -678,7 +683,7 @@ var register = (function() {
     var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
     button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'dialog.close("input_dialog");').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
 
     $('#buttons').append(button2);
     $('#buttons').append(button3);
@@ -696,7 +701,7 @@ var register = (function() {
       action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
     }
 
-    cancel_button.attr('onclick' , 'dialog.close("input_dialog");').val('キャンセル');
+    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル');
     var buttons = $('#buttons');
     buttons.append(action_button);
     buttons.append(cancel_button);
@@ -711,7 +716,7 @@ var register = (function() {
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
     $('#button2').attr('onclick' , 'register.submitHistoryDeleteRequest(' + karaoke_id + ' , ' + history_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'dialog.close("input_dialog");').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
     $('#buttons').append(button3);
   }
     
@@ -771,7 +776,9 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      dialog.show('カラオケ入力' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
+      input_dialog = new dialog('カラオケ入力' , 'input_dialog' , 600);
+      
+      input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -784,7 +791,8 @@ var register = (function() {
 
     /*[Method] 参加情報登録画面を表示する*/
     createAttendance : function(karaoke_id) {
-      dialog.show('参加情報登録' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
+      input_dialog = new dialog('参加情報登録' , 'input_dialog' , 600)
+      input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -796,7 +804,8 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      dialog.show('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
+      input_dialog = new dialog('歌唱履歴入力' , 'input_dialog' , 600)
+      input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
           setScoreTypeFromCookie();
@@ -816,7 +825,8 @@ var register = (function() {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
-          dialog.show('カラオケ編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
+          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
@@ -836,7 +846,8 @@ var register = (function() {
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
-          dialog.show('参加情報編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
+          input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
             funcs: {
               beforeClose: beforeClose
             } ,
@@ -856,7 +867,8 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          dialog.show('歌った曲の編集' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
+          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               createElementForEditHistory(karaoke_id , history_id);
@@ -881,7 +893,7 @@ var register = (function() {
           if (response['result'] == 'success') {
             var karaoke_id = response['karaoke_id'];
 
-            dialog.transition('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
+            input_dialog.transition('/ajax/history/dialog' , 'input_history' , {
               func_at_load: function() {
                 createWidgetForHistory();
 
@@ -964,10 +976,10 @@ var register = (function() {
             if (action == 'end') {
               count = 0;
               
-              dialog.setEvent('input_dialog' , {
+              input_dialog.setEvent({
                 beforeClose: function() { return true; } ,
               });
-              dialog.close('input_dialog');
+              input_dialog.close();
              
               location.href = ('/karaoke/detail/' + karaoke_id);
             }
@@ -1045,6 +1057,11 @@ var register = (function() {
           alert('歌唱履歴の削除に失敗しました。サーバにアクセスできません。');
         }
       });
+    } ,
+    
+    /*[Method] 入力ダイアログを閉じる*/
+    closeDialog : function() {
+      input_dialog.close();
     } ,
   }
 
