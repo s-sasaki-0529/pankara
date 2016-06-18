@@ -52,10 +52,16 @@ describe '楽曲詳細ページ' , :js => true do
 
   describe 'リンク' do
     it '歌手名' do
+      visit '/song/38'
+      examine_artistlink '164'
     end
     it 'ユーザ名' do
+      visit '/song/39'
+      examine_userlink 'ウォーリー'
     end
     it 'カラオケ' do
+      visit '/song/40'
+      examine_karaokelink '免許更新をなかった事にして'
     end
   end
 
