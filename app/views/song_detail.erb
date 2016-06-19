@@ -43,11 +43,13 @@
       <% if @current_user  && @my_history && @my_history.size > 0 %>
       <div id="tabs-user">
         <% @info = @my_history %>
+        <% @info_id = 'song_detail_table_user' %>
         <%= erb :_song_detail_history %>
       </div>
       <% end %>
       <div id="tabs-all">
         <% @info = @history %>
+        <% @info_id = 'song_detail_table_all' %>
         <%= erb :_song_detail_history %>
       </div>
     </div>
