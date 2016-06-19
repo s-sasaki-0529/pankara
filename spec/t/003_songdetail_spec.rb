@@ -7,6 +7,15 @@ init = proc do
   `zenra mysql -e 'insert into song (name , artist) values ("新しい楽曲" , 1)'`
 end
 
+# 指定したページのグラフ用JSONを取得
+def sang_count_chart(user , song)
+  login user
+  visit "song/#{song}"; wait_for_ajax
+  json = evaluate_script("$('#sang_count_chart_json').text();")
+  info = Util.to_hash(json)["info"]
+  return Util.array_to_hash(info , '_month' , true)
+end
+
 # テスト実行
 describe '楽曲詳細ページ' , :js => true do
   before(:all,&init)
@@ -15,8 +24,22 @@ describe '楽曲詳細ページ' , :js => true do
     it '誰も歌っていない楽曲' do
     end
     it '一人のユーザのみ歌っている楽曲' do
+      data = sang_count_chart('sa2knight' , 147)
+      expect(data['2016-06']['ないと']).to eq nil
+      expect(data['2016-05']['ないと']).to eq 3
+      expect(data['2016-04']['ないと']).to eq 2
+      expect(data['2016-03']['ないと']).to eq 3
+      expect(data['2016-02']['ないと']).to eq 4
+      expect(data['2016-01']['ないと']).to eq nil
     end
     it '複数のユーザが歌っている楽曲' do
+      data = sang_count_chart('sa2knight' , 26)
+      expect(data['2016-04'].length).to eq 0
+      expect(data['2016-03'].length).to eq 2
+      expect(data['2016-02'].length).to eq 1
+      expect(data['2016-01'].length).to eq 1
+      expect(data['2016-03']['ないと']).to eq 1
+      expect(data['2016-03']['ちゃら']).to eq 1
     end
   end
 

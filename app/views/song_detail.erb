@@ -11,6 +11,7 @@
       <% if @current_user %><span id="my_sangcount">あなた: <%= @my_sangcount %></span><% end %>
     </p>
     <div id="sang_count_chart"></div>
+    <div id="sang_count_chart_json" class='hidden'></div>
   </div>
 
   <div id="youtube_column" class="col-xs-6">
@@ -28,6 +29,7 @@
       <img src="/image/arrow_right.png" width=16px class='pointer' onclick='zenra.scoreBarChart.next()'>
     </p>
     <div id="score_bar_chart"></div>
+    <div id="score_bar_chart_json" class='hidden'></div>
   </div>
 </div>
 

@@ -139,6 +139,7 @@ zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
       zenra.createBarChart(targetSelecter , data , '_month' , users , [users] , {rotated: true});
+      $(targetSelecter + '_json').text(json)
     },
   });
 };
@@ -177,6 +178,7 @@ zenra.scoreBarChart = (function() {
           }
           zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
           $('#score_type_name').text(scoreTypeName);
+          $(targetSelecter + '_json').text(json)
         }
         isBusy = false;
       },
