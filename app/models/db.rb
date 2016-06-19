@@ -5,6 +5,8 @@ require 'mysql'
 require_relative 'util'
 class DB
 
+  attr_reader :sql
+
   # initialize - インスタンス生成
   #---------------------------------------------------------------------
   def initialize(arg = nil)

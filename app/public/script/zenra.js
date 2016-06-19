@@ -217,96 +217,6 @@ zenra.scoreBarChart = (function() {
 })();
 
 /*
-showDialog - ダイアログを表示する
-title: ダイアログのタイトル
-dialog_id: ダイアログエレメントに割り振るID
-url: ダイアログの内容を取得するURL
-id: URL内で取得する要素のID
-opt: 拡張オプション
-*/
-zenra.showDialog = function(title , dialog_id , url , id , width , opt) {
-  var opt = opt || {}
-  var funcs = opt['funcs'] || {};
-  var func_at_load = opt['func_at_load'] || function(){};
-
-  var dialog = $('<div>').attr('id' , dialog_id);
-  var scroll = $(window).scrollTop();
-  dialog.dialog({
-    title: title ,
-    modal: true ,
-    height: "auto" ,
-    width: width ,
-    resizable: opt['resizable'] || false ,
-    draggable: opt['draggable'] == false ? false : true ,
-    close: function(event) {
-      $(this).dialog('destroy');
-      $(event.target).remove();
-    } ,
-    beforeClose: funcs.beforeClose ,
-  });
-
-  var div = $('<div></div>');
-  div.load(url + " #" + id , function(date , status) {
-    var margin = div.height() / 2;
-    $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
-    div.css('overflow' , 'hidden');
-    $(window).scrollTop(scroll);
-
-    func_at_load();
-    $('#' + id).tooltip('disable');
-  });
-
-  //オプション: タイトルバーにオンマウス時のカーソル
-  $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
-
-  dialog.html(div);
-};
-
-/*
-closeDialog - ダイアログを閉じる
-*/
-zenra.closeDialog = function(id) {
-  var div = $('#' + id);
-  div.dialog('close');
-};
-
-/*
-transitionInDialog - ダイアログ内の画面を遷移する
-*/
-zenra.transitionInDialog = function(dialog_id , url , id , opt) {
-  var opt = opt || {};
-  var func_at_load = opt['func_at_load'] || function(){};
-
-  var div = $('#' + dialog_id);
-
-  jQuery.removeData(div);
-  div.load(url + " #" + id , function(date , status) {
-    func_at_load();
-    $('#' + id).tooltip('disable');
-  });
-};
-
-/*
-dialogSetEvent - ダイアログにイベントを設定する
-*/
-zenra.dialogSetEvent = function(dialog_id , event_obj) {
-  var dialog_events = ['beforeClose' , 'close'];
-
-  var events = {};
-  Object.keys(event_obj).forEach(function(key) {
-    for (var i = 0; i < dialog_events.length; i++) {
-      if (key == dialog_events[i]) {
-        events[key] = event_obj[key];
-        return;
-      }
-    }
-  });
-
-  var div = $('#' + dialog_id);
-  div.dialog(events);
-};
-
-/*
 createThumbnail - youtubeのサムネイルを生成する
 */
 zenra.createThumbnail = function(idx , id , song , artist , image) {
@@ -316,7 +226,9 @@ zenra.createThumbnail = function(idx , id , song , artist , image) {
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {
       var opt = {title_cursor: 'pointer' , draggable: false};
-      zenra.showDialog($img.attr('info') , 'player_dialog' , '/player/' + id , 'player' , 600 , opt);
+      
+      player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
+      player_dialog.show('/player/' + id , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
         location.href = '/song/' + id
       });
@@ -362,6 +274,104 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
     opt ,
     value
   );
+};
+
+/*
+  dialogオブジェクト -ダイアログ制御用オブジェクト-
+  title: ダイアログのタイトル
+  dialog_id: ダイアログエレメントに割り振るID
+*/
+var dialog = function(title , dialog_id , width) {
+    this.title = title;
+    this.dialog_id = dialog_id;
+    this.width = width;
+
+    /*
+    show - ダイアログを表示する
+    opt: 拡張オプション
+    url: ダイアログの内容を取得するURL
+    id: URL内で取得する要素のID
+    */
+    this.show = function(url , id , opt) {
+      opt = opt || {};
+      funcs = opt['funcs'] || {};
+      func_at_load = opt['func_at_load'] || function(){};
+      var dialog = $('<div>').attr('id' , this.dialog_id);
+      var scroll = $(window).scrollTop();
+      dialog.dialog({
+        title: this.title ,
+        modal: true ,
+        height: "auto" ,
+        width: this.width ,
+        resizable: opt['resizable'] || false ,
+        draggable: opt['draggable'] == false ? false : true ,
+        close: function(event) {
+          $(this).dialog('destroy');
+          $(event.target).remove();
+        } ,
+        beforeClose: funcs.beforeClose ,
+      });
+    
+      var div = $('<div></div>');
+      div.load(url + " #" + id , function(date , status) {
+        var margin = div.height() / 2;
+        $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
+        div.css('overflow' , 'hidden');
+        $(window).scrollTop(scroll);
+    
+        func_at_load();
+        $('#' + id).tooltip('disable');
+      });
+    
+      //オプション: タイトルバーにオンマウス時のカーソル
+      $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
+    
+      dialog.html(div);
+    };
+    
+    /*
+    close - ダイアログを閉じる
+    */
+    this.close = function() {
+      var div = $('#' + this.dialog_id);
+      div.dialog('close');
+    };
+
+    /*
+    transition - ダイアログ内の画面を遷移する
+    */
+    this.transition = function(url , id , opt) {
+      var opt = opt || {};
+      var func_at_load = opt['func_at_load'] || function(){};
+    
+      var div = $('#' + this.dialog_id);
+    
+      jQuery.removeData(div);
+      div.load(url + " #" + id , function(date , status) {
+        func_at_load();
+        $('#' + id).tooltip('disable');
+      });
+    };
+    
+    /*
+    setEvent - ダイアログにイベントを設定する
+    */
+    this.setEvent = function(event_obj) {
+      var dialog_events = ['beforeClose' , 'close'];
+    
+      var events = {};
+      Object.keys(event_obj).forEach(function(key) {
+        for (var i = 0; i < dialog_events.length; i++) {
+          if (key == dialog_events[i]) {
+            events[key] = event_obj[key];
+            return;
+          }
+        }
+      });
+    
+      var div = $('#' + this.dialog_id);
+      div.dialog(events);
+    };
 };
 
 /*
@@ -460,6 +470,7 @@ var register = (function() {
   var song_obj = [];
   var song_list = [];
   var artist_list = [];
+  var input_dialog;
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -672,7 +683,7 @@ var register = (function() {
     var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
     button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
 
     $('#buttons').append(button2);
     $('#buttons').append(button3);
@@ -690,7 +701,7 @@ var register = (function() {
       action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
     }
 
-    cancel_button.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル');
     var buttons = $('#buttons');
     buttons.append(action_button);
     buttons.append(cancel_button);
@@ -705,7 +716,7 @@ var register = (function() {
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
     $('#button2').attr('onclick' , 'register.submitHistoryDeleteRequest(' + karaoke_id + ' , ' + history_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'zenra.closeDialog("input_dialog");').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
     $('#buttons').append(button3);
   }
     
@@ -765,7 +776,9 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      zenra.showDialog('カラオケ入力' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
+      input_dialog = new dialog('カラオケ入力' , 'input_dialog' , 600);
+      
+      input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -778,7 +791,8 @@ var register = (function() {
 
     /*[Method] 参加情報登録画面を表示する*/
     createAttendance : function(karaoke_id) {
-      zenra.showDialog('参加情報登録' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
+      input_dialog = new dialog('参加情報登録' , 'input_dialog' , 600)
+      input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -790,7 +804,8 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      zenra.showDialog('歌唱履歴入力' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
+      input_dialog = new dialog('歌唱履歴入力' , 'input_dialog' , 600)
+      input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
           setScoreTypeFromCookie();
@@ -810,7 +825,8 @@ var register = (function() {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
-          zenra.showDialog('カラオケ編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_karaoke' , 600 , {
+          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
@@ -830,7 +846,8 @@ var register = (function() {
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
-          zenra.showDialog('参加情報編集' , 'input_dialog' , '/ajax/karaoke/dialog' , 'input_attendance' , 600 , {
+          input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
             funcs: {
               beforeClose: beforeClose
             } ,
@@ -850,7 +867,8 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          zenra.showDialog('歌った曲の編集' , 'input_dialog' , '/ajax/history/dialog' , 'input_history' , 600 , {
+          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 600)
+          input_dialog.show('/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               createElementForEditHistory(karaoke_id , history_id);
@@ -875,7 +893,7 @@ var register = (function() {
           if (response['result'] == 'success') {
             var karaoke_id = response['karaoke_id'];
 
-            zenra.transitionInDialog('input_dialog' , '/ajax/history/dialog' , 'input_history' , {
+            input_dialog.transition('/ajax/history/dialog' , 'input_history' , {
               func_at_load: function() {
                 createWidgetForHistory();
 
@@ -958,10 +976,10 @@ var register = (function() {
             if (action == 'end') {
               count = 0;
               
-              zenra.dialogSetEvent('input_dialog' , {
+              input_dialog.setEvent({
                 beforeClose: function() { return true; } ,
               });
-              zenra.closeDialog('input_dialog');
+              input_dialog.close();
              
               location.href = ('/karaoke/detail/' + karaoke_id);
             }
@@ -1039,6 +1057,11 @@ var register = (function() {
           alert('歌唱履歴の削除に失敗しました。サーバにアクセスできません。');
         }
       });
+    } ,
+    
+    /*[Method] 入力ダイアログを閉じる*/
+    closeDialog : function() {
+      input_dialog.close();
     } ,
   }
 

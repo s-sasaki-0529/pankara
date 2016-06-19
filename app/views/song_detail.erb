@@ -16,6 +16,8 @@
   <div id="youtube_column" class="col-xs-6">
     <% if @song['url'] %>
       <%= movie_player @song['url'] , 560 , 315 %>
+    <% else %>
+      <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
     <% end %>
   </div>
 
@@ -34,9 +36,9 @@
     <div id="history_tabs" style="display: none;">
       <ul>
         <% if @current_user && @my_history && @my_history.size > 0 %>
-        <li><a href="#tabs-user">あなたの歌唱履歴</a></li>
+        <li><a href="#tabs-user" id="tab-user">あなたの歌唱履歴</a></li>
         <% end %>
-        <li><a href="#tabs-all">みんなの歌唱履歴</a></li>
+        <li><a href="#tabs-all" id="tab-all">みんなの歌唱履歴</a></li>
       </ul>
       <% if @current_user  && @my_history && @my_history.size > 0 %>
       <div id="tabs-user">
