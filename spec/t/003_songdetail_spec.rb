@@ -4,7 +4,7 @@ include Rbase
 # テスト用データベース構築
 init = proc do
   `zenra init -d 2016_06_13_00_24`
-  `zenra mysql -e 'update song set url = NULL where id = 2'`
+  `zenra mysql -e 'insert into song (name , artist) values ("新しい楽曲" , 1)'`
 end
 
 # テスト実行
@@ -38,12 +38,53 @@ describe '楽曲詳細ページ' , :js => true do
       expect(youtube_links[0].slice(/\w+$/)).to eq url.slice(/\w+$/)
     end
     it 'URLが登録されていない場合' do
-      visit '/song/2'
+      visit '/song/484'
       iscontain 'Youtubeプレイヤー用のURLが未設定です'
     end
   end
 
   describe '歌唱履歴' do
+    it 'タブの切り替え' do
+      k1 = '免許更新をなかった事にして'
+      k2 = '夜までの時間つぶし'
+      login 'sa2knight'
+      visit '/song/40'
+      iscontain ['あなたの歌唱履歴' , 'みんなの歌唱履歴']
+      iscontain k1
+      islack k2
+      find('#tab-all').click; wait_for_ajax
+      iscontain k2
+      islack k1
+      find('#tab-user').click; wait_for_ajax
+      iscontain k1
+      islack k2
+    end
+    it '誰も歌っていない楽曲' do
+      visit 'song/484'
+      iscontain 'みんなの歌唱履歴'
+      iscontain '歌唱履歴がありません'
+      islack 'あなたの歌唱履歴'
+    end
+    it '自分だけが歌っている楽曲' do
+      login 'sa2knight'
+      visit '/song/147'
+      find('#tab-all').click; wait_for_ajax
+      iscontain '歌唱履歴がありません'
+      find('#tab-user').click; wait_for_ajax
+      islack '歌唱履歴がありません'
+      history = table_to_hash('song_detail_table_user')
+      expect(history.size).to eq 12
+      expect(history[9]['tostring']).to eq '2016-02-13,ないととともちん４回目,ないと,-3,JOYSOUND 全国採点,86.66'
+    end
+    it '他のユーザだけが歌っている楽曲' do
+      login 'sa2knight'
+      visit '/song/55'
+      iscontain 'みんなの歌唱履歴'
+      islack 'あなたの歌唱履歴'
+      history = table_to_hash('song_detail_table_all')
+      expect(history.size).to eq 1
+      expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,'
+    end
   end
 
   describe 'タグ' do
