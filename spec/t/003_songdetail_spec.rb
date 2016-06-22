@@ -22,6 +22,10 @@ describe '楽曲詳細ページ' , :js => true do
 
   describe '歌唱回数グラフ' do
     it '誰も歌っていない楽曲' do
+      data = sang_count_chart('sa2knight' , 484)
+      data.keys.each do |month|
+        expect(data[month].empty?).to eq true
+      end
     end
     it '一人のユーザのみ歌っている楽曲' do
       data = sang_count_chart('sa2knight' , 147)
