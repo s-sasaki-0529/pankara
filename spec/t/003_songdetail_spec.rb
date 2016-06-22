@@ -7,13 +7,23 @@ init = proc do
   `zenra mysql -e 'insert into song (name , artist) values ("新しい楽曲" , 1)'`
 end
 
-# 指定したページのグラフ用JSONを取得
+# 指定したページの歌唱履歴グラフ用JSONを取得
 def sang_count_chart(user , song)
   login user
   visit "song/#{song}"; wait_for_ajax
   json = evaluate_script("$('#sang_count_chart_json').text();")
   info = Util.to_hash(json)["info"]
   return Util.array_to_hash(info , '_month' , true)
+end
+
+# 指定したページの採点グラフ用JSONを取得
+def score_chart(user , song)
+  login user
+  visit "/song/#{song}"; wait_for_ajax
+  json = evaluate_script("$('#score_bar_chart_json').text();")
+  scores = Util.to_hash(json)["info"]["scores"]
+  return Util.array_to_hash(scores , 'name' , true)
+  return info
 end
 
 # テスト実行
@@ -48,13 +58,61 @@ describe '楽曲詳細ページ' , :js => true do
   end
 
   describe '採点結果グラフ' do
-    it '採点モードの切り替え' do
+    describe '採点モードの切り替え' do
+      mode = [
+      'JOYSOUND 分析採点' , 'JOYSOUND その他' ,
+      'DAM ランキングバトル' , 'DAM 精密採点' , 'DAM その他' ,
+      'その他 その他' , 'JOYSOUND 全国採点'
+      ]
+      it '右方向' do
+        visit '/song/26'; wait_for_ajax
+        mode.each do |m|
+          all('#score_column > p > img')[1].click; wait_for_ajax
+          expect(find('#score_type_name').text).to eq m
+        end
+      end
+      it '左方向' do
+        visit '/song/26'; wait_for_ajax
+        all('#score_column > p > img')[1].click; wait_for_ajax
+        mode.reverse.each do |m|
+          all('#score_column > p > img')[0].click; wait_for_ajax
+          expect(find('#score_type_name').text).to eq m
+        end
+      end
     end
     it '採点記録がない場合' do
+      data = score_chart('sa2knight' , 200)
+      data.values.each do |v|
+        expect(v['みんな'].nil?).to eq true
+        expect(v['あなた'].nil?).to eq true
+      end
     end
     it '自分の採点記録のみある場合' do
+      data = score_chart('sa2knight' , 100)
+      data.values.each do |v|
+        expect(v['みんな'].nil?).to eq true
+      end
+      expect(data['最低']['あなた']).to eq "81.49"
+      expect(data['平均']['あなた']).to eq "85.15"
+      expect(data['最高']['あなた']).to eq "88.81"
+    end
+    it '他のユーザの採点記録のみある場合' do
+      data = score_chart('sa2knight' , 144)
+      data.values.each do |v|
+        expect(v['あなた'].nil?).to eq true
+      end
+      expect(data['最低']['みんな']).to eq "83.22"
+      expect(data['平均']['みんな']).to eq "84.10"
+      expect(data['最高']['みんな']).to eq "84.97"
     end
     it '自分と他のユーザの採点記録がある場合' do
+      data = score_chart('unagipai' , 7)
+      expect(data['最低']['あなた']).to eq "83.02"
+      expect(data['平均']['あなた']).to eq "83.02"
+      expect(data['最高']['あなた']).to eq "83.02"
+      expect(data['最低']['みんな']).to eq "79.47"
+      expect(data['平均']['みんな']).to eq "80.85"
+      expect(data['最高']['みんな']).to eq "82.22"
     end
   end
 
