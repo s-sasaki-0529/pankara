@@ -115,7 +115,7 @@ class Song < Base
       :WHERE => 'song = ?',
       :SET => params['id']
     ).execute_columns
-    attend_list.empty? and return []
+    attend_list.empty? and return false
 
     # attendanceに対応するユーザ情報を取得(現在はユーザー情報は利用していない)
     user_info = DB.new(
@@ -130,7 +130,7 @@ class Song < Base
       :WHERE_IN => ['attendance.id' , attend_list.length],
       :SET => attend_list
     ).execute_all
-    user_info.empty? and return []
+    user_info.empty? and return false
     attend2user = Util.array_to_hash(user_info , 'attendance')
 
     # attendanceに対応するカラオケ情報を取得
@@ -141,7 +141,7 @@ class Song < Base
       :WHERE_IN => ['attendance.id' , attend_list.length],
       :SET => attend_list
     ).execute_all
-    karaoke_date.empty? and return []
+    karaoke_date.empty? and return false
     attend2date = Util.array_to_hash(karaoke_date , 'attendance')
 
     # 月ごとに集計

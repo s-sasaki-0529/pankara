@@ -58,8 +58,7 @@ class LocalRoute < March
   #--------------------------------------------------------------------
   post '/ajax/song/tally/monthly/count/?' do
     song = Song.new(params['song']) or return error('invalid song id')
-    sang_histories = song.monthly_sang_count or return error('no history')
-    sang_histories.empty? and return error('no history')
+    sang_histories = song.monthly_sang_count || {}
     monthly_data = Util.monthly_array(:desc => true)
     monthly_data.each do |m|
       month = m[:month]
