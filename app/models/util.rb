@@ -254,10 +254,11 @@ class Util
 
   # array_to_hash - Array[Hash]をHash[Hash]に変換する
   #---------------------------------------------------------------------
-  def self.array_to_hash(array , key)
+  def self.array_to_hash(array , key , delete = false)
     hash = {}
     array.each do |i|
       hash[i[key]] = i
+      delete and i.delete(key)
     end
     return hash
   end

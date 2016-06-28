@@ -11,6 +11,7 @@
       <% if @current_user %><span id="my_sangcount">あなた: <%= @my_sangcount %></span><% end %>
     </p>
     <div id="sang_count_chart"></div>
+    <div id="sang_count_chart_json" class='hidden'></div>
   </div>
 
   <div id="youtube_column" class="col-xs-6">
@@ -28,6 +29,7 @@
       <img src="/image/arrow_right.png" width=16px class='pointer' onclick='zenra.scoreBarChart.next()'>
     </p>
     <div id="score_bar_chart"></div>
+    <div id="score_bar_chart_json" class='hidden'></div>
   </div>
 </div>
 
@@ -43,11 +45,13 @@
       <% if @current_user  && @my_history && @my_history.size > 0 %>
       <div id="tabs-user">
         <% @info = @my_history %>
+        <% @info_id = 'song_detail_table_user' %>
         <%= erb :_song_detail_history %>
       </div>
       <% end %>
       <div id="tabs-all">
         <% @info = @history %>
+        <% @info_id = 'song_detail_table_all' %>
         <%= erb :_song_detail_history %>
       </div>
     </div>

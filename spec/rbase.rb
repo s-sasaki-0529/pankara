@@ -111,12 +111,12 @@ module Rbase
     wait_for_ajax
   end
   
-  def input_history(value = 0)
+  def input_history(song_value = 0 , artist_value = song_value , score_value = artist_value)
     page.find('#song')
-    score = 0 + value
+    score = 0 + score_value
     score = 100 if score > 100
-    fill_in 'song', with: "song#{value}"
-    fill_in 'artist', with: "artist#{value}"
+    fill_in 'song', with: "song#{song_value}"
+    fill_in 'artist', with: "artist#{artist_value}"
     select 'JOYSOUND 全国採点', from: 'score_type'
     fill_in 'score', with: score
     wait_for_ajax

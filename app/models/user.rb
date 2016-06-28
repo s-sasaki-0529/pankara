@@ -333,7 +333,7 @@ class User < Base
       history['score'] = nil
     end
 
-    register.create_history(
+    return register.create_history(
       history['song_name'],
       history['artist_name'],
       history['songkey'],
