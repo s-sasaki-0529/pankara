@@ -80,22 +80,34 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     iscontain history
   end
 
-  it '入力された件数が正しく表示されるか' do
+  it '歌唱回数が正しく表示されるか' do
     input_karaoke
     click_on '次へ'
-   
+
     3.times do |i|
-      input_history i
+      input_history 1234 , 4567
       click_on '続けて登録'
-      iscontain "#{i + 1}件入力されました"
-      wait_for_ajax
+      iscontain "song1234(artist4567)を登録しました。"
+      iscontain "あなたがこの曲を歌うのは #{i + 1} 回目です。"
     end
   end
+
+  #it '入力された件数が正しく表示されるか' do
+  #  input_karaoke
+  #  click_on '次へ'
+  #
+  #  3.times do |i|
+  #    input_history i
+  #    click_on '続けて登録'
+  #    iscontain "#{i + 1}件入力されました"
+  #    wait_for_ajax
+  #  end
+  #end
   
   it '20件登録されるか' do
     input_karaoke
     click_on '次へ'
-   
+
     20.times do |i|
       input_history i
       click_on '続けて登録'

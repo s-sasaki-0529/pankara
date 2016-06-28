@@ -255,9 +255,9 @@ class LocalRoute < March
     history['score_type'] = params[:score_type].to_i
     twitter = params[:twitter]
     if @current_user
-      @current_user.register_history(karaoke_id , history)
+      info = @current_user.register_history(karaoke_id , history)
       twitter and @current_user.tweet_history(karaoke_id , history)
-      Util.to_json({'result' => 'success'})
+      return success(info)
     else
       Util.to_json({'result' => 'invalid current user'})
     end

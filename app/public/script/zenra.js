@@ -465,7 +465,7 @@ var cookie = {
   registerオブジェクト -カラオケ入力制御全般-
 */
 var register = (function() {
-  var count = 0;
+  //var count = 0;
   var close_flg = false;
   var store_list = [];
   var branch_list = [];
@@ -492,7 +492,7 @@ var register = (function() {
   /*[Method] ダイアログを閉じる時に実施する処理*/
   function beforeClose() {
     if (window.confirm('終了してもよろしいですか')) {
-      count = 0;
+      //count = 0;
 
       return true;
     }
@@ -970,13 +970,16 @@ var register = (function() {
       zenra.post('/ajax/history/create' , data , {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
-          
           if (response['result'] == 'success') {
-            count += 1;
-            $('#result').html('<p>' + count + '件入力されました</p>');
+            //count += 1;
+            var sangInfo = response['info'];
+            var mes = sangInfo['song'] + '(' + sangInfo['artist'] + ')' + 'を登録しました。</br>';
+            mes += 'あなたがこの曲を歌うのは ' + sangInfo['sang_count'] + ' 回目です。';
+            $('#result').html('<p>' + mes + '</p>');
+            //$('#result').html('<p>' + count + '件入力されました</p>');
             
             if (action == 'end') {
-              count = 0;
+              //count = 0;
               
               input_dialog.setEvent({
                 beforeClose: function() { return true; } ,

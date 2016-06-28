@@ -102,7 +102,8 @@ class Register < Base
     Util.write_log('event' , log)
 
     # 歌唱回数を戻す
-    return Song.new(song_id).sangcount(:target_user => @userid)
+    sang_count = Song.new(song_id).sangcount(:target_user => @userid)
+    return {:sang_count => sang_count , :song => song , :artist => artist}
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す
