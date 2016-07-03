@@ -35,6 +35,12 @@ class LocalRoute < March
     erb :_input_history
   end
 
+  # get '/ajax/song/dialog' - 楽曲新規登録の入力画面を表示
+  #--------------------------------------------------------------------
+  get '/ajax/song/dialog' do
+    erb :_input_song
+  end
+
   # post '/ajax/songlist' - 楽曲一覧を戻す
   #---------------------------------------------------------------------
   post '/ajax/songlist/?' do

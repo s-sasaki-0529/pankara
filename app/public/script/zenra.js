@@ -821,6 +821,20 @@ var register = (function() {
       });
     } ,
 
+    /*[Method] 楽曲新規登録画面を表示する*/
+    createSong : function() {
+      input_dialog = new dialog('楽曲登録' , 'input_dialog' , 450);
+      input_dialog.show('/ajax/song/dialog' , 'input_song' , {
+        funcs: {
+          beforeClose: beforeClose
+        },
+        func_at_load: function() {
+          $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+        }
+      });
+    },
+
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke_id) {
       zenra.post('/ajax/karaokelist/' , {id: karaoke_id} , {
