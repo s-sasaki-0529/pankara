@@ -4,6 +4,7 @@ require_relative '../models/score_type'
 require_relative '../models/song'
 require_relative '../models/karaoke'
 require_relative '../models/history'
+require_relative '../models/register'
 
 class LocalRoute < March
 
@@ -271,7 +272,17 @@ class LocalRoute < March
 
   # post '/ajax/song/create/?' 楽曲を新規登録
   post '/ajax/song/create/?' do
-    success('OK')
+    user = @current_user or return error('invalid current user')
+    song = params[:song]
+    artist = params[:artist]
+    register = Register.new(user)
+    artist_id = register.create_artist(artist)
+    song_id = register.create_song(artist_id , artist , song)
+    if artist_id && song_id
+      return success(song_id)
+    else
+      return error('fails create song')
+    end
   end
 
   # post '/ajax/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す

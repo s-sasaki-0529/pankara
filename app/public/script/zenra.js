@@ -1024,7 +1024,11 @@ var register = (function() {
       zenra.post('/ajax/song/create' , data , {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
-          console.log(response);
+          if (response['result'] == 'success') {
+            location.href = '/song/' + response['info'];
+          } else {
+            alert('楽曲の新規登録に失敗しました');
+          }
         },
       });
     } ,
