@@ -9,14 +9,14 @@ require_relative "../../app/models/store"
 require_relative "../../app/models/karaoke"
 
 # 一度も歌われていない楽曲を削除
-songs = DB.new(:SELECT => 'id' , :FROM => 'song').execute_columns
-history = DB.new(:SELECT => 'song' , :FROM => 'history').execute_columns.uniq
-trash_songs = songs - history
-trash_songs.each do |id|
-  song = Song.new(id)
-  puts "楽曲削除 #{song['name']} (#{song['artist_name']})"
-end
-trash_songs.empty? or DB.new(:DELETE => 1 , :FROM => 'song' , :WHERE_IN => ['id' , trash_songs.length] , :SET => trash_songs).execute
+#songs = DB.new(:SELECT => 'id' , :FROM => 'song').execute_columns
+#history = DB.new(:SELECT => 'song' , :FROM => 'history').execute_columns.uniq
+#trash_songs = songs - history
+#trash_songs.each do |id|
+#  song = Song.new(id)
+#  puts "楽曲削除 #{song['name']} (#{song['artist_name']})"
+#end
+#trash_songs.empty? or DB.new(:DELETE => 1 , :FROM => 'song' , :WHERE_IN => ['id' , trash_songs.length] , :SET => trash_songs).execute
 
 # 一曲も楽曲が無いアーティストを削除
 artists = DB.new(:SELECT => 'id' , :FROM => 'artist').execute_columns
