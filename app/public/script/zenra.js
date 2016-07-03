@@ -829,6 +829,7 @@ var register = (function() {
           beforeClose: beforeClose
         },
         func_at_load: function() {
+          createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
         }
