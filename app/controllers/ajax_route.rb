@@ -269,6 +269,11 @@ class LocalRoute < March
     end
   end
 
+  # post '/ajax/song/create/?' 楽曲を新規登録
+  post '/ajax/song/create/?' do
+    success('OK')
+  end
+
   # post '/ajax/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す
   #---------------------------------------------------------------------
   post '/ajax/key' do

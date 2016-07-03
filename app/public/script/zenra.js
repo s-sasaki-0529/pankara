@@ -1018,7 +1018,16 @@ var register = (function() {
       
     } ,
 
-
+    /*[Method] 楽曲新規登録リクエストを送信する*/
+    submitCreateSongRequest : function(opt) {
+      var data = {song: $('#song').val(), artist: $('#artist').val()};
+      zenra.post('/ajax/song/create' , data , {
+        success: function(json_response) {
+          var response = zenra.parseJSON(json_response);
+          console.log(response);
+        },
+      });
+    } ,
     /*[Method] 歌唱履歴編集リクエストを送信する*/
     submitHistoryEditRequest : function(karaoke_id , history_id) {
       var json_data = zenra.toJSON(getHistoryData());
