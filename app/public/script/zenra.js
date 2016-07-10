@@ -778,7 +778,7 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      input_dialog = new dialog('カラオケ入力' , 'input_dialog' , 600);
+      input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 600);
       
       input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
         funcs: {
@@ -806,7 +806,7 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      input_dialog = new dialog('歌唱履歴入力' , 'input_dialog' , 600)
+      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 600)
       input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
