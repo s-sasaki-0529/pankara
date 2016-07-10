@@ -1,38 +1,48 @@
 <h1><%= h @user['screenname'] %>さんのユーザページ</h1>
 
-<h4>最近のカラオケ</h4>
-<% if @karaoke_list.size > 0 %>
-  <table id="recent_karaoke" class="table table-hover linkcursor">
-    <thead>
+<div>
+  <div class="recent_karaoke_area">
+    <h3>最近のカラオケ</h3>
+  </div>
+
+  <!-- 最近のカラオケ情報 -->
+  <% if @karaoke_list.size > 0 %>
+  <table id="recent_karaoke_table" class="table table-hover linkcursor" style="clear: both">
+    <thead style="background-color: white">
       <tr>
-        <th class="cell-datetime">日時</th>
-        <th>カラオケ名</th>
+        <th class='center cell-datetime'>日時</th>
+        <th class="center">カラオケ名</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="background-color: white">
       <% @karaoke_list.each do |karaoke| %>
         <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-          <td><%= karaoke['datetime'] %></td>
-          <td><%= h karaoke['name'] %></td>
+          <td class="center"><%= karaoke['datetime'] %></td>
+          <td class="center"><%= h karaoke['name'] %></td>
         </tr>
       <% end %>
-      </tr>
     </tbody>
   </table>
-<% else %>
-  カラオケ記録がありません
-<% end %>
+  <% else %>
+    カラオケ記録がありません
+  <% end %>
+</div>
 
-<h4>最近歌った曲</h4>
-<% if @histories.size > 0 %>
-  <table id="recent_sang" class="table table-hover linkcursor">
-    <tbody>
-      <thead>
-        <tr>
-          <th>曲</th>
-          <th>歌手</th>
-        </tr>
-      </thead>
+<div>
+  <div class="recent_sang_area">
+    <h3>最近歌った曲</h3>
+  </div>
+
+  <!-- 最近歌った曲情報 -->
+  <% if @histories.size > 0 %>
+  <table id="recent_sang_table" class="table table-hover linkcursor" style="clear: both">
+    <thead style="background-color: white">
+      <tr>
+        <th>曲</th>
+        <th>歌手</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: white">
       <% @histories.each do |history| %>
         <tr>
           <td><%= song_link history['song'], history['song_name'] %></td>
@@ -42,7 +52,12 @@
       </tr>
     </tbody>
   </table>
+  <% else %>
+    歌唱履歴がありません
+  <% end %>
+</div>
 
+<% if @histories.size > 0 %>
   <h4>一番歌っている曲</h4>
   <%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / 
   <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / 
@@ -57,6 +72,4 @@
   <%= song_link @max_score['song'], @max_score['song_name']%> / 
   <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 
   採点方法: <%= @max_score['scoretype_name'] %>
-<% else %>
-  歌唱履歴がありません
 <% end %>
