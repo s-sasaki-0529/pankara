@@ -838,7 +838,7 @@ var register = (function() {
     },
 
     /*[Method] 楽曲編集画面を表示する*/
-    editSong : function(song_id) {
+    editSong : function(song_id , song , artist , url) {
       input_dialog = new dialog('楽曲編集' , 'input_dialog' , 450);
       input_dialog.show('/ajax/song/dialog' , 'input_song' , {
         funcs: {
@@ -848,6 +848,9 @@ var register = (function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , '').val('登録');
           $('#button2').attr('onclick' , '').val('キャンセル');
+          $('#song').val(song);
+          $('#artist').val(artist);
+          $('#url').val(url);
         }
       });
     },
