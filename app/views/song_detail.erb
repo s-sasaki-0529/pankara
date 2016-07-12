@@ -2,7 +2,7 @@
   <%= h @song['name'] %> / <%= artist_link @song['artist'], @song['artist_name'] %>
   <img id='editkaraoke' style="margin-left:5px; margin-bottom:8px" 
       class="center linkcursor" src="/image/edit.png" width="28"
-      onclick=""
+      onclick="register.editSong(<%= @song['id'] %>)"
   >
 </h2>
 

@@ -832,6 +832,22 @@ var register = (function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#url_area').hide();
+        }
+      });
+    },
+
+    /*[Method] 楽曲編集画面を表示する*/
+    editSong : function(song_id) {
+      input_dialog = new dialog('楽曲編集' , 'input_dialog' , 450);
+      input_dialog.show('/ajax/song/dialog' , 'input_song' , {
+        funcs: {
+          beforeClose: beforeClose
+        },
+        func_at_load: function() {
+          createWidgetForHistory();
+          $('#button1').attr('onclick' , '').val('登録');
+          $('#button2').attr('onclick' , '').val('キャンセル');
         }
       });
     },
