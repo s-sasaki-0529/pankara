@@ -517,7 +517,6 @@ var register = (function() {
     $('#seekbar').slider('value' , history['songkey']);
     $('#score_type').val(history['score_type']);
     $('#score').val(history['score']);
-    $('#url').val(history['url']);
     
     if (history['score_type'] > 0) {
       $('#score_area').show();
@@ -711,10 +710,6 @@ var register = (function() {
   
   /*[method] 歌唱履歴編集画面用の要素を作成する*/
   function createElementForEditHistory(karaoke_id , history_id) {
-    var label = $('<label></label>').attr('for' , 'score').html('URL:');
-    var input = $('<input id="url" type="url" name="url" size="50" title="曲の動画を変更する場合はURLを変更してください。">');
-    $('#url_area').html(label).append(input);
-    
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
     $('#button2').attr('onclick' , 'register.submitHistoryDeleteRequest(' + karaoke_id + ' , ' + history_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
@@ -748,7 +743,6 @@ var register = (function() {
       songkey: $('#seekbar').slider('value') ,
       score: $('#score').val() ,
       score_type: $('#score_type').val() ,
-      url: $('#url').val()
     };
     if ($('#tweet-checkbox').prop('checked')) {
       data.twitter = 1;

@@ -39,14 +39,6 @@ class History < Base
       arg['score'] = nil
     end
 
-    if arg['url']
-      song = Song.new(song_id)
-      result = song.modify(arg)
-      unless result
-        return false
-      end
-    end
-
     arg.select! do |k , v|
       ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'].include?(k)
     end
