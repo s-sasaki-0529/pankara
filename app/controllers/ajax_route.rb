@@ -183,6 +183,12 @@ class LocalRoute < March
     return result ? success : error('modify failed')
   end
 
+  # post '/ajax/song/modify/?' - 楽曲情報を編集する
+  #--------------------------------------------------------------------
+  post '/ajax/song/modify/?' do
+    return success;
+  end
+
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
   post '/ajax/history/delete/?' do

@@ -843,7 +843,7 @@ var register = (function() {
       input_dialog.show('/ajax/song/dialog' , 'input_song' , {
         func_at_load: function() {
           createWidgetForHistory();
-          $('#button1').attr('onclick' , '').val('登録');
+          $('#button1').attr('onclick' , 'register.submitSongEditRequest(' + song_id + ')').val('登録');
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
           $('#song').val(song);
           $('#artist').val(artist);
@@ -989,6 +989,23 @@ var register = (function() {
         }
       });
     } ,
+
+    /*[Method] 楽曲情報編集リクエストを送信する*/
+    submitSongEditRequest : function(song_id) {
+      var data = {song: $('#song').val(), artist: $('#artist').val(), url: $('#url').val(), song_id: song_id};
+      zenra.post('/ajax/song/modify' , data , {
+        success: function(json_response) {
+          var response = zenra.parseJSON(json_response);
+          if (response['result'] == 'success') {
+          } else {
+            alert('楽曲情報の編集に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('楽曲情報の編集にしっぱいしました。サーバにアクセスできません。');
+        }
+      });
+    },
 
     /*[Method] 歌唱履歴登録リクエストを送信する*/
     submitHistoryRegistrationRequest : function(action , karaoke_id) {
