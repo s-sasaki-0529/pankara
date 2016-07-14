@@ -72,6 +72,29 @@ class Artist < Base
     system "wget '#{url}' -O '#{path}'"
   end
 
+  # self.name_to_id - 歌手名を元にIDを戻す
+  #--------------------------------------------------------------------
+  def self.name_to_id(name , opt = {})
+    id = DB.new(
+      :SELECT => 'id' ,
+      :FROM => 'artist' ,
+      :WHERE => 'name = ?' ,
+      :SET => name
+    ).execute_column
+    id and return id
+
+    # [オプション] 該当IDがない場合新規作成する
+    if opt[:create]
+      id = DB.new(
+        :INSERT => ['artist' , ['name']] ,
+        :SET => name
+      ).execute_insert_id
+      id and return id
+    end
+
+    return false
+  end
+
   # self.list - 歌手の一覧を取得
   #--------------------------------------------------------------------
   def self.list(opt = {})

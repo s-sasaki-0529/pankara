@@ -997,6 +997,7 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           if (response['result'] == 'success') {
+            location.href = ('/song/' + song_id);
           } else {
             alert('楽曲情報の編集に失敗しました。');
           }
