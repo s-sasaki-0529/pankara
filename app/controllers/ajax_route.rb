@@ -187,6 +187,7 @@ class LocalRoute < March
   # post '/ajax/song/modify/?' - 楽曲情報を編集する
   #--------------------------------------------------------------------
   post '/ajax/song/modify/?' do
+    @current_user or return error('invalid user')
     song_id = params[:song_id]
     song_name = params[:song]
     artist_name = params[:artist]
