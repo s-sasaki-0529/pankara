@@ -28,6 +28,7 @@ class Artist < Base
   def songs_with_count(userid = nil)
 
     @params['songs'] or self.songs
+    @params['songs'].empty? and return
     song_ids = @params['songs'].map { |s| s['song_id'] }
 
     # 全体の歌唱回数集計

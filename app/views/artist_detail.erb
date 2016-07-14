@@ -2,6 +2,7 @@
   <%= h @artist['name'] %>
 </h2>
 
+<% if @artist['songs'].count > 0 %>
 <h4>この歌手の楽曲一覧</h4>
 <table id="artistdetail_table" class="table sortable table-striped">
   <thead>
@@ -37,3 +38,6 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+<h4>このアーティストには楽曲が登録されていません</h4>
+<% end %>
