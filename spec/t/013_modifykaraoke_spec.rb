@@ -31,7 +31,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     # 変更作業
     find('#editkaraoke').click
     wait_for_ajax
-    iscontain('カラオケの新規作成') #Todo 新規作成って出るのはおかしいやろ
+    iscontain('カラオケ編集')
     fill_in 'name' , with: '変更後のカラオケ名'
     fill_in 'datetime' , with: '2020/03/25 20:30'
     fill_in 'store' , with: 'シダックス'

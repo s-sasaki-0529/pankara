@@ -778,7 +778,7 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      input_dialog = new dialog('カラオケ入力' , 'input_dialog' , 600);
+      input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 600);
       
       input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
         funcs: {
@@ -806,7 +806,7 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      input_dialog = new dialog('歌唱履歴入力' , 'input_dialog' , 600)
+      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 600)
       input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
@@ -832,6 +832,22 @@ var register = (function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#url_area').hide();
+        }
+      });
+    },
+
+    /*[Method] 楽曲編集画面を表示する*/
+    editSong : function(song_id , song , artist , url) {
+      input_dialog = new dialog('楽曲編集' , 'input_dialog' , 450);
+      input_dialog.show('/ajax/song/dialog' , 'input_song' , {
+        func_at_load: function() {
+          createWidgetForHistory();
+          $('#button1').attr('onclick' , 'register.submitSongEditRequest(' + song_id + ')').val('登録');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#song').val(song);
+          $('#artist').val(artist);
+          $('#url').val(url);
         }
       });
     },
@@ -973,6 +989,24 @@ var register = (function() {
         }
       });
     } ,
+
+    /*[Method] 楽曲情報編集リクエストを送信する*/
+    submitSongEditRequest : function(song_id) {
+      var data = {song: $('#song').val(), artist: $('#artist').val(), url: $('#url').val(), song_id: song_id};
+      zenra.post('/ajax/song/modify' , data , {
+        success: function(json_response) {
+          var response = zenra.parseJSON(json_response);
+          if (response['result'] == 'success') {
+            location.href = ('/song/' + song_id);
+          } else {
+            alert('楽曲情報の編集に失敗しました。');
+          }
+        } ,
+        error: function() {
+          alert('楽曲情報の編集にしっぱいしました。サーバにアクセスできません。');
+        }
+      });
+    },
 
     /*[Method] 歌唱履歴登録リクエストを送信する*/
     submitHistoryRegistrationRequest : function(action , karaoke_id) {

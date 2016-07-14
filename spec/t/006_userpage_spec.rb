@@ -62,7 +62,7 @@ describe 'ユーザページ機能' do
   it '最近のカラオケが正常に表示されるか' do
     login 'unagipai'
     visit url
-    karaoke_table = table_to_hash('recent_karaoke')
+    karaoke_table = table_to_hash('recent_karaoke_table')
     
     expect(karaoke_table.length).to eq 5
     expect(karaoke_table[0]['tostring']).to eq '2016-12-26 20:00:00,ユーザページテスト用カラオケ5'
@@ -70,7 +70,7 @@ describe 'ユーザページ機能' do
   it '最近歌った曲が正常に表示されるか' do
     login 'unagipai'
     visit url
-    karaoke_table = table_to_hash('recent_sang')
+    karaoke_table = table_to_hash('recent_sang_table')
     
     expect(karaoke_table.length).to eq 5
     expect(karaoke_table[0]['tostring']).to eq '夏空,Galileo Galilei'
@@ -87,7 +87,7 @@ describe 'ユーザページ機能' do
     login 'unagipai'
     visit url
 
-    id_to_element('recent_karaoke').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移
+    id_to_element('recent_karaoke_table').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移
     iscontain 'ユーザページテスト用カラオケ5'
     visit url
 

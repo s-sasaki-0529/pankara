@@ -216,19 +216,17 @@ class DB
   # execute - SQLを実行する
   #---------------------------------------------------------------------
   def execute
-    # 実行
     make
+    done_sql = @sql.clone
+    @params.each do |param|
+      done_sql.sub!('?' , param.to_s)
+    end
+    Util.write_log('sql' , done_sql)
     db = Mysql.new('127.0.0.1' , 'root' , 'zenra' , 'march')
     db.charset = 'utf8'
     st = db.prepare(@sql)
     st.execute(*@params)
     db.close
-    # ログ生成
-    done_sql = @sql
-    @params.each do |param|
-      done_sql.sub!('?' , param.to_s)
-    end
-    Util.write_log('sql' , done_sql)
     return st
   end
 

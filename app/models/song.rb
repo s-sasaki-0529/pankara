@@ -259,7 +259,7 @@ class Song < Base
   #--------------------------------------------------------------------
   def modify(arg)
     song_arg = arg.select do |k , v|
-      ['url'].include?(k)
+      ['name' , 'artist' , 'url'].include?(k)
     end
 
     DB.new(

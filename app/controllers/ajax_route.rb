@@ -2,6 +2,7 @@ require_relative './march'
 require_relative '../models/product'
 require_relative '../models/score_type'
 require_relative '../models/song'
+require_relative '../models/artist'
 require_relative '../models/karaoke'
 require_relative '../models/history'
 require_relative '../models/register'
@@ -181,6 +182,20 @@ class LocalRoute < March
     result = attendance.modify(arg)
     
     return result ? success : error('modify failed')
+  end
+
+  # post '/ajax/song/modify/?' - 楽曲情報を編集する
+  #--------------------------------------------------------------------
+  post '/ajax/song/modify/?' do
+    song_id = params[:song_id]
+    song_name = params[:song]
+    artist_name = params[:artist]
+    artist_id = Artist.name_to_id(artist_name , :create => 1)
+    url = params[:url]
+    song = Song.new(song_id)
+    song or return error('no song')
+    result = song.modify('name' => song_name, 'artist' => artist_id, 'url' => url)
+    return result ? success : error('invalid params')
   end
 
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する
