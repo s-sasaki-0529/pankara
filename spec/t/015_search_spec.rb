@@ -3,7 +3,7 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init -d 2016_03_14_21_21`
+  `zenra init -d 2016_07_13_04_00`
 end
 
 # 検索
@@ -64,23 +64,28 @@ describe '楽曲/歌手名検索機能' do
   end
 
   describe '検索結果ページ' do
-    it '曲も歌手もヒット'  do
+    it '曲＋歌手'  do
       search('光' , 1 , 2 , 0)
-      search('of' , 3 , 4 , 0)
-      search(' ' , 59 , 29 , 0)
+      search('of' , 7 , 4 , 0)
+      search(' ' , 94 , 35 , 0)
       table = table_to_hash('search_song_table')
       expect(table[0]['tostring']).to eq 'Hello, world!,BUMP OF CHICKEN'
-      expect(table[5]['tostring']).to eq 'SECRET LOVER,一ノ瀬トキヤ'
+      expect(table[5]['tostring']).to eq 'Bi-Li-Li Emotion,Superfly'
     end
 
-    it '曲のみヒット' do
-      search('メドレー' , 3 , 0 , 0)
+    it '曲のみ' do
+      search('メドレー' , 6 , 0 , 1)
       search('song' , 2 , 0 , 0)
     end
 
-    it '歌手のみヒット' do
-      search('雪音' , 0 , 5 , 0)
-      search('未来' , 0 , 2 , 0)
+    it '歌手のみ' do
+      search('雪音' , 0 , 6 , 0)
+      search('未来' , 1 , 2 , 0)
+    end
+
+    it 'タグ' do
+      search('音' , 2 , 7 , 5)
+      iscontain(['初音ミク' , '鏡音リン' , '鏡音レン' , '巡音ルカ' , '重音テト'])
     end
 
     it 'ヒット無し' do
@@ -93,23 +98,31 @@ describe '楽曲/歌手名検索機能' do
     end
 
     it 'リンク' do
-      search('0' , 2 , 1 , 0)
+      search('0' , 3 , 2 , 1)
       url = page.current_url
       examine_songlink 'マジLOVE2000%' , 'ST☆RISH' , url
       examine_artistlink '40mP' , url
+      search('VO' , 1 , 0 , 1)
+      link 'VOCALOID'
+      iscontain 'タグ "VOCALOID" が登録された楽曲一覧(106件)'
     end
   end
   describe 'リダイレクト' do
     it '楽曲' do
-      search('世界に一つだけの花' , -1 , -1 , 0)
+      search('世界に一つだけの花' , -1 , -1 , -1)
       expect(current_path).to eq '/song/62'
       iscontain '世界に一つだけの花'
     end
 
     it 'アーティスト' do
-      search('KAT' , -1 , -1 , 0)
+      search('KAT' , -1 , -1 , -1)
       expect(current_path).to eq '/artist/143'
       iscontain 'KAT-TUN'
+    end
+
+    it 'タグ' do
+      search('VOCALOID' , -1 , -1 , -1)
+      iscontain 'タグ "VOCALOID" が登録された楽曲一覧(106件)'
     end
   end
 
