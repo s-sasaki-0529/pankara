@@ -19,7 +19,7 @@ def search(word , song_num , artist_num)
   end
 
   if song_num == 0 && artist_num == 0
-    iscontain("\"#{word}\" を含む楽曲、歌手が存在しません")
+    iscontain("\"#{word}\" を含む楽曲、歌手、タグが存在しません")
     return
   end
 

@@ -18,17 +18,23 @@ class CommonRoute < March
     @search_word = params[:search_word] || ""
     @song_list = []
     @artist_list = []
+    @tag_list = []
 
     if @search_word.size > 0
-      # 該当する楽曲と歌手の一覧を取得
+      # 該当する楽曲、歌手、タグの一覧を取得
       @song_list.concat(Song.list({:name_like => @search_word , :artist_info => true}))
       @artist_list.concat(Artist.list({:name_like => @search_word}))
+      @tag_list.concat(Tag.tags(:like => @search_word))
 
-      # 楽曲、歌手含め１件しか検索結果がない場合、そのページにリダイレクトする
-      if @song_list.size == 1 && @artist_list.size == 0
-        redirect "/song/#{@song_list[0]['song_id']}"
-      elsif @artist_list.size == 1 && @song_list.size == 0
-        redirect "/artist/#{@artist_list[0]['id']}"
+      # 楽曲、歌手、タグ全て合わせて１件しかヒットしなかった場合、そのページにリダイレクト
+      if @song_list.size + @artist_list.size + @tag_list.size == 1
+        if @song_list.size == 1
+          redirect "/song/#{@song_list[0]['song_id']}"
+        elsif @artist_list.size == 1
+          redirect "/artist/#{@artist_list[0]['id']}"
+        else
+          redirect "/search/tag/?tag=#{@tag_list[0]}"
+        end
       end
     end
 

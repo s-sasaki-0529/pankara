@@ -19,7 +19,7 @@ class Tag < Base
 
   # list - タグの一覧を取得する
   #--------------------------------------------------------------------
-  def get_list()
+  def get_list(opt = {})
     @list = DB.new(
       :SELECT => 'name',
       :FROM => 'tag',
@@ -73,6 +73,25 @@ class Tag < Base
       :WHERE => ['class = ?' , 'name = ?'],
       :SET => [_class , name],
     ).execute_columns
+  end
+
+  # tags - タグの一覧を取得
+  #--------------------------------------------------------------------
+  def self.tags(opt = {})
+    db = DB.new(
+      :SELECT => 'name',
+      :DISTINCT => 1,
+      :FROM => 'tag'
+    )
+    if opt[:class]
+      db.where('class = ?')
+      db.set(opt[:class])
+    end
+    if opt[:like]
+      db.where('name like ?')
+      db.set("%#{opt[:like]}%")
+    end
+    db.execute_columns
   end
 
 end
