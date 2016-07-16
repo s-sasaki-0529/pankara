@@ -59,7 +59,7 @@ module Rbase
   def examine_userlink(name , referer = nil)
     href = page.all('.userlink').select {|i| i.text == name}[0]['href']
     visit href
-    iscontain "#{name}さんのユーザページ"
+    iscontain "#{name}"
     referer and visit referer
   end
 

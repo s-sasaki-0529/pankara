@@ -79,9 +79,13 @@ describe 'ユーザページ機能' do
     login 'unagipai'
     visit url
     
-    iscontain 'Butter-Fly / 和田光司 / 2回'
+    most_sang_song_table = table_to_hash('most_sang_song_table')
+    expect(most_sang_song_table[0]['tostring']).to eq '2回,Butter-Fly,和田光司'
+    
     #iscontain 'Aqua Timez / 3回' Todo グラフをテスト
-    iscontain '82.00 / 心絵 / ロードオブメジャー / 採点方法: 全国採点'
+    
+    max_score_table = table_to_hash('max_score_table')
+    expect(max_score_table[0]['tostring']).to eq '82.00点,心絵,ロードオブメジャー,全国採点'
   end
   it 'リンクが正常に登録されているか' , :js => true do
     login 'unagipai'

@@ -1,4 +1,58 @@
-<h1><%= h @user['screenname'] %>さんのユーザページ</h1>
+<div class="container-fluid">
+  <div id="div_column" class="row">
+    <!-- 左カラム -->
+    <div class="col-xs-3 center">
+      <p style="font-size: 20px"><%= h @user['screenname'] %></p>
+      <div id="user_icon">
+        <%= user_icon @user['username'] , '100%' , '100%' %>
+      </div>
+    </div>
+    <!-- 右カラム -->
+    <div class="col-xs-7">
+      <h4>一番歌っている曲</h4>
+      
+      <% if @histories.size > 0 %>
+        <table id="most_sang_song_table" class="table" style="clear: both">
+          <tbody style="background-color: white">
+            <tr>
+              <th>回数</th>
+              <th>曲</th>
+              <th>歌手</th>
+            </tr>
+            <tr>
+              <td><%= @most_sang_song['counter'] %>回</td>
+              <td><%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %></td>
+              <td><%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %></td>
+            </tr>
+          </tbody>
+        </table>
+      <% else %>
+        歌唱履歴がありません
+      <% end %>
+      
+      <h4>最高点数</h4>
+      <% if @histories.size > 0 %>
+        <table id="max_score_table" class="table" style="clear: both">
+          <tbody style="background-color: white">
+            <tr>
+              <th>点数</th>
+              <th>曲</th>
+              <th>歌手</th>
+              <th>採点方法</th>
+            </tr>
+            <tr>
+              <td><%= h @max_score['score'] %>点</td>
+              <td><%= song_link @max_score['song'], @max_score['song_name']%></td>
+              <td><%= artist_link @max_score['artist'], @max_score['artist_name'] %></td>
+              <td><%= @max_score['scoretype_name'] %></td>
+            </tr>
+          </tbody>
+        </table>
+      <% else %>
+        歌唱履歴がありません
+      <% end %>
+  </div>
+</div>
 
 <div>
   <div class="recent_karaoke_area">
@@ -58,18 +112,7 @@
 </div>
 
 <% if @histories.size > 0 %>
-  <h4>一番歌っている曲</h4>
-  <%= song_link @most_sang_song['song'], @most_sang_song['song_name'] %> / 
-  <%= artist_link @most_sang_song['artist'], @most_sang_song['artist_name'] %> / 
-  <%= @most_sang_song['counter'] %>回
-
   <h4>よく歌うアーティストベスト１０</h4>
   <div id="user_sang_artists_chart"></div>
   <script>zenra.createFavoriteArtistsPieChart('#user_sang_artists_chart');</script>
-
-  <h4>最高点数</h4>
-  <%= h @max_score['score'] %> / 
-  <%= song_link @max_score['song'], @max_score['song_name']%> / 
-  <%= artist_link @max_score['artist'], @max_score['artist_name'] %> / 
-  採点方法: <%= @max_score['scoretype_name'] %>
 <% end %>

@@ -191,7 +191,7 @@ tr *.cell-datetime {
   padding: 4px;
 }
 
-/*ユーザページのテーブル表示枠クラス*/
+/*ユーザページのテーブル表示*/
 .recent_karaoke_area {
   border-bottom: 1px solid rgb(255,255,204);
   background-color: rgb(255,255,204);
@@ -202,3 +202,18 @@ tr *.cell-datetime {
   background-color: rgb(255,165,0);
 }
 
+#most_sang_song_table > tbody > tr > td {
+  font-size: 20px;
+}
+
+#max_score_table > tbody > tr > td {
+  font-size: 20px;
+}
+
+/*ユーザページのユーザアイコン表示枠*/
+#user_icon {
+  border: 1px solid;
+  width: 96px;
+  height: 96px;
+  margin: auto;
+}
