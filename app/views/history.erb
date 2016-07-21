@@ -6,7 +6,7 @@
       <tr>
         <th class='center cell-number'>No</th>
         <th class='center' width='10%'>日時</th>
-        <th class='center'>内容</th>
+        <th class='center' width='10%'>動画</th>
         <th class='center' width='30%'>曲名</th>
         <th class='center' width='30%'>歌手名</th>
         <th class='cell-number'>キー</th>
@@ -16,8 +16,23 @@
       <% @histories.each do |history| %>
       <tr>
         <td class='center'><%= history['number'] %></td>
-        <td class='center'><%= date history['karaoke_datetime'] %></td>
-        <td class='center'><%= karaoke_link history['karaoke_id'] , history['karaoke_name'] %></td>
+        <td class='center'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
+        <td id='thumbnail_<%= "#{history['number']}" %>' class='center'>
+          <% if history['song_url'] %>
+            <script>
+              zenra.createThumbnail(
+                '<%= "#{history["number"]}" %>' ,
+                "<%= history['song_id'] %>" ,
+                "<%= h history['song_name'] %>" ,
+                "<%= h history['artist_name'] %>" ,
+                "<%= youtube_image history['song_url'] %>" ,
+                "<%= history['song_url'] %>"
+              )
+            ;</script>
+          <% else %>
+            未登録
+          <% end %>
+        </td>
         <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
         <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
         <td class='center'><%= history['songkey'] %></td>
