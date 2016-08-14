@@ -43,12 +43,23 @@
     <% end %>
   </tbody>
 </table>
+
+<div id="artist_songs_chart" class="hidden"></div>
+<div id="songs_chart_json" class="hidden"><%= @songs_chart_json %></div>
+
 <% else %>
 <h4>このアーティストには楽曲が登録されていません</h4>
 <% end %>
 
 <script>
 $(function(){
+
+  // 楽曲と歌唱回数を非同期で取得し、円グラフを描画
+  var json = $('#songs_chart_json').text();
+  var data = zenra.parseJSON(json);
+  zenra.createPieChart('#artist_songs_chart' , data);
+
+  // Wikipediaの概要を非同期で取得
   zenra.post('/ajax/artist/wiki' , {'artist': "<%= @artist['name'] %>"} , {
     success: function(json) {
       var response = zenra.parseJSON(json);

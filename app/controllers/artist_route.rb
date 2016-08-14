@@ -9,6 +9,15 @@ class ArtistRoute < March
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
     @artist.songs_with_count(user)
+
+    # 円グラフ用のデータを作成
+    songs_chart = @artist['songs'].clone
+    if user
+      songs_chart = songs_chart.map { |s| [ [s['song_name']] , [s['sang_count'] + s['sang_count_as_user']] ] } 
+    else
+      songs_chart = songs_chart.map { |s| [ [s['song_name']] , [s['sang_count']] ] } 
+    end
+    @songs_chart_json = Util.to_json(songs_chart)
     erb :artist_detail
   end
 
