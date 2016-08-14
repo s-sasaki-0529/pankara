@@ -6,6 +6,7 @@ gem "unicorn"
 gem 'twitter_oauth'
 gem 'get-twitter-oauth-token'
 gem 'searchbing'
+gem 'wikipedia-client'
 group :develop do
   gem "watir-webdriver"
   gem 'rspec'

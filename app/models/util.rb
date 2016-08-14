@@ -6,6 +6,7 @@ require 'uri'
 require 'open-uri'
 require 'json'
 require 'yaml'
+require 'wikipedia'
 #require 'searchbing'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
@@ -111,6 +112,21 @@ class Util
       return "アップロードできるファイルは、jpg/png/gifのみです"
     end
     return 'アイコンファイルを変更しました'
+  end
+
+  # get_wikipedia_summary - 指定したワードでWikipedia検索し、概要を戻す
+  #--------------------------------------------------------------------
+  def self.get_wikipedia_summary(word , opt = {})
+    Wikipedia.Configure {
+      domain 'ja.wikipedia.org'
+      path   'w/api.php'
+    }
+    page = Wikipedia.find(word)
+    if page.content
+      return page.summary
+    else
+      return false
+    end
   end
 
   # search_image - 画像をbing画像検索より取得
