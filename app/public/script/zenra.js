@@ -123,12 +123,12 @@ zenra.createFavoriteArtistsPieChart = function(targetSelecter) {
 };
 
 /*
-createMonthlySangCountBarChart - 対象楽曲の月ごとの歌われた回数を棒グラフで表示する
+createMonthlySangCountBarChart - 対象楽曲(アーティスト)の月ごとの歌われた回数を棒グラフで表示する
 song: songID
 targetSelecter: 描画対象要素のセレクタ
 */
-zenra.createMonthlySangCountBarChart = function(song , targetSelecter) {
-  zenra.post('/ajax/song/tally/monthly/count' , {song: song} , {
+zenra.createMonthlySangCountBarChart = function(url , song , targetSelecter) {
+  zenra.post(url , {song: song} , {
     success: function(json) {
       response = zenra.parseJSON(json);
       if (response.result == 'success') {

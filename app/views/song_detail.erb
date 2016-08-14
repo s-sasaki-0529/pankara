@@ -76,7 +76,7 @@
 
 <script>
   $('#history_tabs').tabs().show();
-  zenra.createMonthlySangCountBarChart(<%= @song['id'] %> , "#sang_count_chart");
+  zenra.createMonthlySangCountBarChart('/ajax/song/tally/monthly/count' , <%= @song['id'] %> , "#sang_count_chart");
   zenra.scoreBarChart.init(<%= @song['id'] %> , 1 , <%= @score_type_num %> , "#score_bar_chart");
   zenra.showSongTagList(<%= @song['id'] %>);
 </script>
