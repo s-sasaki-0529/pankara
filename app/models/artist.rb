@@ -65,6 +65,62 @@ class Artist < Base
 
   end
 
+  # monthly_sang_count - 月別の歌唱回数の集計を取得
+  #--------------------------------------------------------------------
+  def monthly_sang_count(opt = {})
+    # Todo Songクラスの同名メソッドと限りなく重複してるので汎用化する   
+
+    # 該当アーティストの楽曲一覧を取得
+    songs = self.songs.map {|s| s['song_id']}
+    songs.empty? and return false
+
+    # 該当アーティストが歌われたattendの一覧を取得
+    attend_list = DB.new(
+      :SELECT => 'attendance',
+      :FROM => 'history',
+      :WHERE_IN => ['song' , songs.length],
+      :SET => songs
+    ).execute_columns
+    attend_list.empty? and return false
+
+    # attendanceに対応するユーザ情報を取得(現在はユーザー情報は利用していない)
+    user_info = DB.new(
+      :SELECT => {
+        'user.id' => 'user_id',
+        'user.username' => 'user_name',
+        'user.screenname' => 'user_screenname',
+        'attendance.id' => 'attendance'
+      },
+      :FROM => 'user',
+      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'user'},
+      :WHERE_IN => ['attendance.id' , attend_list.length],
+      :SET => attend_list
+    ).execute_all
+    user_info.empty? and return false
+    attend2user = Util.array_to_hash(user_info , 'attendance')
+
+    # attendanceに対応するカラオケ情報を取得
+    karaoke_date = DB.new(
+      :SELECT => {'karaoke.datetime' => 'datetime', 'attendance.id' => 'attendance'},
+      :FROM => 'karaoke',
+      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'karaoke'},
+      :WHERE_IN => ['attendance.id' , attend_list.length],
+      :SET => attend_list
+    ).execute_all
+    karaoke_date.empty? and return false
+    attend2date = Util.array_to_hash(karaoke_date , 'attendance')
+
+    # 月ごとに集計
+    monthly_data = Hash.new {|h , k| h[k] = Array.new}
+    attend_list.each do |attend|
+      attend2date[attend]['datetime'].to_s =~ /^([0-9]{4}-[0-9]{2})-.+/
+      month = $1
+      month and monthly_data[month].push attend2user[attend]
+    end
+
+    return monthly_data
+  end
+
   # download_image - 歌手の画像を検索し、ローカルに保存する
   #--------------------------------------------------------------------
   def download_image

@@ -65,7 +65,7 @@ class LocalRoute < March
   # post '/ajax/song/tally/monthly/count/?' - 指定した楽曲の月ごとの歌唱回数を戻す
   #--------------------------------------------------------------------
   post '/ajax/song/tally/monthly/count/?' do
-    song = Song.new(params['song']) or return error('invalid song id')
+    song = Song.new(params['id']) or return error('invalid song id')
     sang_histories = song.monthly_sang_count || {}
     monthly_data = Util.monthly_array(:desc => true)
     monthly_data.each do |m|
@@ -81,6 +81,25 @@ class LocalRoute < March
     return success(monthly_data)
   end
 
+  # post '/ajax/artist/tally/monthly/count/?' - 指定したアーティストの月ごとの歌唱回数を戻す
+  #--------------------------------------------------------------------
+  post '/ajax/artist/tally/monthly/count/?' do
+    #Todo 上のコントローラと限りなく同じなので汎用化する
+    artist = Artist.new(params['id']) or return error('invalid artist id')
+    sang_histories = artist.monthly_sang_count || {}
+    monthly_data = Util.monthly_array(:desc => true)
+    monthly_data.each do |m|
+      month = m[:month]
+      sang_histories[month] and sang_histories[month].each do |u|
+        screen_name = u['user_screenname']
+        m[screen_name] or m[screen_name] = 0
+        m[screen_name] += 1
+      end
+      m[:_month] = m[:month]
+      m.delete(:month)
+    end
+    return success(monthly_data)
+  end
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
   #--------------------------------------------------------------------
   post '/ajax/user/artist/favorite/?' do

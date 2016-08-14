@@ -127,8 +127,8 @@ createMonthlySangCountBarChart - 対象楽曲(アーティスト)の月ごとの
 song: songID
 targetSelecter: 描画対象要素のセレクタ
 */
-zenra.createMonthlySangCountBarChart = function(url , song , targetSelecter) {
-  zenra.post(url , {song: song} , {
+zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
+  zenra.post(url , {id: id} , {
     success: function(json) {
       response = zenra.parseJSON(json);
       if (response.result == 'success') {
