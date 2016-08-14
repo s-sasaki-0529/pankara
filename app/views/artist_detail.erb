@@ -2,6 +2,13 @@
   <%= h @artist['name'] %>
 </h2>
 
+<% if @wiki %>
+<p id="summary">
+  <%= h @wiki.summary %>
+  <a href="<%= @wiki.fullurl %>">(Wikipedia引用)</a>
+</p>
+<% end %>
+
 <% if @artist['songs'].count > 0 %>
 <h4>この歌手の楽曲一覧</h4>
 <table id="artistdetail_table" class="table sortable table-striped">

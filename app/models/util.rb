@@ -114,16 +114,16 @@ class Util
     return 'アイコンファイルを変更しました'
   end
 
-  # get_wikipedia_summary - 指定したワードでWikipedia検索し、概要を戻す
+  # get_wikipedia - 指定したワードでWikipedia検索する
   #--------------------------------------------------------------------
-  def self.get_wikipedia_summary(word , opt = {})
+  def self.get_wikipedia(word , opt = {})
     Wikipedia.Configure {
       domain 'ja.wikipedia.org'
       path   'w/api.php'
     }
     page = Wikipedia.find(word)
     if page.content
-      return page.summary
+      return page
     else
       return false
     end
