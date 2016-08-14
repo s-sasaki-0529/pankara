@@ -17,6 +17,14 @@ class ArtistRoute < March
     else
       songs_chart = songs_chart.map { |s| [ [s['song_name']] , [s['sang_count']] ] } 
     end
+    songs_chart.sort! { |a,b| b[1][0] <=> a[1][0] }
+    # 楽曲が9曲以上ある場合、その他で括る
+    if songs_chart.count >= 9
+      another = 0
+      songs_chart[8..-1].each { |s| another += s[1][0] }
+      songs_chart = songs_chart[0..7]
+      songs_chart.push ['その他' , another]
+    end
     @songs_chart_json = Util.to_json(songs_chart)
     erb :artist_detail
   end

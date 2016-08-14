@@ -72,6 +72,7 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
     data: {
       columns: data,
       type: 'pie',
+      order: null,
     }
   });
 }
