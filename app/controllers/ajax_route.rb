@@ -301,6 +301,18 @@ class LocalRoute < March
     end
   end
 
+  # ppost '/ajax/artist/wiki' - 指定したアーティストのWikiページを取得
+  #--------------------------------------------------------------------
+  post '/ajax/artist/wiki' do
+    artist = params[:artist]
+    wiki = Util.get_wikipedia(artist)
+    if wiki
+      return success(:summary => wiki.summary, :url => wiki.fullurl)
+    else
+      return error('not found')
+    end
+  end
+
   # post '/ajax/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す
   #---------------------------------------------------------------------
   post '/ajax/key' do

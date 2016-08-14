@@ -9,7 +9,6 @@ class ArtistRoute < March
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
     @artist.songs_with_count(user)
-    @wiki = Util.get_wikipedia(@artist['name'])
     erb :artist_detail
   end
 

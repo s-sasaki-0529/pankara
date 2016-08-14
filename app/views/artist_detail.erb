@@ -2,12 +2,10 @@
   <%= h @artist['name'] %>
 </h2>
 
-<% if @wiki %>
-<p id="summary">
-  <%= h @wiki.summary %>
-  <a href="<%= @wiki.fullurl %>">(Wikipedia引用)</a>
+<p id="wiki" class="hidden">
+  <span id="summary"></span>
+  <a id="wikiurl">(Wikipedia引用)</a>
 </p>
-<% end %>
 
 <% if @artist['songs'].count > 0 %>
 <h4>この歌手の楽曲一覧</h4>
@@ -48,3 +46,20 @@
 <% else %>
 <h4>このアーティストには楽曲が登録されていません</h4>
 <% end %>
+
+<script>
+$(function(){
+  zenra.post('/ajax/artist/wiki' , {'artist': "<%= @artist['name'] %>"} , {
+    success: function(json) {
+      var response = zenra.parseJSON(json);
+      if (response.result == 'success') {
+        var summary = response.info.summary;
+        var url = response.info.url;
+        $('#summary').text(summary);
+        $('#wikiurl').attr('href' , url);
+        $('#wiki').hide().removeClass('hidden').show('slow');
+      }
+    }
+  });
+});
+</script>
