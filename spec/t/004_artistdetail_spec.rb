@@ -31,8 +31,15 @@ describe '歌手詳細ページ' , :js => true do
 
   describe 'よく歌われる楽曲グラフ' do
     it 'その他あり' do
+      visit '/artist/1' #BUMP OF CHICKEN
+      wait_for_ajax
+      json = '[[["Hello, world!"],[8]],[["ray"],[6]],[["MISTAKE"],[5]],[["さよならのかわりに、花束を"],[4]],[["BAYONET CHARGE"],[4]],[["吉原ラメント"],[3]],[["オーバーキルサイズ・ヘル"],[3]],[["tomorrow"],[3]],["その他",205]]'
+      expect(evaluate_script("$('#songs_chart_json').text();")).to eq json
     end
     it 'その他なし' do
+      visit '/artist/32' #kemu
+      wait_for_ajax
+      expect(evaluate_script("$('#songs_chart_json').text();")).to eq '[[["地球最後の告白を"],[3]],[["敗北の少年"],[2]],[["カミサマネジマキ"],[2]]]'
     end
   end
 
