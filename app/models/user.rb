@@ -426,6 +426,16 @@ class User < Base
     ).execute_column
   end
 
+  # total_spending - 総出費を取得
+  def total_spending
+    DB.new({
+      :SELECT => {'sum(price)' => 'sum'},
+      :FROM => 'attendance',
+      :WHERE => 'user = ?',
+      :SET => @params['id']
+    }).execute_column
+  end
+
   private
   # get_song - history['song']を元に曲情報を取得する
   #---------------------------------------------------------------------
