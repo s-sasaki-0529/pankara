@@ -4,6 +4,8 @@
 require_relative 'base'
 require_relative 'db'
 require_relative 'util'
+require_relative 'attendance'
+
 class Artist < Base
 
   # initialize - インスタンスを生成
@@ -84,36 +86,19 @@ class Artist < Base
     attend_list.empty? and return false
 
     # attendanceに対応するユーザ情報を取得(現在はユーザー情報は利用していない)
-    user_info = DB.new(
-      :SELECT => {
-        'user.id' => 'user_id',
-        'user.username' => 'user_name',
-        'user.screenname' => 'user_screenname',
-        'attendance.id' => 'attendance'
-      },
-      :FROM => 'user',
-      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'user'},
-      :WHERE_IN => ['attendance.id' , attend_list.length],
-      :SET => attend_list
-    ).execute_all
+    user_info = Attendance.to_user_info(attend_list)
     user_info.empty? and return false
     attend2user = Util.array_to_hash(user_info , 'attendance')
 
     # attendanceに対応するカラオケ情報を取得
-    karaoke_date = DB.new(
-      :SELECT => {'karaoke.datetime' => 'datetime', 'attendance.id' => 'attendance'},
-      :FROM => 'karaoke',
-      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'karaoke'},
-      :WHERE_IN => ['attendance.id' , attend_list.length],
-      :SET => attend_list
-    ).execute_all
-    karaoke_date.empty? and return false
-    attend2date = Util.array_to_hash(karaoke_date , 'attendance')
+    karaoke_info = Attendance.to_karaoke_info(attend_list)
+    karaoke_info.empty? and return false
+    attend2karaoke = Util.array_to_hash(karaoke_info , 'attendance')
 
     # 月ごとに集計
     monthly_data = Hash.new {|h , k| h[k] = Array.new}
     attend_list.each do |attend|
-      attend2date[attend]['datetime'].to_s =~ /^([0-9]{4}-[0-9]{2})-.+/
+      attend2karaoke[attend]['datetime'].to_s =~ /^([0-9]{4}-[0-9]{2})-.+/
       month = $1
       month and monthly_data[month].push attend2user[attend]
     end

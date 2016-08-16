@@ -61,4 +61,37 @@ class Attendance < Base
     return true
   end
 
+  # self.to_user_info - attendanceのリストを渡すと、それぞれのユーザ情報を取得する
+  #--------------------------------------------------------------------
+  def self.to_user_info(attend_list)
+    user_info = DB.new(
+      :SELECT => {
+        'user.id' => 'user_id',
+        'user.username' => 'user_name',
+        'user.screenname' => 'user_screenname',
+        'attendance.id' => 'attendance'
+      },
+      :FROM => 'user',
+      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'user'},
+      :WHERE_IN => ['attendance.id' , attend_list.length],
+      :SET => attend_list
+    ).execute_all
+    user_info.empty? and return false
+    return user_info
+  end
+
+  # self.to_karaoke_info - attendanceのリストを渡すと、それぞれのカラオケ情報を取得する
+  #--------------------------------------------------------------------
+  def self.to_karaoke_info(attend_list)
+    karaoke_info = DB.new(
+      :SELECT => {'karaoke.datetime' => 'datetime', 'attendance.id' => 'attendance'},
+      :FROM => 'karaoke',
+      :FLEXIBLE_JOIN => {:target => 'attendance', :from => 'attendance', :to => 'karaoke'},
+      :WHERE_IN => ['attendance.id' , attend_list.length],
+      :SET => attend_list
+    ).execute_all
+    karaoke_info.empty? and return false
+    return karaoke_info
+  end
+
 end
