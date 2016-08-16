@@ -222,9 +222,11 @@ zenra.scoreBarChart = (function() {
 /*
 createThumbnail - youtubeのサムネイルを生成する
 */
-zenra.createThumbnail = function(idx , id , song , artist , image) {
+zenra.createThumbnail = function(idx , id , image) {
   if (image) {
     var $img = $('<img>').attr('src' , image);
+    var song = $('#song_name_' + idx).text();
+    var artist = $('#artist_name_' + idx).text();
     $img.css('width' , 160).css('height' , 90).css('cursor' , 'pointer');
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {

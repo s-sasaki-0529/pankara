@@ -23,7 +23,7 @@ describe '楽曲ランキング機能' do
     tables = table_to_hash('songranking_table')
     expect(tables.select {|t| t['動画'] == '未登録'}.length).to eq 1
     expect(tables.length).to eq 20
-    expect(tables[0]['tostring']).to eq '1,,Hello, world!,BUMP OF CHICKEN,12'
+    expect(tables[0]['tostring']).to eq '1,Hello, world! BUMP OF CHICKEN,Hello, world!,BUMP OF CHICKEN,12'
     expect(tables[1]['tostring']).to eq '2,未登録,ray,BUMP OF CHICKEN,10'
   end
   it 'リンクが正常に登録されているか' do

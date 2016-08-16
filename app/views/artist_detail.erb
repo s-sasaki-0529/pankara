@@ -33,12 +33,12 @@
         <tr>
           <td id="thumbnail_<%= idx %>" class='center' width='160'>
             <% if song['song_url'] %>
-              <script>
+            <span id="song_name_<%= idx %>" class="hidden"><%= h song["song_name"] %></span>
+            <span id="artist_name_<%= idx %>" class="hidden"><%= h @artist['name'] %></span>
+            <script>
                 zenra.createThumbnail(
                   "<%= idx %>" ,
                   "<%= song['song_id'] %>" ,
-                  "<%= h song['song_name'] %>" ,
-                  "<%= h @artist['song_name'] %>" ,
                   "<%= youtube_image song['song_url'] %>"
                 );
               </script>

@@ -38,12 +38,12 @@
       <ul id="slider">
         <% @song_list.each_with_index do |song , idx| %>
           <li id="thumbnail_<%= idx %>" class='bathtowel-li'>
+            <span id="song_name_<%= idx %>" class="hidden"><%= h song['name'] %></span>
+            <span id="artist_name_<%= idx %>" class="hidden"><%= h song['artist'] %></span>
             <script>
               zenra.createThumbnail(
                 "<%= idx %>" ,
                 "<%= song['id'] %>" ,
-                "<%= h song['name'] %>" ,
-                "<%= song['artist'] %>" ,
                 "<%= youtube_image song['url'] %>"
               );
             </script>

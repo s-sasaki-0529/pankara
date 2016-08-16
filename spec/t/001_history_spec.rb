@@ -18,9 +18,9 @@ describe '歌唱履歴ページ' do
   it '表示内容' do
     table = table_to_hash('history_table')
     expect(table.length).to eq 50
-    expect(table[0]['tostring']).to eq "405,2016-05-15,,オリオンをなぞる,UNISON SQUARE GARDEN,0"
-    expect(table[1]['tostring']).to eq "404,2016-05-15,,桜,コブクロ,0"
-    expect(table[2]['tostring']).to eq "403,2016-05-15,,君という名の翼,コブクロ,0"
+    expect(table[0]['tostring']).to eq "405,2016-05-15,オリオンをなぞる UNISON SQUARE GARDEN,オリオンをなぞる,UNISON SQUARE GARDEN,0"
+    expect(table[1]['tostring']).to eq "404,2016-05-15,桜 コブクロ,桜,コブクロ,0"
+    expect(table[2]['tostring']).to eq "403,2016-05-15,君という名の翼 コブクロ,君という名の翼,コブクロ,0"
   end
 
   it 'リンク' do
@@ -32,7 +32,7 @@ describe '歌唱履歴ページ' do
     visit '?page=9'
     table = table_to_hash('history_table')
     expect(table.length).to eq 5
-    expect(table[0]['tostring']).to eq "5,2016-01-03,,PONPONPON,きゃりーぱみゅぱみゅ,-3"
+    expect(table[0]['tostring']).to eq "5,2016-01-03,PONPONPON きゃりーぱみゅぱみゅ,PONPONPON,きゃりーぱみゅぱみゅ,-3"
   end
 
 end

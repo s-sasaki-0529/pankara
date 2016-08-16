@@ -18,13 +18,13 @@
       <td class='center'><%= idx + 1 %></td>
       <td class='center' width='140'><%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %></td>
       <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='160'>
-        <% if history['song_url'] %>
-          <script>
+        <% if history['song_url'] %> 
+          <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
+          <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
+          <script> 
             zenra.createThumbnail(
               '<%= "#{@tag}_#{idx}" %>' ,
               "<%= history['song_id'] %>" ,
-              "<%= h history['song_name'] %>" ,
-              "<%= h history['artist_name'] %>" ,
               "<%= youtube_image history['song_url'] %>" ,
               "<%= history['song_url'] %>"
             )

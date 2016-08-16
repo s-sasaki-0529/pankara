@@ -14,13 +14,13 @@
     <tr>
       <td class='center'><%= rank + 1 %></td>
       <td id="thumbnail_<%= rank %>" class='center' width='160'>
-        <% if song['song_url'] %>
+        <% if song['song_url'] %> 
+          <span id="song_name_<%= rank %>" class="hidden"><%= h song["song_name"] %></span>
+          <span id="artist_name_<%= rank %>" class="hidden"><%= h song["artist_name"] %></span>
           <script>
             zenra.createThumbnail(
               "<%= rank %>" ,
               "<%= song['song_id'] %>" ,
-              "<%= h song['song_name'] %>" ,
-              "<%= h song['artist_name'] %>" ,
               "<%= youtube_image song['song_url'] %>"
             );
           </script>
