@@ -261,6 +261,23 @@ class Util
     return monthly
   end
 
+  # create_monthly_data - 月ごとの歌唱回数グラフ用のデータを生成する
+  #--------------------------------------------------------------------
+  def self.create_monthly_data(sang_histories)
+    monthly_data = Util.monthly_array(:desc => true)
+    monthly_data.each do |m|
+      month = m[:month]
+      sang_histories[month] and sang_histories[month].each do |u|
+        screen_name = u['user_screenname']
+        m[screen_name] or m[screen_name] = 0
+        m[screen_name] += 1
+      end
+      m[:_month] = m[:month]
+      m.delete(:month)
+    end
+    return monthly_data
+  end
+
   # make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する
   #---------------------------------------------------------------------
   def self.make_questions(num)
