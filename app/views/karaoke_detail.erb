@@ -75,13 +75,21 @@
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
-        <span id='max_score_all' class='result orange'><%= h @karaoke['max_score'] %></span>
-        <span class='orange'>点</span>
+        <% if @karaoke['max_score'] %>
+          <span id='max_score_all' class='result orange'><%= h @karaoke['max_score'] %></span>
+          <span class='orange'>点</span>
+        <% else %>
+          <span class='result orange'>採点なし</span>
+        <% end %>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>平均得点</p>
-        <span id='avg_score_all' class='result orange'><%= h @karaoke['avg_score'] %></span>
-        <span class='orange'>点</span>
+        <% if @karaoke['avg_score'] %>
+          <span id='avg_score_all' class='result orange'><%= h @karaoke['avg_score'] %></span>
+          <span class='orange'>点</span>
+        <% else %>
+          <span class='result orange'>採点なし</span>
+        <% end %>
       </div>
     </div>
     <% @histories = @karaoke.histories %>
@@ -108,13 +116,21 @@
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>最高得点</p>
-        <span id="max_score_<%= member['userid'] %>" class='result orange'><%= h member['max_score'] %></span>
-        <span class='orange'>点</span>
+        <% if member['max_score'] %>
+          <span id="max_score_<%= member['userid'] %>" class='result orange'><%= h member['max_score'] %></span>
+          <span class='orange'>点</span>
+        <% else %>
+          <span class='result orange'>採点なし</span>
+        <% end %>
       </div>
       <div class="karaoke-result-block center">
         <p class='description'>平均得点</p>
-        <span id="avg_score_<%= member['userid'] %>" class='result orange'><%= h member['avg_score'] %></span>
-        <span class='orange'>点</span>
+        <% if member['avg_score'] %>
+          <span id="avg_score_<%= member['userid'] %>" class='result orange'><%= h member['avg_score'] %></span>
+          <span class='orange'>点</span>
+        <% else %>
+          <span class="result orange">採点なし</span>
+        <% end %>
       </div>
     </div>
     <div class="row">
