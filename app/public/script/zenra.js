@@ -833,15 +833,17 @@ var register = (function() {
     },
 
     /*[Method] 楽曲編集画面を表示する*/
-    editSong : function(song_id , song , artist , url) {
+    editSong : function(song_id , url) {
+      var song_name = $("#song_name").text();
+      var artist_name = $("#artist_name").text();
       input_dialog = new dialog('楽曲編集' , 'input_dialog' , 450);
       input_dialog.show('/ajax/song/dialog' , 'input_song' , {
         func_at_load: function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitSongEditRequest(' + song_id + ')').val('登録');
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
-          $('#song').val(song);
-          $('#artist').val(artist);
+          $('#song').val(song_name);
+          $('#artist').val(artist_name);
           $('#url').val(url);
         }
       });
