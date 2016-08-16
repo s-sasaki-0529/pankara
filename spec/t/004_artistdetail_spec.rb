@@ -45,8 +45,16 @@ describe '歌手詳細ページ' , :js => true do
 
   describe '歌唱回数グラフ' do
     it '一人だけ歌っている' do
+      visit '/artist/70' #暁切歌
+      wait_for_ajax
+      json = evaluate_script("$('#sang_count_chart_json').text();")
+      expect(json).to eq '{"result":"success","info":[{"_month":"2016-08"},{"_month":"2016-07"},{"_month":"2016-06"},{"_month":"2016-05"},{"_month":"2016-04"},{"ともちん":2,"_month":"2016-03"},{"_month":"2016-02"},{"ともちん":4,"_month":"2016-01"}]}'
     end
     it '複数人が歌っている' do
+      visit '/artist/40' #水樹奈々
+      wait_for_ajax
+      json = evaluate_script("$('#sang_count_chart_json').text();")
+      expect(json).to eq '{"result":"success","info":[{"_month":"2016-08"},{"_month":"2016-07"},{"_month":"2016-06"},{"_month":"2016-05"},{"_month":"2016-04"},{"_month":"2016-03"},{"_month":"2016-02"},{"ウォーリー":2,"ともちん":1,"_month":"2016-01"}]}'
     end
   end
 
