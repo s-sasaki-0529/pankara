@@ -46,7 +46,7 @@ class User < Base
 
     # 歌唱履歴を全て取得し、場号を振る
     db = DB.new(
-      :SELECT => ['song' , 'songkey' , 'attendance'],
+      :SELECT => ['song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
       :FROM => 'history' ,
       :WHERE_IN => ['attendance' , attend_ids.length],
       :SET => attend_ids ,
@@ -427,6 +427,7 @@ class User < Base
   end
 
   # total_spending - 総出費を取得
+  #--------------------------------------------------------------------
   def total_spending
     DB.new({
       :SELECT => {'sum(price)' => 'sum'},
