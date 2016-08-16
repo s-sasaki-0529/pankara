@@ -18,8 +18,14 @@ describe '歌手詳細ページ' , :js => true do
 
   describe 'Wikipediaが正常に読み込まれるか' do
     it '記事が存在する' do
+      visit '/artist/40' #水樹奈々
+      wait_for_ajax
+      iscontain '(Wikipedia引用)'
     end
     it '記事が存在しない' do
+      visit '/artist/32' #kemu
+      wait_for_ajax
+      islack '(Wikipedia引用)'
     end
   end
 
