@@ -43,6 +43,7 @@ class SongRoute < March
   # このURLは非同期で呼び出されるため、リダイレクトはクライアント側で行う
   #--------------------------------------------------------------------
   post '/song/:id/tag/add' do
+    @current_user or return
     id = params[:id]
     tag = params[:tag_name]
     song = Song.new(id)

@@ -9,6 +9,9 @@ end
 # テスト実行
 describe 'タグ機能' , :js => true do
   before(:all , &init)
+  before do
+    login 'sa2knight'
+  end
 
   # タグを登録
   def add_tag(tag)
@@ -52,6 +55,13 @@ describe 'タグ機能' , :js => true do
       js script; wait_for_ajax
       find('#popup_cancel').click; wait_for_ajax
       islack '新しいタグ'
+    end
+    it 'ログインしていないと登録できない' do
+      visit '/song/1'
+      iscontain '追加'
+      visit '/logout'
+      visit '/song/1'
+      islack '追加'
     end
   end
 
