@@ -69,7 +69,7 @@
       </th>
       <th>
         <% if @current_user %>
-          <p><a id="add_tag" class='hidden' href="#" onclick="zenra.addSongTag(<%= @song['id'] %>)">追加</a></p>
+          <p><a id="add_tag" class='hidden' href="#" onclick="zenra.addSongTag(<%= @current_user['id'] %> , <%= @song['id'] %>)">追加</a></p>
         <% end %>
       </th>
     </table>
@@ -80,5 +80,7 @@
   $('#history_tabs').tabs().show();
   zenra.createMonthlySangCountBarChart('/ajax/song/tally/monthly/count' , <%= @song['id'] %> , "#sang_count_chart");
   zenra.scoreBarChart.init(<%= @song['id'] %> , 1 , <%= @score_type_num %> , "#score_bar_chart");
-  zenra.showSongTagList(<%= @song['id'] %>);
+  <% if @current_user %>
+    zenra.showSongTagList(<%= @current_user['id'] %> , <%= @song['id'] %>);
+  <% end %>
 </script>
