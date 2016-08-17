@@ -83,7 +83,11 @@ class LocalRoute < March
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
   #--------------------------------------------------------------------
   post '/ajax/user/artist/favorite/?' do
-    user = @current_user or return error('invalid user')
+    if params[:user]
+      user = User.new(params[:user])
+    else
+      user = @current_user or return error('invalid user')
+    end
     favorite_artists = user.favorite_artists(:limit => 10, :want_rate => true) or return error('no artists')
     return success(favorite_artists.map { |a| [a['artist_name'] , a['artist_count_rate']] })
   end

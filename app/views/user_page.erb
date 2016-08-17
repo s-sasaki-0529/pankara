@@ -56,7 +56,7 @@
     <% if @histories.size > 0 %>
     <h4>よく歌うアーティストベスト１０</h4>
     <div id="user_sang_artists_chart"></div>
-    <script>zenra.createFavoriteArtistsPieChart('#user_sang_artists_chart');</script>
+    <script>zenra.createFavoriteArtistsPieChart('#user_sang_artists_chart' , "<%= @user['username'] %>");</script>
     <% end %>
   </div>
 </div>
