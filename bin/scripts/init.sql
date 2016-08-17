@@ -132,6 +132,7 @@ CREATE TABLE `tag` (
   `class` CHAR NOT NULL COMMENT '対象の種類(song=s)',
   `object` INTEGER NOT NULL COMMENT '対象のid',
   `name` MEDIUMTEXT NOT NULL COMMENT 'タグ',
+  `created_by` INTEGER NOT NULL COMMENT '登録者',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) COMMENT 'タグ';
@@ -201,6 +202,7 @@ ALTER TABLE `attendance` ADD FOREIGN KEY (user) REFERENCES `user` (`id`);
 ALTER TABLE `attendance` ADD FOREIGN KEY (karaoke) REFERENCES `karaoke` (`id`);
 ALTER TABLE `friend` ADD FOREIGN KEY (user_from) REFERENCES `user` (`id`);
 ALTER TABLE `friend` ADD FOREIGN KEY (user_to) REFERENCES `user` (`id`);
+ALTER TABLE `tag` ADD FOREIGN KEY (created_by) REFERENCES `user` (`id`);
 
 -- ---
 -- Insert Fixed record
