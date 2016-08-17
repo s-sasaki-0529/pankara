@@ -453,7 +453,7 @@ class User < Base
       scores = list.select {|l| l['score_type'] == score_type}.map {|l| l['score']}
       max = scores.max
       sum = scores.inject(0.0) {|sum , i| sum += i}
-      return {:max => max ? max : 0.0 , :avg => sum ? sum / list.size : 0}
+      return {:max => max ? max : 0.0 , :avg => sum ? sum / scores.size : 0}
     end
 
     result = {}
