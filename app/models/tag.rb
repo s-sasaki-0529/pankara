@@ -31,7 +31,7 @@ class Tag < Base
 
   # add - タグを追加する
   #--------------------------------------------------------------------
-  def add(name)
+  def add(created_by , name)
     # 既に登録済みのタグの場合追加失敗
     @list.include?(name) and return false
     # 既に５種類のタグが登録されている場合追加失敗
@@ -40,8 +40,8 @@ class Tag < Base
     name.length > 18 and return false
     # タグを追加する
     insert_id = DB.new(
-      :INSERT => ['tag' , ['class' , 'object' , 'name']],
-      :SET => [@class , @id , name]
+      :INSERT => ['tag' , ['class' , 'object' , 'name' , 'created_by']],
+      :SET => [@class , @id , name , created_by]
     ).execute_insert_id
     # 追加に成功した場合、タグリストを更新
     insert_id and get_list

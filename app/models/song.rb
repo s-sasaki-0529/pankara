@@ -228,8 +228,8 @@ class Song < Base
 
   # add_tag - タグを追加登録
   #--------------------------------------------------------------------
-  def add_tag(name)
-    Tag.new('s' , @params['id']).add(name)
+  def add_tag(created_by , name)
+    Tag.new('s' , @params['id']).add(created_by , name)
   end
 
   # remove_tag - タグを削除

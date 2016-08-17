@@ -48,7 +48,7 @@ class SongRoute < March
     tag = params[:tag_name]
     song = Song.new(id)
     song and tag and tag != "" and tag.split(/[\s　]/).each do |t|
-      song.add_tag(t) or return
+      song.add_tag(@current_user['id'] , t) or return
     end
   end
 
