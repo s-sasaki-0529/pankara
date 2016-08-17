@@ -12,7 +12,6 @@ class Attendance < Base
     @params = DB.new.get('attendance' , id)
   end
 
-
   # modify - attendanceレコードを修正する
   #--------------------------------------------------------------------
   def modify(arg)

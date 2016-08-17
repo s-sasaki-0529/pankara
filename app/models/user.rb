@@ -46,7 +46,7 @@ class User < Base
 
     # 歌唱履歴を全て取得し、場号を振る
     db = DB.new(
-      :SELECT => ['song' , 'songkey' , 'attendance'],
+      :SELECT => ['song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
       :FROM => 'history' ,
       :WHERE_IN => ['attendance' , attend_ids.length],
       :SET => attend_ids ,
@@ -424,6 +424,71 @@ class User < Base
       :SET => [id].concat(attend_ids),
       :OPTION => ['ORDER BY id DESC' , 'LIMIT 1']
     ).execute_column
+  end
+
+  # total_spending - 総出費を取得
+  #--------------------------------------------------------------------
+  def total_spending
+    DB.new({
+      :SELECT => {'sum(price)' => 'sum'},
+      :FROM => 'attendance',
+      :WHERE => 'user = ?',
+      :SET => @params['id']
+    }).execute_column
+  end
+
+  # statistics - ユーザの統計情報を取得
+  # データ量次第で高負荷になるので、アルゴリズムの見直しやバッチ化、
+  # 非同期化が求められる可能性があります
+  #--------------------------------------------------------------------
+  def statistics(opt = {})
+
+    # リスト内の特定の要素を数える
+    def product_count(list , product)
+      list.select{|p| p == product}.count
+    end
+
+    # 指定した採点モードの最高点と平均点をハッシュで戻す
+    def score_aggregate(list , score_type)
+      scores = list.select {|l| l['score_type'] == score_type}.map {|l| l['score']}
+      max = scores.max
+      sum = scores.inject(0.0) {|sum , i| sum += i}
+      return {:max => max ? max : 0.0 , :avg => sum ? sum / list.size : 0}
+    end
+
+    result = {}
+    histories = self.histories(:song_info => true)
+
+    result['karaoke_num'] = histories.map {|h| h['karaoke_id']}.uniq.count
+    result['store_num'] = histories.map {|h| h['karaoke_store']}.uniq.count
+    result['song_num'] = histories.map {|h| h['song']}.uniq.count
+    result['artist_num'] = histories.map {|h| h['artist_id']}.uniq.count
+    result['sang_count'] = histories.count
+    result['total_spending'] = self.total_spending
+
+    attend2plan = {}
+    histories.each {|h| attend2plan[h['attendance']] = h['karaoke_plan']}
+    result['total_karaoke_time'] = attend2plan.values.inject {|sum , n| sum += n}
+
+    attend2product = {}
+    histories.each {|h| attend2product[h['attendance'] ] = h['karaoke_product']}
+    plist = histories.map {|h| h['karaoke_product']}
+    plist_uniq = attend2product.values
+    products = ["JOYSOUND WAVE" , "JOYSOUND CROSSO" , "JOYSOUND f1" , "JOYSOUND MAX" , "Premier DAM" , "Live DAM" , "その他"]
+    products.each_with_index do |p , i|
+      result["#{p}_num"] = product_count(plist_uniq , i + 1)
+      result["#{p}_sang_count"] = product_count(plist , i + 1)
+    end
+
+    st = ["JOYSOUND 全国採点" , "JOYSOUND 分析採点" , "JOYSOUND その他" , "DAM ランキングバトル" , "DAM 精密採点" , "DAM その他" , "その他 その他"]
+    st.each_with_index do |t , i|
+      aggregate = score_aggregate(histories , i + 1)
+      result["#{t}_max"] = aggregate[:max]
+      result["#{t}_avg"] = aggregate[:avg]
+    end
+
+    result["friend_num"] = self.friend_list.count
+    return result
   end
 
   private

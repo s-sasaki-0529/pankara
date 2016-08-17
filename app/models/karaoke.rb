@@ -106,7 +106,11 @@ class Karaoke < Base
 
     # karaokeに参加しているユーザ一覧を取得
     users_info = Util.array_to_hash(self.get_members , 'attendance')
-    @params['members'] = users_info.values
+    if users_info.empty?
+      @params['members'] = users_info.values
+      @histories = []
+      return []
+    end
 
     @histories = DB.new(
       :SELECT => {

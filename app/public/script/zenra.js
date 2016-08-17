@@ -112,8 +112,8 @@ zenra.createBarChart = function(targetSelecter , data , key , values , groups , 
 createFavoriteArtistsPieChart - お気に入り歌手ベスト10の構成を円グラフで表示する
 targetSelecter: 描画対象要素のセレクタ
 */
-zenra.createFavoriteArtistsPieChart = function(targetSelecter) {
-  zenra.post('/ajax/user/artist/favorite' , {} , {
+zenra.createFavoriteArtistsPieChart = function(targetSelecter , user) {
+  zenra.post('/ajax/user/artist/favorite' , {'user': user} , {
     success: function(json) {
       response = zenra.parseJSON(json);
       if (response.result == 'success') {
