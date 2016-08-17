@@ -1152,7 +1152,7 @@ zenra.showSongTagList = function(user , id) {
     success: function(json) {
       var response = zenra.parseJSON(json);
       if (response.result == 'error') return;
-      var tags = response.info;
+      var tags = response.info.map(function(tag) { return tag['name'] });
       resetTagElements();
       tags.forEach(function(tag) { addTagElement(tag) });
       var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';

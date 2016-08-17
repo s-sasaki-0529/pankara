@@ -21,11 +21,11 @@ class Tag < Base
   #--------------------------------------------------------------------
   def get_list(opt = {})
     @list = DB.new(
-      :SELECT => 'name',
+      :SELECT => ['name' , 'created_by'],
       :FROM => 'tag',
       :WHERE => ['class = ?' , 'object = ?'],
       :SET => [@class , @id]
-    ).execute_columns
+    ).execute_all
     return @list
   end
 
@@ -33,7 +33,7 @@ class Tag < Base
   #--------------------------------------------------------------------
   def add(created_by , name)
     # 既に登録済みのタグの場合追加失敗
-    @list.include?(name) and return false
+    self.include?(name) and return false
     # 既に５種類のタグが登録されている場合追加失敗
     @list.size == MAX and return false
     # １８文字以上のタグは登録できない
@@ -52,7 +52,7 @@ class Tag < Base
   #--------------------------------------------------------------------
   def remove(name)
     # 存在しないタグを指定した場合失敗
-    @list.include?(name) or return false
+    self.include?(name) or return false
     # タグを削除する
     result = DB.new(
       :DELETE => 1,
@@ -62,6 +62,12 @@ class Tag < Base
     ).execute
     # 削除に成功した場合、タグリストを更新
     result and get_list and return true
+  end
+
+  # include? - 指定したタグが登録済みタグに含まれているかを戻す
+  #--------------------------------------------------------------------
+  def include?(name)
+    @list.map {|t| t['name']}.include?(name)
   end
 
   # search - 指定したタグを持つidを一覧する
