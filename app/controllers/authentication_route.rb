@@ -6,9 +6,13 @@ class AuthenticationRoute < March
   # get '/login' - ログイン画面へのアクセス
   #---------------------------------------------------------------------
   get '/login' do
-    @callback = params[:callback]
-    @update_info = Util.read_update_info
-    erb :login
+    if @current_user
+      redirect '/'
+    else
+      @callback = params[:callback]
+      @update_info = Util.read_update_info
+      erb :login
+    end
   end
 
   # get '/logout' - ログアウトする

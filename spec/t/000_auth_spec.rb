@@ -42,4 +42,9 @@ describe '認証系ページ' do
     find('#login_button').click
     iscontain 'アーティスト一覧'
   end
+  it 'ログイン中にログイン画面アクセスでトップにリダイレクト' do
+    login 'march_user'
+    visit '/login'
+    expect(page.current_path).to eq '/'
+  end
 end
