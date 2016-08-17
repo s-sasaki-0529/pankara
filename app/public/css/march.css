@@ -203,11 +203,11 @@ tr *.cell-datetime {
 }
 
 #most_sang_song_table > tbody > tr > td {
-  font-size: 20px;
+  font-size: 15px;
 }
 
 #max_score_table > tbody > tr > td {
-  font-size: 20px;
+  font-size: 15px;
 }
 
 /*ユーザページのユーザアイコン表示枠*/
