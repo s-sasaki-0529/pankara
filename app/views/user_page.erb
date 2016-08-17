@@ -6,6 +6,9 @@
       <div id="user_icon">
         <%= user_icon @user['username'] , '100%' , '100%' %>
       </div>
+      <% if @current_user && @user['username'] == @current_user['username'] %>
+        <a href="/config">アイコン設定</a>
+      <% end %>
     </div>
     <!-- 右カラム -->
     <div class="col-xs-6">
