@@ -169,8 +169,9 @@ class LocalRoute < March
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
     twitter = arg["twitter"]
+    tweet_text = arg["tweet_text"]
     result = karaoke.modify(arg)
-    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id] , params[:tweet_text])
+    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id] , tweet_text)
     return result ? success : error('modify failed')
   end
   
@@ -218,8 +219,9 @@ class LocalRoute < March
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
     twitter = arg['twitter']
+    tweet_text = arg['tweet_text']
     result = history.modify(arg.dup)
-    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , params[:tweet_text])
+    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , tweet_text)
     return result ? success : error('modify failed')
   end
 
