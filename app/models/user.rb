@@ -397,18 +397,18 @@ class User < Base
 
   # tweet_karaoke - ツイッターにカラオケについてツイートする
   #--------------------------------------------------------------------
-  def tweet_karaoke(karaoke_id)
+  def tweet_karaoke(karaoke_id , tweet_text = "")
     tweet = "#{@params['screenname']}さんがカラオケに行きました"
     url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}")
+    self.tweet("#{tweet} #{url}#{tweet_text}")
   end
 
   # tweet_history - ツイッターに歌唱履歴についてツイートする
   #--------------------------------------------------------------------
-  def tweet_history(karaoke_id , history)
+  def tweet_history(karaoke_id , history , tweet_text = "")
     tweet = "#{history['song_name']}(#{history['artist_name']})を歌いました"
     url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}")
+    self.tweet("#{tweet} #{url}#{tweet_text}")
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得

@@ -170,7 +170,7 @@ class LocalRoute < March
     arg = Util.to_hash(params[:params])
     twitter = arg["twitter"]
     result = karaoke.modify(arg)
-    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id])
+    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id] , params[:tweet_text])
     return result ? success : error('modify failed')
   end
   
@@ -219,7 +219,7 @@ class LocalRoute < March
     arg = Util.to_hash(params[:params])
     twitter = arg['twitter']
     result = history.modify(arg.dup)
-    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg)
+    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , params[:tweet_text])
     return result ? success : error('modify failed')
   end
 
@@ -245,7 +245,8 @@ class LocalRoute < March
       result = @current_user.register_karaoke(karaoke)
      
       if result.kind_of?(Integer)
-        params[:twitter] and @current_user.tweet_karaoke(result)
+        Util.debug(params)
+        params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         Util.to_json({'result' => 'success', 'karaoke_id' => result})
       else
         result
@@ -282,7 +283,7 @@ class LocalRoute < March
     twitter = params[:twitter]
     if @current_user
       info = @current_user.register_history(karaoke_id , history)
-      twitter and @current_user.tweet_history(karaoke_id , history)
+      twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
       return success(info)
     else
       Util.to_json({'result' => 'invalid current user'})

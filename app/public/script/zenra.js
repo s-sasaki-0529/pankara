@@ -752,6 +752,9 @@ var register = (function() {
     };
     if ($('#tweet-checkbox').prop('checked')) {
       data.twitter = 1;
+      if ($('#tweet_textbox').val() != "") {
+        data.tweet_text = '\n\n' + $('#tweet_textbox').val();
+      }
     }
     return data;
   }
@@ -767,6 +770,9 @@ var register = (function() {
     };
     if ($('#tweet-checkbox').prop('checked')) {
       data.twitter = 1;
+      if ($('#tweet_textbox').val() != "") {
+        data.tweet_text = '\n\n' + $('#tweet_textbox').val();
+      }
     }
     return data;
   }
