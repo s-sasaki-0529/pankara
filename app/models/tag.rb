@@ -6,7 +6,7 @@ require_relative 'util'
 require_relative 'db'
 class Tag < Base
 
-  MAX = 5
+  MAX = 10
   attr_reader :list
 
   # classとidを指定してインスタンスを生成
@@ -34,7 +34,7 @@ class Tag < Base
   def add(created_by , name)
     # 既に登録済みのタグの場合追加失敗
     self.include?(name) and return false
-    # 既に５種類のタグが登録されている場合追加失敗
+    # 既に１０種類のタグが登録されている場合追加失敗
     @list.size == MAX and return false
     # １８文字以上のタグは登録できない
     name.length > 18 and return false

@@ -40,11 +40,11 @@ describe 'タグ機能' , :js => true do
       add_tag tags.join(' ')
       iscontain tags
     end
-    it '複数登録(５個以上)' do
+    it '複数登録(10個以上)' do
       visit '/song/276'; wait_for_ajax
-      add_tag "001 002 003 004 005 006 007 008"
-      iscontain ['001' , '002' , '003' , '004' , '005']
-      islack ['006' , '007' , '008']
+      add_tag "001 002 003 004 005 006 007 008 009 010 011 012 013"
+      iscontain ['001' , '002' , '003' , '004' , '005' , '006' , '007' , '008' , '009' , '010']
+      islack ['011' , '012' , '013']
       islack '追加'
     end
     it 'キャンセル' do
