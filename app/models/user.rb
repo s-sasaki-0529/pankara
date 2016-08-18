@@ -12,6 +12,7 @@ require_relative 'register'
 require_relative 'twitter'
 require_relative 'friend'
 require_relative 'pager'
+require_relative 'tag'
 
 class User < Base
 
@@ -453,23 +454,31 @@ class User < Base
       scores = list.select {|l| l['score_type'] == score_type}.map {|l| l['score']}
       max = scores.max
       sum = scores.inject(0.0) {|sum , i| sum += i}
-      return {:max => max ? max : 0.0 , :avg => sum ? sum / scores.size : 0}
+      return {:num => scores.size , :max => max ? max : 0.0 , :avg => sum ? sum / scores.size : 0}
     end
 
     result = {}
     histories = self.histories(:song_info => true)
 
+    # カラオケ回数
     result['karaoke_num'] = histories.map {|h| h['karaoke_id']}.uniq.count
+    # 行ったことのある店舗数
     result['store_num'] = histories.map {|h| h['karaoke_store']}.uniq.count
+    # 歌ったことのある楽曲数
     result['song_num'] = histories.map {|h| h['song']}.uniq.count
+    # 歌ったことのある歌手数
     result['artist_num'] = histories.map {|h| h['artist_id']}.uniq.count
+    # 総歌唱回数
     result['sang_count'] = histories.count
+    # 総出費
     result['total_spending'] = self.total_spending
 
+    # 総カラオケ時間
     attend2plan = {}
     histories.each {|h| attend2plan[h['attendance']] = h['karaoke_plan']}
     result['total_karaoke_time'] = attend2plan.values.inject {|sum , n| sum += n}
 
+    # 機種別の利用回数と歌唱回数
     attend2product = {}
     histories.each {|h| attend2product[h['attendance'] ] = h['karaoke_product']}
     plist = histories.map {|h| h['karaoke_product']}
@@ -480,14 +489,24 @@ class User < Base
       result["#{p}_sang_count"] = product_count(plist , i + 1)
     end
 
+    # 採点モード別の利用回数と最高点と平均点
     st = ["JOYSOUND 全国採点" , "JOYSOUND 分析採点" , "JOYSOUND その他" , "DAM ランキングバトル" , "DAM 精密採点" , "DAM その他" , "その他 その他"]
     st.each_with_index do |t , i|
       aggregate = score_aggregate(histories , i + 1)
       result["#{t}_max"] = aggregate[:max]
       result["#{t}_avg"] = aggregate[:avg]
+      result["#{t}_num"] = aggregate[:num]
     end
 
+    # 友達数
     result["friend_num"] = self.friend_list.count
+
+    # VOCALOID楽曲歌唱率
+    vcl_ids = Tag.search('s' , 'VOCALOID')
+    vcl_num = 0
+    histories.map {|h| h['song']}.each {|s| vcl_ids.include?(s) and vcl_num += 1}
+    result["vocaloid_rate"] = (vcl_num.to_f / histories.count.to_f * 100).round(2)
+
     return result
   end
 
