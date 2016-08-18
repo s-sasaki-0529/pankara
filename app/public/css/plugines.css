@@ -20,6 +20,7 @@ http://logicbox.net/jquery/simplyscroll/horizontal.html
   margin: 0;
   width: 160px;
   height: 90px;
+  list-style: none;
 }
 .simply-scroll-list li img {
   display: block;
