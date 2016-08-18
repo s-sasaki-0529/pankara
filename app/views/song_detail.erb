@@ -22,7 +22,7 @@
 
   <div id="youtube_column" class="col-xs-6">
     <% if @song['url'] %>
-      <%= movie_player @song['url'] , 560 , 315 %>
+      <%= movie_player @song['url'] , '100%' , 315 %>
     <% else %>
       <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
     <% end %>
