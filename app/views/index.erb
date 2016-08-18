@@ -31,23 +31,6 @@
       <h1 class='center'>TimeLine</h1>
       <%= erb :_timeline %>
     </div>
-    <!-- 動画垂れ流しエリア -->
-    <div id="bathtowel_div">
-      <ul id="slider">
-        <% @song_list.each_with_index do |song , idx| %>
-          <li id="thumbnail_<%= idx %>" class='bathtowel-li'>
-            <span id="song_name_<%= idx %>" class="hidden"><%= h song['name'] %></span>
-            <span id="artist_name_<%= idx %>" class="hidden"><%= h song['artist'] %></span>
-            <script>
-              zenra.createThumbnail(
-                "<%= idx %>" ,
-                "<%= song['id'] %>" ,
-                "<%= youtube_image song['url'] %>"
-              );
-            </script>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+  </div>
+  <%= erb :_bathtowel %>
 </div>
-<script type='text/javascript'>bathtowel.init();</script>
