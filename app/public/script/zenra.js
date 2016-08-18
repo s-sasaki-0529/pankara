@@ -1168,7 +1168,8 @@ zenra.showAggregateDialog = function(user) {
   input_dialog.show(url , 'aggregate' , {
     func_at_load: function() {
     } ,
-    position: 'auto'
+    position: 'auto',
+    resizable: true
   });
 };
 
