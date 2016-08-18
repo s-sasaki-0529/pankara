@@ -84,6 +84,17 @@ describe 'タグ機能' , :js => true do
       find('#popup_cancel').click; wait_for_ajax
       iscontain 'がくっぽいど'
     end
+    it '他の人が登録したタグは削除できない' do
+      login 'sa2knight'
+      visit '/song/270'; wait_for_ajax
+      expect(all('#tag_list_table > tbody > tr > td > img').count).to eq 2
+      login 'hetare'
+      visit '/song/270'; wait_for_ajax
+      expect(all('#tag_list_table > tbody > tr > td > img').count).to eq 0
+      visit '/logout'
+      visit '/song/270'; wait_for_ajax
+      expect(all('#tag_list_table > tbody > tr > td > img').count).to eq 0
+    end
   end
 
   describe 'タグ検索' do
