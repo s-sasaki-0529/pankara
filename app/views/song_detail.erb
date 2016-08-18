@@ -75,7 +75,7 @@
     </table>
   </div>
 </div>
-
+<%= csrftoken %>
 <script>
   $('#history_tabs').tabs().show();
   zenra.createMonthlySangCountBarChart('/ajax/song/tally/monthly/count' , <%= @song['id'] %> , "#sang_count_chart");
