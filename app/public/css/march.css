@@ -109,24 +109,24 @@ tr *.cell-datetime {
   border-radius: 10px;    /* CSS3草案 */
   -webkit-border-radius: 10px;  /* Safari,Google Chrome用 */
   -moz-border-radius: 10px; /* Firefox用 */
-  width: 220px;
-  height: 110px;
+  width: 20%;
+  height: 90px;
   background-color: rgb(255,255,102);
   float: left;
+  position: relative;
 }
 .karaoke-result-block > .description {
-  font-size: 22px;
+  font-size: 19px;
 }
 .karaoke-result-block > .result {
-  font-size: 36px;
+  font-size: 31px;
   overflow: hidden;
   white-space: nowrap;
 }
 .karaoke-memo-block {
-  width: 760px !important;
 }
 .karaoke-memo-block > .result {
-  font-size: 22px !important;
+  font-size: 19px !important;
   white-space: normal !important;
   color: black !important;
 }

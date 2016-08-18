@@ -63,17 +63,17 @@
   <% if @karaoke['members'].count >= 2 %>
   <div id="tabs-all">
     <div class="row">
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>歌った曲数</p>
         <span id='sang_count_all' class='result center orange'><%= @karaoke['sang_count'] %></span>
         <span class='orange'>曲</span>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>歌った歌手数</p>
         <span id='sang_artist_count_all' class='result orange'><%= @karaoke['artist_count'] %></span>
         <span class='orange'>組</span>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>最高得点</p>
         <% if @karaoke['max_score'] %>
           <span id='max_score_all' class='result orange'><%= h @karaoke['max_score'] %></span>
@@ -82,7 +82,7 @@
           <span class='result orange'>採点なし</span>
         <% end %>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>平均得点</p>
         <% if @karaoke['avg_score'] %>
           <span id='avg_score_all' class='result orange'><%= h @karaoke['avg_score'] %></span>
@@ -104,17 +104,17 @@
   <% @karaoke['members'].each do |member| %>
   <div id="tabs-<%= member['userid'] %>">
     <div class="row">
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>歌った曲数</p>
         <span id="sang_count_<%= member['userid'] %>" class='result center orange'><%= member['sang_count'] %></span>
         <span class='orange'>曲</span>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>歌った歌手数</p>
         <span id="sang_artist_count_<%= member['userid'] %>" class='result orange'><%= member['artist_count'] %></span>
         <span class='orange'>組</span>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>最高得点</p>
         <% if member['max_score'] %>
           <span id="max_score_<%= member['userid'] %>" class='result orange'><%= h member['max_score'] %></span>
@@ -123,7 +123,7 @@
           <span class='result orange'>採点なし</span>
         <% end %>
       </div>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
         <p class='description'>平均得点</p>
         <% if member['avg_score'] %>
           <span id="avg_score_<%= member['userid'] %>" class='result orange'><%= h member['avg_score'] %></span>
@@ -135,18 +135,18 @@
     </div>
     <div class="row">
       <% if @current_user and @current_user['id'] == member['userid'] %>
-      <div class="karaoke-result-block center pointer" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <div class="karaoke-result-block center pointer col-xs-2" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
       <% else %>
-      <div class="karaoke-result-block center">
+      <div class="karaoke-result-block center col-xs-2">
       <% end %>
         <p class='description'>値段</p>
         <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] %></span>
         <span class='orange'>円</span>
       </div>
       <% if @current_user and @current_user['id'] == member['userid'] %>
-      <div class="karaoke-result-block karaoke-memo-block pointer center" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+      <div class="karaoke-result-block karaoke-memo-block pointer center col-xs-8" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
       <% else %>
-      <div class="karaoke-result-block karaoke-memo-block center">
+      <div class="karaoke-result-block karaoke-memo-block center col-xs-8">
       <% end %>
         <p class='description'>感想</p>
         <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] %></span>
