@@ -875,7 +875,7 @@ var register = (function() {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
-          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 600)
+          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450)
           input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
             func_at_load: function() {
               createWidgetForKaraoke();
