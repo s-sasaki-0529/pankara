@@ -104,6 +104,9 @@
   <%= yield %>
 </div>
 <%= csrftoken %>
+<script src="/bootstrap/js/bootstrap.js"></script>
+<% if Util.run_mode == 'yshirt' %>
+<!--アクセス解析--><script type="text/javascript" src="http://x5.donburako.com/ufo/105769500"></script><noscript><a href="http://x5.donburako.com/bin/gg?105769500" target="_blank"><img src="http://x5.donburako.com/bin/ll?105769500" border="0"></a><br><span style="font-size:9px"><img style="margin:0;vertical-align:text-bottom;" src="http://img.shinobi.jp/tadaima/fj.gif" width="19" height="11"> </span></noscript><!--shinobi2-->
+<% end %>
 </body>
-  <script src="/bootstrap/js/bootstrap.js"></script>
 </html>
