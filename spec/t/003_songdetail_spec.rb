@@ -3,7 +3,7 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init -d 2016_06_13_00_24`
+  `zenra init -d 2016_08_18_07_12`
   `zenra mysql -e 'insert into song (name , artist) values ("新しい楽曲" , 1)'`
 end
 
@@ -32,14 +32,16 @@ describe '楽曲詳細ページ' , :js => true do
 
   describe '歌唱回数グラフ' do
     it '誰も歌っていない楽曲' do
-      data = sang_count_chart('sa2knight' , 484)
+      data = sang_count_chart('sa2knight' , 529)
       data.keys.each do |month|
         expect(data[month].empty?).to eq true
       end
     end
     it '一人のユーザのみ歌っている楽曲' do
       data = sang_count_chart('sa2knight' , 147)
-      expect(data['2016-06']['ないと']).to eq nil
+      expect(data['2016-08']['ないと']).to eq nil
+      expect(data['2016-07']['ないと']).to eq 1
+      expect(data['2016-06']['ないと']).to eq 1
       expect(data['2016-05']['ないと']).to eq 3
       expect(data['2016-04']['ないと']).to eq 2
       expect(data['2016-03']['ないと']).to eq 3
@@ -123,7 +125,7 @@ describe '楽曲詳細ページ' , :js => true do
       expect(youtube_links[0].slice(/\w+$/)).to eq url.slice(/\w+$/)
     end
     it 'URLが登録されていない場合' do
-      visit '/song/484'
+      visit '/song/529'
       iscontain 'Youtubeプレイヤー用のURLが未設定です'
     end
   end
@@ -145,7 +147,7 @@ describe '楽曲詳細ページ' , :js => true do
       islack k2
     end
     it '誰も歌っていない楽曲' do
-      visit 'song/484'
+      visit 'song/529'
       iscontain 'みんなの歌唱履歴'
       iscontain '歌唱履歴がありません'
       islack 'あなたの歌唱履歴'
@@ -158,8 +160,8 @@ describe '楽曲詳細ページ' , :js => true do
       find('#tab-user').click; wait_for_ajax
       islack '歌唱履歴がありません'
       history = table_to_hash('song_detail_table_user')
-      expect(history.size).to eq 12
-      expect(history[9]['tostring']).to eq '2016-02-13,ないととともちん４回目,ないと,-3,JOYSOUND 全国採点,86.66'
+      expect(history.size).to eq 14
+      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他 その他,85.00'
     end
     it '他のユーザだけが歌っている楽曲' do
       login 'sa2knight'
