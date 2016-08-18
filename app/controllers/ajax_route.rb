@@ -247,7 +247,6 @@ class LocalRoute < March
       result = @current_user.register_karaoke(karaoke)
      
       if result.kind_of?(Integer)
-        Util.debug(params)
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         Util.to_json({'result' => 'success', 'karaoke_id' => result})
       else
