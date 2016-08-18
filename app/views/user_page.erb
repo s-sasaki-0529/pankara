@@ -6,7 +6,7 @@
       <div id="user_icon">
         <%= user_icon @user['username'] , '100%' , '100%' %>
       </div>
-      <a href="#" onclick="zenra.showAggregateDialog('<%= @user['username'] %>')">集計情報を表示</a>
+      <a class='pointer' onclick="zenra.showAggregateDialog('<%= @user['username'] %>')">集計情報を表示</a>
     </div>
     <!-- 右カラム -->
     <div class="col-xs-6">

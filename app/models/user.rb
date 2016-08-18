@@ -472,12 +472,12 @@ class User < Base
     # 総歌唱回数
     result['sang_count'] = histories.count
     # 総出費
-    result['total_spending'] = self.total_spending
+    result['total_spending'] = self.total_spending || 0
 
     # 総カラオケ時間
     attend2plan = {}
     histories.each {|h| attend2plan[h['attendance']] = h['karaoke_plan']}
-    result['total_karaoke_time'] = attend2plan.values.inject {|sum , n| sum += n}
+    result['total_karaoke_time'] = attend2plan.values.inject {|sum , n| sum += n} || 0
 
     # 機種別の利用回数と歌唱回数
     attend2product = {}
@@ -504,7 +504,7 @@ class User < Base
     vcl_ids = Tag.search('s' , 'VOCALOID')
     vcl_num = 0
     histories.map {|h| h['song']}.each {|s| vcl_ids.include?(s) and vcl_num += 1}
-    result["vocaloid_rate"] = (vcl_num.to_f / histories.count.to_f * 100).round(2)
+    result["vocaloid_rate"] = vcl_num == 0 ? 0 : (vcl_num.to_f / histories.count.to_f * 100).round(2)
 
     return result
   end
