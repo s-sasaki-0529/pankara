@@ -1188,7 +1188,7 @@ zenra.showSongTagList = function(user , id) {
       tags.forEach(function(tag) { addTagElement(tag) });
       var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';
       $('#tag_list_header').text(title);
-      if (tags.length < 5) {
+      if (tags.length < 10) {
         $('#add_tag').removeClass('hidden');
       } else {
         $('#add_tag').addClass('hidden');
