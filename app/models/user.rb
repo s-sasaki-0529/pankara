@@ -438,11 +438,11 @@ class User < Base
     }).execute_column
   end
 
-  # statistics - ユーザの統計情報を取得
+  # aggregate - ユーザの集計情報を取得
   # データ量次第で高負荷になるので、アルゴリズムの見直しやバッチ化、
   # 非同期化が求められる可能性があります
   #--------------------------------------------------------------------
-  def statistics(opt = {})
+  def aggregate(opt = {})
 
     # リスト内の特定の要素を数える
     def product_count(list , product)
@@ -454,7 +454,8 @@ class User < Base
       scores = list.select {|l| l['score_type'] == score_type}.map {|l| l['score']}
       max = scores.max
       sum = scores.inject(0.0) {|sum , i| sum += i}
-      return {:num => scores.size , :max => max ? max : 0.0 , :avg => sum ? sum / scores.size : 0}
+      avg = sum == 0 ? 0.0 : sum / scores.size
+      return {:num => scores.size , :max => max ? max : 0.0 , :avg => avg}
     end
 
     result = {}
@@ -483,19 +484,17 @@ class User < Base
     histories.each {|h| attend2product[h['attendance'] ] = h['karaoke_product']}
     plist = histories.map {|h| h['karaoke_product']}
     plist_uniq = attend2product.values
-    products = ["JOYSOUND WAVE" , "JOYSOUND CROSSO" , "JOYSOUND f1" , "JOYSOUND MAX" , "Premier DAM" , "Live DAM" , "その他"]
-    products.each_with_index do |p , i|
-      result["#{p}_num"] = product_count(plist_uniq , i + 1)
-      result["#{p}_sang_count"] = product_count(plist , i + 1)
+    [1,2,3,4,5,6,7].each do |i|
+      result["product#{i}_num"] = product_count(plist_uniq , i)
+      result["product#{i}_sang_count"] = product_count(plist , i)
     end
 
     # 採点モード別の利用回数と最高点と平均点
-    st = ["JOYSOUND 全国採点" , "JOYSOUND 分析採点" , "JOYSOUND その他" , "DAM ランキングバトル" , "DAM 精密採点" , "DAM その他" , "その他 その他"]
-    st.each_with_index do |t , i|
-      aggregate = score_aggregate(histories , i + 1)
-      result["#{t}_max"] = aggregate[:max]
-      result["#{t}_avg"] = aggregate[:avg]
-      result["#{t}_num"] = aggregate[:num]
+    [1,2,3,4,5,6,7].each do |i|
+      aggregate = score_aggregate(histories , i)
+      result["score_type#{i}_max"] = aggregate[:max]
+      result["score_type#{i}_avg"] = aggregate[:avg]
+      result["score_type#{i}_num"] = aggregate[:num]
     end
 
     # 友達数
