@@ -7,7 +7,7 @@
     </div>
     <div>
       <label for="datetime">日時:</label>
-      <input id="datetime" title="カラオケにいった日時を入力してください。" name="datetime" type="datetime" value="" size="20" required/>
+      <input id="datetime" title="カラオケにいった日時を入力してください。" name="datetime" type="datetime" value="" size="30" required/>
     </div>
     <div>
       <label for="plan">時間:</label>
@@ -40,11 +40,11 @@
     </div>
     <div>
       <label for="store">店:</label>
-      <input id="store" title="利用したカラオケ店名を入力してください。" type="text" name="store" value="" size="40"/>
+      <input id="store" title="利用したカラオケ店名を入力してください。" type="text" name="store" value="" size="30"/>
     </div>
     <div>
       <label for="branch">店舗:</label>
-      <input id="branch" title="利用した店舗名を入力してください。" type="text" name="branch" value="" size="40"/>
+      <input id="branch" title="利用した店舗名を入力してください。" type="text" name="branch" value="" size="30"/>
     </div>
     <div>
       <label for="product">機種:</label>
@@ -59,7 +59,11 @@
     <% if @twitter %>
     <div>
       <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
-      <label for="tweet-checkbox"> ツイートする</label>
+      <label for="tweet-checkbox"> ツイートする:</label>
+    </div>
+    <div id="tweet_text_area" class="hidden">
+      <label for="tweet_text">ツイート内容:</label>
+      <input id="tweet_textbox" name="tweet_text" type="input" size="30">
     </div>
     <% end %>
     <div id="buttons">

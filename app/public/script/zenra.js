@@ -561,6 +561,15 @@ var register = (function() {
       lang: 'ja' ,
       step: 10 ,
     });
+
+    //ツイートするチェックボックスのイベントを定義
+    $('#tweet-checkbox').change(function() {
+      if ($(this).prop('checked')) {
+        $('#tweet_text_area').removeClass('hidden');
+      } else {
+        $('#tweet_text_area').addClass('hidden');
+      }
+    });
   }
 
   /*[method] 歌唱履歴入力画面用ウィジェットを作成する*/
@@ -775,7 +784,7 @@ var register = (function() {
   return {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
-      input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 600);
+      input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 450);
       
       input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
         funcs: {
