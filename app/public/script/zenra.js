@@ -608,6 +608,15 @@ var register = (function() {
         $('#score_area').show();
       }
     });
+
+    $('#tweet-checkbox').change(function() {
+      if ($(this).prop('checked')) {
+        $('#tweet_text_area').removeClass('hidden');
+      } else {
+        $('#tweet_text_area').addClass('hidden');
+      }
+    });
+
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/
@@ -812,7 +821,7 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id) {
-      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 600)
+      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450)
       input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory();
@@ -908,7 +917,7 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 600)
+          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 450)
           input_dialog.show('/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
