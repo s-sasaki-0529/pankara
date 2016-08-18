@@ -1140,10 +1140,15 @@ zenra.showSongTagList = function(user , id) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag + '">' + tag + '</a></td>');
-    var $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
-      zenra.removeSongTag(user , id , tag);
-    });
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + tag['name'] + '</a></td>');
+    var $removeIcon;
+    if (tag['created_by'] == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
+      $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
+        zenra.removeSongTag(user , id , tag);
+      });
+    } else {
+      $removeIcon = $("<span>");
+    }
     var $td2 = $('<td>').append($removeIcon);
     var $tr = $('<tr class="song-tag">').append($td1).append($td2);
     $('#tag_list_table').append($tr);
@@ -1152,7 +1157,7 @@ zenra.showSongTagList = function(user , id) {
     success: function(json) {
       var response = zenra.parseJSON(json);
       if (response.result == 'error') return;
-      var tags = response.info.map(function(tag) { return tag['name'] });
+      var tags = response.info;
       resetTagElements();
       tags.forEach(function(tag) { addTagElement(tag) });
       var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';
@@ -1176,13 +1181,13 @@ zenra.addSongTag = function(user , id) {
   });
 };
 
-zenra.removeSongTag = function(user , id , tagName) {
+zenra.removeSongTag = function(user , id , tag) {
   var url_from = '/song/' + id;
   var url_to = url_from + '/tag/remove';
-  var mes = 'タグ [' + tagName + '] を削除します。よろしいですか？';
+  var mes = 'タグ [' + tag['name'] + '] を削除します。よろしいですか？';
   jConfirm(mes, '確認', function(r) {
     if (!r) return;
-    var data = {tag_name: tagName};
+    var data = {tag_name: tag['name'] , created_by: tag['created_by']};
     var opt = {success: function() { zenra.showSongTagList(user , id) }};
     zenra.post(url_to , data , opt);
   });
