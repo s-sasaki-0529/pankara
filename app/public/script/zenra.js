@@ -286,10 +286,12 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
   title: ダイアログのタイトル
   dialog_id: ダイアログエレメントに割り振るID
 */
-var dialog = function(title , dialog_id , width) {
+var dialog = function(title , dialog_id , width , height) {
+    if (!height) height = 'auto';
     this.title = title;
     this.dialog_id = dialog_id;
     this.width = width;
+    this.height = height;
 
     /*
     show - ダイアログを表示する
@@ -306,7 +308,7 @@ var dialog = function(title , dialog_id , width) {
       dialog.dialog({
         title: this.title ,
         modal: true ,
-        height: "auto" ,
+        height: this.height ,
         width: this.width ,
         resizable: opt['resizable'] || false ,
         draggable: opt['draggable'] == false ? false : true ,
@@ -319,11 +321,12 @@ var dialog = function(title , dialog_id , width) {
     
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
-        var margin = div.height() / 2;
-        $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
-        div.css('overflow' , 'hidden');
-        $(window).scrollTop(scroll);
-    
+        if (opt['position'] != 'auto') {
+          var margin = div.height() / 2;
+          $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
+          div.css('overflow' , 'hidden');
+          $(window).scrollTop(scroll);
+        }
         func_at_load();
         $('#' + id).tooltip('disable');
       });
@@ -1158,6 +1161,16 @@ var register = (function() {
   }
 
 })();
+
+zenra.showAggregateDialog = function(user) {
+  var url = '/ajax/user/' + user + '/aggregate/dialog';
+  var input_dialog = new dialog('集計情報' , 'aggregate_dialog' , 600 , 500);
+  input_dialog.show(url , 'aggregate' , {
+    func_at_load: function() {
+    } ,
+    position: 'auto'
+  });
+};
 
 zenra.showSongTagList = function(user , id) {
   var url = '/ajax/song/tag/list';

@@ -80,6 +80,15 @@ class LocalRoute < March
     return success(monthly_data)
   end
 
+  # post '/ajax/user/aggregate/?' - 指定したユーザの集計情報
+  #--------------------------------------------------------------------
+  get '/ajax/user/:user/aggregate/dialog' do
+    user = User.new(params[:user])
+    user or return error('invalid user id')
+    @agg = user.aggregate
+    erb :_aggregate
+  end
+
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
   #--------------------------------------------------------------------
   post '/ajax/user/artist/favorite/?' do
