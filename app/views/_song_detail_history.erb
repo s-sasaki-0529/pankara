@@ -6,7 +6,7 @@
     <th class='center'>内容</th>
     <th class='center'>ユーザ</th>
     <th class='center'>キー</th>
-    <th class='center'>採点モード</th>
+    <th class='center'>採点</th>
     <th class='center'>得点</th>
   </thead>
   <tbody>
@@ -14,9 +14,9 @@
     <tr>
       <td class='center' width='15%'><%= date(i['datetime']) %></td>
       <td class='center'><%= karaoke_link i['karaoke_id'] , i['karaoke_name'] %>
-      <td class='center'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
-      <td class='center'><%= i['songkey'] %></td>
-      <td class='center'><%= i['scoretype_name'] %></td>
+      <td class='center' width='100'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
+      <td class='center' width='60'><%= i['songkey'] %></td>
+      <td class='center' width='100'><%= i['scoretype_name'] %></td>
       <td class='center' width='8%'><%= h i['score'] %></td>
     </tr>
     <% end %>

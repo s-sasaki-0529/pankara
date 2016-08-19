@@ -161,7 +161,7 @@ describe '楽曲詳細ページ' , :js => true do
       islack '歌唱履歴がありません'
       history = table_to_hash('song_detail_table_user')
       expect(history.size).to eq 14
-      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他 その他,85.00'
+      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他,85.00'
     end
     it '他のユーザだけが歌っている楽曲' do
       login 'sa2knight'
