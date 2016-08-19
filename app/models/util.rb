@@ -41,6 +41,17 @@ class Util
     @@request
   end
 
+  # write_access_log - アクセスログを生成する
+  def self.write_access_log
+    @@request.get? or return
+    @@request.path.scan(/\./).empty? or return
+    params = []
+    params.push(@@request.ip)
+    params.push(@@request.request_method)
+    params.push(@@request.path)
+    Util.debug params
+  end
+
   # url - URLを生成する
   #---------------------------------------------------------------------
   def self.url(*path)
@@ -323,7 +334,7 @@ class Util
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
 
     File.open(filepath , 'a') do |f|
-      f.puts "[#{datetime}] #{log}"
+      f.puts "#{datetime},#{log}"
     end
   end
 
