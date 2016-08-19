@@ -3,9 +3,16 @@ require_relative '../models/artist'
 
 class ArtistRoute < March
 
+  # get '/artist' - 歌手一覧を表示
+  #--------------------------------------------------------------------
+  get '/' do
+    @artistlist = Artist.list({:song_num => 1})
+    erb :artist_list
+  end
+
   # get '/artist/:id' - 歌手情報を表示
   #---------------------------------------------------------------------
-  get '/artist/:id' do
+  get '/:id' do
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
     @artist.songs_with_count(user)
@@ -27,13 +34,6 @@ class ArtistRoute < March
     end
     @songs_chart_json = Util.to_json(songs_chart)
     erb :artist_detail
-  end
-
-  # get '/artist_list' - 歌手一覧を表示
-  #--------------------------------------------------------------------
-  get '/artist_list' do
-    @artistlist = Artist.list({:song_num => 1})
-    erb :artist_list
   end
   
 end

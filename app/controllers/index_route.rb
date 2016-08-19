@@ -7,7 +7,8 @@ require_relative './artist_route'
 require_relative './ranking_route'
 require_relative './user_route'
 require_relative './ajax_route'
-require_relative './common_route'
+require_relative './search_route'
+require_relative './config_route'
 
 class IndexRoute < March
 
@@ -21,18 +22,8 @@ class IndexRoute < March
       @song_list = History.recent_song
       erb :index
     else
-      redirect '/login'
+      redirect '/auth/login'
     end
   end
-
-  use AuthenticationRoute
-  use KaraokeRoute
-  use HistoryRoute
-  use SongRoute
-  use ArtistRoute
-  use RankingRoute
-  use UserRoute
-  use LocalRoute
-  use CommonRoute
 
 end

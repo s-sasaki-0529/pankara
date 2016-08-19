@@ -48,8 +48,7 @@ class Util
     params = []
     params.push(@@request.ip)
     params.push(@@request.request_method)
-    params.push(@@request.path)
-    Util.debug params
+    params.push(@@request.url)
   end
 
   # url - URLを生成する
@@ -182,10 +181,10 @@ class Util
   #--------------------------------------------------------------------
   def self.login_url
     path = @@request.path
-    if path == '/login'
+    if path == '/auth/login'
       return path
     else
-      return "/login?callback=#{path}"
+      return "/auth/login?callback=#{path}"
     end
   end
 

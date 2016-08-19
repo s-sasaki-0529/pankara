@@ -233,7 +233,7 @@ zenra.createThumbnail = function(idx , id , image) {
       var opt = {title_cursor: 'pointer' , draggable: false};
       
       player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
-      player_dialog.show('/player/' + id , 'player' , opt);
+      player_dialog.show('/song/' + id + '/player' , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
         location.href = '/song/' + id
       });

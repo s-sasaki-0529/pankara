@@ -6,13 +6,13 @@ class HistoryRoute < March
 
   # get '/history - ログイン中のユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
-  get '/history/?' do
+  get '/' do
     @current_user and redirect "/history/#{@current_user['username']}"
   end
 
   # get '/history/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
-  get '/history/:username' do
+  get '/:username' do
 
     # ページャ準備
     page = params[:page] ? params[:page].to_i : 1

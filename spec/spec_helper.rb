@@ -32,7 +32,7 @@ RSpec.configure do |config|
   
   # ブラウザの挙動のシミュレートにCapybaraを用いる
   config.include Capybara::DSL          #Capybaraを使うことを宣言
-  Capybara.app = IndexRoute             #対象WebアプリのmainはIndexRoute
+  Capybara.app = Rack::Builder.parse_file("config.ru").first
   Capybara.javascript_driver = :webkit  #HTMLレンダリングにはwebkitを用いる
   Capybara.default_max_wait_time = 10   #最大待ち時間は10秒
   Capybara::Webkit.configure do |config|

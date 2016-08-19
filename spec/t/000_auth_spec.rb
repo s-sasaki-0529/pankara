@@ -28,12 +28,12 @@ describe '認証系ページ' do
   it 'ログアウト' do
     login 'march_user'
     islack message
-    visit '/logout'
+    visit '/auth/logout'
     iscontain message
   end
   it 'ログイン成功時に直前のページにリダイレクト' do
-    visit '/logout'
-    visit '/artist_list'
+    visit '/auth/logout'
+    visit '/artist/'
     iscontain 'アーティスト一覧'
     link 'ログイン'
     iscontain message
@@ -44,7 +44,7 @@ describe '認証系ページ' do
   end
   it 'ログイン中にログイン画面アクセスでトップにリダイレクト' do
     login 'march_user'
-    visit '/login'
+    visit '/auth/login'
     expect(page.current_path).to eq '/'
   end
 end

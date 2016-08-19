@@ -8,7 +8,7 @@ end
 
 # テスト実行
 
-url = '/artist_list'
+url = '/artist'
 
 describe '歌手一覧ページ' do
   before(:all,&init)

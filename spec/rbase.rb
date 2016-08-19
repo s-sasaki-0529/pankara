@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../app/models/util'
 module Rbase
   def login(id , pw = id)
-    visit '/logout'
+    visit '/auth/logout'
     fill_in 'username' , with: id
     fill_in 'password' , with: pw
     find('#login_button').click

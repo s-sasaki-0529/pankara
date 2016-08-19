@@ -7,7 +7,7 @@ require_relative '../models/karaoke'
 require_relative '../models/history'
 require_relative '../models/register'
 
-class LocalRoute < March
+class AjaxRoute < March
 
   # success - 正常を通知するJSONを戻す
   #--------------------------------------------------------------------
@@ -23,7 +23,7 @@ class LocalRoute < March
 
   # get '/ajax/karaoke/dialog - カラオケ入力画面を表示
   #---------------------------------------------------------------------
-  get '/ajax/karaoke/dialog' do
+  get '/karaoke/dialog' do
     @products = Product.list
     @twitter = @current_user ? @current_user['has_twitter'] : nil
     erb :_input_karaoke
@@ -31,7 +31,7 @@ class LocalRoute < March
 
   # get '/ajax/history/dialog - 歌唱履歴の入力画面を表示
   #---------------------------------------------------------------------
-  get '/ajax/history/dialog' do
+  get '/history/dialog' do
     @score_type = ScoreType.List
     @twitter = @current_user ? @current_user['has_twitter'] : nil
     erb :_input_history
@@ -39,13 +39,13 @@ class LocalRoute < March
 
   # get '/ajax/song/dialog' - 楽曲新規登録の入力画面を表示
   #--------------------------------------------------------------------
-  get '/ajax/song/dialog' do
+  get '/song/dialog' do
     erb :_input_song
   end
 
   # post '/ajax/songlist' - 楽曲一覧を戻す
   #---------------------------------------------------------------------
-  post '/ajax/songlist/?' do
+  post '/songlist/?' do
     hash = Hash.new
     song_list = Song.list({:artist_info => true})
     song_list.each do |s|
@@ -56,7 +56,7 @@ class LocalRoute < March
 
   # post '/ajax/song/tag/list' - 指定した楽曲のタグ一覧を戻す
   #--------------------------------------------------------------------
-  post '/ajax/song/tag/list/?' do
+  post '/song/tag/list/?' do
     song = Song.new(params['song']) or return error('invalid song id')
     tags = song.tags or return error('fails get tags')
     return success(tags)
@@ -64,7 +64,7 @@ class LocalRoute < March
 
   # post '/ajax/song/tally/monthly/count/?' - 指定した楽曲の月ごとの歌唱回数を戻す
   #--------------------------------------------------------------------
-  post '/ajax/song/tally/monthly/count/?' do
+  post '/song/tally/monthly/count/?' do
     song = Song.new(params['id']) or return error('invalid song id')
     sang_histories = song.monthly_sang_count || {}
     monthly_data = Util.create_monthly_data(sang_histories)
@@ -73,7 +73,7 @@ class LocalRoute < March
 
   # post '/ajax/artist/tally/monthly/count/?' - 指定したアーティストの月ごとの歌唱回数を戻す
   #--------------------------------------------------------------------
-  post '/ajax/artist/tally/monthly/count/?' do
+  post '/artist/tally/monthly/count/?' do
     artist = Artist.new(params['id']) or return error('invalid artist id')
     sang_histories = artist.monthly_sang_count || {}
     monthly_data = Util.create_monthly_data(sang_histories)
@@ -82,7 +82,7 @@ class LocalRoute < March
 
   # post '/ajax/user/aggregate/?' - 指定したユーザの集計情報
   #--------------------------------------------------------------------
-  get '/ajax/user/:user/aggregate/dialog' do
+  get '/user/:user/aggregate/dialog' do
     user = User.new(params[:user])
     user or return error('invalid user id')
     @agg = user.aggregate
@@ -91,7 +91,7 @@ class LocalRoute < March
 
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
   #--------------------------------------------------------------------
-  post '/ajax/user/artist/favorite/?' do
+  post '/user/artist/favorite/?' do
     if params[:user]
       user = User.new(params[:user])
     else
@@ -103,7 +103,7 @@ class LocalRoute < March
 
   # post '/ajax/song/tally/score/?' - 指定した楽曲、採点モードの採点集計を戻す
   #--------------------------------------------------------------------
-  post '/ajax/song/tally/score/?' do
+  post '/song/tally/score/?' do
     song = Song.new(params[:song]) or return error('no song')
     score_type = params[:score_type].to_i or return error('no score type')
     user = @current_user ? @current_user.params['id'] : nil
@@ -134,13 +134,13 @@ class LocalRoute < March
 
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す
   #---------------------------------------------------------------------
-  post '/ajax/storelist/?' do
+  post '/storelist/?' do
     Util.to_json(Store.list)
   end
 
   # post '/ajax/attendance' - 参加情報をJSONで戻す
   #---------------------------------------------------------------------
-  post '/ajax/attendance' do
+  post '/attendance' do
     attendance = @current_user.get_attendance_at_karaoke(params[:id])
     
     return attendance ? Util.to_json(attendance) : error('get attendance failed')
@@ -148,19 +148,19 @@ class LocalRoute < March
   
   # post '/ajax/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
   #---------------------------------------------------------------------
-  post '/ajax/karaokelist/?' do
+  post '/karaokelist/?' do
     params[:id].nil? ? Util.to_json(Karaoke.list_all) : Util.to_json(Karaoke.new(params[:id]).params)
   end
 
   # post '/ajax/historylist/?' - 歌唱履歴の一覧もしくは指定した歌唱履歴を戻す
   #---------------------------------------------------------------------
-  post '/ajax/historylist/?' do
+  post '/historylist/?' do
     params[:id].nil? ? Util.to_json(History.recent_song) : Util.to_json(History.new(params[:id], true).params)
   end
 
   # post '/ajax/karaoke/delete/?' - カラオケを削除する
   #--------------------------------------------------------------------
-  post '/ajax/karaoke/delete/?' do
+  post '/karaoke/delete/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     result = karaoke.delete
@@ -173,7 +173,7 @@ class LocalRoute < March
 
   # post '/ajax/karaoke/modify/?' - カラオケを編集する
   #--------------------------------------------------------------------
-  post '/ajax/karaoke/modify/?' do
+  post '/karaoke/modify/?' do
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
@@ -186,7 +186,7 @@ class LocalRoute < March
   
   # post '/ajax/attendance/modify/?' - 参加情報を編集する
   #--------------------------------------------------------------------
-  post '/ajax/attendance/modify/?' do
+  post '/attendance/modify/?' do
     attendance_info = @current_user.get_attendance_at_karaoke(params[:id])
     attendance_info or return error('not found attendance')
 
@@ -199,7 +199,7 @@ class LocalRoute < March
 
   # post '/ajax/song/modify/?' - 楽曲情報を編集する
   #--------------------------------------------------------------------
-  post '/ajax/song/modify/?' do
+  post '/song/modify/?' do
     @current_user or return error('invalid user')
     song_id = params[:song_id]
     song_name = params[:song]
@@ -214,7 +214,7 @@ class LocalRoute < March
 
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
-  post '/ajax/history/delete/?' do
+  post '/history/delete/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     history.delete
@@ -223,7 +223,7 @@ class LocalRoute < March
 
   # post '/ajax/history/modify/?' - 歌唱履歴を編集する
   #--------------------------------------------------------------------
-  post '/ajax/history/modify/?' do
+  post '/history/modify/?' do
     history = History.new(params[:id])
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
@@ -236,14 +236,14 @@ class LocalRoute < March
 
   # post '/ajax/attended/' - カラオケに参加済みか確認する
   #--------------------------------------------------------------------
-  post '/ajax/attended' do
+  post '/attended' do
     attended = @current_user.get_attendance_at_karaoke params[:karaoke_id]
     return attended ? Util.to_json({:attended => true}) : Util.to_json({:attended => false})
   end
 
   # post '/ajax/karaoke/create' - カラオケ記録を登録する
   #---------------------------------------------------------------------
-  post '/ajax/karaoke/create' do
+  post '/karaoke/create' do
     karaoke = {}
     karaoke['name'] = params[:name]
     karaoke['datetime'] = params[:datetime]
@@ -268,7 +268,7 @@ class LocalRoute < March
 
   # post '/ajax/attendance/create' - 参加情報を値段と感想は空のまま登録する
   #---------------------------------------------------------------------
-  post '/ajax/attendance/create' do
+  post '/attendance/create' do
     attendance = {}
     karaoke_id = params[:karaoke_id]
 
@@ -282,7 +282,7 @@ class LocalRoute < March
   
   # post '/ajax/history/create - ユーザの歌唱履歴を登録
   #---------------------------------------------------------------------
-  post '/ajax/history/create' do
+  post '/history/create' do
     history = {}
     karaoke_id = params[:karaoke_id]
     history['song_name'] = params[:song_name]
@@ -301,7 +301,7 @@ class LocalRoute < March
   end
 
   # post '/ajax/song/create/?' 楽曲を新規登録
-  post '/ajax/song/create/?' do
+  post '/song/create/?' do
     user = @current_user or return error('invalid current user')
     song = params[:song]
     artist = params[:artist]
@@ -317,7 +317,7 @@ class LocalRoute < March
 
   # ppost '/ajax/artist/wiki' - 指定したアーティストのWikiページを取得
   #--------------------------------------------------------------------
-  post '/ajax/artist/wiki' do
+  post '/artist/wiki' do
     artist = params[:artist]
     wiki = Util.get_wikipedia(artist)
     if wiki
@@ -329,7 +329,7 @@ class LocalRoute < March
 
   # post '/ajax/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す
   #---------------------------------------------------------------------
-  post '/ajax/key' do
+  post '/key' do
     # テスト実行時は失敗を返す
     Util.run_mode == 'ci' and return error('never sang')
     @current_user or return error('never sang')

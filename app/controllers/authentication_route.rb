@@ -3,7 +3,7 @@ require_relative '../models/user'
 
 class AuthenticationRoute < March
 
-  # get '/login' - ログイン画面へのアクセス
+  # get '/auth/login' - ログイン画面へのアクセス
   #---------------------------------------------------------------------
   get '/login' do
     if @current_user
@@ -16,20 +16,20 @@ class AuthenticationRoute < March
     end
   end
 
-  # get '/logout' - ログアウトする
+  # get '/auth/logout' - ログアウトする
   #---------------------------------------------------------------------
   get '/logout' do
     session[:logined] = nil
-    redirect '/login'
+    redirect '/auth/login'
   end
 
-  # get '/registration' - ユーザの新規登録画面を表示
+  # get '/auth/registration' - ユーザの新規登録画面を表示
   #---------------------------------------------------------------------
   get '/registration' do
     erb :user_registration
   end
 
-  # post '/login' - ログインリクエスト
+  # post '/auth/login' - ログインリクエスト
   #---------------------------------------------------------------------
   post '/login' do
     auth = User.authenticate(@params[:username] , @params[:password])
@@ -45,7 +45,7 @@ class AuthenticationRoute < March
     end
   end
 
-  # post '/rpc/login' - RPCログインリクエスト
+  # post '/auth/rpc/login' - RPCログインリクエスト
   #---------------------------------------------------------------------
   post '/rpc/login' do
     auth = User.authenticate(@params[:username] , @params[:password])
@@ -63,7 +63,7 @@ class AuthenticationRoute < March
     end
   end
 
-  # post '/registration' - ユーザの登録をリクエスト
+  # post '/auth/registration' - ユーザの登録をリクエスト
   #---------------------------------------------------------------------
   post '/registration' do
     if @params[:password] == @params[:repassword]
