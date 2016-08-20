@@ -57,10 +57,10 @@ describe 'タグ機能' , :js => true do
       islack '新しいタグ'
     end
     it 'ログインしていないと登録できない' do
-      visit '/song/1'
+      visit '/song/1'; wait_for_ajax
       iscontain '追加'
       visit '/logout'
-      visit '/song/1'
+      visit '/song/1'; wait_for_ajax
       islack '追加'
     end
   end
