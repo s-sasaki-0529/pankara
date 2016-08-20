@@ -2,12 +2,11 @@
   <div id="div_top_column" class="row">
     <!-- 左カラム -->
     <div class="col-xs-2 center">
-      <h1>Menu</h1>
+      <h2><%= h @user['screenname'] %></h2>
       <div id="top_my_icon">
         <%= user_icon @user['username'] , '100%' , '100%' %>
       </div>
       <div id="div_myprofile">
-        <p>ユーザ名 <%= h @user['screenname'] %></p>
         <p>
           前回のカラオケ<br>
           <% if @recent_karaoke %>
@@ -17,20 +16,19 @@
           <% end %>
         </p>
       </div>
-      <img src="image/satou1.png" alt="マスコットキャラクター" width='196px'>
-    </div>
-    <!-- 中央カラム -->
-    <div class="col-xs-7">
-      <h1 class="center">March</h1>
-      <div class='center'>
-        <img style="text-align: center" src="/image/kaeru.png" width='270px' height=auto>
-      </div>
-    </div>
-    <!-- 右カラム -->
-    <div class="col-xs-3">
-      <h1 class='center'>TimeLine</h1>
+      <h3 class='center'>友達の記録</h3>
       <%= erb :_timeline %>
     </div>
+    <!-- 右カラム -->
+    <div class="col-xs-10">
+      <p class="center"><img style="margin-top: -20px" src="/image/pankara.png"></p>
+      <div class='center'>
+        <img style="text-align: center" src="/image/pandalin.png" width='330px' height=auto>
+        <img style="text-align: center" src="/image/kaeru.png" width='270px' height=auto>
+        <img style="text-align: center" src="/image/satou1.png" width='270px' height=auto>
+      </div>
+    </div>
+
   </div>
   <%= erb :_bathtowel %>
 </div>

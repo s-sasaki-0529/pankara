@@ -35,7 +35,7 @@ describe 'ユーザ登録機能' do
 
     link 'ログインする'
     login 'zenra_user'
-    iscontain 'ユーザ名 全裸ユーザ'
+    iscontain '全裸ユーザ'
   end
 
   describe '失敗パターン' do

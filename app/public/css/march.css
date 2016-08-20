@@ -68,6 +68,7 @@ tr *.cell-datetime {
 }
 .div-timeline {
   padding: 5px 10px 5px 10px;
+  text-align: left;
 }
 
 /*トップ画面　バスタオル*/
