@@ -1,7 +1,7 @@
 <div style="display: none">
   <div id="aggregate" class="input_dialog" title="集計情報">
     <h3>カラオケ記録</h3>
-    <table class="table table-hover">
+    <table id="karaoke_aggregate_table" class="table table-hover">
       <tr>
         <td>カラオケに行った回数</td>
         <td><%= @agg['karaoke_num'] %> 回</td>
@@ -17,7 +17,7 @@
     </table>
 
     <h3>歌唱記録</h3>
-    <table class="table table-hover">
+    <table id="sang_aggregate_table" class="table table-hover">
       <tr>
         <td>総歌唱回数</td>
         <td><%= @agg['sang_count'] %> 曲</td>
@@ -33,7 +33,7 @@
     </table>
 
     <h3>機種別集計</h3>
-    <table class="table table-hover">
+    <table id="product_aggregate_table" class="table table-hover">
       <tr>
         <th></th>
         <th>利用回数</th>
@@ -77,7 +77,7 @@
     </table>
 
     <h3>採点別集計</h3>
-    <table class="table table-hover">
+    <table id="score_aggregate_table" class="table table-hover">
       <tr>
         <th></th>
         <th>挑戦回数</th>
@@ -129,7 +129,7 @@
     </table>
 
     <h3>その他</h3>
-    <table class="table table-hover">
+    <table id="other_aggregate_table" class="table table-hover">
       <tr>
         <td>友達の数</td>
         <td><%= @agg['friend_num'] %> 人</td>
