@@ -108,7 +108,7 @@ class March < Sinatra::Base
 
     #リクエストパラメータをUtilクラスで参照できるようにする
     Util.set_request request
-    Util.write_access_log
+    Util.write_access_log(@current_user)
   end
 
 end

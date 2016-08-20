@@ -42,11 +42,13 @@ class Util
   end
 
   # write_access_log - アクセスログを生成する
-  def self.write_access_log
+  def self.write_access_log(user)
     @@request.get? or return  #GETメソッドのみ
     @@request.path.scan(/\./).empty? or return  #静的ファイルへのアクセスは除外
+    username = user.nil? ? '' : user['username']
     params = []
     params.push(@@request.ip)
+    params.push(username)
     params.push(@@request.path)
     params.push(@@request.referrer)
     params.push(@@request.device_type)
