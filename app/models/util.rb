@@ -43,12 +43,16 @@ class Util
 
   # write_access_log - アクセスログを生成する
   def self.write_access_log
-    @@request.get? or return
-    @@request.path.scan(/\./).empty? or return
+    @@request.get? or return  #GETメソッドのみ
+    @@request.path.scan(/\./).empty? or return  #静的ファイルへのアクセスは除外
     params = []
     params.push(@@request.ip)
-    params.push(@@request.request_method)
-    params.push(@@request.url)
+    params.push(@@request.path)
+    params.push(@@request.referrer)
+    params.push(@@request.device_type)
+    params.push(@@request.os)
+    params.push(@@request.browser)
+    Util.write_log('request' , params.join(','))
   end
 
   # url - URLを生成する
@@ -327,6 +331,7 @@ class Util
   #---------------------------------------------------------------------
   def self.write_log(type , log)
     filepath = {
+      'request' => 'logs/request.log',
       'sql' => 'logs/sql.log',
       'event' => 'logs/event.log',
     }[type] or return

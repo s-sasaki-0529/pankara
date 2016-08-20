@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------
 
 require 'sinatra/base'
+require 'rack/user_agent'
 require_relative '../models/util'
 
 class March < Sinatra::Base
@@ -13,6 +14,7 @@ class March < Sinatra::Base
   # configure - サーバ起動時の初期設定
   #---------------------------------------------------------------------
   configure do
+    use Rack::UserAgent
     enable :sessions
   end
 
@@ -106,6 +108,7 @@ class March < Sinatra::Base
 
     #リクエストパラメータをUtilクラスで参照できるようにする
     Util.set_request request
+    Util.write_access_log
   end
 
 end
