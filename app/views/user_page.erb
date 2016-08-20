@@ -86,6 +86,7 @@
         <% end %>
       </tbody>
     </table>
+    <p class="userpage-more-link"><a href="/karaoke/user/<%= @user['username'] %>">もっと見る</a></p>
     <% else %>
       カラオケ記録がありません
     <% end %>
@@ -114,6 +115,7 @@
         </tr>
       </tbody>
     </table>
+    <p class="userpage-more-link"><a href="/history/<%= @user['username'] %>">もっと見る</a></p>
     <% else %>
       歌唱履歴がありません
     <% end %>

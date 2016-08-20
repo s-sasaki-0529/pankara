@@ -217,3 +217,10 @@ tr *.cell-datetime {
   height: 96px;
   margin: auto;
 }
+
+/*ユーザページの「もっと見る」リンク*/
+.userpage-more-link {
+  position: absolute;
+  margin-top: -20px;
+  right: 12px;
+}
