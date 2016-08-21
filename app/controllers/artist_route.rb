@@ -15,7 +15,7 @@ class ArtistRoute < March
   get '/:id' do
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
-    @artist.songs_with_count(user)
+    @artist.songs_with_count(:user => user , :sort => 'sang_count')
 
     # 円グラフ用のデータを作成
     songs_chart = @artist['songs'].clone

@@ -62,8 +62,8 @@ describe '歌手詳細ページ' , :js => true do
     examine_artistlink 'BUMP OF CHICKEN'
     tables = table_to_hash('artistdetail_table')
     expect(tables.length).to eq 174
-    expect(tables[0]['tostring']).to eq ',オンリーロンリーグローリー,2,0'
-    expect(tables[18]['tostring']).to eq '未登録,たったひとつの日々,0,2'
+    expect(tables[0]['tostring']).to eq ',Hello, world!,8,0'
+    expect(tables[15]['tostring']).to eq '未登録,たったひとつの日々,0,2'
   end
 
   it 'リンクが正常に登録されているか' do

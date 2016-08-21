@@ -27,7 +27,7 @@ class Artist < Base
 
   # songs_with_count - 楽曲の一覧と歌唱回数を取得
   #---------------------------------------------------------------------
-  def songs_with_count(userid = nil)
+  def songs_with_count(opt = {})
 
     @params['songs'] or self.songs
     @params['songs'].empty? and return
@@ -48,8 +48,13 @@ class Artist < Base
       s['sang_count'] = sang_counts[id] ? sang_counts[id]['count'] : 0
     end
 
-    # 指定ユーザの歌唱回数集計
-    if userid
+    # [オプション] 歌唱回数でソート
+    if opt[:sort] == 'sang_count'
+      @params['songs'].sort! {|a , b| b['sang_count'] <=> a['sang_count']}
+    end
+
+    # [オプション] 指定ユーザの歌唱回数集計
+    if userid = opt[:user]
       user = User.new(:id => userid)
       sang_counts_as_user = {}
       attend_ids = user.attend_ids
