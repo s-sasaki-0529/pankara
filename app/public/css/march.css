@@ -125,6 +125,7 @@ tr *.cell-datetime {
   white-space: nowrap;
 }
 .karaoke-memo-block {
+  overflow: scroll;
 }
 .karaoke-memo-block > .result {
   font-size: 19px !important;
