@@ -86,7 +86,11 @@ class User < Base
   def get_karaoke(limit = 0)
     # 対象ユーザが参加したkaraokeのID一覧を取得
     db = DB.new(
-      :SELECT => {'attendance.karaoke' => 'karaoke'} ,
+      :SELECT => {
+        'attendance.karaoke' => 'karaoke' ,
+        'attendance.price' => 'price' ,
+        'attendance.memo' => 'memo'
+      } ,
       :FROM => 'attendance' ,
       :JOIN => ['attendance' , 'karaoke'],
       :WHERE => 'user = ?' , :SET => @params['id'] ,
@@ -95,13 +99,26 @@ class User < Base
     opt = ['ORDER BY karaoke.datetime DESC']
     opt += ["LIMIT #{limit}"] if limit > 0
     db.option(opt)
-    attended_id_list = db.execute_all.collect {|info| info['karaoke']}
+    attends = db.execute_all
+
+    # priceまたはmemoが入力されていないkaraokeを控えておく
+    incomplete_price = attends.select {|a| a['price'].nil?}.map {|a| a['karaoke']}
+    incomplete_memo = attends.select {|a| a['memo'].nil?}.map {|a| a['karaoke']}
+    attended_id_list = attends.map {|a| a['karaoke']}
+
 
     # 全karaokeの情報から、ユーザが参加したカラオケについてのみ抽出
     all_karaoke_info = Karaoke.list_all
     attended_karaoke_info = all_karaoke_info.select do |karaoke|
       attended_id_list.include?(karaoke['id'])
     end
+
+    # priceまたはmemoが入力されてない情報を付与する
+    attended_karaoke_info.each do |karaoke|
+      incomplete_price.include?(karaoke['id']) and karaoke['incomplete_price'] = true
+      incomplete_memo.include?(karaoke['id']) and karaoke['incomplete_memo'] = true
+    end
+
     return attended_karaoke_info
   end
 

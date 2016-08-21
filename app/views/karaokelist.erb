@@ -11,6 +11,9 @@
         <th class='center' width='80'>時間</th>
         <th>お店</th>
         <th>機種</th>
+        <% if @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
+          <th class='center' width="60">通知</th>
+        <% end %>
         <% unless @target_user %><th>メンバー</th><% end %>
       </tr>
     </thead>
@@ -22,6 +25,17 @@
         <td class='center'><%= karaoke['plan'] %></td>
         <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
         <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+        <!-- 通知アイコン列 -->
+        <% if @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
+        <td class='center' width="60">
+          <% if karaoke['incomplete_price'] %>
+            <img src="/image/alert.png" width="22" title="料金が入力されていません">
+          <% elsif karaoke['incomplete_memo'] %>
+            <img src="/image/alert.png" width="22" title="感想が入力されていません">
+          <% end %>
+        </td>
+        <% end %>
+        <!-- 参加メンバー -->
         <% unless @target_user %>
         <td>
           <% karaoke['members'].each do |member| %>
@@ -37,3 +51,5 @@
 <% else %>
   カラオケの記録がありません
 <% end %>
+
+<script>$(function(){$("[title]").tooltip({});});</script>
