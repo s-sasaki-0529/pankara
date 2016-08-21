@@ -11,7 +11,7 @@ class AuthenticationRoute < March
     else
       @callback = params[:callback]
       @update_info = Util.read_update_info
-      @song_list = History.recent_song
+      @song_list = History.recent_song(:sampling => 30)
       erb :login
     end
   end

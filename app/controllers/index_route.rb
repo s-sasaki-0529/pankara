@@ -19,7 +19,7 @@ class IndexRoute < March
       @user = @current_user
       @timeline = @user.timeline
       @recent_karaoke = @user.get_karaoke(1)[0]
-      @song_list = History.recent_song
+      @song_list = History.recent_song(:sampling => 30)
       erb :index
     else
       redirect '/auth/login'

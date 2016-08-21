@@ -65,17 +65,25 @@ class History < Base
 
   # recent_song - 最近歌われた楽曲のリストを戻す
   #---------------------------------------------------------------------
-  def self.recent_song(limit = 20)
+  def self.recent_song(opt = {})
     # 最近20件のhistoryを取得
     # その楽曲名、歌手名、URLを取得
-
-    songs = DB.new(
+    db = DB.new(
       :DISTINCT => true ,
       :SELECT => 'song' ,
       :FROM => 'history' ,
-      :OPTION => ['ORDER BY history.id DESC' , "LIMIT #{limit}"]
-    ).execute_columns
+      :OPTION => ['ORDER BY history.id DESC']
+    )
+    if opt[:limit]
+      db.option("LIMIT #{opt[:limit]}")
+    end
+    songs = db.execute_columns
     songs.empty? and return []
+
+    # [オプション] 取得した楽曲一覧からランダムにいくつか抜き出す
+    if opt[:sampling]
+      songs = songs.sample(opt[:sampling])
+    end
 
     songs_info = DB.new(
       :SELECT => {
@@ -93,8 +101,10 @@ class History < Base
     songs_info.empty? and return []
 
     # 重複を排除した結果limitを下回った場合、limistになるまで同じデータを繰り返す
-    while songs_info.length < limit
-      songs_info = (songs_info + songs_info).each_slice(limit).to_a[0]
+    if opt[:limit]
+      while songs_info.length < opt[:limit]
+        songs_info = (songs_info + songs_info).each_slice(opt[:limit]).to_a[0]
+      end
     end
     return songs_info
   end

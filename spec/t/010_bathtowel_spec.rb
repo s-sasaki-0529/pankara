@@ -23,19 +23,22 @@ describe 'バスタオル' , :js => true do
   end
   it 'サムネイルが並んでいるか' do
     images = page.first('.simply-scroll-list').all('li')
-    expect(images.length).to eq 20 + 11
+    expect(images.length == 40 || images.length == 41).to eq true
   end
   it 'オンマウスで楽曲情報が表示されるか' do
+    expect(page.all('#bathtowel_info').empty?).to eq true
     execute_script '$("#slider > li:first > img").trigger("mouseenter")'
-    expect(page.find('#bathtowel_info').text).to eq 'シュガーソングとビターステップ (UNISON SQUARE GARDEN)'
+    expect(page.all('#bathtowel_info').empty?).to eq false
   end
   it 'サムネイルクリック時にプレイヤーが表示されるか' do
+    execute_script '$("#slider > li:first > img").trigger("mouseenter")'
+    song_name = page.find('#bathtowel_info').text
     execute_script '$("#slider > li:first > img").trigger("click")'
     wait_for_ajax
-    expect(page.find('#ui-id-1').text).to eq 'シュガーソングとビターステップ (UNISON SQUARE GARDEN)'
+    expect(page.find('#ui-id-1').text).to eq song_name
     iframes = youtube_links()
     expect(iframes.length).to eq 1
-    expect(iframes[0]).to eq 'https://www.youtube.com/embed/3exsRhw3xt8'
+    expect(iframes[0].scan(/youtube/).empty?).to eq false
     execute_script '$(".ui-dialog-title").trigger("click")'
     expect(current_url.scan(%r|/song/.+?$|).empty?).to eq false
   end

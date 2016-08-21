@@ -155,7 +155,7 @@ class AjaxRoute < March
   # post '/ajax/historylist/?' - 歌唱履歴の一覧もしくは指定した歌唱履歴を戻す
   #---------------------------------------------------------------------
   post '/historylist/?' do
-    params[:id].nil? ? Util.to_json(History.recent_song) : Util.to_json(History.new(params[:id], true).params)
+    params[:id].nil? ? Util.to_json(History.recent_song(:limit => 20)) : Util.to_json(History.new(params[:id], true).params)
   end
 
   # post '/ajax/karaoke/delete/?' - カラオケを削除する
