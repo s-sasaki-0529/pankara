@@ -181,7 +181,7 @@ CREATE TABLE `attendance` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `user` INTEGER NOT NULL COMMENT '参加ユーザのID',
   `karaoke` INTEGER NOT NULL COMMENT '参加したカラオケ',
-  `price` INTEGER NULL DEFAULT 0 COMMENT '一人あたりの料金',
+  `price` INTEGER NULL DEFAULT NULL COMMENT '一人あたりの料金',
   `memo` MEDIUMTEXT NULL DEFAULT NULL COMMENT '備考' ,
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
