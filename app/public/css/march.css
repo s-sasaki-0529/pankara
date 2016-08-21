@@ -73,7 +73,6 @@ tr *.cell-datetime {
 
 /*トップ画面　バスタオル*/
 #bathtowel_div {
-  background-color: #feacc1;
   position: fixed;
   left: 0px;
   right: 0px;
