@@ -140,8 +140,8 @@
       <div class="karaoke-result-block center col-xs-2">
       <% end %>
         <p class='description'>値段</p>
-        <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] %></span>
-        <span class='orange'>円</span>
+        <span id="price_<%= member['userid'] %>" class='result orange'><%= member['price'] ? member['price'] : '未登録' %></span>
+        <span class='orange'><% if member['price'] %>円<% end %></span>
       </div>
       <% if @current_user and @current_user['id'] == member['userid'] %>
       <div class="karaoke-result-block karaoke-memo-block pointer center col-xs-8" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
@@ -149,7 +149,7 @@
       <div class="karaoke-result-block karaoke-memo-block center col-xs-8">
       <% end %>
         <p class='description'>感想</p>
-        <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] %></span>
+        <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] ? member['memo'] : '未登録' %></span>
       </div>
     </div>
     <!-- ToDo: ビューでこういったデータの書き換えを行うのはMVC分離の原則に反するので要修正 -->

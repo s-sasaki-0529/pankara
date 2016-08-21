@@ -54,7 +54,7 @@ class Register < Base
   #---------------------------------------------------------------------
   def attend_karaoke(price = nil , memo = nil)
     @karaoke or return
-    price = price.to_i
+    price and price = price.to_i
 
     # 既に登録済みの場合、そのIDを戻す
     @attendance = DB.new(

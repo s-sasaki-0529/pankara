@@ -19,6 +19,9 @@ class Attendance < Base
       ['price' , 'memo'].include?(k)
     end
 
+    arg['price'] and arg['price'] == '' and arg['price'] = nil
+    arg['memo'] and arg['memo'] == '' and arg['memo'] = nil
+
     result = DB.new(
       :UPDATE => ['attendance' , arg.keys] ,
       :WHERE => 'id = ?' ,
