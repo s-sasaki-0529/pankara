@@ -41,7 +41,7 @@ class SearchRoute < March
     @song_list = []
     if @tag.size > 0
       song_ids = Tag.search('s' , @tag)
-      song_ids.size > 0 and @song_list = Song.list(:artist_info => true, :songs => song_ids)
+      song_ids.size > 0 and @song_list = Song.list(:artist_info => true, :songs => song_ids , :sort => 'name')
     end
     erb :search_tag
   end

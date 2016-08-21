@@ -44,6 +44,11 @@ class Song < Base
       db.set("%#{word}%")
     end
 
+    # 名前順でソート
+    if opt[:sort] == "name"
+      db.option("ORDER BY song_name")
+    end
+
     # 実行結果を配列、もしくはハッシュで戻す
     list = db.execute_all
     if opt[:want_hash]
