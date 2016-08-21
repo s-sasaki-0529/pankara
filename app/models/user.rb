@@ -504,6 +504,7 @@ class User < Base
     vcl_ids = Tag.search('s' , 'VOCALOID')
     vcl_num = 0
     histories.map {|h| h['song']}.each {|s| vcl_ids.include?(s) and vcl_num += 1}
+    result["vocaloid_num"] = vcl_num
     result["vocaloid_rate"] = vcl_num == 0 ? 0 : (vcl_num.to_f / histories.count.to_f * 100).round(2)
 
     return result

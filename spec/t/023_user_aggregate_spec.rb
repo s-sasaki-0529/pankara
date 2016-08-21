@@ -22,7 +22,7 @@ describe '集計情報表示機能' , :js => true do
     expect(table_to_hash('sang_aggregate_table')[1]['tostring']).to eq '持ち歌手数,150 組'
     expect(table_to_hash('product_aggregate_table')[4]['tostring']).to eq 'LIVE DAM,3 回,122 曲'
     expect(table_to_hash('score_aggregate_table')[3]['tostring']).to eq 'DAM ランキングバトル,63 曲,92.03 点,83.05 点'
-    expect(table_to_hash('other_aggregate_table')[0]['tostring']).to eq 'ボカロ率,50.14 %'
+    expect(table_to_hash('other_aggregate_table')[0]['tostring']).to eq 'ボカロ率,50.14 % (362 曲)'
   end
 
   it '歌唱履歴のないユーザ' do
@@ -35,7 +35,7 @@ describe '集計情報表示機能' , :js => true do
     expect(table_to_hash('sang_aggregate_table')[1]['tostring']).to eq '持ち歌手数,0 組'
     expect(table_to_hash('product_aggregate_table')[3]['tostring']).to eq 'JOYSOUND WAVE,0 回,0 曲'
     expect(table_to_hash('score_aggregate_table')[2]['tostring']).to eq 'JOYSOUND その他,0 曲,0.0 点,0.0 点'
-    expect(table_to_hash('other_aggregate_table')[0]['tostring']).to eq 'ボカロ率,0 %'
+    expect(table_to_hash('other_aggregate_table')[0]['tostring']).to eq 'ボカロ率,0 % (0 曲)'
   end
 
 end
