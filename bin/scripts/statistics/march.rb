@@ -11,7 +11,13 @@ class March
   # main - アクセスログ解析ツールのMain処理
   #---------------------------------------------------------------------
   def main
-    @option = Option.new
+    begin
+      @option = Option.new
+    rescue => error
+      analyse_argument_error(error)
+      return
+    end
+
     @access_log = AccessLog.new(perse_log_data)
 
     from = @option.get('from')
@@ -31,6 +37,7 @@ class March
 
   # perse_log_data - 標準入力されたアクセスログデータをHashに変換する
   #---------------------------------------------------------------------
+  private
   def perse_log_data
     log_data = Array.new
   
@@ -50,6 +57,19 @@ class March
     end
   
     return log_data
+  end
+
+  # analyse_argument_error - 発生したコマンドライン引数に関するエラーを解析してメッセージを表示する
+  #---------------------------------------------------------------------
+  private
+  def analyse_argument_error(error)
+    option = error.message.split(' ')[2]
+    
+    if error.kind_of? OptionParser::InvalidOption
+      STDERR.puts "\"#{option}\"は無効なオプションです。詳細は\"--help\"参照。"
+    else
+      STDERR.puts "\"#{option}\"オプションに正しい値を指定してください。詳細は\"--help\"参照。"
+    end
   end
 
 end

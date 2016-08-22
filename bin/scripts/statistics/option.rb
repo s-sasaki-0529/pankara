@@ -21,7 +21,7 @@ class Option
                 '指定したオプションに応じたリクエストの集計を行う', 
                 "\ti\tIPアドレス別アクセス数", "\tn\tユーザ名別アクセス数",
                 "\tu\tURL別アクセス数", "\tr\tリファラ別アクセス数",
-                "\to\tOS別アクセス数", "\tb\tブラウザ別アクセス数別",
+                "\to\tOS別アクセス数", "\tb\tブラウザ別アクセス数",
                 "\td\tデバイス別アクセス数") {|value| @args['agg'] = convert_agg_option(value)}
 
       parser.parse!(ARGV)
