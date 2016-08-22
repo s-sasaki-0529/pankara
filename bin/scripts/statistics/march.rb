@@ -22,6 +22,8 @@ class March
 
     if @option.get('cnt')
       @access_log.print_num_of_access
+    elsif agg = @option.get('agg')
+      @access_log.print_each_data(agg)
     else
       @access_log.print
     end

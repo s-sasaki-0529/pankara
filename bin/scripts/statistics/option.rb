@@ -22,7 +22,7 @@ class Option
                 "\ti\tIPアドレス別アクセス数", "\tn\tユーザ名別アクセス数",
                 "\tu\tURL別アクセス数", "\tr\tリファラ別アクセス数",
                 "\to\tOS別アクセス数", "\tb\tブラウザ別アクセス数別",
-                "\td\tデバイス別アクセス数") {|value| @args['agg'] = value}
+                "\td\tデバイス別アクセス数") {|value| @args['agg'] = convert_agg_option(value)}
 
       parser.parse!(ARGV)
     end 
@@ -32,6 +32,31 @@ class Option
   #---------------------------------------------------------------------
   def get(option)
     return @args[option]
+  end
+
+  # convert_agg_option - --aggの引数をdata_nameへ変換する
+  #---------------------------------------------------------------------
+  def convert_agg_option(value)
+    case value
+    when '-i'
+      return 'ip'
+    when '-n'
+      return 'user'
+    when '-u'
+      return 'url'
+    when '-r'
+      return 'referer'
+    when '-o'
+      return 'os'
+    when '-b'
+      return 'blowser'
+    when '-d'
+      return 'device'
+    when nil
+      return nil
+    else
+      return 'error'
+    end
   end
 
 end

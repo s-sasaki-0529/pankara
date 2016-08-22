@@ -26,14 +26,14 @@ class AccessLog
   #--------------------------------------------------------------------
   def print
     @log_data_list.each do | log |
-      p "日付:        #{log['date']}"
-      p "IPアドレス:  #{log['ip']}"
-      p "ユーザ:      #{log['user']}"
-      p "URL:         #{log['url']}"
-      p "リファラ:    #{log['referer']}"
-      p "デバイス:    #{log['device']}"
-      p "OS:          #{log['os']}"
-      p "ブラウザ:    #{log['blowser']}"
+      puts "日付:        #{log['date']}"
+      puts "IPアドレス:  #{log['ip']}"
+      puts "ユーザ:      #{log['user']}"
+      puts "URL:         #{log['url']}"
+      puts "リファラ:    #{log['referer']}"
+      puts "デバイス:    #{log['device']}"
+      puts "OS:          #{log['os']}"
+      puts "ブラウザ:    #{log['blowser']}"
       puts
     end
   end
@@ -41,8 +41,19 @@ class AccessLog
   # print_num_of_access - ログを標準出力する
   #--------------------------------------------------------------------
   def print_num_of_access
-    p "総アクセス数:         #{count_total_access}"
-    p "ユニークアクセス数:   #{count_unique_access}"
+    puts "総アクセス数:         #{count_total_access}回"
+    puts "ユニークアクセス数:   #{count_unique_access}回"
+  end
+  
+  # print_each_data - 各データごとの集計を出力する
+  #--------------------------------------------------------------------
+  def print_each_data(data_name)
+    counter_hash = count_each(data_name)
+
+    puts "#{data_name}の種類ごとのアクセス数"
+    counter_hash.each do | key, value |
+      puts "%-40s%s回"%[key, value]
+    end
   end
   
   # count_total_access - 総アクセス数を取得する
@@ -75,5 +86,23 @@ class AccessLog
 
     return true
   end
+  
+  # count_each - 各データごとのアクセス数を取得する
+  #--------------------------------------------------------------------
+  private
+  def count_each(data_name)
+    counter_hash = Hash.new
+    
+    @log_data_list.each do | log |
+      if counter_hash.key? log[data_name]
+        counter_hash[log[data_name]] += 1
+      else
+        counter_hash[log[data_name]] = 1
+      end
+    end
+
+    return counter_hash
+  end
+
 
 end
