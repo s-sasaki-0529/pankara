@@ -775,6 +775,7 @@ var register = (function() {
       data.twitter = 1;
       if ($('#tweet_textbox').val() != "") {
         data.tweet_text = '\n\n' + $('#tweet_textbox').val();
+        $('#tweet_textbox').val("");
       }
     }
     return data;
