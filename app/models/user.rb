@@ -496,6 +496,11 @@ class User < Base
     histories.each {|h| attend2plan[h['attendance']] = h['karaoke_plan']}
     result['total_karaoke_time'] = attend2plan.values.inject {|sum , n| sum += n} || 0
 
+    # リピート率
+    songs = histories.map {|h| h['song']}
+    repeat_songs = songs.select {|s| songs.index(s) != songs.rindex(s)}.uniq
+    result['repeat_rate'] = (repeat_songs.size.to_f / songs.uniq.size.to_f * 100).round(2)
+
     # 機種別の利用回数と歌唱回数
     attend2product = {}
     histories.each {|h| attend2product[h['attendance'] ] = h['karaoke_product']}
