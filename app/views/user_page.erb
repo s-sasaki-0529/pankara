@@ -121,3 +121,9 @@
     <% end %>
   </div>
 </div>
+
+<% if @show_aggregate %>
+<script>
+zenra.showAggregateDialog('<%= @user['username'] %>')
+</script>
+<% end %>
