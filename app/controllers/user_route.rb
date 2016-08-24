@@ -37,7 +37,7 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/songlist/:username' do
     @user = User.new(params[:username])
-    @song_list = @user.histories(:song_info => true)
+    @song_list = @user.songlist
     erb :song_list
   end
 

@@ -455,6 +455,23 @@ class User < Base
     }).execute_column
   end
 
+  # songlist - ユーザの持ち歌一覧を取得
+  # データ量次第で高負荷注意
+  #--------------------------------------------------------------------
+  def songlist(opt = {})
+
+    # コントローラに返却するハッシュ
+    song_list = {}
+
+    # historyから重複を排除
+    songs_hash = {}
+    self.histories(:song_info => true).each {|h| songs_hash[h['song_id']] = h}
+    song_list[:num] = songs_hash.size
+    song_list[:list] = songs_hash.values
+
+    return song_list
+  end
+
   # aggregate - ユーザの集計情報を取得
   # データ量次第で高負荷になるので、アルゴリズムの見直しやバッチ化、
   # 非同期化が求められる可能性があります

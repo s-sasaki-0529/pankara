@@ -1,4 +1,4 @@
-<h3><%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧</h3>
+<h3><%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 (全<%= @song_list[:num] %> 曲)</h3>
 
 <form method="GET">
   <label for="filter">絞込み</label>
@@ -38,7 +38,7 @@
 
 <table id="song_list_table" class='table'>
   <tbody>
-    <% @song_list.each_with_index do |song , idx| %>
+    <% @song_list[:list].each_with_index do |song , idx| %>
       <% if idx % 3 == 0 %>
       <tr>
       <% end %>
