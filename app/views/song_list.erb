@@ -1,1 +1,71 @@
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧</h3>
+
+<form method="GET">
+  <label for="filter">絞込み</label>
+  <select id="filter_category" name="filter_category">
+    <option value="song">曲名</option>
+    <option value="artist">アーティスト名</option>
+    <option value="tag">タグ名</option>
+  </select>
+  <input type="text" size="20" placeholder="絞込みワード" id="search_word" name="search_word">
+
+  <label>並び順</label>
+  <select id="sort" name="sort">
+    <option value="song_a">曲名順(昇順)</option>
+    <option value="song_d">曲名順(降順)</option>
+    <option value="artist_a">アーティスト名順(昇順)</option>
+    <option value="artist_d">アーティスト名順(降順)</option>
+    <option value="sangcount_a">歌唱回数順(昇順)</option>
+    <option value="sangcount_d">歌唱回数順(降順)</option>
+    <option value="lastsang_a">最近歌った楽曲(昇順)</option>
+    <option value="lastsang_d">最近歌った楽曲(降順)</option>
+  </select>
+
+  <label>表示件数</label>
+  <select id="pagenum" name="pagenum">
+    <option value="20">20</option>
+    <option value="40">40</option>
+    <option value="60">60</option>
+    <option value="80">80</option>
+    <option value="100">100</option>
+  </select>
+
+  <% csrftoken %>
+  <input type="submit" value="表示">
+</form>
+
+<% erb :_pager %>
+
+<table id="song_list_table" class='table'>
+  <tbody>
+    <% @song_list.each_with_index do |song , idx| %>
+      <% if idx % 3 == 0 %>
+      <tr>
+      <% end %>
+        <td id="thumbnail_<%= idx %>" class='center' width='10%'>
+          <% if song['song_url'] %>
+          <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
+          <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
+          <script>
+          zenra.createThumbnail(
+            "<%= idx %>" ,
+            "<%= song['song_id'] %>" ,
+            "<%= youtube_image song['song_url'] %>"
+          );
+          </script>
+          <% else %>
+          未登録
+          <% end %>
+        </td>
+        <td width='23%'>
+          <p><%= song_link song['song_id'] , song['song_name'] %></p>
+          <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+        </td>
+      <% if idx + 1 % 3 == 0 %>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<% erb :_pager %>
