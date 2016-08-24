@@ -3,17 +3,17 @@ require_relative '../models/user'
 
 class UserRoute < March
 
-  # get '/user' - ログイン中ユーザのユーザページへリダイレクト
+  # get '/user/userpage' - ログイン中ユーザのユーザページへリダイレクト
   #---------------------------------------------------------------------
-  get '/' do
+  get '/userpage' do
     if @current_user
       user = @current_user['username']
-      redirect "/user/#{user}"
+      redirect "/user/userpage/#{user}"
     end
   end
 
-  # get '/user/:username' - 指定したユーザのユーザページを表示
-  get '/:username' do
+  # get '/user/userpage/:username' - 指定したユーザのユーザページを表示
+  get '/userpage/:username' do
     @user = User.new(params[:username])
     @histories = @user.histories(:limit => 5 , :page => 1 , :song_info => true)
     @karaoke_list = @user.get_karaoke 5

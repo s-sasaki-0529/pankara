@@ -34,7 +34,7 @@ describe '新規登録したユーザで各ページを閲覧' do
     iscontain 'BUMP OF CHICKEN'
   end
   it 'ユーザページ' do
-    visit 'user'
+    visit 'user/userpage'
     iscontain 'カラオケ記録がありません'
     iscontain '歌唱履歴がありません'
   end

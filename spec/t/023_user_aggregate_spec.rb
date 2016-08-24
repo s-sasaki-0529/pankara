@@ -14,7 +14,7 @@ describe '集計情報表示機能' , :js => true do
   
   it '歌唱履歴のあるユーザ' do
     login 'sa2knight'
-    visit '/user'; wait_for_ajax
+    visit '/user/userpage'; wait_for_ajax
     iscontain '集計情報を表示'
     js "zenra.showAggregateDialog('sa2knight')"
     iscontain ['カラオケ記録' , '歌唱記録' , '機種別集計' , '採点別集計' , 'その他']
@@ -27,7 +27,7 @@ describe '集計情報表示機能' , :js => true do
 
   it '歌唱履歴のないユーザ' do
     login 'test_user'
-    visit '/user'; wait_for_ajax
+    visit '/user/userpage'; wait_for_ajax
     iscontain '集計情報を表示'
     js "zenra.showAggregateDialog('test_user')"
     iscontain ['カラオケ記録' , '歌唱記録' , '機種別集計' , '採点別集計' , 'その他']
