@@ -1,5 +1,7 @@
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 (全<%= @song_list[:num] %> 曲)</h3>
 
+<%= erb :_pager %>
+
 <form method="GET">
   <label for="filter">絞込み</label>
   <select id="filter_category" name="filter_category">
@@ -36,8 +38,6 @@
   <input type="submit" value="表示">
 </form>
 
-<% erb :_pager %>
-
 <table id="song_list_table" class='table'>
   <tbody>
     <% @song_list[:list].each_with_index do |song , idx| %>
@@ -70,4 +70,4 @@
   </tbody>
 </table>
 
-<% erb :_pager %>
+<%= erb :_pager %>

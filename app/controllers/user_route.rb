@@ -1,5 +1,6 @@
 require_relative './march'
 require_relative '../models/user'
+require_relative '../models/pager'
 
 class UserRoute < March
 
@@ -37,7 +38,9 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/songlist/:username' do
     @user = User.new(params[:username])
-    @song_list = @user.songlist
+    @pager = Pager.new(48 , params[:page] ? params[:page].to_i : 1)
+
+    @song_list = @user.songlist(:pager => @pager)
     erb :song_list
   end
 

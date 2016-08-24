@@ -469,6 +469,11 @@ class User < Base
     song_list[:num] = songs_hash.size
     song_list[:list] = songs_hash.values
 
+    # [オプション] ページャで戻すデータ量を制限
+    if pager = opt[:pager]
+      song_list[:list] = pager.getData(song_list[:list])
+    end
+
     return song_list
   end
 
