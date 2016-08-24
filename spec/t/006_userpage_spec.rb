@@ -54,7 +54,7 @@ init = proc do
 end
 
 # 定数定義
-url = '/user/unagipai'
+url = '/user/userpage/unagipai'
 
 # テスト実行
 describe 'ユーザページ機能' do
