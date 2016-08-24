@@ -24,4 +24,20 @@ class UserRoute < March
     erb :user_page
   end
 
+  # get '/user/songlist' - ログイン中ユーザの持ち歌一覧へリダイレクト
+  #--------------------------------------------------------------------
+  get '/songlist' do
+    if @current_user
+      user = @current_user['username']
+      redirect "/user/songlist/#{user}"
+    end
+  end
+
+  # get '/user/songlist/:username' - 指定したユーザの持ち歌一覧を表示
+  #--------------------------------------------------------------------
+  get '/songlist/:username' do
+    @user = User.new(params[:username])
+    erb :song_list
+  end
+
 end
