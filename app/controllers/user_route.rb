@@ -38,13 +38,25 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/songlist/:username' do
     @user = User.new(params[:username])
+    opt = {}
 
     # ページャ設定
     @pagenum = params[:pagenum] ? params[:pagenum].to_i : 24
     @page = params[:page] ? params[:page].to_i : 1
     @pager = Pager.new(@pagenum , @page)
+    opt[:pager] = @pager
 
-    @song_list = @user.songlist(:pager => @pager)
+    # 検索設定
+    @filter_category = params[:filter_category]
+    @filter_word = params[:filter_word]
+    if @filter_category && @filter_word && @filter_word.size > 0
+      opt[:filter_category] = @filter_category
+      opt[:filter_word] = @filter_word
+    else
+      @filter_category = @filter_word = nil
+    end
+
+    @song_list = @user.songlist(opt)
     erb :song_list
   end
 

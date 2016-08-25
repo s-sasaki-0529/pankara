@@ -1,15 +1,18 @@
-<h3><%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 (全<%= @song_list[:num] %> 曲)</h3>
+<h3>
+  <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
+  (<% if @filter_word %>検索結果: <% else %>全<% end %><%= @song_list[:num] %> 曲)
+</h3>
 
 <%= erb :_pager %>
 
 <form method="GET">
   <label for="filter">絞込み</label>
   <select id="filter_category" name="filter_category">
-    <option value="song">曲名</option>
-    <option value="artist">アーティスト名</option>
-    <option value="tag">タグ名</option>
+    <option value="song" <% if @filter_category == "song" %> selected <% end %>>曲名</option>
+    <option value="artist" <% if @filter_category == "artist" %> selected <% end %>>アーティスト名</option>
+    <option value="tag" <% if @filter_category == "tag" %> selected <% end %>>タグ名</option>
   </select>
-  <input type="text" size="20" placeholder="絞込みワード" id="search_word" name="search_word">
+  <input type="text" size="20" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
 
   <label>並び順</label>
   <select id="sort" name="sort">

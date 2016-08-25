@@ -459,7 +459,6 @@ class User < Base
   # データ量次第で高負荷注意
   #--------------------------------------------------------------------
   def songlist(opt = {})
-
     # コントローラに返却するハッシュ
     song_list = {}
 
@@ -467,10 +466,21 @@ class User < Base
     songs_hash = {}
     histories = self.histories(:song_info => true)
     histories.each {|h| songs_hash[h['song_id']] = h}
-    song_list[:num] = songs_hash.size
     song_list[:list] = songs_hash.values
 
+    # [オプション] 検索
+    if word = opt[:filter_word]
+      category = opt[:filter_category]
+      if category == 'song'
+        song_list[:list] = song_list[:list].select {|s| s['song_name'].match(/#{word}/i)}
+      elsif category == 'artist'
+        song_list[:list] = song_list[:list].select {|s| s['artist_name'].match(/#{word}/i)}
+      elsif category == 'tag'
+      end
+    end
+
     # [オプション] ページャで戻すデータ量を制限
+    song_list[:num] = song_list[:list].size
     if pager = opt[:pager]
       song_list[:list] = pager.getData(song_list[:list])
     end
