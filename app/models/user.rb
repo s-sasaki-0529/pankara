@@ -476,6 +476,8 @@ class User < Base
       elsif category == 'artist'
         song_list[:list] = song_list[:list].select {|s| s['artist_name'].match(/#{word}/i)}
       elsif category == 'tag'
+        ids = Tag.search('s' , word)
+        song_list[:list] = song_list[:list].select {|s| ids.include?(s['song_id'])}
       end
     end
 
