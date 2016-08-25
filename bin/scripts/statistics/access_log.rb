@@ -38,42 +38,50 @@ class AccessLog
     end
   end
 
-  # print_num_of_access - ログを標準出力する
+  # print_num_of_access - 総アクセス数とユニークアクセス数を標準出力する
   #--------------------------------------------------------------------
   def print_num_of_access
-    puts "総アクセス数:         #{count_total_access}回"
-    puts "ユニークアクセス数:   #{count_unique_access}回"
+    puts "総アクセス数:   #{get_unique_access_log.size}回"
+    puts "ユニークアクセス数:   #{get_unique_access_log.size}回"
   end
-  
-  # print_each_data - 各データごとの集計を出力する
+    
+  # print_num_of_each_day_access - 日ごとの総アクセス数とユニークアクセス数を標準出力する
   #--------------------------------------------------------------------
-  def print_each_data(data_name)
-    counter_hash = count_each(data_name)
+  def print_num_of_each_day_access
+    puts '総アクセス数:'
+    get_each_day_log(@log_data_list).each do | day, log_data_list |
+      puts "%-20s%s回"%[day, log_data_list.size]
+    end
+    puts
 
-    puts "#{data_name}の種類ごとのアクセス数"
-    counter_hash.each do | key, value |
-      puts "%-40s%s回"%[key, value]
+    puts "ユニークアクセス数:"
+    get_each_day_log(@log_data_list).each do | day, log_data_list |
+      puts "%-20s%s回"%[day, log_data_list.size]
     end
   end
   
-  # count_total_access - 総アクセス数を取得する
+  # print_each_data_log - 各データごとの集計を出力する
   #--------------------------------------------------------------------
-  private
-  def count_total_access
-    return @log_data_list.size
-  end
+  def print_each_data_log(data_name)
+    each_data_log_hash = get_each_data_log(data_name, @log_data_list)
 
-  # count_unique_access - ユニークアクセス数を取得する
+    puts "#{data_name}の種類ごとのアクセス数"
+    each_data_log_hash.each do | key, each_log_list |
+      puts "%-40s%s回"%[key, each_log_list.size]
+    end
+  end
+  
+  # get_unique_access_log - ユニークなアクセスのみを取得する
   #--------------------------------------------------------------------
   private
-  def count_unique_access
+  def get_unique_access_log
     unique_log_list = Array.new
     
     @log_data_list.each do | log |
       unique_log_list.push(log) if is_unique?(unique_log_list, log['ip'])
     end
 
-    return unique_log_list.size
+    return unique_log_list
   end
 
   # is_unique? - "unique_log_list"が"ip"を持っているか判定する
@@ -87,22 +95,38 @@ class AccessLog
     return true
   end
   
-  # count_each - 各データごとのアクセス数を取得する
+  # get_each_data_log - 各データごとのアクセスログを取得する
   #--------------------------------------------------------------------
   private
-  def count_each(data_name)
-    counter_hash = Hash.new
+  def get_each_data_log(data_name, log_data_list)
+    each_data_log_hash = Hash.new
     
-    @log_data_list.each do | log |
-      if counter_hash.key? log[data_name]
-        counter_hash[log[data_name]] += 1
-      else
-        counter_hash[log[data_name]] = 1
+    log_data_list.each do | log |
+      unless each_data_log_hash.key? log[data_name]
+        each_data_log_hash[log[data_name]] = Array.new
       end
+      
+      each_data_log_hash[log[data_name]].push(log)
     end
 
-    return counter_hash
+    return each_data_log_hash
   end
 
+  # get_each_day_log - 日にちごとのアクセスログを取得する
+  #--------------------------------------------------------------------
+  private
+  def get_each_day_log(log_data_list)
+    each_day_log_hash = Hash.new
+    
+    @log_data_list.each do | log |
+      unless each_day_log_hash.key? log['date']
+        each_day_log_hash[log['date']] = Array.new
+      end
+      
+      each_day_log_hash[log['date']].push(log)
+    end
+
+    return each_day_log_hash
+  end
 
 end

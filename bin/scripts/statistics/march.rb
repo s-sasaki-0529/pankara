@@ -12,26 +12,26 @@ class March
   #---------------------------------------------------------------------
   def main
     begin
-      @option = Option.new
+      option = Option.new
     rescue => error
       analyse_argument_error(error)
       return
     end
 
-    @access_log = AccessLog.new(perse_log_data)
+    access_log = AccessLog.new(perse_log_data)
+    print_result(option, access_log)
+  end
 
-    from = @option.get('from')
-    @access_log.from(from) if from
+  # analyse_argument_error - 発生したコマンドライン引数に関するエラーを解析してメッセージを表示する
+  #---------------------------------------------------------------------
+  private
+  def analyse_argument_error(error)
+    option = error.message.split(' ')[2]
     
-    to = @option.get('to')
-    @access_log.to(to) if to
-
-    if @option.get('cnt')
-      @access_log.print_num_of_access
-    elsif agg = @option.get('agg')
-      @access_log.print_each_data(agg)
+    if error.kind_of? OptionParser::InvalidOption
+      STDERR.puts "\"#{option}\"は無効なオプションです。詳細は\"--help\"参照。"
     else
-      @access_log.print
+      STDERR.puts "\"#{option}\"オプションに正しい値を指定してください。詳細は\"--help\"参照。"
     end
   end
 
@@ -59,16 +59,26 @@ class March
     return log_data
   end
 
-  # analyse_argument_error - 発生したコマンドライン引数に関するエラーを解析してメッセージを表示する
+  # print_result - オプションに応じた結果を出力する
   #---------------------------------------------------------------------
   private
-  def analyse_argument_error(error)
-    option = error.message.split(' ')[2]
+  def print_result(option, access_log)
+    from = option.get('from')
+    access_log.from(from) if from
     
-    if error.kind_of? OptionParser::InvalidOption
-      STDERR.puts "\"#{option}\"は無効なオプションです。詳細は\"--help\"参照。"
+    to = option.get('to')
+    access_log.to(to) if to
+
+    if option.get('cnt')
+      if from or to
+        access_log.print_num_of_each_day_access
+      else
+        access_log.print_num_of_access
+      end
+    elsif agg = option.get('agg')
+      access_log.print_each_data_log(agg)
     else
-      STDERR.puts "\"#{option}\"オプションに正しい値を指定してください。詳細は\"--help\"参照。"
+      access_log.print
     end
   end
 
