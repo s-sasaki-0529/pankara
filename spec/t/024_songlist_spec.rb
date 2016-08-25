@@ -10,13 +10,21 @@ end
 describe '集計情報表示機能' , :js => true do
   
   before(:all , &init)
+  before do
+    login 'sa2knight'
+    visit '/user/songlist'
+  end
   
   describe '各種リンク' do
     it '曲名' do
+      examine_songlink('ライアーダンス' , 'DECO*27')
     end
     it '歌手名' do
+      examine_artistlink('高槻やよい')
     end
     it '最終歌唱日' do
+      page.all('.lastSangKaraoke')[1].click
+      expect(page.all('h3')[0].text).to eq '盆休み最終日カラオケ'
     end
   end
 

@@ -67,7 +67,9 @@
           <p><%= song_link song['song_id'] , song['song_name'] %></p>
           <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
           <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
-          <p class="mini">最終歌唱日: <a href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a></p>
+          <p class="mini">
+            最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
+          </p>
         </td>
       <% if idx + 1 % 2 == 0 %>
       </tr>
