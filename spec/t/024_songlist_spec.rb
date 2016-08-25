@@ -89,21 +89,37 @@ describe '集計情報表示機能' , :js => true do
     end
   end
 
-  #describe '並び順' do
-  #  it '最後に歌った日' do
-  #  end
-  #  it '初めて歌った日' do
-  #  end
-  #  it '歌唱回数' do
-  #  end
-  #  it '曲名' do
-  #  end
-  #  it '歌手名' do
-  #  end
-  #  it '昇順' do
-  #  end
-  #  it '降順' do
-  #  end
-  #end
+  describe '並び順' do
+    it '最後に歌った日' do
+      ex = ',月光花 Janne Da Arc 歌唱回数: 1 最終歌唱日: 2016-08-23,,紅蓮の弓矢 Linked Horizon 歌唱回数: 1 最終歌唱日: 2016-08-23'
+      visit URL + '?sort_category=last_sang_datetime'
+      ex_record ex
+    end
+    it '初めて歌った日' do
+      ex = ',月光花 Janne Da Arc 歌唱回数: 1 最終歌唱日: 2016-08-23,,紅蓮の弓矢 Linked Horizon 歌唱回数: 1 最終歌唱日: 2016-08-23'
+      visit URL + '?sort_category=first_sang_datetime'
+      ex_record ex
+    end
+    it '歌唱回数' do
+      ex = ',ゴーストルール DECO*27 歌唱回数: 15 最終歌唱日: 2016-08-23,,1/3の純情な感情 SIAM SHADE 歌唱回数: 15 最終歌唱日: 2016-07-23'
+      visit URL + '?sort_category=sang_count'
+      ex_record ex
+    end
+    it '曲名' do
+      ex = ',高音厨音域テスト 木村ワイP 歌唱回数: 1 最終歌唱日: 2016-06-04,,青春アミーゴ 修二と彰 歌唱回数: 1 最終歌唱日: 2016-08-23'
+      visit URL + '?sort_category=song_name'
+      ex_record ex
+    end
+    it '歌手名' do
+      ex = ',月光 鬼束ちひろ 歌唱回数: 1 最終歌唱日: 2016-01-17,,残酷な天使のテーゼ 高橋洋子 歌唱回数: 2 最終歌唱日: 2016-06-18'
+      visit URL + '?sort_category=artist_name'
+      ex_record ex
+    end
+    it '昇順に変更' do
+      ex = ',はなまるぴっぴはよいこだけ A応P 歌唱回数: 1 最終歌唱日: 2016-01-03,,SIX SAME FACES イヤミ、おそ松、カラ松、チョロ松、一松、十四松、トド松 歌唱回数: 1 最終歌唱日: 2016-01-03'
+      visit URL + '?sort_category=last_sang_datetime&sort_order=asc'
+      ex_record ex
+    end
+  end
 
 end
