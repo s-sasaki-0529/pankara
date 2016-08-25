@@ -47,7 +47,7 @@
       <% if idx % 2 == 0 %>
       <tr>
       <% end %>
-        <td id="thumbnail_<%= idx %>" class='center'>
+        <td id="thumbnail_<%= idx %>" class='center' width='20%'>
           <% if song['song_url'] %>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
@@ -55,14 +55,16 @@
           zenra.createThumbnail(
             "<%= idx %>" ,
             "<%= song['song_id'] %>" ,
-            "<%= youtube_image song['song_url'] %>"
+            "<%= youtube_image song['song_url'] %>" ,
+            "100%",
+            "auto"
           );
           </script>
           <% else %>
           未登録
           <% end %>
         </td>
-        <td>
+        <td width='30%'>
           <p><%= song_link song['song_id'] , song['song_name'] %></p>
           <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
           <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
