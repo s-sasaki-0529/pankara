@@ -14,6 +14,7 @@ class UserRoute < March
   end
 
   # get '/user/userpage/:username' - 指定したユーザのユーザページを表示
+  #--------------------------------------------------------------------
   get '/userpage/:username' do
     @user = User.new(params[:username])
     @histories = @user.histories(:limit => 5 , :page => 1 , :song_info => true)
