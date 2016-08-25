@@ -1,1 +1,14 @@
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの友達一覧</h3>
+
+<table class='table'>
+  <tbody>
+    <% @friends.each do |f| %>
+    <tr>
+      <td><%= user_link f['username'] , f['screenname'] %></td>
+      <td><a href="/karaoke/user/<%= f['username'] %>">カラオケ一覧</a></td>
+      <td><a href="/user/songlist/<%= f['username'] %>">持ち歌一覧</a></td>
+      <td><a href="/history/<%= f['username'] %>">歌唱履歴</a></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
