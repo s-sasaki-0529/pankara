@@ -68,4 +68,20 @@ class UserRoute < March
     erb :song_list
   end
 
+  # get '/user/friend/list/?' - ログイン中ユーザの友達一覧を表示
+  #--------------------------------------------------------------------
+  get '/friend/list/?' do
+    if @current_user
+      user = @current_user['username']
+      redirect "/user/friend/list/#{user}"
+    end
+  end
+
+  # get '/user/friend/list/:user/?' - 指定したユーザの友達一覧を表示
+  #--------------------------------------------------------------------
+  get '/friend/list/:username/?' do
+    @user = User.new(params[:username])
+    erb :friend_list
+  end
+
 end
