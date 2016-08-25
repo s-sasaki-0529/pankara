@@ -20,6 +20,10 @@ describe '新規登録したユーザで各ページを閲覧' do
     visit 'karaoke/user'
     iscontain 'カラオケの記録がありません'
   end
+  it '持ち歌一覧' do
+    visit '/user/songlist'
+    iscontain 'テスト さんの楽曲一覧 (全0 曲)'
+  end
   it '歌唱履歴' do
     visit 'history'
     iscontain '歌唱履歴がありません'
