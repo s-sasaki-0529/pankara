@@ -9,7 +9,6 @@ end
 def ex_record(ex)
   expect(table_to_hash('song_list_table')[0]['tostring']).to eq ex
 end
-
 URL = '/user/songlist/sa2knight'
 
 # テスト実行
@@ -59,24 +58,36 @@ describe '集計情報表示機能' , :js => true do
     it '表示件数変更' do
       ex1 = ',すろぉもぉしょん ピノキオP 歌唱回数: 12 最終歌唱日: 2016-08-23,,ゴーストルール DECO*27 歌唱回数: 15 最終歌唱日: 2016-08-23'
       ex2 = ',Ending BUMP OF CHICKEN 歌唱回数: 3 最終歌唱日: 2016-08-17,,マジLOVE2000% ST☆RISH 歌唱回数: 1 最終歌唱日: 2016-08-17'
-      expect(table_to_hash('song_list_table').length).to eq 24 / 2 - 1
       expect(table_to_hash('song_list_table')[-1]['tostring']).to eq ex1
       visit URL + '?pagenum=72'
-      expect(table_to_hash('song_list_table').length).to eq 72 / 2 - 1
       expect(table_to_hash('song_list_table')[-1]['tostring']).to eq ex2
     end
   end
 
-  #describe '検索' do
-  #  it '曲名' do
-  #  end
-  #  it '歌手名' do
-  #  end
-  #  it 'タグ' do
-  #  end
-  #  it 'ヒット無し' do
-  #  end
-  #end
+  describe '検索' do
+    it '曲名' do
+      ex = ',Stage of the ground BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-05-05,,The Biggest Dreamer 和田光司 歌唱回数: 1 最終歌唱日: 2016-03-26'
+      visit URL + '?filter_category=song&filter_word=the'
+      iscontain 'ないと さんの楽曲一覧 (検索結果: 5 曲)'
+      ex_record ex
+    end
+    it '歌手名' do
+      ex = ',グロリアスレボリューション BUMP OF CHICKEN 歌唱回数: 2 最終歌唱日: 2016-08-17,,Ending BUMP OF CHICKEN 歌唱回数: 3 最終歌唱日: 2016-08-17'
+      visit URL + '?filter_category=artist&filter_word=BUMP+OF+CHICKEN'
+      iscontain 'ないと さんの楽曲一覧 (検索結果: 40 曲)'
+      ex_record ex
+    end
+    it 'タグ' do
+      ex = ',MISTAKE ナナホシ管弦楽団 歌唱回数: 12 最終歌唱日: 2016-08-23,,magnet minato 歌唱回数: 7 最終歌唱日: 2016-08-23'
+      visit URL + '?filter_category=tag&filter_word=VOCALOID'
+      iscontain 'ないと さんの楽曲一覧 (検索結果: 111 曲)'
+      ex_record ex
+    end
+    it 'ヒット無し' do
+      visit URL + '?filter_category=tag&filter_word=HOGEFUGA'
+      iscontain 'ないと さんの楽曲一覧 (検索結果: 0 曲)'
+    end
+  end
 
   #describe '並び順' do
   #  it '最後に歌った日' do
