@@ -15,17 +15,16 @@
   <input type="text" size="20" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
 
   <label>並び順</label>
-  <select id="sort" name="sort">
-    <option value="create_a">登録順(昇順)</option>
-    <option value="create_b">登録順(降順)</option>
-    <option value="song_a">曲名順(昇順)</option>
-    <option value="song_d">曲名順(降順)</option>
-    <option value="artist_a">アーティスト名順(昇順)</option>
-    <option value="artist_d">アーティスト名順(降順)</option>
-    <option value="sangcount_a">歌唱回数順(昇順)</option>
-    <option value="sangcount_d">歌唱回数順(降順)</option>
-    <option value="lastsang_a">最近歌った楽曲(昇順)</option>
-    <option value="lastsang_d">最近歌った楽曲(降順)</option>
+  <select id="sort_category" name="sort_category">
+    <option value="last_sang_datetime" <% if @sort_category == "last_sang_datetime" %> selected <% end %>>最後に歌った日</option>
+    <option value="first_sang_datetime" <% if @sort_category == "first_sang_datetime" %> selected <% end %>>初めて歌った日</option>
+    <option value="sang_count" <% if @sort_category == "sang_count" %> selected <% end %>>歌唱回数</option>
+    <option value="song_name" <% if @sort_category == "song_name" %> selected <% end %>>曲名</option>
+    <option value="artist_name" <% if @sort_category == "artist_name" %> selected <% end %>>アーティスト名</option>
+  </select>
+  <select id="sort_order" name="sort_order">
+    <option value="desc" <% if @sort_order == 'desc' %> selected <% end %>>降順</option>
+    <option value="asc" <% if @sort_order == 'asc' %> selected <% end %>>昇順</option>
   </select>
 
   <label>表示件数</label>

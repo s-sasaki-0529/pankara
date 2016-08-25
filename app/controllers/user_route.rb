@@ -56,6 +56,13 @@ class UserRoute < March
       @filter_category = @filter_word = nil
     end
 
+    # 並び順
+    @sort_category = params[:sort_category] || 'last_sang_datetime'
+    @sort_order = params[:sort_order] || 'desc'
+    opt[:sort_category] = @sort_category
+    opt[:sort_order] = @sort_order
+
+    # 持ち歌リストを生成して戻す
     @song_list = @user.songlist(opt)
     erb :song_list
   end
