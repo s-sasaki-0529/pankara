@@ -9,12 +9,13 @@ end
 url = '/history/tomotin'
 
 def examine_page(page)
+  wait_for_ajax
   current_page = current_url[-1].to_i
   expect(current_page).to eq page
 end
 
 # テスト実行
-describe 'ページャ機能全般' do
+describe 'ページャ機能全般' , :js => true do
 
   before(:all,&init)
   before { visit url }
@@ -27,7 +28,7 @@ describe 'ページャ機能全般' do
   end
 
   it '先頭ページ' do
-    visit '?page=5'
+    all("#pager_page_5 > a")[0].click
     examine_page(5)
     all("#pager_first_page > a")[0].click
     examine_page(1)
@@ -47,7 +48,7 @@ describe 'ページャ機能全般' do
   end
 
   it '前のページ' do
-    visit '?page=5'
+    all("#pager_page_5 > a")[0].click
     4.downto(1) do |i|
       all("#pager_prev_page > a")[0].click
       examine_page(i)

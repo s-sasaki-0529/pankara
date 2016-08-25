@@ -27,11 +27,11 @@
 
   <label>表示件数</label>
   <select id="pagenum" name="pagenum">
-    <option value="20">20</option>
-    <option value="40">40</option>
-    <option value="60">60</option>
-    <option value="80">80</option>
-    <option value="100">100</option>
+    <option value="24" <% if @pagenum == 24 %> selected <% end %>>24</option>
+    <option value="48" <% if @pagenum == 48 %> selected <% end %>>48</option>
+    <option value="72" <% if @pagenum == 72 %> selected <% end %>>72</option>
+    <option value="96" <% if @pagenum == 96 %> selected <% end %>>96</option>
+    <option value="120" <% if @pagenum == 120 %> selected <% end %>>120</option>
   </select>
 
   <% csrftoken %>

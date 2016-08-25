@@ -38,7 +38,11 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/songlist/:username' do
     @user = User.new(params[:username])
-    @pager = Pager.new(48 , params[:page] ? params[:page].to_i : 1)
+
+    # ページャ設定
+    @pagenum = params[:pagenum] ? params[:pagenum].to_i : 24
+    @page = params[:page] ? params[:page].to_i : 1
+    @pager = Pager.new(@pagenum , @page)
 
     @song_list = @user.songlist(:pager => @pager)
     erb :song_list
