@@ -60,6 +60,11 @@ tr *.cell-datetime {
   color: rgb(255,0,0);
 }
 
+/*ミニ見出し*/
+p.mini {
+  font-size: 13px;
+}
+
 /*トップ画面 タイムライン領域 */
 #div_timelines {
   height: 310px;

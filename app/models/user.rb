@@ -465,13 +465,23 @@ class User < Base
 
     # historyから重複を排除
     songs_hash = {}
-    self.histories(:song_info => true).each {|h| songs_hash[h['song_id']] = h}
+    histories = self.histories(:song_info => true)
+    histories.each {|h| songs_hash[h['song_id']] = h}
     song_list[:num] = songs_hash.size
     song_list[:list] = songs_hash.values
 
     # [オプション] ページャで戻すデータ量を制限
     if pager = opt[:pager]
       song_list[:list] = pager.getData(song_list[:list])
+    end
+
+    # 歌唱回数を取得
+    song_list[:list].each do |s|
+      s_history = histories.select {|h| s['song_id'] == h['song_id']}
+      s['sang_count'] = s_history.size
+      s['last_sang_karaoke'] = s_history[0]['karaoke_id']
+      s['last_sang_datetime'] = s_history[0]['karaoke_datetime'].to_s.split(' ')[0]
+      s['first_sang_datetime'] = s_history[-1]['karaoke_datetime'].to_s.split(' ')[0]
     end
 
     return song_list

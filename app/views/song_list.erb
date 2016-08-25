@@ -41,10 +41,10 @@
 <table id="song_list_table" class='table'>
   <tbody>
     <% @song_list[:list].each_with_index do |song , idx| %>
-      <% if idx % 3 == 0 %>
+      <% if idx % 2 == 0 %>
       <tr>
       <% end %>
-        <td id="thumbnail_<%= idx %>" class='center' width='10%'>
+        <td id="thumbnail_<%= idx %>" class='center'>
           <% if song['song_url'] %>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
@@ -59,11 +59,13 @@
           未登録
           <% end %>
         </td>
-        <td width='23%'>
+        <td>
           <p><%= song_link song['song_id'] , song['song_name'] %></p>
           <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+          <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
+          <p class="mini">最終歌唱日: <a href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a></p>
         </td>
-      <% if idx + 1 % 3 == 0 %>
+      <% if idx + 1 % 2 == 0 %>
       </tr>
       <% end %>
     <% end %>
