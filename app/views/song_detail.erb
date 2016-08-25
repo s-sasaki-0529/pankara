@@ -78,9 +78,11 @@
 <%= csrftoken %>
 <script>
   $('#history_tabs').tabs().show();
-  zenra.createMonthlySangCountBarChart('/ajax/song/tally/monthly/count' , <%= @song['id'] %> , "#sang_count_chart");
+  zenra.createMonthlySangCountBarChart('/ajax/song/tally/monthly/count' , <%= @song['id'] %> , "#sang_count_chart"); 
   zenra.scoreBarChart.init(<%= @song['id'] %> , 1 , <%= @score_type_num %> , "#score_bar_chart");
   <% if @current_user %>
-    zenra.showSongTagList(<%= @current_user['id'] %> , <%= @song['id'] %>);
+  zenra.showSongTagList(<%= @song['id'] %> , <%= @current_user['id'] %>);
+  <% else %>
+  zenra.showSongTagList(<%= @song['id'] %>);
   <% end %>
 </script>

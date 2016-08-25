@@ -1176,7 +1176,7 @@ zenra.showAggregateDialog = function(user) {
   });
 };
 
-zenra.showSongTagList = function(user , id) {
+zenra.showSongTagList = function(id , user) {
   var url = '/ajax/song/tag/list';
   var data = {song: id};
   function resetTagElements() {
@@ -1219,7 +1219,7 @@ zenra.addSongTag = function(user , id) {
   var url_to = url_from + '/tag/add';
   jPrompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
     var data = {tag_name: r};
-    var opt = {success: function() { zenra.showSongTagList(user , id) }};
+    var opt = {success: function() { zenra.showSongTagList(id , user) }};
     zenra.post(url_to , data , opt);
   });
 };
@@ -1231,7 +1231,7 @@ zenra.removeSongTag = function(user , id , tag) {
   jConfirm(mes, '確認', function(r) {
     if (!r) return;
     var data = {tag_name: tag['name'] , created_by: tag['created_by']};
-    var opt = {success: function() { zenra.showSongTagList(user , id) }};
+    var opt = {success: function() { zenra.showSongTagList(id , user) }};
     zenra.post(url_to , data , opt);
   });
 };
