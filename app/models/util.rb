@@ -42,6 +42,7 @@ class Util
   end
 
   # write_access_log - アクセスログを生成する
+  #--------------------------------------------------------------------
   def self.write_access_log(user)
     @@request.get? or return  #GETメソッドのみ
     @@request.path.scan(/\./).empty? or return  #静的ファイルへのアクセスは除外
@@ -55,6 +56,19 @@ class Util
     params.push(@@request.os)
     params.push(@@request.browser)
     Util.write_log('request' , params.join(','))
+  end
+
+  # is_smartphone - アクセスがスマートフォンかどうかを戻す
+  #--------------------------------------------------------------------
+  def self.is_smartphone?
+    return @@request.device_type == 'smartphone'
+  end
+
+  # is_pc - アクセスがPCかどうかを戻す(スマートフォンでなければ全てPCとする)
+  #--------------------------------------------------------------------
+  def self.is_pc?
+    return false
+    return ! Util.is_smartphone?
   end
 
   # url - URLを生成する
