@@ -61,7 +61,7 @@ class Util
   # is_smartphone - アクセスがスマートフォンかどうかを戻す
   #--------------------------------------------------------------------
   def self.is_smartphone?
-    return @@request.device_type == 'smartphone'
+    return @@request.device_type == :smartphone
   end
 
   # is_pc - アクセスがPCかどうかを戻す(スマートフォンでなければ全てPCとする)
