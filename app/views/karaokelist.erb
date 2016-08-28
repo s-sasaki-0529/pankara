@@ -1,6 +1,8 @@
-<h1>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<% if Util.is_pc? %><h1><% end %>
   <% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧
-</h1>
+<% if Util.is_pc? %></h1><% end %>
 
 <% if @karaoke_list.size > 0 %>
   <table id="karaokelist_table" class="table sortable table-hover linkcursor">
@@ -8,11 +10,13 @@
       <tr>
         <th class='cell-datetime'>日時</th>
         <th>内容</th>
+        <% if Util.is_pc? %>
         <th class='center' width='80'>時間</th>
         <th>お店</th>
         <th>機種</th>
         <% if @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
           <th class='center' width="60">通知</th>
+        <% end %>
         <% end %>
         <% unless @target_user %><th>メンバー</th><% end %>
       </tr>
@@ -20,8 +24,9 @@
     <tbody>
       <% @karaoke_list.each do |karaoke| %>
       <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-        <td><%= karaoke['datetime'] %></td>
+        <td><%= karaoke['datetime'].to_s.split(' ')[0] %></td>
         <td><%= h karaoke['name'] %></td>
+        <% if Util.is_pc? %>
         <td class='center'><%= karaoke['plan'] %></td>
         <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
         <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
@@ -34,6 +39,7 @@
             <img src="/image/alert.png" width="22" title="感想が入力されていません">
           <% end %>
         </td>
+        <% end %>
         <% end %>
         <!-- 参加メンバー -->
         <% unless @target_user %>
