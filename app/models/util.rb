@@ -67,7 +67,6 @@ class Util
   # is_pc - アクセスがPCかどうかを戻す(スマートフォンでなければ全てPCとする)
   #--------------------------------------------------------------------
   def self.is_pc?
-    return false
     return ! Util.is_smartphone?
   end
 
