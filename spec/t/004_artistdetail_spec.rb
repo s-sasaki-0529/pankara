@@ -29,6 +29,19 @@ describe '歌手詳細ページ' , :js => true do
     end
   end
 
+  describe '歌唱回数' do
+    it 'ログイン中' do
+      visit '/artist/1'
+      expect(find('#sang_count_all').text).to eq '126'
+      expect(find('#sang_count_user').text).to eq '115'
+    end
+    it 'ログインなし' do
+      visit '/auth/logout'
+      visit '/artist/1'
+      expect(find('#sang_count_all').text).to eq '241'
+    end
+  end
+
   describe 'よく歌われる楽曲グラフ' do
     it 'その他あり' do
       visit '/artist/1' #BUMP OF CHICKEN

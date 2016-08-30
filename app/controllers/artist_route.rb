@@ -16,6 +16,8 @@ class ArtistRoute < March
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
     @artist.songs_with_count(:user => user , :sort => 'sang_count')
+    @sang_all = @artist['songs'].inject(0) {|sum , s| sum + s['sang_count']}
+    user and @sang_user = @artist['songs'].inject(0) {|sum , s| sum + s['sang_count_as_user']}
 
     # 円グラフ用のデータを作成
     songs_chart = @artist['songs'].clone

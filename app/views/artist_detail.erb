@@ -9,6 +9,9 @@
 
 <div class="row">
   <div id="chart_column" class="col-xs-3">
+    歌唱回数 みんな: <span id="sang_count_all"><%= @sang_all %></span>
+    <% if @current_user %>あなた: <span id="sang_count_user"><%= @sang_user %></span><% end %>
+
     <h4>よく歌われる楽曲</h4>
     <div id="artist_songs_chart"></div>
     <h4>歌唱回数</h4>
