@@ -10,6 +10,14 @@ end
 
 # テスト実行
 describe '歌手詳細ページ' , :js => true do
+
+  def to_hash(id)
+    js = "$('##{id}').text();"
+    json = evaluate_script(js)
+    return Util.to_hash(json)
+  end
+
+
   before(:all,&init)
   before do
     login 'sa2knight'
@@ -46,13 +54,18 @@ describe '歌手詳細ページ' , :js => true do
     it 'その他あり' do
       visit '/artist/1' #BUMP OF CHICKEN
       wait_for_ajax
-      json = '[[["Hello, world!"],[8]],[["ray"],[6]],[["MISTAKE"],[5]],[["さよならのかわりに、花束を"],[4]],[["BAYONET CHARGE"],[4]],[["吉原ラメント"],[3]],[["オーバーキルサイズ・ヘル"],[3]],[["tomorrow"],[3]],["その他",205]]'
-      expect(evaluate_script("$('#songs_chart_json').text();")).to eq json
+      result = to_hash('songs_chart_json')
+      expect(result[0][1][0]).to eq 8
+      expect(result[1][1][0]).to eq 6
+      expect(result[2][1][0]).to eq 5
     end
     it 'その他なし' do
       visit '/artist/32' #kemu
       wait_for_ajax
-      expect(evaluate_script("$('#songs_chart_json').text();")).to eq '[[["地球最後の告白を"],[3]],[["敗北の少年"],[2]],[["カミサマネジマキ"],[2]]]'
+      result = to_hash('songs_chart_json')
+      expect(result[0][1][0]).to eq 3
+      expect(result[1][1][0]).to eq 2
+      expect(result[2][1][0]).to eq 2
     end
   end
 
@@ -60,14 +73,16 @@ describe '歌手詳細ページ' , :js => true do
     it '一人だけ歌っている' do
       visit '/artist/70' #暁切歌
       wait_for_ajax
-      json = evaluate_script("$('#sang_count_chart_json').text();")
-      expect(json).to eq '{"result":"success","info":[{"_month":"2016-08"},{"_month":"2016-07"},{"_month":"2016-06"},{"_month":"2016-05"},{"_month":"2016-04"},{"ともちん":2,"_month":"2016-03"},{"_month":"2016-02"},{"ともちん":4,"_month":"2016-01"}]}'
+      result = to_hash('sang_count_chart_json')["info"]
+      expect(result[-1]["ともちん"]).to eq 4
+      expect(result[-3]["ともちん"]).to eq 2
     end
     it '複数人が歌っている' do
       visit '/artist/40' #水樹奈々
       wait_for_ajax
-      json = evaluate_script("$('#sang_count_chart_json').text();")
-      expect(json).to eq '{"result":"success","info":[{"_month":"2016-08"},{"_month":"2016-07"},{"_month":"2016-06"},{"_month":"2016-05"},{"_month":"2016-04"},{"_month":"2016-03"},{"_month":"2016-02"},{"ウォーリー":2,"ともちん":1,"_month":"2016-01"}]}'
+      result = to_hash('sang_count_chart_json')["info"]
+      expect(result[-1]["ともちん"]).to eq 1
+      expect(result[-1]["ウォーリー"]).to eq 2
     end
   end
 
