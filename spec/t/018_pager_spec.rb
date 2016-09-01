@@ -28,8 +28,8 @@ describe 'ページャ機能全般' , :js => true do
   end
 
   it '先頭ページ' do
-    all("#pager_page_5 > a")[0].click
-    examine_page(5)
+    all("#pager_page_3 > a")[0].click
+    examine_page(3)
     all("#pager_first_page > a")[0].click
     examine_page(1)
   end
@@ -44,16 +44,16 @@ describe 'ページャ機能全般' , :js => true do
       all("#pager_next_page > a")[0].click
       examine_page(i + 1)
     end
-    islack('次のページ')
+    islack('次')
   end
 
   it '前のページ' do
-    all("#pager_page_5 > a")[0].click
-    4.downto(1) do |i|
+    all("#pager_page_3 > a")[0].click
+    2.downto(1) do |i|
       all("#pager_prev_page > a")[0].click
       examine_page(i)
     end
-    islack('前のページ')
+    islack('前')
   end
 
 end

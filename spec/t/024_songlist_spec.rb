@@ -52,8 +52,8 @@ describe '集計情報表示機能' , :js => true do
       ex_record ',月光花 Janne Da Arc 歌唱回数: 1 最終歌唱日: 2016-08-23,,紅蓮の弓矢 Linked Horizon 歌唱回数: 1 最終歌唱日: 2016-08-23'
     end
     it '特定のページヘ' do
-      all('#pager_page_10 > a')[0].click
-      ex_record ',sailing day BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-05-01,,バトルクライ BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-04-23'
+      all('#pager_page_3 > a')[0].click
+      ex_record ',地球最後の告白を kemu 歌唱回数: 7 最終歌唱日: 2016-08-17,,からくりピエロ 40mP 歌唱回数: 6 最終歌唱日: 2016-08-17'
     end
     it '表示件数変更' do
       ex1 = ',すろぉもぉしょん ピノキオP 歌唱回数: 12 最終歌唱日: 2016-08-23,,ゴーストルール DECO*27 歌唱回数: 15 最終歌唱日: 2016-08-23'

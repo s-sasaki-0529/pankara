@@ -18,15 +18,27 @@ function getURL(page) {
     <li id="pager_first_page" class="<%= "disabled" if @pager.current_page == 1 %>"><a onclick="getURL(1)">«</a></li>
 
     <% if @pager.current_page > 1 %>
-    <li id="pager_prev_page"><a onclick="getURL(<%= @pager.current_page - 1 %>)">前のページ</a></li>
+    <li id="pager_prev_page"><a onclick="getURL(<%= @pager.current_page - 1 %>)">前</a></li>
     <% end %>
 
-    <% 1.upto(@pager.page_num) do |i| %>
+    <% (@pager.current_page - 2).upto(@pager.current_page + 2) do |i| %>
+
+    <% if i == @pager.current_page - 2 && i >= 2 %>
+    <li id="pager_page_<%= i - 1 %>"><a onclick="getURL(<%= i - 1 %>)">...</a></li>
+    <% end %>
+
+    <% if i > 0 && i <= @pager.page_num %>
     <li id="pager_page_<%= i %>" class="<%= "disabled" if @pager.current_page == i %>"><a onclick="getURL(<%= i %>)"><%= i %></a></li>
     <% end %>
 
+    <% if i == @pager.current_page + 3 && i < @pager.page_num %>
+    <li id="pager_page_<%= i + 1 %>"><a onclick="getURL(<%= i + 1 %>)">...</a></li>
+    <% end %>
+
+    <% end %>
+
     <% if @pager.current_page < @pager.page_num %>
-    <li id="pager_next_page"><a onclick="getURL(<%= @pager.current_page + 1 %>)">次のページ</a></li>
+    <li id="pager_next_page"><a onclick="getURL(<%= @pager.current_page + 1 %>)">次</a></li>
     <% end %>
 
     <li id="pager_last_page" class="<%= "disabled" if @pager.current_page == @pager.page_num %>"><a onclick="getURL(<%= @pager.page_num %>)">»</a></li>
