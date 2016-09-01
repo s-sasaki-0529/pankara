@@ -21,13 +21,6 @@ describe '得点ランキング機能' do
     visit '/ranking/score/'
   end
 
-  it '採点モードの切り替えが正常に行われるか' , :js => true do
-    score_types.each do |st|
-      select st , from: selecter
-      iscontain("得点ランキング #{st} 編")
-    end
-  end
-  
   it 'ランキングが正常に表示されるか' do
     # 該当データがある場合
     visit '1'
