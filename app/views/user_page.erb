@@ -73,15 +73,15 @@
     <table id="recent_karaoke_table" class="table table-hover linkcursor" style="clear: both">
       <thead style="background-color: white">
         <tr>
-          <th class='center' style="width=30%">日時</th>
-          <th class="center">カラオケ名</th>
+          <th class='center cell-date'>日時</th>
+          <th class='center'>カラオケ名</th>
         </tr>
       </thead>
       <tbody style="background-color: white">
         <% @karaoke_list.each do |karaoke| %>
           <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-            <td class="center"><%= karaoke['datetime'] %></td>
-            <td class="center"><%= h karaoke['name'] %></td>
+            <td class="center cell_date"><%= karaoke['datetime'].to_s.split(' ')[0] %></td>
+            <td class='center'><%= h karaoke['name'] %></td>
           </tr>
         <% end %>
       </tbody>

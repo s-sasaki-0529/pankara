@@ -7,7 +7,7 @@
 <table id="karaoke_detail_description" class='table'>
   <thead style="background-color: rgb(255,255,204)">
     <tr>
-      <th class='center cell-datetime'>日時</th>
+      <th class='center cell-date'>日時</th>
       <th class='center cell-number'>時間</th>
       <th class='center'>お店</th>
       <th class='center'>機種</th>
@@ -20,7 +20,7 @@
   </thead>
   <tbody style="background-color: white">
     <tr>
-      <td class='center'><%= @karaoke['datetime'].to_s.split(' ')[0] %></td>
+      <td class='center cell-date'><%= @karaoke['datetime'].to_s.split(' ')[0] %></td>
       <td class='center'><%= @karaoke['plan'] %></td>
       <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>

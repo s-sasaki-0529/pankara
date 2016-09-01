@@ -6,7 +6,7 @@
     <thead>
       <tr>
         <th class='center cell-number'>No</th>
-        <th class='center' width='10%'>日時</th>
+        <th class='center cell-date'>日時</th>
         <th class='center' width='10%'>動画</th>
         <th class='center' width='30%'>曲名</th>
         <th class='center' width='30%'>歌手名</th>
@@ -17,7 +17,7 @@
       <% @histories.each do |history| %>
       <tr>
         <td class='center'><%= history['number'] %></td>
-        <td class='center'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
+        <td class='center cell-date'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
         <td id='thumbnail_<%= "#{history['number']}" %>' class='center'>
           <% if history['song_url'] %>
             <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>

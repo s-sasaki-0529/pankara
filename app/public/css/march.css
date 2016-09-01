@@ -14,6 +14,11 @@ tr *.cell-number {
   width: 5%;
 }
 
+/*セル内の日付文字列*/
+.cell-date {
+  width: 100px; 
+}
+
 /*セル内の日付時刻文字列*/
 tr *.cell-datetime {
   width: 15%;

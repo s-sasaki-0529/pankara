@@ -2,7 +2,7 @@
 
 <table id='<%= @info_id %>' class='song-detail-history-table table sortable'>
   <thead>
-    <th class='center'>日付</th>
+    <th class='center cell-date'>日付</th>
     <th class='center'>内容</th>
     <th class='center'>ユーザ</th>
     <th class='center'>キー</th>
@@ -12,7 +12,7 @@
   <tbody>
     <% @info.each do |i| %>
     <tr>
-      <td class='center' width='15%'><%= date(i['datetime']) %></td>
+      <td class='center cell-date'><%= date(i['datetime']) %></td>
       <td class='center'><%= karaoke_link i['karaoke_id'] , i['karaoke_name'] %>
       <td class='center' width='100'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
       <td class='center' width='60'><%= i['songkey'] %></td>

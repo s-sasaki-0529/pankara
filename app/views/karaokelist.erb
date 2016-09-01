@@ -8,7 +8,7 @@
   <table id="karaokelist_table" class="table sortable table-hover linkcursor">
     <thead>
       <tr>
-        <th class='cell-datetime'>日時</th>
+        <th class='cell-date'>日時</th>
         <th>内容</th>
         <% if Util.is_pc? %>
         <th class='center' width='80'>時間</th>
@@ -24,7 +24,7 @@
     <tbody>
       <% @karaoke_list.each do |karaoke| %>
       <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-        <td><%= karaoke['datetime'].to_s.split(' ')[0] %></td>
+        <td class='cell-date'><%= karaoke['datetime'].to_s.split(' ')[0] %></td>
         <td><%= h karaoke['name'] %></td>
         <% if Util.is_pc? %>
         <td class='center'><%= karaoke['plan'] %></td>

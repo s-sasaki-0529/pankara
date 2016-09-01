@@ -65,7 +65,7 @@ describe 'ユーザページ機能' do
     karaoke_table = table_to_hash('recent_karaoke_table')
     
     expect(karaoke_table.length).to eq 5
-    expect(karaoke_table[0]['tostring']).to eq '2016-12-26 20:00:00,ユーザページテスト用カラオケ5'
+    expect(karaoke_table[0]['tostring']).to eq '2016-12-26,ユーザページテスト用カラオケ5'
   end
   it '最近歌った曲が正常に表示されるか' do
     login 'unagipai'
