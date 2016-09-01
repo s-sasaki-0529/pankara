@@ -13,3 +13,7 @@ h3 {
 .table {
   font-size: 10px;
 }
+
+#div_timelines {
+  height: 200px;
+}
