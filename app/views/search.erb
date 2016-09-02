@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <div>
 <% if @song_list.size > 0 || @artist_list.size > 0 || @tag_list.size > 0 %>
   
@@ -13,8 +14,8 @@
     <tbody>
       <% @song_list.each do |song| %>
       <tr>
-        <td><%= song_link song['song_id'] , song['song_name'] %></td>
-        <td><%= artist_link song['artist_id'] , song['artist_name'] %></td>
+        <td width="50%"><%= song_link song['song_id'] , song['song_name'] %></td>
+        <td width="50%"><%= artist_link song['artist_id'] , song['artist_name'] %></td>
       </tr>
       <% end %>
     </tbody>
