@@ -1,25 +1,50 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 <%= erb :_song_detail_title %>
 
-<div class="row">
-  <div id="sang_count_chart_column" class="col-xs-3">
-    <%= erb :_song_detail_sang_count_chart %>
-  </div>
-  <div id="youtube_column" class="col-xs-6">
-    <%= erb :_song_detail_youtube %>
-  </div>
+<!-- PC -->
+<% if Util.is_pc? %>
+  <div class="row">
+    <div id="sang_count_chart_column" class="col-xs-3">
+      <%= erb :_song_detail_sang_count_chart %>
+    </div>
+    <div id="youtube_column" class="col-xs-6">
+      <%= erb :_song_detail_youtube %>
+    </div>
 
-  <div id="score_column" class="col-xs-3">
-    <%= erb :_song_detail_score_chart %>
+    <div id="score_column" class="col-xs-3">
+      <%= erb :_song_detail_score_chart %>
+    </div>
   </div>
-</div>
-<div class="row" style="padding-top: 25px">
-  <div id="history_column" class="col-xs-9"> 
-    <%= erb :_song_detail_history %>
+  <div class="row" style="padding-top: 25px">
+    <div id="history_column" class="col-xs-9"> 
+      <%= erb :_song_detail_history %>
+    </div>
+    <div id="tag_column" class="col-xs-3">
+      <%= erb :_song_detail_tags %>
+    </div>
   </div>
-  <div id="tag_column" class="col-xs-3">
-    <%= erb :_song_detail_tags %>
-  </div>
-</div>
+<% else %>
+
+<!-- スマートフォン -->
+<%= erb :_song_detail_youtube %>
+<hr>
+
+<h2 class='center'>この曲の歌唱履歴</h2>
+<%= erb :_song_detail_history %>
+<hr>
+
+<h2 class='center'>採点集計</h2>
+<%= erb :_song_detail_score_chart %>
+<hr>
+
+<h2 class='center'>月ごとの歌唱回数</h2>
+<%= erb :_song_detail_sang_count_chart %>
+<hr>
+
+<h2 class='center'>この曲のタグ一覧</h2>
+<%= erb :_song_detail_tags %>
+<% end %>
 
 <%= csrftoken %>
 <script>

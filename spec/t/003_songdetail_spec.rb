@@ -136,7 +136,7 @@ describe '楽曲詳細ページ' , :js => true do
       k2 = '夜までの時間つぶし'
       login 'sa2knight'
       visit '/song/40'
-      iscontain ['あなたの歌唱履歴' , 'みんなの歌唱履歴']
+      iscontain ['あなたの' , 'みんなの']
       iscontain k1
       islack k2
       find('#tab-all').click; wait_for_ajax
@@ -148,9 +148,9 @@ describe '楽曲詳細ページ' , :js => true do
     end
     it '誰も歌っていない楽曲' do
       visit 'song/529'
-      iscontain 'みんなの歌唱履歴'
+      iscontain 'みんなの'
       iscontain '歌唱履歴がありません'
-      islack 'あなたの歌唱履歴'
+      islack 'あなたの'
     end
     it '自分だけが歌っている楽曲' do
       login 'sa2knight'
@@ -166,8 +166,8 @@ describe '楽曲詳細ページ' , :js => true do
     it '他のユーザだけが歌っている楽曲' do
       login 'sa2knight'
       visit '/song/55'
-      iscontain 'みんなの歌唱履歴'
-      islack 'あなたの歌唱履歴'
+      iscontain 'みんなの'
+      islack 'あなたの'
       history = table_to_hash('song_detail_table_all')
       expect(history.size).to eq 1
       expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,'

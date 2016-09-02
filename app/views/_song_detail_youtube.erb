@@ -1,5 +1,9 @@
 <% if @song['url'] %>
-  <%= movie_player @song['url'] , '100%' , 315 %>
+  <% if Util.is_pc? %>
+    <%= movie_player @song['url'] , '100%' , 315 %>
+  <% else %>
+    <%= movie_player @song['url'] , '100%' , 'auto' %>
+  <% end %>
 <% else %>
   <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
 <% end %>
