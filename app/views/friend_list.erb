@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの友達一覧</h3>
 
 <table class='table table-hover'>
@@ -5,10 +6,10 @@
     <% @friends.each do |f| %>
     <tr>
       <td><%= user_link f['username'] , f['screenname'] %></td>
-      <td><a href="/history/<%= f['username'] %>">歌唱履歴</a></td>
-      <td><a href="/karaoke/user/<%= f['username'] %>">カラオケ一覧</a></td>
-      <td><a href="/user/songlist/<%= f['username'] %>">持ち歌一覧</a></td>
-      <td><a href="/user/friend/list/<%= f['username'] %>">友達一覧</a></td>
+      <td class='center'><a href="/history/<%= f['username'] %>">履歴</a></td>
+      <td class='center'><a href="/karaoke/user/<%= f['username'] %>">カラオケ</a></td>
+      <td class='center'><a href="/user/songlist/<%= f['username'] %>">持ち歌</a></td>
+      <td class='center'><a href="/user/friend/list/<%= f['username'] %>">友達</a></td>
     </tr>
     <% end %>
   </tbody>
