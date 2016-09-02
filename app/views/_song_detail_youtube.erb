@@ -1,0 +1,5 @@
+<% if @song['url'] %>
+  <%= movie_player @song['url'] , '100%' , 315 %>
+<% else %>
+  <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
+<% end %>

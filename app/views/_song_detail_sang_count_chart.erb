@@ -1,0 +1,7 @@
+<p>
+  歌唱回数
+  <span id="sangcount">みんな: <%= @sangcount %></span>
+  <% if @current_user %><span id="my_sangcount">あなた: <%= @my_sangcount %></span><% end %>
+</p>
+<div id="sang_count_chart"></div>
+<div id="sang_count_chart_json" class='hidden'></div>

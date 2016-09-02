@@ -1,80 +1,26 @@
-<h2 class='center' style="margin-top: -5px">
-  <span id="song_name"><%= h @song['name'] %></span> / <span id="artist_name"><%= artist_link @song['artist'], @song['artist_name'] %></span>
-  <% if @current_user %>
-  <img id='editkaraoke' style="margin-left:5px; margin-bottom:8px" 
-      class="center linkcursor" src="/image/edit.png" width="28"
-      onclick="register.editSong(<%= @song['id'] %> , '<%= h @song['url'] %>')"
-  >
-  <% end %>
-</h2>
+<%= erb :_song_detail_title %>
 
 <div class="row">
-
   <div id="sang_count_chart_column" class="col-xs-3">
-    <p>
-      歌唱回数
-      <span id="sangcount">みんな: <%= @sangcount %></span>
-      <% if @current_user %><span id="my_sangcount">あなた: <%= @my_sangcount %></span><% end %>
-    </p>
-    <div id="sang_count_chart"></div>
-    <div id="sang_count_chart_json" class='hidden'></div>
+    <%= erb :_song_detail_sang_count_chart %>
   </div>
-
   <div id="youtube_column" class="col-xs-6">
-    <% if @song['url'] %>
-      <%= movie_player @song['url'] , '100%' , 315 %>
-    <% else %>
-      <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
-    <% end %>
+    <%= erb :_song_detail_youtube %>
   </div>
 
   <div id="score_column" class="col-xs-3">
-    <p class='center'>
-      <img src="/image/arrow_left.png" width=16px class='pointer' onclick='zenra.scoreBarChart.prev()'>
-      <span id="score_type_name">JOYSOUND 全国採点</span> 集計
-      <img src="/image/arrow_right.png" width=16px class='pointer' onclick='zenra.scoreBarChart.next()'>
-    </p>
-    <div id="score_bar_chart"></div>
-    <div id="score_bar_chart_json" class='hidden'></div>
+    <%= erb :_song_detail_score_chart %>
+  </div>
+</div>
+<div class="row" style="padding-top: 25px">
+  <div id="history_column" class="col-xs-9"> 
+    <%= erb :_song_detail_history %>
+  </div>
+  <div id="tag_column" class="col-xs-3">
+    <%= erb :_song_detail_tags %>
   </div>
 </div>
 
-<div class="row" style="padding-top: 25px">
-  <div id="history_column" class="col-xs-9">
-    <div id="history_tabs" style="display: none;">
-      <ul>
-        <% if @current_user && @my_history && @my_history.size > 0 %>
-        <li><a href="#tabs-user" id="tab-user">あなたの歌唱履歴</a></li>
-        <% end %>
-        <li><a href="#tabs-all" id="tab-all">みんなの歌唱履歴</a></li>
-      </ul>
-      <% if @current_user  && @my_history && @my_history.size > 0 %>
-      <div id="tabs-user">
-        <% @info = @my_history %>
-        <% @info_id = 'song_detail_table_user' %>
-        <%= erb :_song_detail_history %>
-      </div>
-      <% end %>
-      <div id="tabs-all">
-        <% @info = @history %>
-        <% @info_id = 'song_detail_table_all' %>
-        <%= erb :_song_detail_history %>
-      </div>
-    </div>
-  </div>
-  <div id="tag_column" class="col-xs-3">
-    <table id="tag_list_table" width="100%">
-      <th>
-        <p id="tag_list_header"></p>
-      </th>
-      <th>
-        <% if @current_user %>
-          <p><a id="add_tag" class='hidden' href="#" onclick="zenra.addSongTag(<%= @current_user['id'] %> , <%= @song['id'] %>)">追加</a></p>
-        <% end %>
-      </th>
-    </table>
-  </div>
-</div>
 <%= csrftoken %>
 <script>
   $('#history_tabs').tabs().show();

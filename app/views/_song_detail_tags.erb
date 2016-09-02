@@ -1,0 +1,10 @@
+<table id="tag_list_table" width="100%">
+  <th>
+    <p id="tag_list_header"></p>
+  </th>
+  <th>
+    <% if @current_user %>
+      <p><a id="add_tag" class='hidden' href="#" onclick="zenra.addSongTag(<%= @current_user['id'] %> , <%= @song['id'] %>)">追加</a></p>
+    <% end %>
+  </th>
+</table>
