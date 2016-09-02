@@ -38,9 +38,9 @@ class March < Sinatra::Base
       token = session['csrf']
       return "<input type='hidden' name='#{name}' id='#{name}' value='#{token}'>"
     end
-    def movie_player(url , w , h)
+    def movie_player(url , w , h , autoplay = 0)
       if url =~ %r|www.youtube.com/watch\?v=(.+)$|
-        embed = "https://www.youtube.com/embed/#{$1}"
+        embed = "https://www.youtube.com/embed/#{$1}?autoplay=#{autoplay}"
         return "<iframe width=\"#{w}\" height=\"#{h}\" src=\"#{embed}\"></iframe>"
       elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
         embed = "http://ext.nicovideo.jp/thumb/sm#{$1}"

@@ -122,7 +122,7 @@ describe '楽曲詳細ページ' , :js => true do
     it 'URLが登録されている場合' do
       visit '/song/1'
       url = DB.new(:SELECT => 'url' , :FROM => 'song' , :WHERE => 'name = ?' , :SET => 'オンリーロンリーグローリー').execute_column
-      expect(youtube_links[0].slice(/\w+$/)).to eq url.slice(/\w+$/)
+      expect(youtube_links[0].slice(/\w+\?autoplay=0$/)).to eq "#{url.slice(/\w+$/)}?autoplay=0"
     end
     it 'URLが登録されていない場合' do
       visit '/song/529'

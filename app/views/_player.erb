@@ -1,7 +1,7 @@
 <span id='player'>
   <% if Util.is_pc? %>
-    <%= movie_player @url , 560 , 315 %>
+    <%= movie_player @url , 560 , 315 , 1%>
   <% else %>
-    <%= movie_player @url , '100%' , 'auto' %>
+    <%= movie_player @url , '100%' , 'auto' , 1 %>
   <% end %>
 </span>
