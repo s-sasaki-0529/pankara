@@ -227,8 +227,10 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     var $img = $('<img>').attr('src' , image);
     var song = $('#song_name_' + idx).text();
     var artist = $('#artist_name_' + idx).text();
-    var width = _width || 160;
-    var height = _height || 90;
+    var defaultWidth = zenra.ispc ? 160 : 80;
+    var defaultHeight = zenra.ispc ? 90 : 45;
+    var width = _width || defaultWidth;
+    var height = _height || defaultHeight;
     $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {
