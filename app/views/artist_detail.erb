@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 <h2>
   <%= h @artist['name'] %>
 </h2>
@@ -7,6 +9,8 @@
   <a id="wikiurl">(Wikipedia引用)</a>
 </p>
 
+<!-- PC -->
+<% if Util.is_pc? %>
 <div class="row">
   <div id="chart_column" class="col-xs-3">
     <%= erb :_artist_detail_songs_chart %>
@@ -16,6 +20,16 @@
     <%= erb :_artist_detail_songlist %>
   </div>
 </div>
+
+<!-- スマートフォン -->
+<% else %>
+<div class="row">
+  <%= erb :_artist_detail_songlist %>
+  <%= erb :_artist_detail_songs_chart %>
+  <%= erb :_artist_detail_sang_count_chart %>
+</div>
+<% end %>
+
 <%= csrftoken %>
 
 <% if @artist['songs'].count > 0 %>
