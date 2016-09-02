@@ -33,3 +33,11 @@ h3 {
 .simply-scroll-list li {
   width: 80px;
 }
+
+.search-tag-thumbnail {
+  width: 80px;
+}
+
+.search-tag-result {
+  width: auto;
+}
