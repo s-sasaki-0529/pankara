@@ -3,18 +3,18 @@
 <table id="songranking_table" class="table sortable table-hover linkcursor">
   <thead>
     <tr>
-      <th class='center' width='60'>順位</th>
-      <th width='160'>動画</th>
+      <th class='center'>順位</th>
+      <th class='center'>動画</th>
       <th class='center'>曲名</th>
       <th class='center'>歌手名</th>
-      <th class='center' width='60'>回数</th>
+      <th class='center'>回数</th>
     </tr>
   </thead>
   <tbody>
     <% @songs.each_with_index do |song , rank| %>
     <tr>
-      <td class='center' width='60'><%= rank + 1 %></td>
-      <td id="thumbnail_<%= rank %>" class='center' width='160'>
+      <td class='center' width='100px'><%= rank + 1 %></td>
+      <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'160'<% else %>'80'<% end %>>
         <% if song['song_url'] %> 
           <span id="song_name_<%= rank %>" class="hidden"><%= h song["song_name"] %></span>
           <span id="artist_name_<%= rank %>" class="hidden"><%= h song["artist_name"] %></span>
