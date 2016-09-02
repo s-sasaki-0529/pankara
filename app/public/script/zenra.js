@@ -235,7 +235,8 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
-      player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
+      var width = zenra.ispc ? 600 : '100%';
+      player_dialog = new dialog($img.attr('info') , 'player_dialog' , width);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
         location.href = '/song/' + id
@@ -295,9 +296,6 @@ var dialog = function(title , dialog_id , width , height) {
     this.dialog_id = dialog_id;
     this.width = width;
     this.height = height;
-    if (! zenra.ispc ) {
-      this.width = '100%';
-    }
 
     /*
     show - ダイアログを表示する
