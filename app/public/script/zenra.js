@@ -401,13 +401,15 @@ var bathtowel = {
     self.info.appendTo('body');
 
     //オンマウス時に曲名を通知
-    $('.bathtowel-li').each(function() {
-      var text = $(this).children('img').attr('info');
-      $(this).hover(
-        function() { self.info.text(text).css('display' , ''); } ,
-        function() { self.info.css('display' , 'none'); }
-      );
-    });
+    if (zenra.ispc) {
+      $('.bathtowel-li').each(function() {
+        var text = $(this).children('img').attr('info');
+        $(this).hover(
+          function() { self.info.text(text).css('display' , ''); } ,
+          function() { self.info.css('display' , 'none'); }
+        );
+      });
+    }
 
     //バスタオルを再生
     $('#slider').simplyScroll({
