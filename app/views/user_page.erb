@@ -80,7 +80,7 @@
       <tbody style="background-color: white">
         <% @karaoke_list.each do |karaoke| %>
           <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
-            <td class="center cell_date"><%= karaoke['datetime'].to_s.split(' ')[0] %></td>
+            <td class="center cell_date"><%= date(karaoke['datetime']) %></td>
             <td class='center'><%= h karaoke['name'] %></td>
           </tr>
         <% end %>

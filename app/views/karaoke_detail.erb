@@ -20,7 +20,7 @@
   </thead>
   <tbody style="background-color: white">
     <tr>
-      <td class='center cell-date'><%= @karaoke['datetime'].to_s.split(' ')[0] %></td>
+      <td class='center cell-date'><%= date(@karaoke['datetime']) %></td>
       <td class='center'><%= @karaoke['plan'] %></td>
       <td class='center'><%= h @karaoke['store_full_name'] %></td>
       <td class='center'><%= @karaoke['product_name'] %></td>
