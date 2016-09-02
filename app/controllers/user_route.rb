@@ -44,6 +44,11 @@ class UserRoute < March
     # デバイス確認
     @columns = Util.is_pc? ? 2 : 1
 
+    # リセット
+    if params[:reset]
+      redirect "/user/songlist/#{params[:username]}"
+    end
+
     # ページャ設定
     @pagenum = params[:pagenum] ? params[:pagenum].to_i : 24
     @page = params[:page] ? params[:page].to_i : 1
