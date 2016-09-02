@@ -3,17 +3,17 @@
 <table id="artistranking_table" class="table sortable table-hover linkcursor">
   <thead>
     <tr>
-      <th width='60'>順位</th>
+      <th class='center'>順位</th>
       <th>歌手名</th>
-      <th width='60'>回数</th>
+      <th class='center'>回数</th>
     </tr>
   </thead>
   <tbody>
     <% @artists.each_with_index do |artist , rank| %>
     <tr>
-      <td class='center' width='60'><%= rank + 1 %></td>
+      <td class='center' width='15%'><%= rank + 1 %></td>
       <td><%= artist_link artist['artist_id'], artist['artist_name'] %></td>
-      <td class='center width='60''><%= artist['count'] %></td>
+      <td class='center width='60'><%= artist['count'] %></td>
     </tr>
     <% end %>
   </tbody>
