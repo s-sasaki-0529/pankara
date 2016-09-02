@@ -1,0 +1,39 @@
+<% if @artist['songs'].count > 0 %>
+<h4>この歌手の楽曲一覧</h4>
+<table id="artistdetail_table" class="table sortable table-striped">
+  <thead>
+    <tr>
+      <th class='center' width='160'>動画</th>
+      <th class='center' width='30%'>曲名</th>
+      <% if @current_user %><th class='center'>歌唱回数(あなた)</th><% end %>
+      <th class='center'>歌唱回数(みんな)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @artist['songs'].each_with_index do |song , idx| %>
+    <tr>
+      <td id="thumbnail_<%= idx %>" class='center' width='160'>
+        <% if song['song_url'] %>
+        <span id="song_name_<%= idx %>" class="hidden"><%= h song["song_name"] %></span>
+        <span id="artist_name_<%= idx %>" class="hidden"><%= h @artist['name'] %></span>
+        <script>
+            zenra.createThumbnail(
+              "<%= idx %>" ,
+              "<%= song['song_id'] %>" ,
+              "<%= youtube_image song['song_url'] %>"
+            );
+          </script>
+        <% else %>
+          未登録
+        <% end %>
+      </td>
+      <td class='center'><%= song_link song['song_id'], song['song_name'] %></td>
+      <% if @current_user %><td class='center'><%= song['sang_count_as_user'] %></td><% end %>
+      <td class='center'><%= song['sang_count'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+<h4>このアーティストには楽曲が登録されていません</h4>
+<% end %>

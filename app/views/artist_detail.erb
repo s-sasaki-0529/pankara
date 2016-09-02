@@ -9,59 +9,15 @@
 
 <div class="row">
   <div id="chart_column" class="col-xs-3">
-    歌唱回数 みんな: <span id="sang_count_all"><%= @sang_all %></span>
-    <% if @current_user %>あなた: <span id="sang_count_user"><%= @sang_user %></span><% end %>
-
-    <h4>よく歌われる楽曲</h4>
-    <div id="artist_songs_chart"></div>
-    <h4>歌唱回数</h4>
-    <div id="sang_count_chart"></div>
-    <div id="sang_count_chart_json" class="hidden"></div>
-    <div id="songs_chart_json" class="hidden"><%= @songs_chart_json %></div>
+    <%= erb :_artist_detail_songs_chart %>
+    <%= erb :_artist_detail_sang_count_chart %>
   </div>
   <div id="song_list_column" class="col-xs-9">
-    <% if @artist['songs'].count > 0 %>
-    <h4>この歌手の楽曲一覧</h4>
-    <table id="artistdetail_table" class="table sortable table-striped">
-      <thead>
-        <tr>
-          <th class='center' width='160'>動画</th>
-          <th class='center' width='30%'>曲名</th>
-          <% if @current_user %><th class='center'>歌唱回数(あなた)</th><% end %>
-          <th class='center'>歌唱回数(みんな)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @artist['songs'].each_with_index do |song , idx| %>
-        <tr>
-          <td id="thumbnail_<%= idx %>" class='center' width='160'>
-            <% if song['song_url'] %>
-            <span id="song_name_<%= idx %>" class="hidden"><%= h song["song_name"] %></span>
-            <span id="artist_name_<%= idx %>" class="hidden"><%= h @artist['name'] %></span>
-            <script>
-                zenra.createThumbnail(
-                  "<%= idx %>" ,
-                  "<%= song['song_id'] %>" ,
-                  "<%= youtube_image song['song_url'] %>"
-                );
-              </script>
-            <% else %>
-              未登録
-            <% end %>
-          </td>
-          <td class='center'><%= song_link song['song_id'], song['song_name'] %></td>
-          <% if @current_user %><td class='center'><%= song['sang_count_as_user'] %></td><% end %>
-          <td class='center'><%= song['sang_count'] %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <% else %>
-    <h4>このアーティストには楽曲が登録されていません</h4>
-    <% end %>
+    <%= erb :_artist_detail_songlist %>
   </div>
 </div>
 <%= csrftoken %>
+
 <% if @artist['songs'].count > 0 %>
 <script>
 $(function(){
