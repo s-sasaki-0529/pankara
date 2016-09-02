@@ -1,5 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<h1>得点ランキング <%= @score_type['brand'] %></h1>
+<h1>得点ランキング</h1>
 <div class='right'>採点モード <%= erb :_score_type_selecter %></div>
 <% if @scores.empty? %>
 <p id="nondata">該当データなし</p>
@@ -7,19 +7,19 @@
 <table id="scoreranking_table" class="table sortable table-hover linkcursor">
   <thead>
     <tr>
-      <th class='center' width='60'>順位</th>
-      <th class='center' width='160'>動画</th>
+      <th class='center'>順位</th>
+      <th class='center'>動画</th>
       <th class='center'>ユーザ</th>
       <th class='center'>曲名</th>
       <th class='center'>歌手名</th>
-      <th class='center cell-number'>得点</th>
+      <th class='center'>得点</th>
     </tr>
   </thead>
   <tbody>
     <% @scores.each_with_index do |row , rank| %>
     <tr>
-      <td class='center'><%= rank + 1 %></td>
-      <td id="thumbnail_<%= rank %>" class='center' width='160'>
+      <td class='center' width='100px'><%= rank + 1 %></td>
+      <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'160'<% else %>'80'<% end %>>
         <% if row['song_url'] %>
           <span id="song_name_<%= rank %>" class="hidden"><%= h row["song_name"] %></span>
           <span id="artist_name_<%= rank %>" class="hidden"><%= h row["artist_name"] %></span>
