@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 <h3>
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
   (<% if @filter_word %>検索結果: <% else %>全<% end %><%= @song_list[:num] %> 曲)
@@ -6,14 +8,17 @@
 <%= erb :_pager %>
 
 <form method="GET">
+  <p>
   <label for="filter">絞込み</label>
   <select id="filter_category" name="filter_category">
     <option value="song" <% if @filter_category == "song" %> selected <% end %>>曲名</option>
     <option value="artist" <% if @filter_category == "artist" %> selected <% end %>>アーティスト名</option>
     <option value="tag" <% if @filter_category == "tag" %> selected <% end %>>タグ名</option>
   </select>
-  <input type="text" size="20" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
+  <input type="text" size="<% if Util.is_pc? %>20<% else %>10<% end %>" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
+  </p>
 
+  <p>
   <label>並び順</label>
   <select id="sort_category" name="sort_category">
     <option value="last_sang_datetime" <% if @sort_category == "last_sang_datetime" %> selected <% end %>>最後に歌った日</option>
@@ -26,7 +31,9 @@
     <option value="desc" <% if @sort_order == 'desc' %> selected <% end %>>降順</option>
     <option value="asc" <% if @sort_order == 'asc' %> selected <% end %>>昇順</option>
   </select>
+  </p>
 
+  <p>
   <label>表示件数</label>
   <select id="pagenum" name="pagenum">
     <option value="24" <% if @pagenum == 24 %> selected <% end %>>24</option>
@@ -35,18 +42,19 @@
     <option value="96" <% if @pagenum == 96 %> selected <% end %>>96</option>
     <option value="120" <% if @pagenum == 120 %> selected <% end %>>120</option>
   </select>
+  <input type="submit" value="表示">
+  </p>
 
   <% csrftoken %>
-  <input type="submit" value="表示">
 </form>
 
 <table id="song_list_table" class='table'>
   <tbody>
     <% @song_list[:list].each_with_index do |song , idx| %>
-      <% if idx % 2 == 0 %>
+      <% if idx % @columns == 0 %>
       <tr>
       <% end %>
-        <td id="thumbnail_<%= idx %>" class='center' width='20%'>
+        <td id="thumbnail_<%= idx %>" class='center' width='<% if Util.is_pc? %>20%<% else %>33%<% end %>'>
           <% if song['song_url'] %>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
@@ -63,7 +71,7 @@
           未登録
           <% end %>
         </td>
-        <td width='30%'>
+        <td width='<% if Util.is_pc? %>30%<% else %>67%<% end %>'>
           <p><%= song_link song['song_id'] , song['song_name'] %></p>
           <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
           <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
@@ -71,7 +79,7 @@
             最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
           </p>
         </td>
-      <% if idx + 1 % 2 == 0 %>
+      <% if idx + 1 % @columns == 0 %>
       </tr>
       <% end %>
     <% end %>

@@ -41,6 +41,9 @@ class UserRoute < March
     @user = User.new(params[:username])
     opt = {}
 
+    # デバイス確認
+    @columns = Util.is_pc? ? 2 : 1
+
     # ページャ設定
     @pagenum = params[:pagenum] ? params[:pagenum].to_i : 24
     @page = params[:page] ? params[:page].to_i : 1
