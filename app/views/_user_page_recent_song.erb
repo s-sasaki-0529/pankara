@@ -1,0 +1,26 @@
+<div class="recent_sang_area">
+  <h3>最近歌った曲</h3>
+</div>
+<!-- 最近歌った曲情報 -->
+<% if @histories.size > 0 %>
+<table id="recent_sang_table" class="table table-hover linkcursor" style="clear: both">
+  <thead style="background-color: white">
+    <tr>
+      <th>曲</th>
+      <th>歌手</th>
+    </tr>
+  </thead>
+  <tbody style="background-color: white">
+    <% @histories.each do |history| %>
+      <tr>
+        <td><%= song_link history['song'], history['song_name'] %></td>
+        <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+      </tr>
+    <% end %>
+    </tr>
+  </tbody>
+</table>
+<p class="userpage-more-link"><a href="/history/<%= @user['username'] %>">もっと見る</a></p>
+<% else %>
+  歌唱履歴がありません
+<% end %>
