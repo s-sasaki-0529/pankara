@@ -309,6 +309,7 @@ var dialog = function(title , dialog_id , width , height) {
       opt = opt || {};
       funcs = opt['funcs'] || {};
       func_at_load = opt['func_at_load'] || function(){};
+      var position = opt['position'] || 'center';
       var dialog = $('<div>').attr('id' , this.dialog_id);
       var scroll = $(window).scrollTop();
       dialog.dialog({
@@ -327,11 +328,14 @@ var dialog = function(title , dialog_id , width , height) {
     
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
-        if (opt['position'] != 'auto') {
+        if (position == 'center') {
           var margin = div.height() / 2;
           $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
           div.css('overflow' , 'hidden');
           $(window).scrollTop(scroll);
+        } else if (position == 'head') {
+          $('.ui-dialog').css({'top' : 70 , 'z-index': 9999});
+          $(window).scrollTop(0);
         }
         func_at_load();
         $('#' + id).tooltip('disable');
@@ -1177,7 +1181,7 @@ zenra.showAggregateDialog = function(user) {
   input_dialog.show(url , 'aggregate' , {
     func_at_load: function() {
     } ,
-    position: 'auto',
+    position: zenra.ispc ? 'auto' : 'head' ,
     resizable: true
   });
 };

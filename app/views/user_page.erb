@@ -1,28 +1,50 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 <%= csrftoken %>
-<div class="container-fluid">
-  <div id="div_column" class="row">
-    <!-- 左カラム -->
-    <div class="col-xs-2 center">
-      <%= erb :_user_page_userinfo %>
-    </div>
-    <!-- 右カラム -->
+
+<!-- PC -->
+<% if Util.is_pc? %>
+  <div class="container-fluid">
+    <div id="div_column" class="row">
+      <!-- 左カラム -->
+      <div class="col-xs-2 center">
+        <%= erb :_user_page_userinfo %>
+      </div>
+      <!-- 右カラム -->
+      <div class="col-xs-6">
+        <%= erb :_user_page_sanginfo %>
+      </div>
+      <div class="col-xs-4">
+        <%= erb :_user_page_favorite_artists %>
+      </div>
+  </div>
+
+  <div id="recent" class="row">
     <div class="col-xs-6">
-      <%= erb :_user_page_sanginfo %>
+      <%= erb :_user_page_recent_karaoke %>
     </div>
-    <div class="col-xs-4">
-      <%= erb :_user_page_favorite_artists %>
-    </div>
-</div>
 
-<div id="recent" class="row">
-  <div class="col-xs-6">
+    <div class="col-xs-6">
+      <%= erb :_user_page_recent_song %>
+    </div>
+  </div>
+<% else %>
+
+<!-- スマートフォン -->
+  <div class="center row">
+    <%= erb :_user_page_userinfo %>
+    <hr>
+    <%= erb :_user_page_sanginfo %>
+    <hr>
+    <%= erb :_user_page_favorite_artists %>
+    <hr>
     <%= erb :_user_page_recent_karaoke %>
-  </div>
-
-  <div class="col-xs-6">
+    <hr>
     <%= erb :_user_page_recent_song %>
+    <hr>
+    <div></div>
   </div>
-</div>
+<% end %>
 
 <% if @show_aggregate %>
 <script>
