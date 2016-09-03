@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th class='center'>#</th>
-      <th class='center' width='150'>ユーザ</th>
-      <th class='center' width='160'>動画</th>
+      <th class='center' width='<%= Util.is_pc? ? 150 : 90 %>'>ユーザ</th>
+      <th class='center' width='<%= Util.is_pc? ? 160 : 80 %>' >動画</th>
       <th class='center'>曲名</th>
       <th class='center'>歌手</th>
       <% if Util.is_pc? %>
@@ -18,14 +18,14 @@
     <% @histories.each_with_index do |history , idx| %>
     <tr>
       <td class='center'><%= idx + 1 %></td>
-      <td class='center' width='150'>
+      <td class='center' width='<%= Util.is_pc? ? 150 : 90 %>'>
         <% if Util.is_pc? %>
           <%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %>
         <% else %>
           <%= user_link(history['userinfo']['username'], history['userinfo']['screenname'] , true , 24 , 1) %>
         <% end %>
      </td>
-      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='160'>
+      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
         <% if history['song_url'] %> 
           <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
           <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
