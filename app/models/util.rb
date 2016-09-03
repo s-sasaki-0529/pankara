@@ -131,11 +131,11 @@ class Util
         f.write file.read
       end
       size = Util.image_size(tmppath , type)
-      if size && 0 < size[:width] && size[:width] <= 256 && 0 < size[:height] && size[:height] <= 256
+      if size && 0 < size[:width] && size[:width] <= 1280 && 0 < size[:height] && size[:height] <= 720
         FileUtils.move(tmppath , filepath)
       else
         FileUtils.rm(tmppath)
-        return "アップロードできるファイルサイズは256×256までです"
+        return "アップロードできるファイルサイズは1280×720までです"
       end
     else
       return "アップロードできるファイルは、jpg/png/gifのみです"
