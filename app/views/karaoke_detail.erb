@@ -310,13 +310,20 @@
           <th class='center'>値段</th>
           <td class='center'>
             <span class='orange'><%= member['price'] ? "#{member['price']} 円" : '未登録' %></span>
+            <% if @current_user and @current_user['id'] == member['userid'] %>
+              <img src="/image/edit.png" width="16" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+            <% end %>
           </td>
         </tr>
         <tr>
           <th class='center' colspan="2">感想</th>
         </tr>
         <tr>
-          <td class='center' colspan="2"><span><%= member['memo'] ? member['memo'] : '未登録' %></span></td>
+          <td class='center' colspan="2"><span><%= member['memo'] ? member['memo'] : '未登録' %></span>
+            <% if @current_user and @current_user['id'] == member['userid'] %>
+               <img src="/image/edit.png" width="16" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+            <% end %>
+          </td>
         </tr>
       </table>
     </div>
@@ -327,6 +334,7 @@
     </div>
   <% end %>
 </div>
+<p class="orange mini">※キー、採点モード、得点の一覧はPCまたはタブレットからページを開くと参照できます</p>
 
 <script>
 $(function() {
@@ -337,7 +345,7 @@ $(function() {
     $("#aggregate_" + changedUser).removeClass('hidden');
   });
 
-  <% if @karaoke['members'].count > 2 %>
+  <% if @karaoke['members'].count >= 2 %>
     $("#tab_all").prop('checked' , true);
     $("#history_all").removeClass('hidden');
     $("#aggregate_all").removeClass('hidden');

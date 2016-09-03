@@ -60,13 +60,14 @@ class March < Sinatra::Base
         nil
       end
     end
-    def user_link(username, screenname , with_icon = true , size = 32)
+    def user_link(username, screenname , with_icon = true , size = 32 , with_break = nil)
       username = h username
       screenname = h screenname
       link = "/user/userpage/#{username}"
       if with_icon
         img_tag = user_icon(username , "#{size}px" , "#{size}px")
-        return "#{img_tag} <a class='userlink' href='#{link}'>#{screenname}</a>"
+        break_tag = with_break ? "<br>" : ""
+        return "#{img_tag}#{break_tag} <a class='userlink' href='#{link}'>#{screenname}</a>"
       else
         return "<a class='userlink' href='#{link}'>#{screenname}</a>"
       end
