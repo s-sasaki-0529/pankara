@@ -20,7 +20,7 @@ class KaraokeRoute < March
   #---------------------------------------------------------------------
   get '/user/:username' do
     @target_user = User.new(params[:username])
-    @karaoke_list = @target_user.get_karaoke
+    @karaoke_list = @target_user.get_karaoke.sort{|a ,b| b['karaoke_datetime'] <=> a['karaoke_datetime']}
     erb :karaokelist
   end
 
