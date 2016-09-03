@@ -89,7 +89,8 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/friend/list/:username/?' do
     @user = User.new(params[:username])
-    @friends = @user.friend_list.values
+    friends_hash = @user.friend_list
+    friends_hash.empty? or @friends = friends_hash.values
     erb :friend_list
   end
 
