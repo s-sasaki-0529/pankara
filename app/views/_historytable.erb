@@ -48,7 +48,7 @@
         <td class='center' width='100'><%= history['scoretype_name'] %></td>
         <td class='center' width='100'><%= h history['score'] %></td>
       <% end %>
-      <% if @current_user %>
+      <% if @current_user && @current_user['username'] == history['userinfo']['username'] %>
       <td class='center' width='32'>
         <img class="linkcursor" src="/image/edit.png" width="<%= Util.is_pc? ? 32 : 16 %>" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">
       </td>

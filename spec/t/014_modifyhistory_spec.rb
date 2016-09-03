@@ -43,6 +43,8 @@ describe 'Historyの編集/削除' , :js => true do
     expect(table_string(8)).to eq '9,ないと,未登録,変更後の曲名,変更後の歌手名,0,その他,100.00,'
 
     #削除
+    login 'unagipai'
+    visit url
     expect(table_to_hash('karaoke_detail_history_all').length).to eq 75
     expect(table_string(10)).to eq '11,ちゃら,,DAN DAN心魅かれてく,FIELD OF VIEW,0,その他,73.00,'
     find('#karaoke_detail_history_all').all('tr')[11].all('td')[8].find('img').click

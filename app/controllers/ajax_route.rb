@@ -6,6 +6,7 @@ require_relative '../models/artist'
 require_relative '../models/karaoke'
 require_relative '../models/history'
 require_relative '../models/register'
+require_relative '../models/attendance'
 
 class AjaxRoute < March
 
@@ -215,7 +216,9 @@ class AjaxRoute < March
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
   post '/history/delete/?' do
+    @current_user or return error('no login')
     history = History.new(params[:id])
+    @current_user['username'] == Attendance.to_user_info([history['attendance']])[0]['user_name'] or return error('invalid user')
     history.params or return error('no record')
     history.delete
     return success

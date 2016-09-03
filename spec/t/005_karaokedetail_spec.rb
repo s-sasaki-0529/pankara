@@ -62,7 +62,7 @@ describe 'カラオケ詳細ページ' , :js => true do
       expect(history_table_all.length).to eq 75
       expect(history_table_5.length).to eq 27
       expect(history_table_all[0]['tostring']).to eq '1,ないと,,Hello, world!,BUMP OF CHICKEN,0,,,'
-      expect(history_table_5[1]['tostring']).to eq '2,ちゃら,未登録,はなまるぴっぴはよいこだけ,A応P,0,,,'
+      expect(history_table_5[1]['tostring']).to eq '2,ちゃら,未登録,はなまるぴっぴはよいこだけ,A応P,0,,'
     end
     it 'ユーザリンク/楽曲リンク/歌手リンク' do
       examine_userlink('ないと' , url)
