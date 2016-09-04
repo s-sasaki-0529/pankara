@@ -55,6 +55,11 @@ class UserRoute < March
     @pager = Pager.new(@pagenum , @page)
     opt[:pager] = @pager
 
+    # あなたと共通の持ち歌
+    if @current_user && @current_user['username'] != @user['username'] && params[:common]
+      @common = true
+    end
+
     # 検索設定
     @filter_category = params[:filter_category]
     @filter_word = params[:filter_word]
