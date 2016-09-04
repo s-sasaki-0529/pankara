@@ -71,8 +71,16 @@ class UserRoute < March
     opt[:sort_category] = @sort_category
     opt[:sort_order] = @sort_order
 
-    # 持ち歌リストを生成して戻す
+    # 持ち歌リストを生成
     @song_list = @user.songlist(opt)
+
+    # 表示件数
+    @show_from = @pager.current_page * @pagenum - @pagenum + 1
+    if @pager.current_page < @pager.page_num
+      @show_to = @pager.current_page * @pagenum
+    else
+      @show_to = (@pager.current_page - 1) * @pagenum + @song_list[:list].size
+    end
     erb :song_list
   end
 
