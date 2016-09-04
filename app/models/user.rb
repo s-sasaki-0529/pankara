@@ -481,6 +481,12 @@ class User < Base
       end
     end
 
+    # [オプション] あなたと共通の持ち歌
+    if current_user = opt[:common]
+      current_user_songs = current_user.histories.collect {|h| h['song']}.uniq
+      song_list[:list] = song_list[:list].select {|s| current_user_songs.include?(s['song_id'])}
+    end
+
     # 歌唱回数を取得
     # Todo: 遅い
     song_list[:list].each do |s|

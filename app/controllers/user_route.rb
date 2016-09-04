@@ -58,6 +58,7 @@ class UserRoute < March
     # あなたと共通の持ち歌
     if @current_user && @current_user['username'] != @user['username'] && params[:common]
       @common = true
+      opt[:common] = @current_user
     end
 
     # 検索設定
