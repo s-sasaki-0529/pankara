@@ -70,11 +70,7 @@ class March
     access_log.to(to) if to
 
     if option.get('cnt')
-      if from or to
-        access_log.print_num_of_each_day_access
-      else
-        access_log.print_num_of_access
-      end
+      access_log.print_num_of_each_day_access
     elsif agg = option.get('agg')
       access_log.print_each_data_log(agg)
     else
