@@ -68,24 +68,24 @@ describe '集計情報表示機能' , :js => true do
     it '曲名' do
       ex = ',Stage of the ground BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-05-05,,The Biggest Dreamer 和田光司 歌唱回数: 1 最終歌唱日: 2016-03-26'
       visit URL + '?filter_category=song&filter_word=the'
-      iscontain 'ないと さんの楽曲一覧 (検索結果: 5 曲)'
+      expect(find('#range').text()).to eq '5 曲表示中'
       ex_record ex
     end
     it '歌手名' do
       ex = ',グロリアスレボリューション BUMP OF CHICKEN 歌唱回数: 2 最終歌唱日: 2016-08-17,,Ending BUMP OF CHICKEN 歌唱回数: 3 最終歌唱日: 2016-08-17'
       visit URL + '?filter_category=artist&filter_word=BUMP+OF+CHICKEN'
-      iscontain 'ないと さんの楽曲一覧 (検索結果: 40 曲)'
+      expect(find('#range').text()).to eq '40 曲中1~24曲目を表示中'
       ex_record ex
     end
     it 'タグ' do
       ex = ',MISTAKE ナナホシ管弦楽団 歌唱回数: 12 最終歌唱日: 2016-08-23,,magnet minato 歌唱回数: 7 最終歌唱日: 2016-08-23'
       visit URL + '?filter_category=tag&filter_word=VOCALOID'
-      iscontain 'ないと さんの楽曲一覧 (検索結果: 111 曲)'
+      expect(find('#range').text()).to eq '111 曲中1~24曲目を表示中'
       ex_record ex
     end
     it 'ヒット無し' do
       visit URL + '?filter_category=tag&filter_word=HOGEFUGA'
-      iscontain 'ないと さんの楽曲一覧 (検索結果: 0 曲)'
+      expect(find('#range').text()).to eq '楽曲が見つかりません'
     end
   end
 

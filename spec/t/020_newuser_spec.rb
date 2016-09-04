@@ -22,7 +22,7 @@ describe '新規登録したユーザで各ページを閲覧' do
   end
   it '持ち歌一覧' do
     visit '/user/songlist'
-    iscontain 'テスト さんの楽曲一覧 (全0 曲)'
+    expect(find('#range').text()).to eq '楽曲が見つかりません'
   end
   it '歌唱履歴' do
     visit 'history'

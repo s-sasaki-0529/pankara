@@ -1,7 +1,13 @@
 <h3>
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
-  (<% if @filter_word %>検索結果: <% else %>全<% end %><%= @song_list[:num] %> 曲)
 </h3>
+<% if @pager && @pager.page_num > 1 %>
+  <p class="right" id="range"><%= @song_list[:num] %> 曲中<%= @show_from %>~<%= @show_to %>曲目を表示中</p>
+<% elsif @song_list[:num] > 0 %>
+  <p class="right" id="range"><%= @song_list[:num] %> 曲表示中</p>
+<% else %>
+  <p class="right" id="range">楽曲が見つかりません</p>
+<% end %>
 
 <%= erb :_pager %>
 
