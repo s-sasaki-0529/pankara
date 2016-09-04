@@ -2,7 +2,7 @@
 # Pager - ページャを実装するためのクラス
 #----------------------------------------------------------------------
 class Pager
-  attr_accessor :limit , :current_page , :page_num
+  attr_accessor :limit , :current_page , :page_num , :data_num
 
   # initialize - 現在ページ、ページ総数、データ総数で初期化
   #--------------------------------------------------------------------
@@ -16,6 +16,7 @@ class Pager
   # getData - ページャにて区切った範囲のデータを戻す
   #--------------------------------------------------------------------
   def getData(data)
+    @data_num = data.count
     @page_num = (data.count.to_f / @limit.to_f).ceil
     from = (@current_page - 1) * @limit
     return data[from , @limit]
