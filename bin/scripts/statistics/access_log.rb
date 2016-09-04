@@ -41,8 +41,8 @@ class AccessLog
   # print_num_of_access - 総アクセス数とユニークアクセス数を標準出力する
   #--------------------------------------------------------------------
   def print_num_of_access
-    puts "総アクセス数:   #{get_unique_access_log.size}回"
-    puts "ユニークアクセス数:   #{get_unique_access_log.size}回"
+    puts "総アクセス数:   #{@log_data_list.size}回"
+    puts "ユニークアクセス数:   #{get_unique_access_log(@log_data_list).size}回"
   end
     
   # print_num_of_each_day_access - 日ごとの総アクセス数とユニークアクセス数を標準出力する
@@ -56,7 +56,7 @@ class AccessLog
 
     puts "ユニークアクセス数:"
     get_each_day_log(@log_data_list).each do | day, log_data_list |
-      puts "%-20s%s回"%[day, log_data_list.size]
+      puts "%-20s%s回"%[day, get_unique_access_log(log_data_list).size]
     end
   end
   
@@ -74,17 +74,17 @@ class AccessLog
   # get_unique_access_log - ユニークなアクセスのみを取得する
   #--------------------------------------------------------------------
   private
-  def get_unique_access_log
+  def get_unique_access_log(log_data_list)
     unique_log_list = Array.new
     
-    @log_data_list.each do | log |
+    log_data_list.each do | log |
       unique_log_list.push(log) if is_unique?(unique_log_list, log['ip'])
     end
 
     return unique_log_list
   end
 
-  # is_unique? - "unique_log_list"が"ip"を持っているか判定する
+  # is_unique? - "unique_log_list"が"ip"を持っていないか判定する
   #--------------------------------------------------------------------
   private
   def is_unique?(unique_log_list, ip)
@@ -118,7 +118,7 @@ class AccessLog
   def get_each_day_log(log_data_list)
     each_day_log_hash = Hash.new
     
-    @log_data_list.each do | log |
+    log_data_list.each do | log |
       unless each_day_log_hash.key? log['date']
         each_day_log_hash[log['date']] = Array.new
       end
