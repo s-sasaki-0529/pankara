@@ -46,6 +46,9 @@
     <option value="96" <% if @pagenum == 96 %> selected <% end %>>96</option>
     <option value="120" <% if @pagenum == 120 %> selected <% end %>>120</option>
   </select>
+  <% if @current_user && @current_user['username'] != @user['username'] %>
+  <input type="checkbox" name="common" id="common" <% if @common %>checked<% end %>><label for="common">あなたと共通の持ち歌</label>
+  <% end %>
   <input type="submit" value="表示" name="submit">
   <input type="submit" value="リセット" name="reset">
   </p>

@@ -122,4 +122,30 @@ describe '集計情報表示機能' , :js => true do
     end
   end
 
+  describe '共通の持ち歌' do
+    it 'ログインなし' do
+      visit '/auth/logout'
+      visit URL
+      islack 'あなたと共通の持ち歌'
+    end
+
+    it '自分の持ち歌ページ' do
+      visit URL
+      islack 'あなたと共通の持ち歌'
+    end
+
+    it '共通の持ち歌あり' do
+      visit '/user/songlist/unagipai?common=on'
+      iscontain 'あなたと共通の持ち歌'
+      iscontain '17 曲表示中'
+      iscontain ['もう恋なんてしない' , '女々しくて' , 'Butter-Fly']
+    end
+
+    it '共通の持ち歌なし' do
+      visit '/user/songlist/worry?common=on'
+      iscontain 'あなたと共通の持ち歌'
+      iscontain '楽曲が見つかりません'
+    end
+  end
+
 end
