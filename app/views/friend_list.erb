@@ -1,6 +1,6 @@
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの友達一覧</h3>
 
+<% if @friends %>
 <table class='table table-hover'>
   <tbody>
     <% @friends.each do |f| %>
@@ -14,3 +14,6 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+<p>友達がいません</p>
+<% end %>

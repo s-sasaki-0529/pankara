@@ -22,6 +22,12 @@ class HistoryRoute < March
     # ユーザクラスから歌唱履歴を取得して一覧表示
     @user = User.new(params[:username])
     @histories = @user.histories(opt)
+
+    # 表示範囲の情報
+    @history_size = @pager.data_num
+    @show_from = @pager.data_num - @histories[0]['number'].to_i + 1
+    @show_to = @pager.data_num - @histories[-1]['number'].to_i + 1
+
     erb :history
 
   end

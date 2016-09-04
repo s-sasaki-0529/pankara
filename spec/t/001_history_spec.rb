@@ -33,6 +33,7 @@ describe '歌唱履歴ページ' do
     table = table_to_hash('history_table')
     expect(table.length).to eq 5
     expect(table[0]['tostring']).to eq "5,2016-01-03,PONPONPON きゃりーぱみゅぱみゅ,PONPONPON,きゃりーぱみゅぱみゅ,-3"
+    expect(find('#range').text).to eq '405 曲中 401 〜 405 曲目を表示中'
   end
 
 end
