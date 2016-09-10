@@ -1,8 +1,16 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <div id="songs_json" class="hidden"><%= @songs_json %></div>
 
-<h2>Youtubeプレイリスト予定地</h2>
-<div id="player"></div>
+
+<div class="row">
+  <div class="col-sm-8">
+    <h3>Youtubeプレイリスト予定地</h3>
+    <div id="player"></div>
+  </div>
+  <div class="col-sm-4">
+    <h4>再生リスト</h4>
+  </div>
+</div>
 
 <script>
 function onYouTubeIframeAPIReady() {

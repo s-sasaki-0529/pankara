@@ -1262,14 +1262,8 @@ zenra.playlist = (function() {
     player_width = width;
     player_height = height;
     songs = zenra.parseJSON($('#songs_json').text());
-    url = '/ajax/song/list';
-    zenra.post(url , {songs: songs} , { success: function (json) {
-      var response = zenra.parseJSON(json);
-      var songs = response.info;
-      if (response.result != 'success') return;
-      list = songs.map(function(s) { return s.song_url });
-      _set();
-    }});
+    list = Object.keys(songs);
+    _set();
   }
 
   /*[Method] 再生リストをセットしてプレイヤーを生成*/
