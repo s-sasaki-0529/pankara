@@ -34,6 +34,7 @@
       <% end %>
     </tbody>
   </table>
+  <p class="right"><%= playlist_link(@song_list.map {|s| s['song_id']}) %></p>
   <% end %>
 <% elsif @tag.size > 0 %>
   <h3>"<%= h @tag %>" を含む楽曲が存在しません</h3>
