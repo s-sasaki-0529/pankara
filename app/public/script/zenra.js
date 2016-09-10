@@ -1249,24 +1249,34 @@ zenra.removeSongTag = function(user , id , tag) {
 /*プレイリストオブジェクト*/
 zenra.playlist = (function() {
 
+  var element_id;
+  var player_width;
+  var player_height;
   var yt;
   var target;
   var list
 
   /*[Method] 再生リストを作成する*/
-  function _init() {
+  function _init(id , width , height) {
+    element_id = id;
+    player_width = width;
+    player_height = height;
     songs = zenra.parseJSON($('#songs_json').text());
     url = '/ajax/song/list';
-    zenra.post(url , {songs: songs} , { success: function (response) {
+    zenra.post(url , {songs: songs} , { success: function (json) {
+      var response = zenra.parseJSON(json);
+      var songs = response.info;
+      if (response.result != 'success') return;
+      list = songs.map(function(s) { return s.song_url });
+      _set();
     }});
   }
 
   /*[Method] 再生リストをセットしてプレイヤーを生成*/
-  function _set(width , height , id , _list) {
-    list = _list;
-    yt = new YT.Player(id , {
-      width: width ,
-      height: height,
+  function _set() {
+    yt = new YT.Player(element_id , {
+      width: player_width ,
+      height: player_height,
       playerVars: {
         autoplay: 1,
         loop: 1,
