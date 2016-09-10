@@ -46,14 +46,8 @@ class March < Sinatra::Base
         return "<a href=\"#{url}\">動画リンク</a>"
       end
     end
-    def youtube_image(url)
-      if url =~ %r|https://www.youtube.com/watch\?v=(.+)$|
-        "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
-      elsif url =~ %r|www.nicovideo.jp/watch/sm([0-9]+)|
-        "http://tn-skr3.smilevideo.jp/smile?i=#{$1}"
-      else
-        nil
-      end
+    def youtube_image(id)
+      "http://i.ytimg.com/vi/#{id}/mqdefault.jpg"
     end
     def user_link(username, screenname , with_icon = true , size = 32 , with_break = nil)
       username = h username
