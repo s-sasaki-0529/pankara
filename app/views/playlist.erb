@@ -1,7 +1,8 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <div id="songs_json" class="hidden"><%= @songs_json %></div>
 
-
+<!-- PC -->
+<% if Util.is_pc? %>
 <div class="row">
   <div class="col-sm-8">
     <h3 id="song_name"><%= @songs.values[0]['song_name'] %></h3>
@@ -28,3 +29,26 @@ function onYouTubeIframeAPIReady() {
   zenra.playlist.init('player' , 640 , 390);
 };
 </script>
+
+<!-- スマートフォン -->
+<% else %>
+<h3>再生リストを連続再生</h3>
+<div id="player"></div>
+<h3>再生リスト(<%= @songs.size %>曲)</h3>
+<div id="playlist_table">
+  <table class="table">
+    <% @songs.values.each do |s| %>
+    <tr class="song-rows" id="song_row_<%= s['song_id'] %>">
+      <td><img src="<%= youtube_image s['song_url'] %>" width=64 height=36/></td>
+      <td><%= s['song_name'] %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<script>
+function onYouTubeIframeAPIReady() {
+  zenra.playlist.init('player' , '100%' , 'auto');
+}
+</script>
+<% end %>
