@@ -1251,16 +1251,25 @@ zenra.playlist = (function() {
 
   var yt;
   var target;
+  var list
 
   /*[Method] プレイヤー要素を初期化*/
-  function _init(url , width , height , id) {
+  function _init(width , height , id , _list) {
+    list = _list;
     yt = new YT.Player(id , {
       width: width ,
       height: height,
-      videoId: url ,
+      playerVars: {
+        autoplay: 1,
+        loop: 1,
+        listType: 'playlist',
+        list: 'playlist',
+        rel: 0
+      },
       events: {
         'onReady' : function(event) {
           target = event.target;
+          target.cuePlaylist(list , 0);
         }
       }
     });
