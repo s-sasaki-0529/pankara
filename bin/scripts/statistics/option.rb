@@ -23,6 +23,7 @@ class Option
                 "\tu\tURL別アクセス数", "\tr\tリファラ別アクセス数",
                 "\to\tOS別アクセス数", "\tb\tブラウザ別アクセス数",
                 "\td\tデバイス別アクセス数") {|value| @args['agg'] = convert_agg_option(value)}
+      parser.on('--dbg', '指定するとファイル出力せずに標準出力を行う') {|v| @args['dbg'] = v}
 
       parser.parse!(ARGV)
     end 

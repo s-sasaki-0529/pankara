@@ -1,0 +1,11 @@
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<h2>Youtubeプレイリスト予定地</h2>
+<div id="player"></div>
+
+<script>
+function onYouTubeIframeAPIReady() {
+  zenra.playlist.init('q2bGaov8iIo' , 640 , 390 , 'player');
+  setTimeout(function() {zenra.playlist.play()} , 5000);
+};
+</script>

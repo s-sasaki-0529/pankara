@@ -3,8 +3,10 @@
 #----------------------------------------------------------------------
 require_relative 'access_log'
 require_relative 'option'
+require_relative 'output_for_debug'
+require_relative 'output'
 
-Version = '0.1.0'
+Version = '0.1.1'
 
 class March
 
@@ -69,12 +71,25 @@ class March
     to = option.get('to')
     access_log.to(to) if to
 
+    output = get_output(option, access_log)
+    
     if option.get('cnt')
-      access_log.print_num_of_each_day_access
+      output.print_num_of_each_day_access
     elsif agg = option.get('agg')
-      access_log.print_each_data_log(agg)
+      output.print_num_of_each_data_access(agg)
     else
-      access_log.print
+      output.print_log
+    end
+  end
+
+  # get_output - オプションに応じて出力用インスタンスを取得する
+  #---------------------------------------------------------------------
+  private
+  def get_output(option, access_log)
+    if option.get('dbg')
+      return OutputForDebug.new(access_log)
+    else
+      return Output.new(access_log)
     end
   end
 

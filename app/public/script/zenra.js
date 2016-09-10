@@ -1246,6 +1246,47 @@ zenra.removeSongTag = function(user , id , tag) {
   });
 };
 
+/*プレイリストオブジェクト*/
+zenra.playlist = (function() {
+
+  var yt;
+  var target;
+
+  /*[Method] プレイヤー要素を初期化*/
+  function _init(url , width , height , id) {
+    yt = new YT.Player(id , {
+      width: width ,
+      height: height,
+      videoId: url ,
+      events: {
+        'onReady' : function(event) {
+          target = event.target;
+        }
+      }
+    });
+  }
+
+  /*[Method] プレイヤーを再生*/
+  function _play() {
+    if (target) {
+      target.playVideo();
+    }
+  }
+
+  /*[Method] プレイヤーを一時停止*/
+  function _pause() {
+    if (target) {
+      target.pauseVideo();
+    }
+  }
+
+  return {
+    init: _init ,
+    play: _play ,
+    pause: _pause ,
+  };
+})();
+
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
   format = format.replace(/YYYY/g, date.getFullYear());

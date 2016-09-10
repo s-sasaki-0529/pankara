@@ -9,6 +9,7 @@ require_relative './user_route'
 require_relative './ajax_route'
 require_relative './search_route'
 require_relative './config_route'
+require_relative './playlist_route'
 
 class IndexRoute < March
 
