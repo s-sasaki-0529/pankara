@@ -185,7 +185,7 @@ class Util
       f.read
     end
     html.scan(%r|"/watch\?v=(\w+?)"|) do
-      return "#{YOUTUBE}/watch?v=#{$1}"
+      return $1
     end
 
     # 取得失敗時、歌手名を省略して再検索。それでもダメならnilを戻す
@@ -193,6 +193,16 @@ class Util
       return nil
     else
       return self.search_tube(song , "")
+    end
+  end
+
+  # youtube_to_id - YoutubeのURLから動画IDを抜き出す
+  #---------------------------------------------------------------------
+  def self.youtube_to_id(url)
+    if url =~ %r|www.youtube.com/watch\?v=(.+)$|
+      return $1
+    else
+      return false
     end
   end
 

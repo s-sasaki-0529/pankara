@@ -44,7 +44,7 @@ class AjaxRoute < March
     erb :_input_song
   end
 
-  # post '/ajax/songlist' - 楽曲一覧を戻す
+  # post '/ajax/songlist' - 全ての楽曲を取得し、曲名→歌手名のハッシュをJSONで戻す
   #---------------------------------------------------------------------
   post '/songlist/?' do
     hash = Hash.new
@@ -53,6 +53,16 @@ class AjaxRoute < March
       hash[s['song_name']] = s['artist_name']
     end
     return Util.to_json(hash)
+  end
+
+  # post '/ajax/song/list' - SongIDのリストをPOSTすると、該当する楽曲情報のリストを戻す
+  #--------------------------------------------------------------------
+  post '/song/list/?' do
+    songs = params[:songs]
+    (songs && songs.size > 0) or return error('invalid songs')
+    songs_info = Song.list(:songs => songs)
+    (songs_info && songs_info.size > 0) or return error('failed get songs info')
+    return success(songs_info)
   end
 
   # post '/ajax/song/tag/list' - 指定した楽曲のタグ一覧を戻す

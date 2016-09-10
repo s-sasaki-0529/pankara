@@ -1251,16 +1251,33 @@ zenra.playlist = (function() {
 
   var yt;
   var target;
+  var list
 
-  /*[Method] プレイヤー要素を初期化*/
-  function _init(url , width , height , id) {
+  /*[Method] 再生リストを作成する*/
+  function _init() {
+    songs = zenra.parseJSON($('#songs_json').text());
+    url = '/ajax/song/list';
+    zenra.post(url , {songs: songs} , { success: function (response) {
+    }});
+  }
+
+  /*[Method] 再生リストをセットしてプレイヤーを生成*/
+  function _set(width , height , id , _list) {
+    list = _list;
     yt = new YT.Player(id , {
       width: width ,
       height: height,
-      videoId: url ,
+      playerVars: {
+        autoplay: 1,
+        loop: 1,
+        listType: 'playlist',
+        list: 'playlist',
+        rel: 0
+      },
       events: {
         'onReady' : function(event) {
           target = event.target;
+          target.cuePlaylist(list , 0);
         }
       }
     });
@@ -1282,6 +1299,7 @@ zenra.playlist = (function() {
 
   return {
     init: _init ,
+    set: _set ,
     play: _play ,
     pause: _pause ,
   };
