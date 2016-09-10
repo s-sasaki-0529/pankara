@@ -55,6 +55,16 @@ class AjaxRoute < March
     return Util.to_json(hash)
   end
 
+  # post '/ajax/song/list' - SongIDのリストをPOSTすると、該当する楽曲情報のリストを戻す
+  #--------------------------------------------------------------------
+  post '/song/list/?' do
+    songs = params[:songs]
+    (songs && songs.size > 0) or return error('invalid songs')
+    songs_info = Song.list(:songs => songs)
+    (songs_info && songs_info.size > 0) or return error('failed get songs info')
+    return success(songs_info)
+  end
+
   # post '/ajax/song/tag/list' - 指定した楽曲のタグ一覧を戻す
   #--------------------------------------------------------------------
   post '/song/tag/list/?' do
