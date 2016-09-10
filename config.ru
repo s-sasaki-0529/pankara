@@ -12,6 +12,7 @@ map('/artist') {run ArtistRoute.new}
 map('/config') {run ConfigRoute.new}
 map('/history') {run HistoryRoute.new}
 map('/karaoke') {run KaraokeRoute.new}
+map('/playlist') {run PlaylistRoute.new}
 map('/ranking') {run RankingRoute.new}
 map('/search') {run SearchRoute.new}
 map('/song') {run SongRoute.new}
