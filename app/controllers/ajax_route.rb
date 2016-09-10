@@ -44,7 +44,7 @@ class AjaxRoute < March
     erb :_input_song
   end
 
-  # post '/ajax/songlist' - 楽曲一覧を戻す
+  # post '/ajax/songlist' - 全ての楽曲を取得し、曲名→歌手名のハッシュをJSONで戻す
   #---------------------------------------------------------------------
   post '/songlist/?' do
     hash = Hash.new
