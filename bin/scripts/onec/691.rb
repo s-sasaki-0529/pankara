@@ -2,7 +2,7 @@
 # このスクリプトは本番環境では一度のみの利用を想定
 
 require 'pp'
-require_relative '../../app/models/db'
+require_relative '../../../app/models/db'
 
 songs = DB.new(:SELECT => ['id' , 'url'] , :FROM => 'song').execute_all
 songs.each do |s|

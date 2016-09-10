@@ -47,7 +47,11 @@ class March < Sinatra::Base
       end
     end
     def youtube_image(id)
-      "http://i.ytimg.com/vi/#{id}/mqdefault.jpg"
+      if id && id != "" && id != nil
+        "http://i.ytimg.com/vi/#{id}/mqdefault.jpg"
+      else
+        "未登録"
+      end
     end
     def user_link(username, screenname , with_icon = true , size = 32 , with_break = nil)
       username = h username
