@@ -1255,6 +1255,20 @@ zenra.playlist = (function() {
   var yt;
   var target;
   var list
+  var songs;
+
+  /*[Event] プレイヤーのステータス変化を検知*/
+  function onStateChange(e) {
+    state = e.data;
+    if (state == -1) {        //再生前
+    } else if (state == 0) {  //再生終了
+    } else if (state == 1) {  //再生中
+      rewriteSongInfo();
+    } else if (state == 2) {  //一時停止
+    } else if (state == 3) {  //バッファ中
+    } else if (state == 5) {  //ビデオがキューに入った
+    }
+  }
 
   /*[Method] 再生リストを作成する*/
   function _init(id , width , height) {
@@ -1282,7 +1296,8 @@ zenra.playlist = (function() {
         'onReady' : function(event) {
           target = event.target;
           target.cuePlaylist(list , 0);
-        }
+        } ,
+        'onStateChange' : onStateChange
       }
     });
   }
@@ -1299,6 +1314,14 @@ zenra.playlist = (function() {
     if (target) {
       target.pauseVideo();
     }
+  }
+
+  /*[Method] 再生中の楽曲情報を更新する*/
+  function rewriteSongInfo() {
+    var url = yt.getVideoUrl();
+    var id = url.match(/^.+v=(.+)$/)[1];
+    $('#song_name').text(songs[id].song_name);
+    $('#artist_name').text(songs[id].artist_name);
   }
 
   return {

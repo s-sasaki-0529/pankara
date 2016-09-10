@@ -4,7 +4,8 @@
 
 <div class="row">
   <div class="col-sm-8">
-    <h3>プレイヤー</h3>
+    <h3 id="song_name"><%= @songs.values[0]['song_name'] %></h3>
+    <h4 id="artist_name"><%= @songs.values[0]['artist_name'] %></h3>
     <div id="player"></div>
   </div>
   <div class="col-sm-4">
@@ -12,7 +13,7 @@
     <div id="playlist_table">
       <table class="table">
         <% @songs.values.each do |s| %>
-        <tr id="song_row_<%= s['song_id'] %>">
+        <tr class="song-rows" id="song_row_<%= s['song_id'] %>">
           <td><img src="<%= youtube_image s['song_url'] %>" width=64 height=36/></td>
           <td><%= s['song_name'] %></td>
         </tr>
