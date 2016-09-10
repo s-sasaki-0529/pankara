@@ -235,3 +235,9 @@ p.mini {
   margin-top: -20px;
   right: 12px;
 }
+
+/*プレイリストの楽曲一覧テーブル*/
+#playlist_table {
+  height: 650px;
+  overflow-y: scroll;
+}

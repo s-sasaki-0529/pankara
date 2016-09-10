@@ -4,11 +4,21 @@
 
 <div class="row">
   <div class="col-sm-8">
-    <h3>Youtubeプレイリスト予定地</h3>
+    <h3>プレイヤー</h3>
     <div id="player"></div>
   </div>
   <div class="col-sm-4">
-    <h4>再生リスト</h4>
+    <h3>再生リスト(<%= @songs.size %>曲)</h3>
+    <div id="playlist_table">
+      <table class="table">
+        <% @songs.values.each do |s| %>
+        <tr id="song_row_<%= s['song_id'] %>">
+          <td><img src="<%= youtube_image s['song_url'] %>" width=64 height=36/></td>
+          <td><%= s['song_name'] %></td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
   </div>
 </div>
 
