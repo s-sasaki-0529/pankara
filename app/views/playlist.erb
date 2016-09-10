@@ -1,2 +1,10 @@
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <h2>Youtubeプレイリスト予定地</h2>
-<%= movie_player "https://www.youtube.com/watch?v=q2bGaov8iIo" , 560 , 315 , 1%>
+<div id="player"></div>
+
+<script>
+function onYouTubeIframeAPIReady() {
+  zenra.playlist.init('q2bGaov8iIo' , 640 , 390 , 'player');
+};
+</script>

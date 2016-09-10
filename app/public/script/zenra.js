@@ -1246,6 +1246,25 @@ zenra.removeSongTag = function(user , id , tag) {
   });
 };
 
+/*プレイリストオブジェクト*/
+zenra.playlist = (function() {
+
+  var yt;
+
+  /*[Method] プレイヤー要素を初期化する*/
+  function _init(url , width , height , id) {
+    yt = new YT.Player(id , {
+      width: width ,
+      height: height,
+      videoId: url
+    });
+  }
+
+  return {
+    init: _init
+  };
+})();
+
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
   format = format.replace(/YYYY/g, date.getFullYear());
