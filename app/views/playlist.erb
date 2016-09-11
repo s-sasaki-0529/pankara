@@ -44,7 +44,7 @@ function onYouTubeIframeAPIReady() {
       <td onclick="zenra.playlist.set(<%= idx %>)">
         <img src="<%= youtube_image s['song_url'] %>" width=64 height=36/>
       </td>
-      <td><%= s['song_name'] %></td>
+      <td><%= song_link s['song_id'] , s['song_name'] , "_blank" %></td>
     </tr>
     <% end %>
   </table>
