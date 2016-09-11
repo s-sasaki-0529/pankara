@@ -52,7 +52,7 @@ class AccessLog
     return each_data_log_hash
   end
 
-  # get_each_day_log - 日にちごとのアクセスログを取得する
+  # get_each_day_log_hash - 日にちごとのアクセスログを取得する
   #--------------------------------------------------------------------
   def get_each_day_log_hash(log_data_list)
     each_day_log_hash = Hash.new
@@ -68,6 +68,19 @@ class AccessLog
     return each_day_log_hash
   end
   
+  # sort_in_num_of_access_order_by - 指定した順に、アクセス数で並び替える
+  #--------------------------------------------------------------------
+  def sort_in_num_of_access_order_by(order, each_day_access_hash)
+    case order
+    when 'asc'  
+      return each_day_access_hash.sort { | (date1, num1), (date2, num2) | num1 <=> num2 }
+    when 'desc'
+      return each_day_access_hash.sort { | (date1, num1), (date2, num2) | num2 <=> num1 }
+    else
+      return each_day_access_hash
+    end
+  end
+
   # is_unique? - "unique_log_list"が"ip"を持っていないか判定する
   #--------------------------------------------------------------------
   private
@@ -78,5 +91,5 @@ class AccessLog
 
     return true
   end
-
+  
 end
