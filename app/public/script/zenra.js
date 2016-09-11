@@ -1320,8 +1320,11 @@ zenra.playlist = (function() {
   function rewriteSongInfo() {
     var url = yt.getVideoUrl();
     var id = url.match(/^.+v=(.+)$/)[1];
+    var song_id = songs[id].song_id;
     $('#song_name').text(songs[id].song_name);
     $('#artist_name').text(songs[id].artist_name);
+    $(".song-rows").removeClass('current-song');
+    $("#song_row_" + song_id).addClass('current-song');
   }
 
   return {

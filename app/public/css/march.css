@@ -241,3 +241,6 @@ p.mini {
   height: 650px;
   overflow-y: scroll;
 }
+.current-song {
+  background-color: #d3d3d3;
+}
