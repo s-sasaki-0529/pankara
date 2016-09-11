@@ -69,9 +69,9 @@ class March < Sinatra::Base
       name = h name
       return "<a href=/karaoke/detail/#{id}>#{name}</a>"
     end
-    def song_link(id, name)
+    def song_link(id, name , target="_self")
       name = h name
-      return "<a href=/song/#{id}>#{name}</a>"
+      return "<a target=#{target} href=/song/#{id}>#{name}</a>"
     end
     def artist_link(id, name)
       name = h name

@@ -1277,11 +1277,6 @@ zenra.playlist = (function() {
     player_height = height;
     songs = zenra.parseJSON($('#songs_json').text());
     list = Object.keys(songs);
-    _set();
-  }
-
-  /*[Method] 再生リストをセットしてプレイヤーを生成*/
-  function _set() {
     yt = new YT.Player(element_id , {
       width: player_width ,
       height: player_height,
@@ -1300,6 +1295,12 @@ zenra.playlist = (function() {
         'onStateChange' : onStateChange
       }
     });
+  }
+
+  /*[Method] 指定したインデックスの楽曲を再生する*/
+  function _set(index) {
+    target.cuePlaylist(list , index);
+    setTimeout(_play , 400);  //タイムラグ
   }
 
   /*[Method] プレイヤーを再生*/
