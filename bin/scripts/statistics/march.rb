@@ -1,12 +1,14 @@
 #----------------------------------------------------------------------
 # March - アクセスログ解析ツールの処理開始クラス
 #----------------------------------------------------------------------
+require 'date'
+
 require_relative 'access_log'
 require_relative 'option'
 require_relative 'output_for_debug'
-require_relative 'output'
+require_relative 'output_to_json'
 
-Version = '0.1.1'
+Version = '0.2.0'
 
 class March
 
@@ -65,16 +67,12 @@ class March
   #---------------------------------------------------------------------
   private
   def print_result(option, access_log)
-    from = option.get('from')
-    access_log.from(from) if from
-    
-    to = option.get('to')
-    access_log.to(to) if to
+    extract_log_by_date(option, access_log)
 
     output = get_output(option, access_log)
-    
-    if option.get('cnt')
-      output.print_num_of_each_day_access
+ 
+    if order = option.get('cnt')
+      output.print_num_of_each_day_access order
     elsif agg = option.get('agg')
       output.print_num_of_each_data_access(agg)
     else
@@ -82,14 +80,30 @@ class March
     end
   end
 
+  # extract_log_by_date - オプションに応じて出力用インスタンスを取得する
+  #---------------------------------------------------------------------
+  private
+  def extract_log_by_date(option, access_log)
+    if option.get('today')
+      from = Date.today.to_s
+      to = from
+    else
+      from = option.get('from')
+      to = option.get('to')
+    end
+    
+    access_log.from(from) if from 
+    access_log.to(to) if to
+  end
+
   # get_output - オプションに応じて出力用インスタンスを取得する
   #---------------------------------------------------------------------
   private
   def get_output(option, access_log)
-    if option.get('dbg')
-      return OutputForDebug.new(access_log)
+    if option.get('json')
+      return OutputToJson.new(access_log)
     else
-      return Output.new(access_log)
+      return OutputForDebug.new(access_log)
     end
   end
 

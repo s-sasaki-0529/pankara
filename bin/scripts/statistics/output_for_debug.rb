@@ -34,16 +34,24 @@ class OutputForDebug
 
   # print_num_of_each_day_access - 日ごとの総アクセス数とユニークアクセス数を標準出力する
   #--------------------------------------------------------------------
-  def print_num_of_each_day_access
+  def print_num_of_each_day_access(order)
+    each_day_log_hash = @access_log.get_each_day_log_hash(@access_log.log_data_list)
+    
+    each_day_access_hash = Hash.new
+    each_day_log_hash.each { | day, log_data_list | each_day_access_hash.store(day, log_data_list.size) }
+    
     puts '総アクセス数:'
-    @access_log.get_each_day_log_hash(@access_log.log_data_list).each do | day, log_data_list |
-      puts "%-20s%s回"%[day, log_data_list.size]
+    @access_log.sort_in_num_of_access_order_by(order, each_day_access_hash).each do | day, num_of_access |
+      puts "%-20s%s回"%[day, num_of_access]
     end
     puts
 
+    each_day_access_hash = Hash.new
+    each_day_log_hash.each { | day, log_data_list | each_day_access_hash.store(day, @access_log.get_unique_access_log_list(log_data_list).size) }
+    
     puts "ユニークアクセス数:"
-    @access_log.get_each_day_log_hash(@access_log.log_data_list).each do | day, log_data_list |
-      puts "%-20s%s回"%[day, @access_log.get_unique_access_log_list(log_data_list).size]
+    @access_log.sort_in_num_of_access_order_by(order, each_day_access_hash).each do | day, num_of_access |
+      puts "%-20s%s回"%[day, num_of_access]
     end
   end
   
