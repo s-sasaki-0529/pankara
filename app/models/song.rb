@@ -44,6 +44,13 @@ class Song < Base
       db.set("%#{word}%")
     end
 
+    # opt[:songs]の順番を維持
+    if opt[:sort] == "origin"
+      field = songs.join(',')
+      order = "FIELD(song.id, #{field})"
+      db.option("ORDER BY #{order}")
+    end
+
     # 名前順でソート
     if opt[:sort] == "name"
       db.option("ORDER BY song_name")
