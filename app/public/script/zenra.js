@@ -877,7 +877,7 @@ var register = (function() {
     },
 
     /*[Method] 楽曲編集画面を表示する*/
-    editSong : function(song_id , url) {
+    editSong : function(song_id , youtube_id) {
       var song_name = $("#song_name").text();
       var artist_name = $("#artist_name").text();
       input_dialog = new dialog('楽曲編集' , 'input_dialog' , 450);
@@ -888,7 +888,7 @@ var register = (function() {
           $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
           $('#song').val(song_name);
           $('#artist').val(artist_name);
-          $('#url').val(url);
+          $('#url').val('https://www.youtube.com/watch?v=' + youtube_id);
         }
       });
     },
@@ -1033,7 +1033,12 @@ var register = (function() {
 
     /*[Method] 楽曲情報編集リクエストを送信する*/
     submitSongEditRequest : function(song_id) {
-      var data = {song: $('#song').val(), artist: $('#artist').val(), url: $('#url').val(), song_id: song_id};
+      var youtubeID = $('#url').val().match(/watch\?v=(.+)$/);
+      if (! youtubeID) {
+        alert('URLに誤りがあります');
+        return false;
+      }
+      var data = {song: $('#song').val(), artist: $('#artist').val(), url: youtubeID[1], song_id: song_id};
       zenra.post('/ajax/song/modify' , data , {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
