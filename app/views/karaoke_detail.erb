@@ -347,7 +347,7 @@ $(function() {
     $("#tab_all").prop('checked' , true);
     $("#history_all").removeClass('hidden');
     $("#aggregate_all").removeClass('hidden');
-  <% else %>
+  <% elsif @karaoke['members'].count >= 1 %>
     $("#tab_<%= @karaoke['members'][0]['userid'] %>").prop('checked' , true);
     $("#history_<%= @karaoke['members'][0]['userid'] %>").removeClass('hidden');
     $("#aggregate_<%= @karaoke['members'][0]['userid'] %>").removeClass('hidden');
