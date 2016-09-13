@@ -83,6 +83,22 @@ class Util
     return url
   end
 
+  # add_get_params - 現在のURLにGETパラメータを付与する
+  #--------------------------------------------------------------------
+  def self.add_get_params(params)
+    url = @@request.url.dup
+    params.each do |k,v|
+      if url.index('?').nil?
+        url += "?#{k}=#{v}"
+      elsif url.index("#{k}=")
+        url.gsub!(/#{k}=\w+/ , "#{k}=#{v}")
+      else
+        url += "&#{k}=#{v}"
+      end
+    end
+    return url
+  end
+
   # icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
   #----------------------------------------------------------------------
   def self.icon_file(username)
