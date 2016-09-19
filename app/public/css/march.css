@@ -29,6 +29,11 @@ tr *.cell-datetime {
   cursor: pointer;
 }
 
+/*半透明の要素*/
+.translucent {
+  opacity: 0.5;
+}
+
 /*テキストを中央揃えにするクラス*/
 .center {
   text-align: center;

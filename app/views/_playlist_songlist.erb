@@ -3,9 +3,12 @@
 <h3>再生リスト(<%= @songs.size %>曲)</h3>
 <div id="playlist_table">
   <table class="table">
-    <% @songs.values.each_with_index do |s , idx| %>
+    <% @songs.values.each do |s| %>
     <tr class="song-rows" id="song_row_<%= s['song_id'] %>">
-      <td onclick="zenra.playlist.set(<%= idx %>)">
+      <td>
+        <input type="checkbox" class="playlist-checked" id="playlist_checked_<%= s['song_url'] %>" checked/>
+      </td>
+      <td onclick="zenra.playlist.set('<%= s['song_url'] %>')">
         <img src="<%= youtube_image s['song_url'] %>" width=64 height=36/>
       </td>
       <td><%= song_link s['song_id'] , s['song_name'] , "_blank" %></td>

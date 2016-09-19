@@ -1275,13 +1275,32 @@ zenra.playlist = (function() {
     }
   }
 
+  /*[Method] 再生リストを設定する(チェックされていない動画を除外)*/
+  function cuePlaylist(index_id) {
+    var index = 0;
+    var playlist = [];
+    Object.keys(list).forEach(function(k) {
+      if(list[k]) {
+        playlist.push(k);
+      }
+    });
+    if (index_id) {
+      index = playlist.indexOf(index_id);
+    }
+    target.cuePlaylist(playlist , index);
+    setTimeout(_play , 1000);  //タイムラグ
+  }
+
   /*[Method] 再生リストを作成する*/
   function _init(id , width , height) {
     element_id = id;
     player_width = width;
     player_height = height;
     songs = zenra.parseJSON($('#songs_json').text());
-    list = Object.keys(songs);
+    list = {};
+    Object.keys(songs).forEach(function(k) {
+      list[k] = true;
+    });
     yt = new YT.Player(element_id , {
       width: player_width ,
       height: player_height,
@@ -1295,17 +1314,30 @@ zenra.playlist = (function() {
       events: {
         'onReady' : function(event) {
           target = event.target;
-          target.cuePlaylist(list , 0);
+          cuePlaylist();
         } ,
         'onStateChange' : onStateChange
       }
     });
+
+    //再生可否チェックボックスのイベント
+    $('.playlist-checked').on('change' , function() {
+      var element_id = $(this).attr('id');
+      var youtube_id = element_id.match(/playlist_checked_(.+)/)[1];
+      var checked = $(this).prop('checked');
+      var $parent_row = $(this).parent().parent();
+      if (checked) {$parent_row.removeClass('translucent');}
+      else { $parent_row.addClass('translucent');}
+      list[youtube_id] = checked;
+      cuePlaylist();
+    });
   }
 
-  /*[Method] 指定したインデックスの楽曲を再生する*/
-  function _set(index) {
-    target.cuePlaylist(list , index);
-    setTimeout(_play , 400);  //タイムラグ
+   /*[Method] 指定したインデックスの楽曲を再生する*/
+  function _set(index_id) {
+    if (list[index_id]) {
+      cuePlaylist(index_id);
+    }
   }
 
   /*[Method] プレイヤーを再生*/
