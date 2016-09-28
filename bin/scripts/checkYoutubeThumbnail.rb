@@ -11,8 +11,7 @@ end
 
 songs = DB.new(:FROM => 'song').execute_all
 songs.each do |s|
-  s['url'] =~ %r|https://www.youtube.com/watch\?v=(.+)$|
-  image_url = "http://i.ytimg.com/vi/#{$1}/mqdefault.jpg"
+  image_url = "http://i.ytimg.com/vi/#{s['url']}/mqdefault.jpg"
   if is404?(image_url)
     puts s['id']
   end
