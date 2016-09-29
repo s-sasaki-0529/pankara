@@ -297,6 +297,7 @@ var dialog = function(title , dialog_id , width , height) {
     this.height = height;
     if (! zenra.ispc ) {
       this.width = '100%';
+      this.height = document.documentElement.clientHeight;
     }
 
     /*
@@ -328,7 +329,10 @@ var dialog = function(title , dialog_id , width , height) {
     
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
-        if (position == 'center') {
+        if (! zenra.ispc) {
+          $('.ui-dialog').css({'top' : 0 , 'z-index': 9999}); 
+        }
+        else if (position == 'center') {
           var margin = div.height() / 2;
           $('.ui-dialog').css({'top': scroll + margin + 'px' , 'z-index': 9999});
           div.css('overflow' , 'hidden');
