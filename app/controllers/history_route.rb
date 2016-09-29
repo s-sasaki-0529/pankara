@@ -32,4 +32,15 @@ class HistoryRoute < March
 
   end
 
+  # get '/history/create/:karaoke_id' - ダイアログを使わずに歌唱履歴を登録する(スマフォ向け)
+  #--------------------------------------------------------------------
+  get '/create/:karaoke_id' do
+    karaoke_id = params[:karaoke_id]
+    karaoke_id or return;
+    @current_user or return;
+    @score_type = ScoreType.List
+    @twitter = @current_user ? @current_user['has_twitter'] : nil
+    erb :_input_history
+  end
+
 end

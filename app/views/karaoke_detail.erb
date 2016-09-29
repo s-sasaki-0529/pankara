@@ -180,7 +180,7 @@
     <h2 class="inline"><%= h @karaoke['name'] %></h3>
     <% if @current_user %>
       <img src="/image/edit.png" width="16" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
-      <img src="/image/addhistory.png" width="16" onclick="register.createHistory(<%= @karaoke['id'] %>)">
+      <img src="/image/addhistory.png" width="16" onclick="location.href='/history/create/<%= @karaoke["id"] %>'">
     <% end %>
   </div>
 
