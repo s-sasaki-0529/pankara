@@ -10,7 +10,8 @@ require 'wikipedia'
 #require 'searchbing'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
-IMGDIR = 'app/public/image'
+PUBLIC = 'app/public'
+IMGDIR = "#{PUBLIC}/image"
 ICONDIR = "#{IMGDIR}/user_icon"
 YOUTUBE = "https://www.youtube.com"
 class Util
@@ -349,6 +350,13 @@ class Util
       delete and i.delete(key)
     end
     return hash
+  end
+
+  # filemtime - 指定したファイルの最終更新日時を戻す
+  #--------------------------------------------------------------------
+  def self.filemtime(filepath)
+    file = File::stat("#{PUBLIC}/#{filepath}")
+    file.mtime.to_i.to_s
   end
 
   # run_mode - 現在のrun modeを取得
