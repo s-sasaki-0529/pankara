@@ -21,7 +21,7 @@ describe '歌手詳細ページ' , :js => true do
   before(:all,&init)
   before do
     login 'sa2knight'
-    visit '/history'
+    visit '/history/list'
   end
 
   describe 'Wikipediaが正常に読み込まれるか' do
@@ -95,7 +95,7 @@ describe '歌手詳細ページ' , :js => true do
   end
 
   it 'リンクが正常に登録されているか' do
-    visit '/history'
+    visit '/history/list'
     examine_artistlink('BUMP OF CHICKEN')
     url = page.current_url
     songs = ['走れ' , '君に届け' , 'ロミオとシンデレラ']

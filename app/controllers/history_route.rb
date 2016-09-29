@@ -4,15 +4,15 @@ require_relative '../models/pager'
 
 class HistoryRoute < March
 
-  # get '/history - ログイン中のユーザの歌唱履歴を表示
+  # get '/history/list - ログイン中のユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
-  get '/' do
-    @current_user and redirect "/history/#{@current_user['username']}"
+  get '/list' do
+    @current_user and redirect "/history/list/#{@current_user['username']}"
   end
 
-  # get '/history/:username - ユーザの歌唱履歴を表示
+  # get '/history/list/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
-  get '/:username' do
+  get '/list/:username' do
 
     # ページャ準備
     page = params[:page] ? params[:page].to_i : 1

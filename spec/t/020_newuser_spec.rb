@@ -25,7 +25,7 @@ describe '新規登録したユーザで各ページを閲覧' do
     expect(find('#range').text()).to eq '楽曲が見つかりません'
   end
   it '歌唱履歴' do
-    visit 'history'
+    visit '/history/list'
     iscontain '歌唱履歴がありません'
   end
   it '楽曲詳細画面' , :js => true do

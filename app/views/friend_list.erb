@@ -6,7 +6,7 @@
     <% @friends.each do |f| %>
     <tr>
       <td><%= user_link f['username'] , f['screenname'] %></td>
-      <td class='center'><a href="/history/<%= f['username'] %>">履歴</a></td>
+      <td class='center'><a href="/history/list/<%= f['username'] %>">履歴</a></td>
       <td class='center'><a href="/karaoke/user/<%= f['username'] %>">カラオケ</a></td>
       <td class='center'><a href="/user/songlist/<%= f['username'] %>">持ち歌</a></td>
       <td class='center'><a href="/user/friend/list/<%= f['username'] %>">友達</a></td>

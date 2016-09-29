@@ -7,7 +7,7 @@ init = proc do
 end
 
 # 定数定義
-url = '/history/sa2knight'
+url = '/history/list/sa2knight'
 
 # テスト実行
 describe '歌唱履歴ページ' do

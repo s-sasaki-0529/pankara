@@ -6,7 +6,7 @@ init = proc do
   `zenra init -d 2016_05_18_04_00`
 end
 
-url = '/history/tomotin'
+url = '/history/list/tomotin'
 
 def examine_page(page)
   wait_for_ajax
