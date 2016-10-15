@@ -334,7 +334,12 @@ class AjaxRoute < March
     artist = params[:artist]
     wiki = Util.get_wikipedia(artist)
     if wiki
-      return success(:summary => wiki.summary, :url => wiki.fullurl)
+      begin
+        return success(:summary => wiki.summary, :url => wiki.fullurl)
+      rescue
+        wiki = Util.get_wikipedia(wiki.links[0])
+        return success(:summary => wiki.summary, :url => wiki.fullurl)
+      end
     else
       return error('not found')
     end
