@@ -34,6 +34,11 @@ tr *.cell-datetime {
   opacity: 0.5;
 }
 
+/*サイズ固定*/
+.size-fixed {
+  resize: none;
+}
+
 /*テキストを中央揃えにするクラス*/
 .center {
   text-align: center;
@@ -156,7 +161,7 @@ p.mini {
   float: left;
   margin-right: 10px;
 }
-.input_dialog textarea {
+.input_attendance {
   resize: vertical;
   overflow: auto;
   width: 560px;
