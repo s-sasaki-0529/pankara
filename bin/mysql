@@ -28,7 +28,7 @@ done
 shift $((OPTIND - 1))
 
 # メイン処理
-password=$(bundle exec ruby bin/scripts/load_mysql_password.rb)
+password=$MYSQLPW
 if [ -n "$VALUE_E" ]; then
   if [ "$FLAG_S" -eq 1 ]; then
     mysql -u root --password="$password" march -s -N -e "$VALUE_E"

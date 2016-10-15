@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PROGNAME=$(basename $0)
-MYSQL="mysql -u root --password=zenra march"
+PASSWORD=$(bundle exec ruby bin/scripts/load_mysql_password.rb)
+MYSQL="mysql -u root --password=$MYSQLPW march"
 TMPPATH="$BINDIR/scripts/tmp.sql"
 
 # ヘルプ
