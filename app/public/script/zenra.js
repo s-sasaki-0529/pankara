@@ -590,6 +590,24 @@ var register = (function() {
         $('#tweet_text_area').addClass('hidden');
       }
     });
+
+    //ツイート内容が書き換わったとき、残り文字数を更新
+    $('#tweet_textbox').keyup(function() {
+      var usernameSize = zenra.currentUser.screenname.length;
+      var urlSize = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/'.length
+      var textSize = "さんがカラオケに行きました".length + $(this).val().length
+      var currentSize = usernameSize + urlSize + textSize + 1 + 3;
+      var len = 140 - currentSize;
+      $('#tweet_text_count').text(len);
+      if (len < 0) {
+        $('#tweet_text_count').addClass('red');
+        $('#button1').prop('disabled' , true);
+      } else {
+        $('#tweet_text_count').removeClass('red');
+        $('#button1').prop('disabled' , false);
+      }
+    });
+    $('#tweet_text_count').text('');
   }
 
   /*[method] 歌唱履歴入力画面用ウィジェットを作成する*/
@@ -637,6 +655,25 @@ var register = (function() {
       }
     });
 
+    //ツイート内容が書き換わったとき、残り文字数を更新
+    $('.tweet-text').keyup(function() {
+      var url = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/'
+      var song = $('#song').val();
+      var artist = $('#artist').val();
+      var text = $('#tweet_textbox').val();
+      var len = 140 - ((song + '(' + artist + ')' + 'を歌いました ' +  url + text).length + 3 + 1)
+      $('#tweet_text_count').text(len);
+      if (len < 0) {
+        $('#tweet_text_count').addClass('red');
+        $('#button1').prop('disabled' , true);
+        $('#button2').prop('disabled' , true);
+      } else {
+        $('#tweet_text_count').removeClass('red');
+        $('#button1').prop('disabled' , false);
+        $('#button2').prop('disabled' , false);
+      }
+    });
+    $('#tweet_text_count').text('');
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/
