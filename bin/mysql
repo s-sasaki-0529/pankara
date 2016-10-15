@@ -5,14 +5,16 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "mySQLサーバにログイン、Marchデータベースに接続"
-  echo "  Usage: zenra $PROGNAME [-e execute sql]"
+  echo "  Usage: zenra $PROGNAME [ [-s] -e execute sql]"
   echo "オプション"
   echo "  -e 指定したSQLを実行する"
+  echo "    -s SQL文実行時の出力に、ヘッダ行と枠線を表示しない"
   exit 1
 }
 
 # オプション解析
-while getopts e:h OPT
+FLAG_S=0
+while getopts e:sh OPT
 do
   case $OPT in
   h)  usage
@@ -20,13 +22,18 @@ do
       ;;
   e)  VALUE_E=$OPTARG
       ;;
+  s)  FLAG_S=1
   esac
 done
 shift $((OPTIND - 1))
 
 # メイン処理
 if [ -n "$VALUE_E" ]; then
-  mysql -u root --password=zenra march -e "$VALUE_E"
+  if [ "$FLAG_S" -eq 1 ]; then
+    mysql -u root --password=zenra march -s -N -e "$VALUE_E"
+  else
+    mysql -u root --password=zenra march -e "$VALUE_E"
+  fi
 else
   mysql -u root --password=zenra march $@
 fi

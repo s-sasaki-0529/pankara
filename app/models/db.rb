@@ -20,6 +20,7 @@ class DB
     @delete = false
     @option = ''
     @params = []
+    @mysql_info = Util.read_secret('mysql')
     if arg
       arg[:DISTINCT] and distinct()
       arg[:SELECT] and select(arg[:SELECT])
@@ -222,7 +223,7 @@ class DB
       done_sql.sub!('?' , param.to_s)
     end
     Util.write_log('sql' , done_sql)
-    db = Mysql.new('127.0.0.1' , 'root' , 'zenra' , 'march')
+    db = Mysql.new('127.0.0.1' , @mysql_info['user'] , @mysql_info['password'] , 'march')
     db.charset = 'utf8'
     st = db.prepare(@sql)
     st.execute(*@params)
