@@ -13,7 +13,7 @@ songs = DB.new(:FROM => 'song').execute_all
 songs.each do |s|
   image_url = "http://i.ytimg.com/vi/#{s['url']}/mqdefault.jpg"
   if is404?(image_url)
-    puts s['id']
+    puts "#{s['id']} #{s['name']}"
   end
 end
 
