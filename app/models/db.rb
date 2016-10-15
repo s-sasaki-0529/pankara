@@ -20,7 +20,7 @@ class DB
     @delete = false
     @option = ''
     @params = []
-    @mysql_info = Util.read_secret('mysql')
+    @db = nil
     if arg
       arg[:DISTINCT] and distinct()
       arg[:SELECT] and select(arg[:SELECT])
@@ -39,7 +39,22 @@ class DB
 
   # connect - mysqlサーバへの接続を行う
   #---------------------------------------------------------------------
-  def self.connect
+  def connect
+    unless @db
+      mysql_info = Util.read_secret('mysql')
+      @db = Mysql.new('127.0.0.1' , mysql_info['user'] , mysql_info['password'] , 'march')
+      @db.charset = 'utf8'
+    end
+    @db
+  end
+
+  # close - mysqlサーバへの接続を閉じる
+  #--------------------------------------------------------------------
+  def close
+    if @db
+      @db.close
+      @db = nil
+    end
   end
 
   # select - SELECT文を作成する
@@ -223,11 +238,10 @@ class DB
       done_sql.sub!('?' , param.to_s)
     end
     Util.write_log('sql' , done_sql)
-    db = Mysql.new('127.0.0.1' , @mysql_info['user'] , @mysql_info['password'] , 'march')
-    db.charset = 'utf8'
+    db = connect
     st = db.prepare(@sql)
     st.execute(*@params)
-    db.close
+    close
     return st
   end
 
