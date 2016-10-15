@@ -21,11 +21,19 @@
   <script src="/script/zenra.js?<%= Util.filemtime('script/zenra.js') %>"></script> <!-- 全裸スクリプト -->
   <link rel="shortcut icon" href="/image/favicon.ico" />
   <title>パンダリンのカラオケランド(β版テスト期間中)</title>
+  <!-- JavaScriptへの値の受け渡 -->
   <script>
     <% if Util.is_pc? %>
       zenra.ispc = true;
     <% else %>
       zenra.ispc = false;
+    <% end %>
+    <% if @current_user %>
+      zenra.currentUser = {
+        id: <%= @current_user['id'] %>,
+        username: "<%= @current_user['username'] %>",
+        screenname: "<%= @current_user['screenname'] %>"
+      }
     <% end %>
   </script>
 </head>
