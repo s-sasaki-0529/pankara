@@ -16,6 +16,7 @@ ICONDIR = "#{IMGDIR}/user_icon"
 YOUTUBE = "https://www.youtube.com"
 class Util
 
+  @@session = nil
   @@request = nil
   @@run_mode = nil
 
@@ -30,16 +31,34 @@ class Util
     end
   end
 
-  # set_request - セション情報を設定
+  # set_request - リクエスト情報を設定
   #--------------------------------------------------------------------
   def self.set_request(request)
     @@request = request
   end
 
-  # request - セション情報を取得
+  # request - リクエスト情報を取得
   #--------------------------------------------------------------------
   def self.request
     @@request
+  end
+
+  # set_session - セション情報を設定
+  #--------------------------------------------------------------------
+  def self.set_session(session)
+    @@session = session
+  end
+
+  # modify_session - セションの一部内容を上書きする
+  #--------------------------------------------------------------------
+  def self.modify_session(key , value)
+    @@session[key] = value
+  end
+
+  # session - セション情報を取得
+  #--------------------------------------------------------------------
+  def self.session
+    @@session
   end
 
   # write_access_log - アクセスログを生成する
@@ -60,8 +79,16 @@ class Util
   end
 
   # is_smartphone - アクセスがスマートフォンかどうかを戻す
+  # クライアントがスマートフォンでもPCページを希望する場合は真を戻す
   #--------------------------------------------------------------------
   def self.is_smartphone?
+    return @@request.device_type == :smartphone && ! @@session['view_pc_mode']
+  end
+
+  # is_smartphoen_strictly - アクセスがスマートフォンかどうかを戻す
+  # クライアントがPCページを希望する場合も、端末がスマートフォンの場合真を戻す
+  #--------------------------------------------------------------------
+  def self.is_smartphone_strictly?
     return @@request.device_type == :smartphone
   end
 
