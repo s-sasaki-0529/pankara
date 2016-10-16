@@ -16,6 +16,7 @@ ICONDIR = "#{IMGDIR}/user_icon"
 YOUTUBE = "https://www.youtube.com"
 class Util
 
+  @@session = nil
   @@request = nil
   @@run_mode = nil
 
@@ -30,16 +31,28 @@ class Util
     end
   end
 
-  # set_request - セション情報を設定
+  # set_request - リクエスト情報を設定
   #--------------------------------------------------------------------
   def self.set_request(request)
     @@request = request
   end
 
-  # request - セション情報を取得
+  # request - リクエスト情報を取得
   #--------------------------------------------------------------------
   def self.request
     @@request
+  end
+
+  # set_session - セション情報を設定
+  #--------------------------------------------------------------------
+  def self.set_session(session)
+    @@session = session
+  end
+
+  # session - セション情報を取得
+  #--------------------------------------------------------------------
+  def self.session
+    @@session
   end
 
   # write_access_log - アクセスログを生成する
