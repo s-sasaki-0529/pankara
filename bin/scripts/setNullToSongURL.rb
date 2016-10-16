@@ -18,7 +18,7 @@ songs.each do |s|
   end
 end
 
-DB.new(
+dead_links.empty? or DB.new(
   :UPDATE => ['song' , ['url']],
   :WHERE_IN => ['id' , dead_links.count],
   :SET => [nil].concat(dead_links)
