@@ -10,7 +10,6 @@
         <tr>
       <% end %>
         <td id="thumbnail_<%= idx %>" class='center search-tag-thumbnail' width='10%'>
-          <% if song['song_url'] %>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
           <script>
@@ -20,9 +19,6 @@
             "<%= youtube_image song['song_url'] %>"
           );
           </script>
-          <% else %>
-          未登録
-          <% end %>
         </td>
         <td width='23%' class='search-tag-result'>
           <p><%= song_link song['song_id'] , song['song_name'] %></p>

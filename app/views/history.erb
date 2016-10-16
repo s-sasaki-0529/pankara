@@ -9,7 +9,7 @@
       <tr>
         <th class='center'>No</th>
         <th class='center cell-date'>日時</th>
-        <th class='center'>動画</th>
+        <th class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>動画</th>
         <th class='center'>曲名</th>
         <th class='center'>歌手名</th>
         <th class='center'>KEY</th>
@@ -20,21 +20,17 @@
       <tr>
         <td class='center'><%= history['number'] %></td>
         <td class='center cell-date'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
-        <td id='thumbnail_<%= "#{history['number']}" %>' class='center'>
-          <% if history['song_url'] %>
-            <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
-            <span id="artist_name_<%= history["number"] %>" class="hidden"><%= h history["artist_name"] %></span>
-            <script>
-              zenra.createThumbnail(
-                '<%= "#{history["number"]}" %>' ,
-                "<%= history['song_id'] %>" ,
-                "<%= youtube_image history['song_url'] %>" ,
-                "<%= history['song_url'] %>"
-              )
-            ;</script>
-          <% else %>
-            未登録
-          <% end %>
+        <td width='<%= Util.is_pc? ? 160 : 80 %>' id='thumbnail_<%= "#{history['number']}" %>' class='center'>
+          <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
+          <span id="artist_name_<%= history["number"] %>" class="hidden"><%= h history["artist_name"] %></span>
+          <script>
+            zenra.createThumbnail(
+              '<%= "#{history["number"]}" %>' ,
+              "<%= history['song_id'] %>" ,
+              "<%= youtube_image history['song_url'] %>" ,
+              "<%= history['song_url'] %>"
+            )
+          </script>
         </td>
         <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
         <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
