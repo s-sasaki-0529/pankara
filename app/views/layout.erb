@@ -1,7 +1,9 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <% if Util.is_smartphone? %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <% end %>
   <link rel="stylesheet" href="/css/march.css?<%= Util.filemtime('css/march.css') %>" type="text/css">
   <link rel="stylesheet" href="/css/plugines.css" type="text/css">
   <link rel="stylesheet" href="/jquery-ui-1.11.4/jquery-ui.min.css?" type="text/css">
@@ -102,6 +104,13 @@
               <li><a href="/user/userpage">マイページ</a></li>
               <li><a href="/user/friend/list">友達一覧</a></li>
               <li><a href="/config">設定</a></li>
+              <% if Util.is_smartphone_strictly? %>
+                <% if Util.session['view_pc_mode'] %>
+                  <li><a href="/config/viewtype?callback=<%= Util.request.path %>">スマートフォン用ページへ</a></li>
+                <% else %>
+                  <li><a href="/config/viewtype?callback=<%= Util.request.path %>">PC用ページへ</a></li>
+                <% end %>
+              <% end %>
               <li><a href="/auth/logout">ログアウト</a></li>
             </ul>
           </li>

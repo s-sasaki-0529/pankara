@@ -27,6 +27,19 @@ class ConfigRoute < March
     erb :config
   end
 
+  # get '/config/viewtype' - スマフォアクセス時の表示モードを切り替える'
+  #--------------------------------------------------------------------
+  get '/viewtype/?' do
+    callback = params['callback']
+    unless Util.is_smartphone_strictly?
+      redirect '/'
+    else
+      new_mode = ! Util.session['view_pc_mode']
+      Util.modify_session('view_pc_mode' , new_mode)
+      redirect callback
+    end
+  end
+
   # post '/config/icon/?' - アイコンファイルのアップロード
   #--------------------------------------------------------------------
   post '/icon/?' do
