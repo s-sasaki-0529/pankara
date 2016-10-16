@@ -19,7 +19,7 @@ FLAG_S=0
 FLAG_E=0
 FLAG_U=0
 FLAG_LU=0
-while getopts uhes OPT
+while getopts uUhes OPT
 do
   case $OPT in
     h)  usage
