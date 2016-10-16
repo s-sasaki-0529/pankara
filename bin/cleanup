@@ -41,3 +41,6 @@ if [ "$FLAG_V" -eq 1 ]; then
 else
   bundle exec ruby "bin/scripts/cleanup.rb" > /dev/null
 fi
+
+# URLがリンク切れかを検知し、リンク切れの場合はNULLをセットする
+bundle exec ruby "bin/scripts/setNullToSongURL.rb"
