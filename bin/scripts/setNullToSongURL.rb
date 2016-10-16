@@ -1,6 +1,4 @@
-# Songテーブル内のURLから、リンク切れを起こしている動画を抽出するスクリプト
-# 本スクリプトは抽出して出力するだけなので、NULLをセットする場合は、
-# setNullToSongURL.rbを利用すること
+# Songテーブル内のURLから、リンク切れを起こしているURLにNULLを設定する
 
 require_relative '../../app/models/song'
 require_relative '../../app/models/util'
@@ -12,10 +10,17 @@ def is404?(url)
 end
 
 songs = DB.new(:FROM => 'song').execute_all
+dead_links = []
 songs.each do |s|
   image_url = "http://i.ytimg.com/vi/#{s['url']}/mqdefault.jpg"
   if is404?(image_url)
-    puts "#{s['id']} #{s['name']}"
+    dead_links.push(s['id'])
   end
 end
+
+DB.new(
+  :UPDATE => ['song' , ['url']],
+  :WHERE_IN => ['id' , dead_links.count],
+  :SET => [nil].concat(dead_links)
+).execute
 
