@@ -78,8 +78,12 @@ class March < Sinatra::Base
       return "<a href=/artist/#{id}>#{name}</a>"
     end
     def playlist_link(songs , name = "動画を連続再生する")
-      param = songs.join('_')
-      return "<a href=/playlist?songs=#{param}>#{name}</a>"
+      if songs.empty?
+        return ""
+      else
+        param = songs.join('_')
+        return "<a href=/playlist?songs=#{param}>#{name}</a>"
+      end
     end
     def user_icon(username , width = 32 , height = 32)
       username = h username

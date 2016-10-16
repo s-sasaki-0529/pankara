@@ -97,7 +97,7 @@ class History < Base
       :WHERE => 'song.url IS NOT NULL' ,
       :WHERE_IN => ['song.id' , songs.length] ,
       :SET => songs
-    ).execute_all #現在はURLがyoutubeであることが前提。今後はプレーヤー化できるかの情報も必要になる
+    ).execute_all
     songs_info.empty? and return []
 
     # 重複を排除した結果limitを下回った場合、limistになるまで同じデータを繰り返す

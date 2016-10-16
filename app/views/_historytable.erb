@@ -57,4 +57,4 @@
     <% end %>
   </tbody>
 </table>
-<p class='right'><%= playlist_link @histories.map {|s| s['song_id']} %></p>
+<p class='right'><%= playlist_link @histories.select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
