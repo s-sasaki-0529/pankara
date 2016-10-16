@@ -26,20 +26,16 @@
         <% end %>
      </td>
       <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
-        <% if history['song_url'] %> 
-          <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
-          <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
-          <script> 
-            zenra.createThumbnail(
-              '<%= "#{@tag}_#{idx}" %>' ,
-              "<%= history['song_id'] %>" ,
-              "<%= youtube_image history['song_url'] %>" ,
-              "<%= history['song_url'] %>"
-            )
-          ;</script>
-        <% else %>
-          未登録
-        <% end %>
+        <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
+        <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
+        <script> 
+          zenra.createThumbnail(
+            '<%= "#{@tag}_#{idx}" %>' ,
+            "<%= history['song_id'] %>" ,
+            "<%= youtube_image history['song_url'] %>" ,
+            "<%= history['song_url'] %>"
+          )
+        </script>
       </td>
       <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
       <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>

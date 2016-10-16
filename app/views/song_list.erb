@@ -63,7 +63,6 @@
       <tr>
       <% end %>
         <td id="thumbnail_<%= idx %>" class='center' width='<% if Util.is_pc? %>20%<% else %>33%<% end %>'>
-          <% if song['song_url'] %>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
           <script>
@@ -75,9 +74,6 @@
             "auto"
           );
           </script>
-          <% else %>
-          未登録
-          <% end %>
         </td>
         <td width='<% if Util.is_pc? %>30%<% else %>67%<% end %>'>
           <p><%= song_link song['song_id'] , song['song_name'] %></p>

@@ -13,7 +13,6 @@
     <% @artist['songs'].each_with_index do |song , idx| %>
     <tr>
       <td id="thumbnail_<%= idx %>" class='center' width='<% if Util.is_pc? %>160<% else %>90<% end %>'>
-        <% if song['song_url'] %>
         <span id="song_name_<%= idx %>" class="hidden"><%= h song["song_name"] %></span>
         <span id="artist_name_<%= idx %>" class="hidden"><%= h @artist['name'] %></span>
         <script>
@@ -22,10 +21,7 @@
               "<%= song['song_id'] %>" ,
               "<%= youtube_image song['song_url'] %>"
             );
-          </script>
-        <% else %>
-          未登録
-        <% end %>
+        </script>
       </td>
       <td class='center'><%= song_link song['song_id'], song['song_name'] %></td>
       <% if @current_user %><td class='center'><%= song['sang_count_as_user'] %></td><% end %>

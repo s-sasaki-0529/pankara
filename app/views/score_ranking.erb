@@ -19,19 +19,15 @@
     <tr>
       <td class='center' width='100px'><%= rank + 1 %></td>
       <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'160'<% else %>'80'<% end %>>
-        <% if row['song_url'] %>
-          <span id="song_name_<%= rank %>" class="hidden"><%= h row["song_name"] %></span>
-          <span id="artist_name_<%= rank %>" class="hidden"><%= h row["artist_name"] %></span>
-          <script>
-            zenra.createThumbnail(
-              "<%= rank %>" ,
-              "<%= row['song'] %>" ,
-              "<%= youtube_image row['song_url'] %>"
-            );
-          </script>
-        <% else %>
-          未登録
-        <% end %>
+        <span id="song_name_<%= rank %>" class="hidden"><%= h row["song_name"] %></span>
+        <span id="artist_name_<%= rank %>" class="hidden"><%= h row["artist_name"] %></span>
+        <script>
+          zenra.createThumbnail(
+            "<%= rank %>" ,
+            "<%= row['song'] %>" ,
+            "<%= youtube_image row['song_url'] %>"
+          );
+        </script>
       </td>
       <td class='center'><%= user_link row['username'] , row['screenname'] %></td>
       <td class='center'><%= song_link row['song'], row['song_name'] %></td>

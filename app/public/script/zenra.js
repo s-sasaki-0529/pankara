@@ -223,14 +223,16 @@ zenra.scoreBarChart = (function() {
 createThumbnail - youtubeのサムネイルを生成する
 */
 zenra.createThumbnail = function(idx , id , image , _width , _height) {
-  if (image) {
+  var defaultWidth = zenra.ispc ? 160 : 80;
+  var defaultHeight = zenra.ispc ? 90 : 45;
+  var width = _width || defaultWidth;
+  var height = _height || defaultHeight;
+  if (image != "未登録") {
     var $img = $('<img>').attr('src' , image);
     var song = $('#song_name_' + idx).text();
     var artist = $('#artist_name_' + idx).text();
-    var defaultWidth = zenra.ispc ? 160 : 80;
-    var defaultHeight = zenra.ispc ? 90 : 45;
-    var width = _width || defaultWidth;
-    var height = _height || defaultHeight;
+    $('#song_name_' + idx).remove();
+    $('#artist_name_' + idx).remove();
     $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
     $img.attr('info' , song + ' (' + artist + ')');
     $img.click(function() {
@@ -243,7 +245,8 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     });
     $('#thumbnail_' + idx).append($img)
   } else {
-    $('#thumbnail_' + idx).append('<span>未登録</span>');
+    var $altText = $("<div>").text('未登録').css('width' , width).css('height' , height).css('line-height' , height + 'px');
+    $('#thumbnail_' + idx).append($altText);
   }
 };
 
