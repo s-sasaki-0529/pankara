@@ -36,6 +36,8 @@ sa2knight
 亀戸店
 JOYSOUND
 MAX
+JOYSOUND
+全国採点
 5
 hetare
 unagipai
@@ -80,6 +82,22 @@ def get_song(user)
   return {:song => history['song_name'] , :artist => history['artist_name']}
 end
 
+def get_score_type
+  [
+    {'brand' => 'JOYSOUND' , 'name' => '全国採点'} ,
+    {'brand' => 'JOYSOUND' , 'name' => '分析採点'} ,
+    {'brand' => 'JOYSOUND' , 'name' => 'その他'} ,
+    {'brand' => 'DAM' , 'name' => 'ランキングバトル'} ,
+    {'brand' => 'DAM' , 'name' => '精密採点'} ,
+    {'brand' => 'DAM' , 'name' => 'その他'} ,
+    {'brand' => 'その他' , 'name' => 'その他'} ,
+  ].sample
+end
+
+def get_score
+  rand(70000 .. 100000).to_f / 1000
+end
+
 print 'カラオケを登録するユーザ: '
 users = []
 registers = []
@@ -102,7 +120,7 @@ print '登録する楽曲数(一人あたり): '
 STDIN.gets().to_i.times do |i|
   registers.each_with_index do |r , s|
     h = get_song(users[s])
-    r.create_history(h[:song] , h[:artist])
+    r.create_history(h[:song] , h[:artist] , 0 , get_score_type , get_score)
   end
 end
 
