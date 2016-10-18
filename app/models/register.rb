@@ -89,7 +89,7 @@ class Register < Base
     artist.strip!
 
     # スコアは、score_typeが定義されており、0以外の得点が設定されてる場合のみ
-    if score_type.nil? || score.nil? || score.to_i == 0
+    if score_type.nil? || score_type.to_s == "0" || score.nil? || score.to_i == 0
       score_type = nil
       score = nil
     end
