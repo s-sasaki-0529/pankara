@@ -29,6 +29,11 @@ class Register < Base
     plan < 0.5 and return Util.error('invalid plan')
     name.strip!
 
+    # カラオケ名が空欄の場合、デフォルト名を付ける
+    if name.nil? || name.strip == ''
+      name = "#{datetime} のカラオケ"
+    end
+
     # 店名、機種名からそれぞれのIDを取得
     store_id = self.create_store(store)
     product_id = self.create_product(product)
