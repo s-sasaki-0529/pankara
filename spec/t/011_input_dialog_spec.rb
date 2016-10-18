@@ -60,7 +60,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     click_on '登録して終了'; wait_for_ajax
     
     karaoke = [
-      '2016-02-20',
+      #'2016-02-20', 時刻はデフォルトで現在時刻が入るのと、readonlyにしたため検証から除外
       '2.0',
       '歌広場 相模大野店',
       'JOYSOUND(MAX)',

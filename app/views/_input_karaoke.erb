@@ -3,18 +3,15 @@
   <div id="input_karaoke" class="input_dialog" title="カラオケの入力">
     <div>
       <label for="name">カラオケ名:</label>
-      <input id="name" title="カラオケに好きな名前を付けられます。" type="text" name="name" value="" size="30" maxlength="20"/>
+      <input id="name" placeholder="(例) 久しぶりのサークルカラオケ！" type="text" name="name" value="" size="33" maxlength="30"/>
     </div>
     <div>
       <label for="datetime">日時:</label>
-      <input id="datetime" title="カラオケにいった日時を入力してください。"
-        name="datetime" type="datetime" value="" size="30"
-        <% if Util.is_smartphone? %>readonly<% end %>
-      />
+      <input id="datetime"name="datetime" type="datetime" value="" size="33" readonly/>
     </div>
     <div>
       <label for="plan">時間:</label>
-      <p><select id="plan" title="カラオケの利用時間を入力してください。" name="plan">
+      <p><select id="plan" name="plan">
         <option value="0.5">00時間30分</option>
         <option value="1">01時間00分</option>
         <option value="1.5">01時間30分</option>
@@ -43,15 +40,15 @@
     </div>
     <div>
       <label for="store">店:</label>
-      <input id="store" title="利用したカラオケ店名を入力してください。" type="text" name="store" value="" size="30"/>
+      <input id="store" placeholder="(例) カラオケ館" type="text" name="store" value="" size="33"/>
     </div>
     <div>
       <label for="branch">店舗:</label>
-      <input id="branch" title="利用した店舗名を入力してください。" type="text" name="branch" value="" size="30"/>
+      <input id="branch" placeholder="(例) 盛岡大通店" type="text" name="branch" value="" size="33"/>
     </div>
     <div>
       <label for="product">機種:</label>
-      <p><select id="product"title="利用した機種名を入力してください。" name="product">
+      <p><select id="product" name="product">
         <% @products.each do |product| %>
           <option value="<%= product['id'] %>">
             <%= product['brand'] %> <%= product['product'] %>
@@ -61,12 +58,12 @@
     </div>
     <% if @twitter %>
     <div>
-      <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
+      <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
       <label for="tweet-checkbox"> ツイートする:</label>
     </div>
     <div id="tweet_text_area" class="hidden">
       <label for="tweet_text">ツイート内容:</label>
-      <textarea class="size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
+      <textarea class="size-fixed" id="tweet_textbox" name="tweet_text" cols="33" rows="3"></textarea>
       <span id="tweet_text_count"></span>
     </div>
     <% end %>
@@ -78,11 +75,11 @@
   <div id="input_attendance" class="input_dialog">
     <div>
       <label for="price">値段:</label>
-      <input id="price" title="値段を入力してください。" type="number" name="price" value="" size="10">円
+      <input id="price" placeholder="あなたの支払額" type="number" name="price" value="" size="13">円
     </div>
     <div class="most_under_input">
       <p><label for="memo">感想:</label></p>
-      <textarea id="memo" title="感想を入力してください。" name="memo" cols=60 rows=3></textarea>
+      <textarea id="memo" placeholder="(例) いつものメンツで来られて楽しかった〜" name="memo" cols=60 rows=3></textarea>
     </div>
     <div id="buttons">
     </div>
