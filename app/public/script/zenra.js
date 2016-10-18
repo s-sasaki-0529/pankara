@@ -1090,7 +1090,7 @@ var register = (function() {
           if (response['result'] == 'success') {
             location.href = ('/song/' + song_id);
           } else {
-            alert('楽曲情報の編集に失敗しました。');
+            alert(response.info);
           }
         } ,
         error: function() {

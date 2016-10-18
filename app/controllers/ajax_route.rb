@@ -215,6 +215,8 @@ class AjaxRoute < March
     song_id = params[:song_id]
     song_name = params[:song]
     artist_name = params[:artist]
+    song_name == "" and return error('曲名を入力してください')
+    artist_name == "" and return error('歌手名を入力してください')
     artist_id = Artist.name_to_id(artist_name , :create => 1)
     url = params[:url]
     song = Song.new(song_id)
