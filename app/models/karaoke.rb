@@ -44,7 +44,7 @@ class Karaoke < Base
     end
 
     arg.select! do |k , v| 
-      ['name' , 'datetime' , 'plan' , 'store' , 'product'].include?(k)
+      ['name' , 'datetime' , 'plan' , 'store' , 'product'].include?(k) && v != ""
     end
     DB.new(
       :UPDATE => ['karaoke' , arg.keys] , 
