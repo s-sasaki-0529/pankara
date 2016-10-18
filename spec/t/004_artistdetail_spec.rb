@@ -30,6 +30,11 @@ describe '歌手詳細ページ' , :js => true do
       wait_for_ajax
       iscontain '(Wikipedia引用)'
     end
+    it '記事が存在する(リダイレクト)' do
+      visit '/artist/22' #ST☆RISH
+      wait_for_ajax
+      iscontain 'うたの☆プリンスさまっ♪'
+    end
     it '記事が存在しない' do
       visit '/artist/32' #kemu
       wait_for_ajax
