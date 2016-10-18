@@ -4,6 +4,12 @@ body {
   background-image: url("../image/bg2.png");
 }
 
+/*ヘッダメニューのz-indexを上書き*/
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  z-index: 99;
+}
+
 /*テーブルヘッダは全て中央揃えに*/
 th {
   text-align: center;
