@@ -289,7 +289,18 @@ class User < Base
 
     return result
   end
-  
+
+  # search - クラスメソッド ユーザを検索
+  #--------------------------------------------------------------------
+  def self.search(screenname)
+    like_users = DB.new(
+      :SELECT => ['username' , 'screenname'],
+      :FROM => 'user',
+      :WHERE => "screenname like ?",
+      :SET => "%#{screenname}%"
+    ).execute_all
+  end
+
   # validate_user_info - 入力されたユーザ情報がフォーマットに沿っているか確認する
   #---------------------------------------------------------------------
   def self.validate_user_info(name , password , screenname)

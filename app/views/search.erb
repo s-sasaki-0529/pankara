@@ -1,6 +1,11 @@
 <div>
-<% if @song_list.size > 0 || @artist_list.size > 0 || @tag_list.size > 0 %>
-  
+<% if @song_list.size > 0 || @artist_list.size > 0 || @tag_list.size > 0 || @users.size > 0 %>
+
+  <% if @users.size > 0 %>
+  <h3>"<%= h @search_word %>" を含むユーザ一覧(<%= @users.size %>人)</h3>
+  <%= erb :_user_list %>
+  <% end %>
+
   <% if @song_list.size > 0 %>
   <h3>"<%= h @search_word %>" を含む楽曲一覧(<%= @song_list.size %>件)</h3>
   <table id="search_song_table" class="table sortable table-hover">
@@ -59,7 +64,7 @@
   <% end %>
 
 <% elsif @search_word.size > 0 %>
-  <h3>"<%= h @search_word %>" を含む楽曲、歌手、タグが存在しません</h3>
+  <h3>"<%= h @search_word %>" を含む楽曲、歌手、タグ、ユーザが存在しません</h3>
 <% else %>
   <h3>※検索ワードを入力してから検索ボタンを押してください</h3>
 <% end %>

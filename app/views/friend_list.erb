@@ -1,19 +1,7 @@
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの友達一覧</h3>
 
-<% if @friends %>
-<table class='table table-hover'>
-  <tbody>
-    <% @friends.each do |f| %>
-    <tr>
-      <td><%= user_link f['username'] , f['screenname'] %></td>
-      <td class='center'><a href="/history/list/<%= f['username'] %>">履歴</a></td>
-      <td class='center'><a href="/karaoke/user/<%= f['username'] %>">カラオケ</a></td>
-      <td class='center'><a href="/user/songlist/<%= f['username'] %>">持ち歌</a></td>
-      <td class='center'><a href="/user/friend/list/<%= f['username'] %>">友達</a></td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<% if @users %>
+<%= erb :_user_list %>
 <% else %>
 <p>友達がいません</p>
 <% end %>

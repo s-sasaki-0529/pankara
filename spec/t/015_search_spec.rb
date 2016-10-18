@@ -7,12 +7,13 @@ init = proc do
 end
 
 # 検索
-def search(word , song_num , artist_num , tag_num)
+def search(word , user_num , song_num , artist_num , tag_num)
   fill_in 'search_word' , with: word
   click_on '検索'
   
   if word == ''
     iscontain('※検索ワードを入力してから検索ボタンを押してください')
+    islack("を含むユーザ一覧")
     islack("を含む楽曲一覧")
     islack("を含む歌手一覧")
     islack("を含むタグ一覧")
@@ -20,8 +21,16 @@ def search(word , song_num , artist_num , tag_num)
   end
 
   if song_num == 0 && artist_num == 0 && tag_num == 0
-    iscontain("\"#{word}\" を含む楽曲、歌手、タグが存在しません")
+    iscontain("\"#{word}\" を含む楽曲、歌手、タグ、ユーザが存在しません")
     return
+  end
+
+  if user_num > 0
+    iscontain("\"#{word}\" を含むユーザ一覧(#{user_num}人)")
+    table = table_to_hash('users_table')
+    expect(table.length).to eq user_num - 1
+  else
+    islack("を含むユーザ一覧")
   end
 
   if song_num > 0
@@ -65,64 +74,74 @@ describe '楽曲/歌手名検索機能' do
 
   describe '検索結果ページ' do
     it '曲＋歌手'  do
-      search('光' , 1 , 2 , 0)
-      search('of' , 7 , 4 , 0)
-      search(' ' , 94 , 35 , 0)
+      search('光' , 0 , 1 , 2 , 0)
+      search('of' , 0 , 7 , 4 , 0)
+      search(' ' , 0 , 94 , 35 , 0)
       table = table_to_hash('search_song_table')
       expect(table[0]['tostring']).to eq 'Hello, world!,BUMP OF CHICKEN'
       expect(table[5]['tostring']).to eq 'Bi-Li-Li Emotion,Superfly'
     end
 
     it '曲のみ' do
-      search('メドレー' , 6 , 0 , 1)
-      search('song' , 2 , 0 , 0)
+      search('メドレー' , 0 , 6 , 0 , 1)
+      search('song' , 0 , 2 , 0 , 0)
     end
 
     it '歌手のみ' do
-      search('雪音' , 0 , 6 , 0)
-      search('未来' , 1 , 2 , 0)
+      search('雪音' , 0 , 0 , 6 , 0)
+      search('未来' , 0 , 1 , 2 , 0)
     end
 
     it 'タグ' do
-      search('音' , 2 , 7 , 5)
+      search('音' , 0 , 2 , 7 , 5)
       iscontain(['初音ミク' , '鏡音リン' , '鏡音レン' , '巡音ルカ' , '重音テト'])
     end
 
+    it 'ユーザ' do
+      search('れ' , 2 , 12 , 2 , 0)
+      iscontain(['へたれ' , 'にゃんでれ'])
+    end
+
     it 'ヒット無し' do
-      search('SEKAI GA OWARU' , 0 , 0 , 0)
-      search('君が代' , 0 , 0 , 0)
+      search('SEKAI GA OWARU' , 0 , 0 , 0 , 0)
+      search('君が代' , 0 , 0 , 0 , 0)
     end
 
     it '入力なし' do
-      search('' , 0 , 0 , 0)
+      search('' , 0 , 0 , 0 , 0)
     end
 
     it 'リンク' do
-      search('0' , 3 , 2 , 1)
+      search('0' , 0 , 3 , 2 , 1)
       url = page.current_url
       examine_songlink 'マジLOVE2000%' , 'ST☆RISH' , url
       examine_artistlink '40mP' , url
-      search('VO' , 1 , 0 , 1)
+      search('VO' , 0 , 1 , 0 , 1)
       link 'VOCALOID'
       iscontain 'タグ "VOCALOID" が登録された楽曲一覧(106件)'
     end
   end
   describe 'リダイレクト' do
     it '楽曲' do
-      search('世界に一つだけの花' , -1 , -1 , -1)
+      search('世界に一つだけの花' , -1 , -1 , -1 , -1)
       expect(current_path).to eq '/song/62'
       iscontain '世界に一つだけの花'
     end
 
     it 'アーティスト' do
-      search('KAT' , -1 , -1 , -1)
+      search('KAT' , -1 , -1 , -1 , -1)
       expect(current_path).to eq '/artist/143'
       iscontain 'KAT-TUN'
     end
 
     it 'タグ' do
-      search('VOCALOID' , -1 , -1 , -1)
+      search('VOCALOID' , -1 , -1 , -1 , -1)
       iscontain 'タグ "VOCALOID" が登録された楽曲一覧(106件)'
+    end
+
+    it 'ユーザ' do
+      search('へたれ' , -1 , -1 , -1 , -1)
+      expect(current_path).to eq '/user/userpage/hetare'
     end
   end
 
