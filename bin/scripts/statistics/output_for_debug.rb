@@ -9,20 +9,10 @@ class OutputForDebug
     @access_log = access_log
   end
 
-  # print - ログの一覧を標準出力する
+  # print_all_log_list - すべてのログの一覧を標準出力する
   #--------------------------------------------------------------------
-  def print_log
-    @access_log.log_data_list.each do | log |
-      puts "日付:        #{log['date']}"
-      puts "IPアドレス:  #{log['ip']}"
-      puts "ユーザ:      #{log['user']}"
-      puts "URL:         #{log['url']}"
-      puts "リファラ:    #{log['referer']}"
-      puts "デバイス:    #{log['device']}"
-      puts "OS:          #{log['os']}"
-      puts "ブラウザ:    #{log['blowser']}"
-      puts
-    end
+  def print_all_log_list
+    print_log(@access_log.log_data_list)
   end
   
   # print_num_of_access - 総アクセス数とユニークアクセス数を標準出力する
@@ -63,6 +53,36 @@ class OutputForDebug
     puts "#{data_name}の種類ごとのアクセス数"
     each_data_log_hash.each do | key, each_log_list |
       puts "%-40s%s回"%[key, each_log_list.size]
+    end
+  end
+
+  # print_filter_data - 特定のログの一覧を標準出力する
+  #--------------------------------------------------------------------
+  def print_filter_data(data_name, value)
+    each_data_log_hash = @access_log.get_each_data_log_hash(data_name, @access_log.log_data_list)
+
+    if (each_data_log_hash[value])
+      puts "#{data_name}: #{value}のログ一覧"
+      print_log(each_data_log_hash[value])
+    else
+      puts "#{data_name}: #{value}を持つログはありません。"
+    end
+  end
+
+  # print_log - ログの一覧を標準出力する
+  #--------------------------------------------------------------------
+  private
+  def print_log(log_data_list)
+    log_data_list.each do | log |
+      puts "日付:        #{log['date']}"
+      puts "IPアドレス:  #{log['ip']}"
+      puts "ユーザ:      #{log['user']}"
+      puts "URL:         #{log['url']}"
+      puts "リファラ:    #{log['referer']}"
+      puts "デバイス:    #{log['device']}"
+      puts "OS:          #{log['os']}"
+      puts "ブラウザ:    #{log['blowser']}"
+      puts
     end
   end
 

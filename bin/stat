@@ -1,2 +1,2 @@
 cd $MARCHDIR
-bundle exec ruby bin/scripts/statistics/march.rb < logs/request.log $@
+bundle exec ruby bin/scripts/statistics/march.rb < logs/request.log "$@"

@@ -560,7 +560,7 @@ var register = (function() {
     // お店のもしかしてリスト作成
     zenra.post('/ajax/storelist' , {} , {
       success: function(result) {
-        var branch_list = zenra.parseJSON(result);
+        branch_list = zenra.parseJSON(result);
 
         // オブジェクトのキーをお店リストとして取得
         store_list = [];
