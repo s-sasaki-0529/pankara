@@ -34,7 +34,7 @@ class History < Base
       arg['song'] = song_id
     end
 
-    if arg['score_type'] == "0"
+    if arg['score_type'].nil? || arg['score_type'].to_s == "0" || arg['score'].nil? || arg['score'].to_i == 0
       arg['score_type'] = nil
       arg['score'] = nil
     end

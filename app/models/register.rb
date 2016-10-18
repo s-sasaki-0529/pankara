@@ -88,10 +88,12 @@ class Register < Base
     song.strip!
     artist.strip!
 
-    # スコアが空欄または０点の場合、未採点扱いに
-    if score_type && score && score.to_i == 0
+    # スコアは、score_typeが定義されており、0以外の得点が設定されてる場合のみ
+    if score_type.nil? || score.nil? || score.to_i == 0
+      score_type = nil
       score = nil
     end
+
     score or score_type = nil
 
     artist_id = create_artist(artist)
