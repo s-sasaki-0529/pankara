@@ -8,7 +8,7 @@ require_relative 'option'
 require_relative 'output_for_debug'
 require_relative 'output_to_json'
 
-Version = '0.2.0'
+Version = '1.0.0'
 
 class March
 
@@ -70,17 +70,19 @@ class March
     extract_log_by_date(option, access_log)
 
     output = get_output(option, access_log)
- 
-    if order = option.get('cnt')
+    
+    if filter = option.get('filter')
+      output.print_filter_data(filter['param'], filter['value'])
+    elsif order = option.get('cnt')
       output.print_num_of_each_day_access order
     elsif agg = option.get('agg')
       output.print_num_of_each_data_access(agg)
     else
-      output.print_log
+      output.print_all_log_list
     end
   end
 
-  # extract_log_by_date - オプションに応じて出力用インスタンスを取得する
+  # extract_log_by_date - 日にちに関するオプションに応じて不要なログを取り除く
   #---------------------------------------------------------------------
   private
   def extract_log_by_date(option, access_log)
