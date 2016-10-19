@@ -29,7 +29,7 @@ class Friend < Base
   # ユーザの指定がない場合全ユーザを対象にリストを戻す
   #---------------------------------------------------------------------
   def self.get_status(user_a , user_b = nil)
-    @@list.empty? and Friend.list
+    (@@list.empty? || Util.run_mode == 'ci') and Friend.list
     user_b ? @@list[user_a][user_b] : @@list[user_a]
   end
 

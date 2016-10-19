@@ -275,7 +275,7 @@ zenra.createSeekbar = function() {
 zenra.moshikashite = function(id , source) {
   $('#' + id).autocomplete({
     source: source ,
-    minLength: 2 ,
+    minLength: 2
   });
 };
 
@@ -284,6 +284,10 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
     'option' ,
     opt ,
     value
+  );
+ 
+  $('#' + id).trigger(
+    $.Event( 'keydown' , { keyCode: 65 , which: 65 })
   );
 };
 
@@ -683,7 +687,7 @@ var register = (function() {
   function createInputSongEvent() {
     $('#song').blur(function() {
       // 曲名を入力すると歌手名を自動入力する
-      if ($(this).val() in song_obj) {
+      if ($(this).val() in song_obj && $('#artist').val() == '') {
         $('#artist').val(song_obj[$(this).val()]);
       }
 
@@ -896,8 +900,8 @@ var register = (function() {
           createWidgetForHistory();
           setScoreTypeFromCookie();
 
-          $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-          $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('登録して終了');
+          $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
+          $('#button2').on('click' , function() {location.href = "/karaoke/detail/" + karaoke_id}).val('終了');
         } ,
         funcs: {
           beforeClose: beforeClose
@@ -1016,13 +1020,13 @@ var register = (function() {
               func_at_load: function() {
                 createWidgetForHistory();
 
-                $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('続けて登録');
-                $('#button2').attr('onclick' , 'register.submitHistoryRegistrationRequest("end" , ' + karaoke_id + ');').val('登録して終了');
+                $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
+                $('#button2').on('click' , function() {location.href = "/karaoke/detail/" + karaoke_id}).val('終了');
               } ,
             });
           }
           else {
-            alert('カラオケの登録に失敗しました。');
+            alert(response['info']);
           }
         } ,
         error: function() {
@@ -1043,7 +1047,7 @@ var register = (function() {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
-            alert('カラオケの編集に失敗しました');
+            alert(response['info']);
           }
         } ,
         error: function() {
@@ -1094,7 +1098,7 @@ var register = (function() {
           }
         } ,
         error: function() {
-          alert('楽曲情報の編集にしっぱいしました。サーバにアクセスできません。');
+          alert('楽曲情報の編集に失敗しました。サーバにアクセスできません。');
         }
       });
     },
@@ -1116,21 +1120,10 @@ var register = (function() {
             var mes = sangInfo['song'] + '(' + sangInfo['artist'] + ')' + 'を登録しました。</br>';
             mes += 'あなたがこの曲を歌うのは ' + sangInfo['sang_count'] + ' 回目です。';
             $('#result').html('<p>' + mes + '</p>');
-            //$('#result').html('<p>' + count + '件入力されました</p>');
-            
-            if (action == 'end') {
-              //count = 0;
-              
-              input_dialog.setEvent({
-                beforeClose: function() { return true; } ,
-              });
-              input_dialog.close();
-             
-              location.href = ('/karaoke/detail/' + karaoke_id);
-            }
+            //$('#result').html('<p>' + count + '件入力されました</p>');            
           }
           else {
-            alert('歌唱履歴の登録に失敗しました。');
+            alert(response.info);
           }
         } ,
         error: function() {
@@ -1169,7 +1162,7 @@ var register = (function() {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
-            alert('歌唱履歴の編集に失敗しました。');
+            alert(response.info);
           }
         } ,
         error: function() {
