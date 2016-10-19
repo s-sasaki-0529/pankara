@@ -105,6 +105,7 @@ class Karaoke < Base
   def get_history
 
     # karaokeに参加しているユーザ一覧を取得
+    @params['members'] = []
     users_info = Util.array_to_hash(self.get_members , 'attendance')
     if users_info.empty?
       @params['members'] = users_info.values

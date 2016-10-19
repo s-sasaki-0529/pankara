@@ -188,6 +188,9 @@ class AjaxRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
+    if arg['store_name'].nil? || arg['store_name'] == ""
+      return error('店名を入力してください')
+    end
     twitter = arg["twitter"]
     tweet_text = arg["tweet_text"]
     result = karaoke.modify(arg)
@@ -244,6 +247,8 @@ class AjaxRoute < March
     arg = Util.to_hash(params[:params])
     twitter = arg['twitter']
     tweet_text = arg['tweet_text']
+    arg['song_name'] == "" and return error('曲名を入力してください')
+    arg['artist_name'] == "" and return error('歌手名を入力してください')
     result = history.modify(arg.dup)
     result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , tweet_text)
     return result ? success : error('modify failed')
@@ -267,9 +272,13 @@ class AjaxRoute < March
     karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
+    # 店名は必須
+    if karaoke['store'].nil? || karaoke['store'] == ''
+      return error('店名を入力してください')
+    end
+
     if @current_user
-      result = @current_user.register_karaoke(karaoke)
-     
+      result = @current_user.register_karaoke(karaoke) 
       if result.kind_of?(Integer)
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         Util.to_json({'result' => 'success', 'karaoke_id' => result})
@@ -306,6 +315,12 @@ class AjaxRoute < March
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
     twitter = params[:twitter]
+    # 歌手名/曲名は必須
+    if history['song_name'].nil? || history['song_name'] == ''
+      return error('曲名を入力してください')
+    elsif history['artist_name'].nil? || history['artist_name'] == ''
+      return error('歌手名を入力してください')
+    end
     if @current_user
       info = @current_user.register_history(karaoke_id , history)
       twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
@@ -320,6 +335,12 @@ class AjaxRoute < March
     user = @current_user or return error('invalid current user')
     song = params[:song]
     artist = params[:artist]
+    # 歌手名 / 曲名は必須
+    if song.nil? || song == ''
+      return error('曲名を入力してください')
+    elsif artist.nil? || artist == ''
+      return error('歌手名を入力してください')
+    end
     register = Register.new(user)
     artist_id = register.create_artist(artist)
     song_id = register.create_song(artist_id , artist , song)
