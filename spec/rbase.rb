@@ -119,39 +119,6 @@ module Rbase
     page.all('.thumbnail').collect {|element| element['src']}
   end
 
-  # Todo: 汎用性が皆無なので、使用しているテストに移動する
-  def input_karaoke
-    page.find('#name')
-    fill_in 'name', with: '入力ダイアログテスト用カラオケ'
-    fill_in 'datetime', with: '2016-02-20 12:00:00'
-    select '02時間00分', from: 'plan'
-    fill_in 'store', with: '歌広場'
-    fill_in 'branch', with: '相模大野店'
-    select 'JOYSOUND MAX', from: 'product'
-  end
-
-  # Todo: 汎用性が皆無なので、使用しているテストに移動する
-  def input_history_with_data(history, num = 0)
-    page.find('#song')
-    fill_in 'song', with: history['song']
-    fill_in 'artist', with: history['artist']
-    select history['score_type'], from: 'score_type'
-    fill_in 'score', with: history['score']
-    wait_for_ajax
-  end
-  
-  # Todo: 汎用性が皆無なので、使用しているテストに移動する
-  def input_history(song_value = 0 , artist_value = song_value , score_value = artist_value)
-    page.find('#song')
-    score = 0 + score_value
-    score = 100 if score > 100
-    fill_in 'song', with: "song#{song_value}"
-    fill_in 'artist', with: "artist#{artist_value}"
-    select 'JOYSOUND 全国採点', from: 'score_type'
-    fill_in 'score', with: score
-    wait_for_ajax
-  end
-
   # JavaScriptを実行
   def js(script)
     execute_script script

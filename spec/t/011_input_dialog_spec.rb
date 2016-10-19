@@ -31,6 +31,38 @@ history_data = {
   'score' => 80
 }
 
+# 汎用関数
+
+def input_karaoke
+  page.find('#name')
+  fill_in 'name', with: '入力ダイアログテスト用カラオケ'
+  fill_in 'datetime', with: '2016-02-20 12:00:00'
+  select '02時間00分', from: 'plan'
+  fill_in 'store', with: '歌広場'
+  fill_in 'branch', with: '相模大野店'
+  select 'JOYSOUND MAX', from: 'product'
+end
+
+def input_history_with_data(history, num = 0)
+  page.find('#song')
+  fill_in 'song', with: history['song']
+  fill_in 'artist', with: history['artist']
+  select history['score_type'], from: 'score_type'
+  fill_in 'score', with: history['score']
+  wait_for_ajax
+end
+
+def input_history(song_value = 0 , artist_value = song_value , score_value = artist_value)
+  page.find('#song')
+  score = 0 + score_value
+  score = 100 if score > 100
+  fill_in 'song', with: "song#{song_value}"
+  fill_in 'artist', with: "artist#{artist_value}"
+  select 'JOYSOUND 全国採点', from: 'score_type'
+  fill_in 'score', with: score
+  wait_for_ajax
+end
+
 # テスト実行
 describe '履歴入力用ダイアログのテスト', :js => true do
   before(:all , &init)
@@ -57,7 +89,8 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     click_on '次へ'
    
     input_history_with_data history_data, 1
-    click_on '登録して終了'; wait_for_ajax
+    click_on '登録'; wait_for_ajax
+    click_on '終了'; wait_for_ajax
     
     karaoke = [
       '2016-02-20',
@@ -85,7 +118,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     3.times do |i|
       input_history 1234 , 4567
-      click_on '続けて登録'
+      click_on '登録'
       iscontain "song1234(artist4567)を登録しました。"
       iscontain "あなたがこの曲を歌うのは #{i + 1} 回目です。"
     end
@@ -109,11 +142,12 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     20.times do |i|
       input_history i
-      click_on '続けて登録'
+      click_on '登録'
       wait_for_ajax
     end
 
-    click_on '登録して終了'
+    click_on '登録'; wait_for_ajax
+    click_on '終了'; wait_for_ajax
   
     histories = []
     20.times do |i|

@@ -110,7 +110,8 @@ describe 'カラオケ詳細ページ' , :js => true do
       js('register.createHistory(8)')
       fill_in 'song' , with: '新しい楽曲'
       fill_in 'artist' , with: '新しい歌手'
-      click_on '登録して終了'; wait_for_ajax
+      click_on '登録'; wait_for_ajax
+      click_on '終了'; wait_for_ajax
       expect(table_to_hash('karaoke_detail_history_all').length).to eq 76
       js('register.editHistory(8 , 906)')
       click_on '削除'; wait_for_ajax
