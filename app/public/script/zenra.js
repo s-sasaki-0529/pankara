@@ -234,8 +234,12 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     $('#song_name_' + idx).remove();
     $('#artist_name_' + idx).remove();
     $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
-    $img.attr('info' , song + ' (' + artist + ')');
-    $img.click(function() {
+    $img.attr('id' , 'bathtowel_' + id).attr('info' , song + ' (' + artist + ')');
+
+    // iPhoneでのclickイベントについて
+    // http://blog.webcreativepark.net/2012/12/25-134858.html
+    $img.on('click' , function(){});
+    $("body").on("click" , '#bathtowel_' + id , function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
       player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
