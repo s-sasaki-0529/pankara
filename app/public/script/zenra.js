@@ -1095,7 +1095,7 @@ var register = (function() {
           }
         } ,
         error: function() {
-          alert('楽曲情報の編集にしっぱいしました。サーバにアクセスできません。');
+          alert('楽曲情報の編集に失敗しました。サーバにアクセスできません。');
         }
       });
     },
@@ -1120,7 +1120,7 @@ var register = (function() {
             //$('#result').html('<p>' + count + '件入力されました</p>');            
           }
           else {
-            alert('歌唱履歴の登録に失敗しました。');
+            alert(response.info);
           }
         } ,
         error: function() {
@@ -1159,7 +1159,7 @@ var register = (function() {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
-            alert('歌唱履歴の編集に失敗しました。');
+            alert(response.info);
           }
         } ,
         error: function() {
