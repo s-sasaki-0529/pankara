@@ -276,6 +276,7 @@ zenra.moshikashite = function(id , source) {
   $('#' + id).autocomplete({
     source: source ,
     minLength: 2 ,
+    autoFocus: false
   });
 };
 
@@ -683,7 +684,7 @@ var register = (function() {
   function createInputSongEvent() {
     $('#song').blur(function() {
       // 曲名を入力すると歌手名を自動入力する
-      if ($(this).val() in song_obj) {
+      if ($(this).val() in song_obj && $('#artist').val() == '') {
         $('#artist').val(song_obj[$(this).val()]);
       }
 
