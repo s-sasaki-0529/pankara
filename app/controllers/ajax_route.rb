@@ -188,6 +188,9 @@ class AjaxRoute < March
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
+    if arg['store_name'].nil? || arg['store_name'] == ""
+      return error('店名を入力してください')
+    end
     twitter = arg["twitter"]
     tweet_text = arg["tweet_text"]
     result = karaoke.modify(arg)
@@ -267,9 +270,13 @@ class AjaxRoute < March
     karaoke['branch'] = params[:store_branch]
     karaoke['product'] = params['product'].to_i
 
+    # 店名は必須
+    if karaoke['store'].nil? || karaoke['store'] == ''
+      return error('店名を入力してください')
+    end
+
     if @current_user
-      result = @current_user.register_karaoke(karaoke)
-     
+      result = @current_user.register_karaoke(karaoke) 
       if result.kind_of?(Integer)
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         Util.to_json({'result' => 'success', 'karaoke_id' => result})

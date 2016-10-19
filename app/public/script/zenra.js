@@ -1023,7 +1023,7 @@ var register = (function() {
             });
           }
           else {
-            alert('カラオケの登録に失敗しました。');
+            alert(response['info']);
           }
         } ,
         error: function() {
@@ -1044,7 +1044,7 @@ var register = (function() {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
-            alert('カラオケの編集に失敗しました');
+            alert(response['info']);
           }
         } ,
         error: function() {
