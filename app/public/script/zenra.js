@@ -275,8 +275,7 @@ zenra.createSeekbar = function() {
 zenra.moshikashite = function(id , source) {
   $('#' + id).autocomplete({
     source: source ,
-    minLength: 2 ,
-    autoFocus: false
+    minLength: 2
   });
 };
 
@@ -285,6 +284,10 @@ zenra.setOptionMoshikashite = function(id , opt , value) {
     'option' ,
     opt ,
     value
+  );
+ 
+  $('#' + id).trigger(
+    $.Event( 'keydown' , { keyCode: 65 , which: 65 })
   );
 };
 
