@@ -10,11 +10,6 @@ body {
   z-index: 99;
 }
 
-/*テーブルヘッダは全て中央揃えに*/
-th {
-  text-align: center;
-}
-
 /*セル内の数値*/
 tr *.cell-number {
   width: 5%;
