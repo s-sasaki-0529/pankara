@@ -1330,7 +1330,9 @@ zenra.playlist = (function() {
       index = playlist.indexOf(index_id);
     }
     target.cuePlaylist(playlist , index);
-    setTimeout(_play , 1000);  //タイムラグ
+    if (zenra.ispc) {
+      setTimeout(_play , 1000);  //タイムラグ
+    }
   }
 
   /*[Method] 再生リストを作成する*/
@@ -1347,7 +1349,6 @@ zenra.playlist = (function() {
       width: player_width ,
       height: player_height,
       playerVars: {
-        autoplay: 1,
         loop: 1,
         listType: 'playlist',
         list: 'playlist',
