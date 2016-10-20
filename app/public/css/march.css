@@ -135,7 +135,7 @@ p.mini {
   border-radius: 10px;    /* CSS3草案 */
   -webkit-border-radius: 10px;  /* Safari,Google Chrome用 */
   -moz-border-radius: 10px; /* Firefox用 */
-  width: 20%;
+  /*width: 20%;*/
   height: 90px;
   background-color: rgb(255,255,102);
   float: left;
