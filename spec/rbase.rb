@@ -10,6 +10,11 @@ module Rbase
     find('#login_button').click
   end
 
+  # ログアウトする
+  def logout
+    visit '/auth/logout'
+  end
+
   # 指定した文字列がページ内に含まれていることを検証する
   def iscontain(contents)
     contents = [contents] if contents.kind_of?(String)
@@ -86,6 +91,11 @@ module Rbase
     link name
     expect(page.all('h3')[0].text).to eq name
     referer and visit referer
+  end
+
+  # 現在のパスを検証
+  def current_path_is(path)
+    expect(current_path).to eq path
   end
 
   # 指定したIDを持つテーブル要素を、行列の二次元配列に変換する
