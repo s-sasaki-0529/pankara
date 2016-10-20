@@ -1240,7 +1240,7 @@ zenra.showSongTagList = function(id , user) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + tag['name'] + '</a></td>');
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + zenra.htmlescape(tag['name']) + '</a></td>');
     var $removeIcon;
     if (tag['created_by'] == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
       $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
@@ -1415,6 +1415,19 @@ zenra.playlist = (function() {
     pause: _pause ,
   };
 })();
+
+zenra.htmlescape = function (string) {
+  return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+  })
+}
 
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
