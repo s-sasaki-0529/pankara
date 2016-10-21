@@ -1,31 +1,21 @@
 <div style="display: none">
-
   <div id="input_song" class="input_dialog" title="楽曲の新規登録">
-    <p id="result"></p>
-    <div>
-      <label for="song">曲名:</label>
-      <input id="song" title="曲名を入力してください。" type="text" name="song" value="" size="30" autofocus/>
+    <div class='form-group'>
+      <label class='control-label' for="song">曲名</label>
+      <input class='form-control' id="song" title="曲名を入力してください。" type="text" name="song" value="" size="30" autofocus/>
     </div>
-    <div>
-      <label for="artist">歌手:</label>
-      <input id="artist" title="歌手名を入力してください。" type="text" name="artist" value="" size="30"/>
+    <div class='form-group'>
+      <label class='control-label' for="artist">歌手</label>
+      <input class='form-control' id="artist" title="歌手名を入力してください。" type="text" name="artist" value="" size="30"/>
     </div>
-    <div id="url_area">
-      <label for="url">URL:</label>
-      <input id="url" title="YoutubeのURLを入力してください。" type="text" name="artist" value="" size="30"/>
+    <div class='form-group' id="url_area">
+      <label class='control-label' for="url">URL</label>
+      <input class='form-control' id="url" title="YoutubeのURLを入力してください。" type="text" name="artist" value="" size="30"/>
     </div>
-    <div id="buttons">
-      <input class='btn btn-default' id="button1" type="button" value="" />
-      <input class='btn btn-default' id="button2" type="button" value="" />
+    <div class='form-group' id="buttons">
+      <input class='form-control btn btn-default' id="button1" type="button" value="" />
+      <input class='form-control btn btn-default' id="button2" type="button" value="" />
     </div>
   </div>
-
-  <div id="caution">
-    <p>入力を終了しますか？</p>
-    <p>ここまでの入力内容はすべて破棄されます</p>
-    <input id="yes" type="button" value="はい" onclick="register.reset()"/>
-    <input id="no" type="button" value="いいえ" onclick="register.closeDialog()"/>
-  </div>
-
 </div>
 
