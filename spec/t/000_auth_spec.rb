@@ -7,36 +7,33 @@ init = proc do
   User.create('march_user' , 'march_user' , 'マージユーザ')
 end
 
-# 定数定義
-message = 'ログインしてください'
-
 # テスト実行
 describe '認証系ページ' do
   before(:all,&init)
   it '画面表示' do
     visit '/'
-    iscontain message
+    current_path_is "/auth/login"
   end
   it '不正ログインパターン' do
     login 'failed_user'
-    iscontain message
+    current_path_is "/auth/login"
   end
   it '正常ログインパターン' do
     login 'march_user'
-    islack message
+    current_path_is "/"
   end
   it 'ログアウト' do
     login 'march_user'
-    islack message
+    current_path_is "/"
     visit '/auth/logout'
-    iscontain message
+    current_path_is "/auth/login"
   end
   it 'ログイン成功時に直前のページにリダイレクト' do
     visit '/auth/logout'
     visit '/artist/'
     iscontain 'アーティスト一覧'
     link 'ログイン'
-    iscontain message
+    current_path_is "/auth/login"
     fill_in 'username' , with: 'march_user'
     fill_in 'password' , with: 'march_user'
     find('#login_button').click

@@ -771,9 +771,9 @@ var register = (function() {
   function createElementForEditKaraoke(karaoke_id) {
     $('#button1').attr('onclick' , 'register.submitKaraokeEditRequest(' + karaoke_id + ');').val('保存');
     var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
-    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除');
+    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除').addClass('btn btn-default');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
 
     $('#buttons').append(button2);
     $('#buttons').append(button3);
@@ -791,7 +791,7 @@ var register = (function() {
       action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
     }
 
-    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
     var buttons = $('#buttons');
     buttons.append(action_button);
     buttons.append(cancel_button);
@@ -802,7 +802,7 @@ var register = (function() {
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
     $('#button2').attr('onclick' , 'register.submitHistoryDeleteRequest(' + karaoke_id + ' , ' + history_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
     $('#buttons').append(button3);
   }
     
@@ -923,7 +923,7 @@ var register = (function() {
         func_at_load: function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
-          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル').addClass('btn btn-default');
           $('#url_area').hide();
         }
       });
@@ -938,7 +938,7 @@ var register = (function() {
         func_at_load: function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitSongEditRequest(' + song_id + ')').val('登録');
-          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル').addClass('btn btn-default');
           $('#song').val(song_name);
           $('#artist').val(artist_name);
           $('#url').val('https://www.youtube.com/watch?v=' + youtube_id);
