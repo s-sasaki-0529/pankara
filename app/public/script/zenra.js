@@ -1149,9 +1149,12 @@ var register = (function() {
           if (response['result'] == 'success') {
             location.href = '/song/' + response['info'];
           } else {
-            alert('楽曲の新規登録に失敗しました');
+            alert(response['info']);
           }
         },
+        error: function () {
+          alert('楽曲の登録に失敗しました。サーバにアクセスできません。');
+        }
       });
     } ,
     /*[Method] 歌唱履歴編集リクエストを送信する*/
