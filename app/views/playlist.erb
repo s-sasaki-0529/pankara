@@ -22,8 +22,8 @@ function onYouTubeIframeAPIReady() {
 
 <!-- スマートフォン -->
 <% else %>
-<h3>再生リストを連続再生</h3>
 <div id="player"></div>
+<p class='red'>iPhoneなど、端末によっては自動再生が失敗することがあります</p>
 <%= erb :_playlist_songlist %>
 <script>
 function onYouTubeIframeAPIReady() {

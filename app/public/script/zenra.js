@@ -1149,9 +1149,12 @@ var register = (function() {
           if (response['result'] == 'success') {
             location.href = '/song/' + response['info'];
           } else {
-            alert('楽曲の新規登録に失敗しました');
+            alert(response['info']);
           }
         },
+        error: function () {
+          alert('楽曲の登録に失敗しました。サーバにアクセスできません。');
+        }
       });
     } ,
     /*[Method] 歌唱履歴編集リクエストを送信する*/
@@ -1240,7 +1243,7 @@ zenra.showSongTagList = function(id , user) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + tag['name'] + '</a></td>');
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + zenra.htmlescape(tag['name']) + '</a></td>');
     var $removeIcon;
     if (tag['created_by'] == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
       $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
@@ -1330,7 +1333,9 @@ zenra.playlist = (function() {
       index = playlist.indexOf(index_id);
     }
     target.cuePlaylist(playlist , index);
-    setTimeout(_play , 1000);  //タイムラグ
+    if (zenra.ispc) {
+      setTimeout(_play , 1000);  //タイムラグ
+    }
   }
 
   /*[Method] 再生リストを作成する*/
@@ -1347,7 +1352,6 @@ zenra.playlist = (function() {
       width: player_width ,
       height: player_height,
       playerVars: {
-        autoplay: 1,
         loop: 1,
         listType: 'playlist',
         list: 'playlist',
@@ -1414,6 +1418,19 @@ zenra.playlist = (function() {
     pause: _pause ,
   };
 })();
+
+zenra.htmlescape = function (string) {
+  return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+  })
+}
 
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';

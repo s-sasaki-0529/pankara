@@ -100,4 +100,17 @@ class Tag < Base
     db.execute_columns
   end
 
+  # tags_with_objects_count - タグと関連づいたオブジェクトの個数を戻す
+  #--------------------------------------------------------------------
+  def self.tags_with_objects_count
+    DB.new(
+      :SELECT => {
+        'tag.name' => 'name' ,
+        'COUNT(name)' => 'count'
+      },
+      :FROM => 'tag',
+      :OPTION => ['GROUP BY name' , 'ORDER BY count desc']
+    ).execute_all
+  end
+
 end
