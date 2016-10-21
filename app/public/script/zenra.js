@@ -771,7 +771,7 @@ var register = (function() {
   function createElementForEditKaraoke(karaoke_id) {
     $('#button1').attr('onclick' , 'register.submitKaraokeEditRequest(' + karaoke_id + ');').val('保存');
     var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
-    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除');
+    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除').addClass('btn btn-default');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
     button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
 
