@@ -1,0 +1,20 @@
+<% if Util.is_pc? %>
+<div class="row">
+  <img align="right" src="/image/kaeru.png" width='330px' height=auto>
+  <div style="padding-top: 150px">
+    <h2>お探しのページは見つかりませんでした</h2>
+    <p> あなたがアクセスしようとしたページは見つかりませんでした。</p>
+    <p>お探しのページは移動、削除されたか、URLが間違っている可能性があります。</p>
+  </div>
+<% else %>
+  <div class='center'>
+    <img src="/image/kaeru.png" width='150px' height=auto>
+  </div>
+  <div>
+    <h2>お探しのページは見つかりませんでした</h2>
+    <p>
+      あなたがアクセスしようとしたページは見つかりませんでした。
+      お探しのページは移動、削除されたか、URLが間違っている可能性があります。
+    </p>
+  </div>
+<% end %>
