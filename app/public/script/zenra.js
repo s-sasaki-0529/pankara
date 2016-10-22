@@ -272,23 +272,98 @@ zenra.createSeekbar = function() {
   });
 };
 
-zenra.moshikashite = function(id , source) {
+/*
+  moshikashiteオブジェクト -もしかしてリスト制御用オブジェクト-
+  id: InputエレメントのID
+  source: もしかしてリストのソース用配列
+*/
+var moshikashite = function(arg_id , arg_source) {
+  var id = arg_id;
+  var source = arg_source;
+  
   $('#' + id).autocomplete({
     source: source ,
     minLength: 2
   });
-};
 
-zenra.setOptionMoshikashite = function(id , opt , value) {
-  $('#' + id).autocomplete(
-    'option' ,
-    opt ,
-    value
-  );
- 
-  $('#' + id).trigger(
-    $.Event( 'keydown' , { keyCode: 65 , which: 65 })
-  );
+  $('#' + id).keyup(function() {
+    if ($('#' + id).val().length == 1) {
+      var extractedSource = extractSoruce($('#' + id).val());
+
+      $('#' + id).autocomplete('option' , 'source' , extractedSource);
+      $('#' + id).autocomplete('option' , 'minLength' , 1);
+    }
+    else {
+      $('#' + id).autocomplete('option' , 'source' , source);
+      $('#' + id).autocomplete('option' , 'minLength' , 2);
+    }
+  });
+
+  /*
+  setOption - もしかしてリストのオプションを設定する
+  opt: オプションの種類
+  value: オプションの設定値 
+  */
+  this.setOption = function(opt , value) {
+    $('#' + id).autocomplete(
+      'option' ,
+      opt ,
+      value
+    );
+  };
+
+  /*
+  setSource - もしかしてリストのソースを設定する
+  source: もしかしてリストのソース用配列
+  */
+  this.setSource = function(arg_source) {
+    source = arg_source;
+    
+    $('#' + id).autocomplete(
+      'option' ,
+      'Source' ,
+      source
+    );
+  };
+
+  /*
+  setStandardMoshikashite - もしかしてリストを標準設定にする　必要ならSourceも設定する
+  source: もしかしてリストのソース用配列
+  */
+  this.setStandardMoshikashite = function(source) {
+    if (source)
+      this.setSource(source);
+    
+    this.setOption('minLength' , 2);
+  };
+  
+  /*
+  setNoNeedInputMoshikashite - 文字の入力がなくてももしかしてリストを表示できるように設定する　必要ならSourceも設定する
+  source: もしかしてリストのソース用配列
+  */
+  this.setNoNeedInputMoshikashite = function(source) {
+    if (source)
+      this.setSource(source);
+    
+    this.setOption('minLength' , 0);
+
+    $('#' + id).trigger(
+      $.Event( 'keydown' , { keyCode: 65 , which: 65 })
+    );
+  };
+  
+  function extractSoruce(input_value) {
+    var extractedSource = [];
+    
+    for (var i = 0; i < source.length; i++) {
+      if (source[i].charAt(0) == input_value.toLowerCase() || 
+          source[i].charAt(0) == input_value.toUpperCase()) {
+        extractedSource.push(source[i]);
+      }
+    }
+
+    return extractedSource;
+  };
 };
 
 /*
@@ -503,6 +578,10 @@ var register = (function() {
   var song_list = [];
   var artist_list = [];
   var input_dialog;
+  var song_moshikashite;
+  var artist_moshikashite;
+  var store_moshikashite;
+  var branch_moshikashite;
 
   /*[Method] 歌唱履歴入力欄をリセットする*/
   function resetHistory() {
@@ -512,11 +591,8 @@ var register = (function() {
     $('#score').val('');
     $('#song').focus();
     
-    zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
-    zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
-    
-    zenra.setOptionMoshikashite('song' , 'minLength' , 2);
-    zenra.setOptionMoshikashite('song' , 'source' , song_list);
+    song_moshikashite.setStandardMoshikashite(song_list);
+    artist_moshikashite.setStandardMoshikashite(artist_list);
   }
 
   /*[Method] ダイアログを閉じる時に実施する処理*/
@@ -572,14 +648,14 @@ var register = (function() {
           store_list.push(key);
         }
 
-        zenra.moshikashite('store' , store_list);
+        store_moshikashite = new moshikashite('store' , store_list);
       }
     });
 
     // お店を入力すると店舗のもしかしてリストが作成される
     $('#store').blur(function() {
       if ($(this).val() in branch_list) {
-        zenra.moshikashite('branch' , branch_list[$(this).val()]);
+        branch_moshikashite = new moshikashite('branch' , branch_list[$(this).val()]);
       }
     });
 
@@ -637,8 +713,8 @@ var register = (function() {
           }
         }
 
-        zenra.moshikashite('song' , song_list);
-        zenra.moshikashite('artist' , artist_list);
+        song_moshikashite = new moshikashite('song' , song_list);
+        artist_moshikashite = new moshikashite('artist' , artist_list);
       }
     });
 
@@ -705,12 +781,10 @@ var register = (function() {
           }
         }
 
-        zenra.setOptionMoshikashite('artist' , 'minLength' , 0);
-        zenra.setOptionMoshikashite('artist' , 'source' , temp_artist_list);
+        artist_moshikashite.setNoNeedInputMoshikashite(temp_artist_list);
       }
       else {
-        zenra.setOptionMoshikashite('artist' , 'minLength' , 2);
-        zenra.setOptionMoshikashite('artist' , 'source' , artist_list);
+        artist_moshikashite.setStandardMoshikashite(artist_list);
       }
     });
   }
@@ -728,12 +802,10 @@ var register = (function() {
       }
 
       if (temp_song_list.length > 0) {
-        zenra.setOptionMoshikashite('song' , 'minLength' , 0);
-        zenra.setOptionMoshikashite('song' , 'source' , temp_song_list);
+        song_moshikashite.setNoNeedInputMoshikashite(temp_song_list);
       }
       else {
-        zenra.setOptionMoshikashite('song' , 'minLength' , 2);
-        zenra.setOptionMoshikashite('song' , 'source' , song_list);
+        song_moshikashite.setStandardMoshikashite(song_list);
       }
       
       autoInputSongKey();
