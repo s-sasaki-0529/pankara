@@ -301,13 +301,20 @@ zenra.createNameGuideLines = function () {
     $('.popover-guideline').click(function (evt) {
       if ($(this).prop('id') == $currentElement.prop('id')) {
         $(this).popover('hide');
+        $currentElement = $('');
       } else {
         $currentElement.popover('hide');
         $currentElement = $(this);
         $currentElement.popover('show');
+        $('.popover').click(function (evt) {
+          $currentElement.popover('hide');
+          $currentElement = $('');
+        });
       }
     });
     $('#close_guide_btn').unbind().click(function () {
+      $currentElement.popover('hide');
+      $currentElement = $('');
       $('#main_content').removeClass('hidden');
       $('#guideline').addClass('hidden');
     });
