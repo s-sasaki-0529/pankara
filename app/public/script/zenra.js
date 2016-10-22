@@ -285,8 +285,8 @@ zenra.createNameGuideLines = function () {
   var $currentElement = $('');
   (function() {
     // 入力画面を非表示にし、ガイド画面を表示する
-    $('#song').blur();
-    $('#artist').blur();
+    $('#song').autocomplete("close");
+    $('#artist').autocomplete("close");
     $('#main_content').addClass('hidden');
     $('#guideline').removeClass('hidden');
     $('.popover-guideline').popover('hide');
@@ -324,6 +324,10 @@ zenra.createNameGuideLines = function () {
       $('#main_content').removeClass('hidden');
       $('#guideline').addClass('hidden');
     });
+    // スマフォの場合画面をスクロール
+    if (! zenra.ispc) {
+      $(window).scrollTop(0);
+    }
   })();
 };
 
@@ -844,10 +848,8 @@ var register = (function() {
       .val('保存').addClass('form-control btn btn-default');
     }
     cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
-    if (! zenra.is_pc) {
-      action_button.addClass('form-control');
-      cancel_button.addClass('form-control');
-    }
+    action_button.addClass('form-control');
+    cancel_button.addClass('form-control');
     var buttons = $('#buttons');
     buttons.append(action_button);
     buttons.append(cancel_button);
