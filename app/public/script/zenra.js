@@ -234,8 +234,12 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     $('#song_name_' + idx).remove();
     $('#artist_name_' + idx).remove();
     $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
-    $img.attr('info' , song + ' (' + artist + ')');
-    $img.click(function() {
+    $img.attr('id' , 'bathtowel_' + id).attr('info' , song + ' (' + artist + ')');
+
+    // iPhoneでのclickイベントについて
+    // http://blog.webcreativepark.net/2012/12/25-134858.html
+    $img.on('click' , function(){});
+    $("body").on("click" , '#bathtowel_' + id , function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
       player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
@@ -270,6 +274,61 @@ zenra.createSeekbar = function() {
       $('#slidervalue').html(ui.value);
     } ,
   });
+};
+
+/*
+createNameGuideLines - 曲名/歌手名の入力指針画面を生成
+*/
+zenra.createNameGuideLines = function () {
+
+  // 表示中のポップを保持するためのクロージャ
+  var $currentElement = $('');
+  (function() {
+    // 入力画面を非表示にし、ガイド画面を表示する
+    $('#song').autocomplete("close");
+    $('#artist').autocomplete("close");
+    $('#main_content').addClass('hidden');
+    $('#guideline').removeClass('hidden');
+    $('.popover-guideline').popover('hide');
+    $('.popover-guideline').attr('title' , '<p class="center">例</p>').popover({
+      trigger: 'manual',
+      html: true,
+    });
+    // 要素ごとににポップするメッセージを定義
+    $('#guide1').attr('data-content' ,"<p>⭕ メリッサ</p><p>❌ メリッサ 〜ガイドボーカル入り〜</p><p>❌ メリッサ 〜アニメ映像入り〜</p>");
+    $('#guide2').attr('data-content' ,"<p>⭕ さよならのかわりに花束を</p><p>❌ さよならのかわりに、花束を arranged version</p>");
+    $('#guide3').attr('data-content' ,"<p>⭕ ryo</p><p>❌ ryo feat.初音ミク</p><p>❌ 初音ミク</p>");
+    $('#guide4').attr('data-content' ,"<p>⭕ 涼宮ハルヒ</p><p>❌ 平野綾</p><p>❌ 涼宮ハルヒ(CV. 平野綾)</p>");
+    $('#guide5').attr('data-content' ,"<p>⭕ JAM Project</p><p>❌ JAM Project featuring 影山ヒロノブ</p>");
+    $('#guide6').attr('data-content' ,"<p>⭕ 涼宮ハルヒ、朝比奈みくる、長門有希</p><p>❌ 涼宮ハルヒ / 朝比奈みくる / 長門有希</p><p>❌ 平野綾、ゴットゥーザ様、茅原実里</p>");
+    $('#guide7').attr('data-content' ,"<p>⭕ ST☆RISH</p><p>❌ 一十木音也、聖川真斗、四ノ宮那月...</p><p>❌ 寺島拓篤、聖川真斗、四ノ宮那月...</p>");
+    $('#guide8').attr('data-content' ,"<p>⭕ 中島みゆき / 宙船</p><p>❌ TOKIO / 宙船</p>");
+    // 各要素クリック時に、メッセージをポップする
+    $('.popover-guideline').click(function (evt) {
+      // 既に表示中の場合閉じる
+      if ($(this).prop('id') == $currentElement.prop('id')) {
+        $(this).popover('hide');
+        $currentElement = $('');
+      }
+      // メッセージの表示
+      else {
+        $currentElement.popover('hide');
+        $currentElement = $(this);
+        $currentElement.popover('show');
+      }
+    });
+    // 「戻る」ボタンクリック時に、ガイトを非表示に、元の画面を表示する
+    $('#close_guide_btn').unbind().click(function () {
+      $currentElement.popover('hide');
+      $currentElement = $('');
+      $('#main_content').removeClass('hidden');
+      $('#guideline').addClass('hidden');
+    });
+    // スマフォの場合画面をスクロール
+    if (! zenra.ispc) {
+      $(window).scrollTop(0);
+    }
+  })();
 };
 
 /*
@@ -837,11 +896,11 @@ var register = (function() {
 
   /*[method] カラオケ編集画面用の要素を作成する*/
   function createElementForEditKaraoke(karaoke_id) {
-    $('#button1').attr('onclick' , 'register.submitKaraokeEditRequest(' + karaoke_id + ');').val('保存');
+    $('#button1').attr('onclick' , 'register.submitKaraokeEditRequest(' + karaoke_id + ');').val('保存').addClass('form-control btn btn-default');
     var button2 = $('<input>').attr('id' , 'button2').attr('type' , 'button');
-    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除');
+    button2.attr('onclick' , 'register.submitKaraokeDeleteRequest(' + karaoke_id + ');').val('削除').addClass('form-control btn btn-default');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('form-control btn btn-default');
 
     $('#buttons').append(button2);
     $('#buttons').append(button3);
@@ -853,13 +912,16 @@ var register = (function() {
     var cancel_button = $('<input>').attr('id' , 'cancel_button').attr('type' , 'button');
 
     if (action == 'registration') {
-      action_button.attr('onclick' , 'register.submintAttendanceRegistrationRequest(' + karaoke_id + ');').val('次へ');
+      action_button.attr('onclick' , 'register.submintAttendanceRegistrationRequest(' + karaoke_id + ');')
+      .val('次へ').addClass('form-control btn btn-default');
     }
     else {
-      action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');').val('保存');
+      action_button.attr('onclick' , 'register.submintAttendanceEditRequest(' + karaoke_id + ');')
+      .val('保存').addClass('form-control btn btn-default');
     }
-
-    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    cancel_button.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('btn btn-default');
+    action_button.addClass('form-control');
+    cancel_button.addClass('form-control');
     var buttons = $('#buttons');
     buttons.append(action_button);
     buttons.append(cancel_button);
@@ -870,7 +932,7 @@ var register = (function() {
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
     $('#button2').attr('onclick' , 'register.submitHistoryDeleteRequest(' + karaoke_id + ' , ' + history_id + ');').val('削除');
     var button3 = $('<input>').attr('id' , 'button3').attr('type' , 'button');
-    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル');
+    button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('form-control btn btn-default');
     $('#buttons').append(button3);
   }
     
@@ -945,7 +1007,8 @@ var register = (function() {
         func_at_load: function() {
           s = zenra.formatDate(new Date , 'YYYY/MM/DD hh:mm');
           createWidgetForKaraoke();
-          $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();').val('次へ')
+          $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();')
+          .val('次へ').addClass('form-control btn btn-default');
           $('#datetime').val(s);
         }
       });
@@ -991,7 +1054,7 @@ var register = (function() {
         func_at_load: function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitCreateSongRequest()').val('登録');
-          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル').addClass('from-control btn btn-default');
           $('#url_area').hide();
         }
       });
@@ -1006,7 +1069,7 @@ var register = (function() {
         func_at_load: function() {
           createWidgetForHistory();
           $('#button1').attr('onclick' , 'register.submitSongEditRequest(' + song_id + ')').val('登録');
-          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル');
+          $('#button2').attr('onclick' , 'register.closeDialog()').val('キャンセル').addClass('form-control btn btn-default');
           $('#song').val(song_name);
           $('#artist').val(artist_name);
           $('#url').val('https://www.youtube.com/watch?v=' + youtube_id);
@@ -1062,7 +1125,7 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 450)
+          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470)
           input_dialog.show('/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
@@ -1217,9 +1280,12 @@ var register = (function() {
           if (response['result'] == 'success') {
             location.href = '/song/' + response['info'];
           } else {
-            alert('楽曲の新規登録に失敗しました');
+            alert(response['info']);
           }
         },
+        error: function () {
+          alert('楽曲の登録に失敗しました。サーバにアクセスできません。');
+        }
       });
     } ,
     /*[Method] 歌唱履歴編集リクエストを送信する*/
@@ -1308,7 +1374,7 @@ zenra.showSongTagList = function(id , user) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + tag['name'] + '</a></td>');
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + zenra.htmlescape(tag['name']) + '</a></td>');
     var $removeIcon;
     if (tag['created_by'] == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
       $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
@@ -1398,7 +1464,9 @@ zenra.playlist = (function() {
       index = playlist.indexOf(index_id);
     }
     target.cuePlaylist(playlist , index);
-    setTimeout(_play , 1000);  //タイムラグ
+    if (zenra.ispc) {
+      setTimeout(_play , 1000);  //タイムラグ
+    }
   }
 
   /*[Method] 再生リストを作成する*/
@@ -1415,7 +1483,6 @@ zenra.playlist = (function() {
       width: player_width ,
       height: player_height,
       playerVars: {
-        autoplay: 1,
         loop: 1,
         listType: 'playlist',
         list: 'playlist',
@@ -1482,6 +1549,19 @@ zenra.playlist = (function() {
     pause: _pause ,
   };
 })();
+
+zenra.htmlescape = function (string) {
+  return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+  })
+}
 
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';

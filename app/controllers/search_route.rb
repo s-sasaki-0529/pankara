@@ -52,4 +52,12 @@ class SearchRoute < March
     erb :search_tag
   end
 
+  # get '/search/tag_list' - タグ一覧
+  # あまり良いRoutingではないかもしれない
+  #--------------------------------------------------------------------
+  get '/tag_list/?' do
+    @tags = Tag.tags_with_objects_count
+    erb :tag_list
+  end
+
 end

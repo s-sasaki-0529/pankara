@@ -10,11 +10,6 @@ body {
   z-index: 99;
 }
 
-/*テーブルヘッダは全て中央揃えに*/
-th {
-  text-align: center;
-}
-
 /*セル内の数値*/
 tr *.cell-number {
   width: 5%;
@@ -81,6 +76,11 @@ tr *.cell-datetime {
   color: rgb(255,0,0);
 }
 
+/*popover幅*/
+.popover {
+  max-width: 600px;
+}
+
 /*ミニ見出し*/
 p.mini {
   font-size: 13px;
@@ -135,7 +135,7 @@ p.mini {
   border-radius: 10px;    /* CSS3草案 */
   -webkit-border-radius: 10px;  /* Safari,Google Chrome用 */
   -moz-border-radius: 10px; /* Firefox用 */
-  width: 20%;
+  /*width: 20%;*/
   height: 90px;
   background-color: rgb(255,255,102);
   float: left;
