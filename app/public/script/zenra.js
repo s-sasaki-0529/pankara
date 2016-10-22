@@ -280,8 +280,11 @@ zenra.createSeekbar = function() {
 createNameGuideLines - 曲名/歌手名の入力指針画面を生成
 */
 zenra.createNameGuideLines = function () {
+
+  // 表示中のポップを保持するためのクロージャ
   var $currentElement = $('');
   (function() {
+    // 入力画面を非表示にし、ガイド画面を表示する
     $('#song').blur();
     $('#artist').blur();
     $('#main_content').addClass('hidden');
@@ -290,6 +293,7 @@ zenra.createNameGuideLines = function () {
       trigger: 'manual',
       html: true,
     });
+    // 要素ごとににポップするメッセージを定義
     $('#guide1').attr('data-content' ,"<p>⭕ メリッサ</p><p>❌ メリッサ 〜ガイドボーカル入り〜</p><p>❌ メリッサ 〜アニメ映像入り〜</p>");
     $('#guide2').attr('data-content' ,"<p>⭕ さよならのかわりに花束を</p><p>❌ さよならのかわりに、花束を arranged version</p>");
     $('#guide3').attr('data-content' ,"<p>⭕ ryo</p><p>❌ ryo feat.初音ミク</p><p>❌ 初音ミク</p>");
@@ -298,20 +302,27 @@ zenra.createNameGuideLines = function () {
     $('#guide6').attr('data-content' ,"<p>⭕ 涼宮ハルヒ、朝比奈みくる、長門有希</p><p>❌ 涼宮ハルヒ / 朝比奈みくる / 長門有希</p><p>❌ 平野綾、ゴットゥーザ様、茅原実里</p>");
     $('#guide7').attr('data-content' ,"<p>⭕ ST☆RISH</p><p>❌ 一十木音也、聖川真斗、四ノ宮那月...</p><p>❌ 寺島拓篤、聖川真斗、四ノ宮那月...</p>");
     $('#guide8').attr('data-content' ,"<p>⭕ 中島みゆき / 宙船</p><p>❌ TOKIO / 宙船</p>");
+    // 各要素クリック時に、メッセージをポップする
     $('.popover-guideline').click(function (evt) {
+      // 既に表示中の場合閉じる
       if ($(this).prop('id') == $currentElement.prop('id')) {
         $(this).popover('hide');
         $currentElement = $('');
-      } else {
+      }
+      // メッセージの表示
+      else {
         $currentElement.popover('hide');
         $currentElement = $(this);
         $currentElement.popover('show');
-        $('.popover').click(function (evt) {
+        // メッセージ自体をクリックした場合非表示に
+        $('.popover').unbind().click(function (evt) {
           $currentElement.popover('hide');
           $currentElement = $('');
         });
+        $('.popover-guideline').blur();
       }
     });
+    // 「戻る」ボタンクリック時に、ガイトを非表示に、元の画面を表示する
     $('#close_guide_btn').unbind().click(function () {
       $currentElement.popover('hide');
       $currentElement = $('');
