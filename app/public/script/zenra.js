@@ -276,6 +276,24 @@ zenra.createSeekbar = function() {
   });
 };
 
+/*
+createNameGuideLines - 曲名/歌手名の入力指針画面を生成
+*/
+zenra.createNameGuideLines = function () {
+  $('.popover-guideline').attr('title' , '<p class="center">例</p>').popover({
+    trigger: 'foucus',
+    html: true,
+  });
+  $('#guide1').attr('data-content' ,"<p>⭕ メリッサ</p><p>❌ メリッサ 〜ガイドボーカル入り〜</p><p>❌ メリッサ 〜アニメ映像入り〜</p>");
+  $('#guide2').attr('data-content' ,"<p>⭕ さよならのかわりに花束を</p><p>❌ さよならのかわりに、花束を arranged version</p>");
+  $('#guide3').attr('data-content' ,"<p>⭕ ryo</p><p>❌ ryo feat.初音ミク</p><p>❌ 初音ミク</p>");
+  $('#guide4').attr('data-content' ,"<p>⭕ 涼宮ハルヒ</p><p>❌ 平野綾</p><p>❌ 涼宮ハルヒ(CV. 平野綾)</p>");
+  $('#guide5').attr('data-content' ,"<p>⭕ JAM Project</p><p>❌ JAM Project featuring 影山ヒロノブ</p>");
+  $('#guide6').attr('data-content' ,"<p>⭕ 涼宮ハルヒ、朝比奈みくる、長門有希</p><p>❌ 涼宮ハルヒ / 朝比奈みくる / 長門有希</p><p>❌ 平野綾、ゴットゥーザ様、茅原実里</p>");
+  $('#guide7').attr('data-content' ,"<p>⭕ ST☆RISH</p><p>❌ 一十木音也、聖川真斗、四ノ宮那月...</p><p>❌ 寺島拓篤、聖川真斗、四ノ宮那月...</p>");
+  $('#guide8').attr('data-content' ,"<p>⭕ 中島みゆき / 宙船</p><p>❌ TOKIO / 宙船</p>");
+};
+
 zenra.moshikashite = function(id , source) {
   $('#' + id).autocomplete({
     source: source ,
