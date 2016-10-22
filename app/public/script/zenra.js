@@ -339,24 +339,34 @@ zenra.createNameGuideLines = function () {
 var moshikashite = function(arg_id , arg_source) {
   var id = arg_id;
   var source = arg_source;
+  var minLength = 2;
   
   $('#' + id).autocomplete({
     source: source ,
-    minLength: 2
+    minLength: minLength
   });
 
-  $('#' + id).keyup(function() {
-    if ($('#' + id).val().length == 1) {
-      var extractedSource = extractSoruce($('#' + id).val());
+  $('#' + id)
+    .keyup(function() {
+      if ($(this).val().length == 1) {
+        var extractedSource = extractSoruce($(this).val());
 
-      $('#' + id).autocomplete('option' , 'source' , extractedSource);
-      $('#' + id).autocomplete('option' , 'minLength' , 1);
-    }
-    else {
-      $('#' + id).autocomplete('option' , 'source' , source);
-      $('#' + id).autocomplete('option' , 'minLength' , 2);
-    }
-  });
+        $(this).autocomplete('option' , 'source' , extractedSource);
+        $(this).autocomplete('option' , 'minLength' , 1);
+      }
+      else {
+        if ($(this).autocomplete('option' , 'minLength') == 1) {
+          $(this).autocomplete('option' , 'source' , source);
+          $(this).autocomplete('option' , 'minLength' , minLength);
+        }
+      }
+    })
+    .focus(function() {
+      //! keydownを発火させて、もしかしてリストを自動で表示する
+      $('#' + id).trigger(
+        $.Event( 'keydown' , { keyCode: 65 , which: 65 })
+      );
+    });
 
   /*
   setOption - もしかしてリストのオプションを設定する
@@ -380,35 +390,33 @@ var moshikashite = function(arg_id , arg_source) {
     
     $('#' + id).autocomplete(
       'option' ,
-      'Source' ,
+      'source' ,
       source
     );
   };
 
   /*
   setStandardMoshikashite - もしかしてリストを標準設定にする　必要ならSourceも設定する
-  source: もしかしてリストのソース用配列
+  arg_source: もしかしてリストのソース用配列
   */
-  this.setStandardMoshikashite = function(source) {
-    if (source)
-      this.setSource(source);
-    
-    this.setOption('minLength' , 2);
+  this.setStandardMoshikashite = function(arg_source) {
+    if (arg_source)
+      this.setSource(arg_source);
+   
+    minLength = 2;
+    this.setOption('minLength' , minLength);
   };
   
   /*
   setNoNeedInputMoshikashite - 文字の入力がなくてももしかしてリストを表示できるように設定する　必要ならSourceも設定する
   source: もしかしてリストのソース用配列
   */
-  this.setNoNeedInputMoshikashite = function(source) {
-    if (source)
-      this.setSource(source);
+  this.setNoNeedInputMoshikashite = function(arg_source) {
+    if (arg_source)
+      this.setSource(arg_source);
     
-    this.setOption('minLength' , 0);
-
-    $('#' + id).trigger(
-      $.Event( 'keydown' , { keyCode: 65 , which: 65 })
-    );
+    minLength = 0;
+    this.setOption('minLength' , minLength);
   };
   
   function extractSoruce(input_value) {
@@ -839,7 +847,7 @@ var register = (function() {
             temp_artist_list.push(song_obj[key]);
           }
         }
-
+        
         artist_moshikashite.setNoNeedInputMoshikashite(temp_artist_list);
       }
       else {
