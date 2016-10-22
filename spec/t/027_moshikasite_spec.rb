@@ -28,9 +28,10 @@ describe '楽曲登録機能' , :js => true do
 
   describe '曲名のもしかしてリスト' do
 
-    it '入力１文字では反応なし' do
+    it '入力１文字では先頭文字が一致する候補のみを表示' do
       create_song('天' , nil)
-      islack ['天体観測']
+      iscontain ['天体観測']
+      islack ['残酷な天使のテーゼ']
     end
 
     it '２文字以上で候補を表示' do
@@ -53,9 +54,10 @@ describe '楽曲登録機能' , :js => true do
 
   describe '歌手名のもしかしてリスト' do
 
-    it '入力1文字では反応なし' do
+    it '入力１文字では先頭文字が一致する候補のみを表示' do
       create_song(nil , 'B')
-      islack 'BUMP OF CHICKEN'
+      islack 'FUNKY MONKEY BABYS'
+      iscontain 'BUMP OF CHICKEN'
     end
 
     it '2文字以上で候補を表示' do
@@ -79,7 +81,12 @@ describe '楽曲登録機能' , :js => true do
 
   describe '店名/店舗名のもしかしてリスト' do
 
-    it '入力1文字では反応なし' do
+    it '入力1文字で候補表示' do
+      create_karaoke('カ')
+      iscontain 'カラオケ館'
+    end
+    
+    it '入力1文字では先頭文字が一致していないと反応なし' do
       create_karaoke('館')
       islack 'カラオケ館'
     end
@@ -96,7 +103,8 @@ describe '楽曲登録機能' , :js => true do
 
     it '店舗名の候補を出す' do
       create_karaoke('カラオケ館')
-      #Todo 未実装. 実装後テストを追加する
+      js("$('#branch').focus();")
+      iscontain ['亀戸店' , '銀座本店' , '錦糸町店']
     end
 
   end

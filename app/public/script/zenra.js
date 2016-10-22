@@ -751,6 +751,7 @@ var register = (function() {
     $('#store').blur(function() {
       if ($(this).val() in branch_list) {
         branch_moshikashite = new moshikashite('branch' , branch_list[$(this).val()]);
+        branch_moshikashite.setNoNeedInputMoshikashite();
       }
     });
 
