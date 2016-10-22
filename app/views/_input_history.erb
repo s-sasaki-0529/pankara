@@ -23,11 +23,12 @@
         <div class='form-group'>
           <label class='control-label' for="score_type">採点方法</label>
           <select class='form-control' id="score_type" title="採点方法を選択してください。" name="socre_type">
-          <option value="0"></option>
-          <% @score_type.each do |value| %>
-          <option value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></option>
-          <% end %>
-        </select>
+            <option value="0"></option>
+            <% @score_type.each do |value| %>
+              <option value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></option>
+            <% end %>
+          </select>
+        </div>
       </div>
       <div id="score_area" style="display: none">
         <label for="score">採点:</label>
@@ -38,10 +39,10 @@
         <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
         <label for="tweet-checkbox"> ツイートする</label>
       </div>
-      <div id="tweet_text_area" class="hidden">
+      <div id="tweet_text_area" class="form-group hidden">
         <label for="tweet_text">ツイート内容</label>
-        <textarea class="tweet-text size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
-        <span id="tweet_text_count"></span>
+        <textarea class="form-control tweet-text size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
+        <span class='right' id="tweet_text_count"></span>
       </div>
       <% end %>
       </div>
