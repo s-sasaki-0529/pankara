@@ -289,6 +289,7 @@ zenra.createNameGuideLines = function () {
     $('#artist').blur();
     $('#main_content').addClass('hidden');
     $('#guideline').removeClass('hidden');
+    $('.popover-guideline').popover('hide');
     $('.popover-guideline').attr('title' , '<p class="center">例</p>').popover({
       trigger: 'manual',
       html: true,
@@ -314,12 +315,6 @@ zenra.createNameGuideLines = function () {
         $currentElement.popover('hide');
         $currentElement = $(this);
         $currentElement.popover('show');
-        // メッセージ自体をクリックした場合非表示に
-        $('.popover').unbind().click(function (evt) {
-          $currentElement.popover('hide');
-          $currentElement = $('');
-        });
-        $('.popover-guideline').blur();
       }
     });
     // 「戻る」ボタンクリック時に、ガイトを非表示に、元の画面を表示する
