@@ -1114,7 +1114,9 @@ var register = (function() {
             input_dialog.transition('/ajax/history/dialog' , 'input_history' , {
               func_at_load: function() {
                 createWidgetForHistory();
-
+                if (! zenra.ispc) {
+                  $(window).scrollTop(0);
+                }
                 $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
                 $('#button2').on('click' , function() {location.href = "/karaoke/detail/" + karaoke_id}).val('終了');
               } ,
@@ -1219,6 +1221,10 @@ var register = (function() {
             var mes = sangInfo['song'] + '(' + sangInfo['artist'] + ')' + 'を登録しました。</br>';
             mes += 'あなたがこの曲を歌うのは ' + sangInfo['sang_count'] + ' 回目です。';
             $('#result').html('<p>' + mes + '</p>');
+            if (! zenra.is_pc) {
+              $(window).scrollTop(0);
+              $('#song').blur();
+            }
             //$('#result').html('<p>' + count + '件入力されました</p>');            
           }
           else {
