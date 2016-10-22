@@ -260,3 +260,24 @@ p.mini {
 .current-song {
   background-color: #d3d3d3;
 }
+
+/*ローディングビュー*/
+
+#loading-view {
+ /* 領域の位置やサイズに関する設定 */
+ width: 100%;
+ height: 100%;
+ z-index: 9999;
+ position: fixed;
+ top: 0;
+ left: 0;
+ /* 背景関連の設定 */
+ background-color: #000000;
+ filter: alpha(opacity=45);
+ -moz-opacity: 0.25;
+ -khtml-opacity: 0.25;
+ opacity: 0.25;
+ background-position: center center;
+ background-repeat: no-repeat;
+ background-attachment: fixed;
+}

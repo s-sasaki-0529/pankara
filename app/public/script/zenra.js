@@ -14,6 +14,10 @@ zenra.post = function(url , data , opt) {
   var beforeSend = opt['beforeSend'] || function(){};
   var success = opt['success'] || function(){};
   var error = opt['error'] || function(){};
+  var sync = opt['sync'] === true ? true : false
+  if (sync) {
+    zenra.getLoader().show()
+  }
   data['authenticity_token'] = $('#authenticity_token').val();
   $.ajax({
     type: "POST" ,
@@ -22,17 +26,9 @@ zenra.post = function(url , data , opt) {
     beforeSend: beforeSend ,
     success: success ,
     error: error ,
-  });
-};
-
-/*
-get - 非同期で通信する
-*/
-zenra.get = function(url , funcs) {
-  var funcs = funcs || {};
-  $.ajax({
-    type: "GET" ,
-    url: url ,
+    complete: function () {
+      zenra.getLoader().hide();
+    }
   });
 };
 
@@ -58,6 +54,38 @@ zenra.toJSON = function(obj) {
     alert('ブラウザがJSONに対応していません');
   }
   return false;
+}
+
+/*
+loader - 読み込み中画面を生成
+zenra.getLoader().show() - 画面を表示
+zenra.getLoader().hide() - 画面を非表示
+*/
+zenra.getLoader = function () {
+  return (function () {
+    var $screen = $('<div>').prop('id' , 'loading-view');
+    var imageWidth = zenra.ispc ? 128 : 64;
+    var imageHeight = zenra.ispc ? 128 : 64;
+    var imageLeft = (window.innerWidth / 2) - (imageWidth / 2);
+    var imageTop = (window.innerHeight / 2) - (imageHeight / 2);
+    var $image = $('<img src="/image/loading_image.png" alt="loading">')
+      .addClass('rotate-image')
+      .css('position' , 'fixed')
+      .css('left' , imageLeft + 'px')
+      .css('top' , imageTop + 'px')
+      .css('width' , imageWidth + 'px')
+      .css('height' , imageHeight + 'px');
+    $screen.append($image).hide();
+    $('body').append($screen)
+    return {
+      show: function () {
+        $('#loading-view').show();
+      } ,
+      hide: function () {
+        $('#loading-view').hide();
+      }
+    };
+  })();
 }
 
 /*
@@ -1008,6 +1036,7 @@ var register = (function() {
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke_id) {
       zenra.post('/ajax/karaokelist/' , {id: karaoke_id} , {
+        sync: true,
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
@@ -1029,6 +1058,7 @@ var register = (function() {
     /*[Method] 参加情報編集画面を表示する*/
     editAttendance : function(karaoke_id) {
       zenra.post('/ajax/attendance' , {id: karaoke_id} , {
+        sync: true,
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
@@ -1050,6 +1080,7 @@ var register = (function() {
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke_id , history_id) {
       zenra.post('/ajax/historylist/' , {id: history_id} , {
+        sync: true,
         success: function(result) {
           var history = zenra.parseJSON(result);
 
@@ -1073,6 +1104,7 @@ var register = (function() {
       var data = getKaraokeData();
 
       zenra.post('/ajax/karaoke/create' , data , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
@@ -1103,6 +1135,7 @@ var register = (function() {
       var json_data = zenra.toJSON(getKaraokeData());
 
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
@@ -1122,7 +1155,7 @@ var register = (function() {
     /*[Method] 参加情報登録リクエストを送信する*/
     submintAttendanceRegistrationRequest : function(karaoke_id) {
       var data = {karaoke_id: karaoke_id};
-      zenra.post('/ajax/attendance/create' , data , {async: false});
+      zenra.post('/ajax/attendance/create' , data , {sync: true , async: false});
     } ,
 
     /*[Method] 参加情報編集リクエストを送信する*/
@@ -1130,6 +1163,7 @@ var register = (function() {
       var json_data = zenra.toJSON(getAttendanceData());
       
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
@@ -1152,6 +1186,7 @@ var register = (function() {
       }
       var data = {song: $('#song').val(), artist: $('#artist').val(), url: youtubeID[1], song_id: song_id};
       zenra.post('/ajax/song/modify' , data , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           if (response['result'] == 'success') {
@@ -1175,6 +1210,7 @@ var register = (function() {
       register.submintAttendanceRegistrationRequest(karaoke_id);
       
       zenra.post('/ajax/history/create' , data , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           if (response['result'] == 'success') {
@@ -1203,6 +1239,7 @@ var register = (function() {
     submitCreateSongRequest : function(opt) {
       var data = {song: $('#song').val(), artist: $('#artist').val()};
       zenra.post('/ajax/song/create' , data , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           if (response['result'] == 'success') {
@@ -1221,6 +1258,7 @@ var register = (function() {
       var json_data = zenra.toJSON(getHistoryData());
 
       zenra.post('/ajax/history/modify/', {id: history_id, params: json_data} , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
@@ -1243,6 +1281,7 @@ var register = (function() {
         return;
       }
       zenra.post('/ajax/karaoke/delete/' , {id: karaoke_id} , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
@@ -1261,6 +1300,7 @@ var register = (function() {
     /*[Method] 歌唱履歴削除リクエストを送信する*/
     submitHistoryDeleteRequest : function(karaoke_id , history_id) {
       zenra.post('/ajax/history/delete/' , {id: history_id} , {
+        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
