@@ -76,6 +76,11 @@ tr *.cell-datetime {
   color: rgb(255,0,0);
 }
 
+/*popover幅*/
+.popover {
+  max-width: 600px;
+}
+
 /*ミニ見出し*/
 p.mini {
   font-size: 13px;
