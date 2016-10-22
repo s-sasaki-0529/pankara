@@ -61,6 +61,38 @@ zenra.toJSON = function(obj) {
 }
 
 /*
+loader - 読み込み中画面を生成
+zenra.getLoader().show() - 画面を表示
+zenra.getLoader().hide() - 画面を非表示
+*/
+zenra.getLoader = function () {
+  return (function () {
+    var $screen = $('<div>').prop('id' , 'loading-view');
+    var imageWidth = zenra.ispc ? 128 : 64;
+    var imageHeight = zenra.ispc ? 128 : 64;
+    var imageLeft = (window.innerWidth / 2) - (imageWidth / 2);
+    var imageTop = (window.innerHeight / 2) - (imageHeight / 2);
+    var $image = $('<img src="/image/loading_image.png" alt="loading">')
+      .addClass('rotate-image')
+      .css('position' , 'fixed')
+      .css('left' , imageLeft + 'px')
+      .css('top' , imageTop + 'px')
+      .css('width' , imageWidth + 'px')
+      .css('height' , imageHeight + 'px');
+    $screen.append($image).hide();
+    $('body').append($screen)
+    return {
+      show: function () {
+        $('#loading-view').show('clip');
+      } ,
+      hide: function () {
+        $('#loading-view').hide('clip');
+      }
+    };
+  })();
+}
+
+/*
 createPieChart - 円グラフを生成する
 targetSelecter: 描画対象要素のセレクタ
 dataSelecter: 対象データのJSONを持つ要素のセレクタ
