@@ -25,9 +25,11 @@ class HistoryRoute < March
     @histories = @user.histories(opt)
 
     # 表示範囲の情報
-    @history_size = @pager.data_num
-    @show_from = @pager.data_num - @histories[0]['number'].to_i + 1
-    @show_to = @pager.data_num - @histories[-1]['number'].to_i + 1
+    if @histories.size > 0
+      @history_size = @pager.data_num
+      @show_from = @pager.data_num - @histories[0]['number'].to_i + 1
+      @show_to = @pager.data_num - @histories[-1]['number'].to_i + 1
+    end
 
     erb :history
 

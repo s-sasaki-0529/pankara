@@ -38,8 +38,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     fill_in 'branch' , with: '盛岡店'
     select '12時間00分' , from: '時間'
     select 'JOYSOUND WAVE' , from: '機種'
-    click_on '保存'
-    wait_for_ajax
+    js('register.submitKaraokeEditRequest(7);');
     
     # 変更後のkaraokeを検証
     new_table = table_to_hash('karaoke_detail_description')
