@@ -62,10 +62,7 @@ class OutputForDebug
     each_data_log_hash = @access_log.get_each_data_log_hash(data_name, @access_log.log_data_list)
 
     if (each_data_log_hash[value])
-      puts "#{data_name}: #{value}のログ一覧"
       print_log(each_data_log_hash[value])
-    else
-      puts "#{data_name}: #{value}を持つログはありません。"
     end
   end
 
@@ -82,6 +79,7 @@ class OutputForDebug
       puts "デバイス:    #{log['device']}"
       puts "OS:          #{log['os']}"
       puts "ブラウザ:    #{log['blowser']}"
+      puts "リクエスト:  #{log['request']}"
       puts
     end
   end

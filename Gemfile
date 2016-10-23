@@ -8,6 +8,7 @@ gem 'get-twitter-oauth-token'
 gem 'searchbing'
 gem 'wikipedia-client'
 gem "rack-user_agent"
+gem 'fssm'
 group :develop do
   gem "watir-webdriver"
   gem 'rspec'

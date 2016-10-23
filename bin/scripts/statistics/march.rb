@@ -2,11 +2,15 @@
 # March - アクセスログ解析ツールの処理開始クラス
 #----------------------------------------------------------------------
 require 'date'
+require 'fssm'
 
 require_relative 'access_log'
 require_relative 'option'
 require_relative 'output_for_debug'
 require_relative 'output_to_json'
+
+$analysis_flag = true
+$end_flag = true
 
 Version = '1.0.0'
 
@@ -15,6 +19,9 @@ class March
   # main - アクセスログ解析ツールのMain処理
   #---------------------------------------------------------------------
   def main
+    file_path = ARGV.shift
+    @row_count = 0
+
     begin
       option = Option.new
     rescue => error
@@ -22,8 +29,30 @@ class March
       return
     end
 
-    access_log = AccessLog.new(perse_log_data)
-    print_result(option, access_log)
+    # followオプションとcnt, aggオプションは同時に指定してはいけない
+    if (option.get('follow') && option.get('cnt').nil? && option.get('agg').nil?)
+      # 別スレッドでファイルの更新を監視する
+      start_file_monitor_thread(file_path)
+    
+      Signal.trap('INT') { $end_flag = true }
+
+      $end_flag = false
+    end
+
+    loop do
+      if ($analysis_flag)
+        access_log = AccessLog.new(perse_log_data(file_path))
+        print_result(option, access_log)
+
+        $analysis_flag = false
+      end
+
+      if ($end_flag)
+        return
+      end
+
+      sleep(0.05)
+    end
   end
 
   # analyse_argument_error - 発生したコマンドライン引数に関するエラーを解析してメッセージを表示する
@@ -42,21 +71,27 @@ class March
   # perse_log_data - 標準入力されたアクセスログデータをHashに変換する
   #---------------------------------------------------------------------
   private
-  def perse_log_data
+  def perse_log_data(file_path)
+    request_file = File.open(file_path) 
+    all_request_list = request_file.read.split("\n")
+    request_list = all_request_list[@row_count,  all_request_list.count - @row_count]
+    
+    @row_count = all_request_list.count
+    
     log_data = Array.new
-  
-    while line = STDIN.gets
-      data_name = ['date', 'ip', 'user', 'url', 'referer', 'device', 'os', 'blowser']
+    
+    request_list.each do | line |
+      data_name = ['date', 'ip', 'user', 'url', 'referer', 'device', 'os', 'blowser', 'request']
       data = line.split(',')
   
       hash = Hash.new
       data_name.each_index do | index |
         hash.store(data_name[index], data[index])
       end
-      
+    
       hash['date'] = hash['date'].split(' ')[0]
-      hash['blowser'].gsub!(/(\n)/, "")
-      
+      hash['request'] = 'GET' unless hash['request']
+     
       log_data.push(hash)
     end
   
@@ -106,6 +141,32 @@ class March
       return OutputToJson.new(access_log)
     else
       return OutputForDebug.new(access_log)
+    end
+  end
+
+  
+  # start_file_monitor_thread - ログファイル監視用スレッドを立ち上げる
+  #---------------------------------------------------------------------
+  private
+  def start_file_monitor_thread(file_path)
+    directory, file = File::split(file_path)
+
+    Thread.new do
+      begin
+      FSSM.monitor(directory, file) do
+        update do
+          $analysis_flag = true
+        end
+
+        delete do | directory, file |
+          raise directory + '/' + file + ' has been deleted'
+        end
+      end
+      rescue => error
+        puts
+        puts error
+        $end_flag = true
+      end
     end
   end
 

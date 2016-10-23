@@ -40,7 +40,7 @@ class AccessLog
   #--------------------------------------------------------------------
   def get_each_data_log_hash(data_name, log_data_list)
     each_data_log_hash = Hash.new
-    
+   
     log_data_list.each do | log |
       unless each_data_log_hash.key? log[data_name]
         each_data_log_hash[log[data_name]] = Array.new
