@@ -11,8 +11,9 @@ class Option
     OptionParser.new do |parser|
       @args = Hash.new
 
-      parser.banner = 'Usage: zenra stat [--from from] [--to to] [--list | --cnt [asc | desc] | --agg [-i | -n | -u | -r | -o | -b | -d] | --filter [-i | -n | -u | -r | -o | -b | -d] VALUE]'
+      parser.banner = 'Usage: zenra stat [--json] [--today] [--follow] [--from from] [--to to] [--list | --cnt [asc | desc] | --agg [-i | -n | -u | -r | -o | -b | -d] | --filter [-i | -n | -u | -r | -o | -b | -d] VALUE]'
       parser.on('--json', '指定するとJSON形式で標準出力を行う') {|v| @args['json'] = v}
+      parser.on('--follow', '指定するとファイルの変更を監視してログを解析し続ける cnt, aggオプションと同時に指定した場合はこのオプションは無効になる') {|v| @args['follow'] = v}
       parser.on('--today', '指定すると本日のログのみを解析する') {|v| @args['today'] = v}
       parser.on('--from=DATE', 'YYYY-MM-DD 指定した日付を、解析するログの下限値に設定する') {|date| @args['from'] = date}
       parser.on('--to=DATE', 'YYYY-MM-DD 指定した日付を、解析するログの上限値に設定する') {|date| @args['to'] = date}
