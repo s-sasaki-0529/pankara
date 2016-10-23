@@ -29,6 +29,7 @@ class SongRoute < March
     score_type = 1 #現在は仮で固定
     user = @current_user ? @current_user.params['id'] : nil
     @song         = Song.new(params[:id])
+    @song.exist? or raise Sinatra::NotFound
     @sangcount    = @song.sangcount({:without_user => user})
     @history      = @song.history_list({:without_user => user})
     @score_type_num = ScoreType.List.size

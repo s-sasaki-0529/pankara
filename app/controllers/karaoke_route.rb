@@ -28,6 +28,7 @@ class KaraokeRoute < March
   #---------------------------------------------------------------------
   get '/detail/:id' do
     @karaoke = Karaoke.new(params[:id])
+    @karaoke.exist? or raise Sinatra::NotFound
     @karaoke.get_history
     erb :karaoke_detail
   end

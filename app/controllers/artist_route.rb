@@ -15,6 +15,7 @@ class ArtistRoute < March
   get '/:id' do
     user = @current_user ? @current_user.params['id'] : nil
     @artist = Artist.new(params[:id])
+    @artist.exist? or raise Sinatra::NotFound
     @artist.songs_with_count(:user => user , :sort => 'sang_count')
     @sang_all = @artist['songs'].inject(0) {|sum , s| sum + s['sang_count']}
     user and @sang_user = @artist['songs'].inject(0) {|sum , s| sum + s['sang_count_as_user']}

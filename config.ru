@@ -17,3 +17,4 @@ map('/ranking') {run RankingRoute.new}
 map('/search') {run SearchRoute.new}
 map('/song') {run SongRoute.new}
 map('/user') {run UserRoute.new}
+map('/stat') {run StatRoute.new}

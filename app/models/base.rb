@@ -11,4 +11,10 @@ class Base
     @params[index]
   end
 
+  # exist? - レコードの存在を確認
+  #--------------------------------------------------------------------
+  def exist?
+    ! @params.nil?
+  end
+
 end

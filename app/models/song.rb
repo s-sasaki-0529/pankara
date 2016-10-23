@@ -12,7 +12,7 @@ class Song < Base
   #---------------------------------------------------------------------
   def initialize(id)
     @params = DB.new.get('song' , id)
-    self.artist
+    @params and self.artist
   end
 
   # list - クラスメソッド 楽曲の一覧を取得

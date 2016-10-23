@@ -1,5 +1,8 @@
 #----------------------------------------------------------------------
 # March - アクセスログ解析ツールの処理開始クラス
+# Copyright (c) 2011 Travis Tilley
+# Released under the MIT license
+# https://github.com/ttilley/fssm/blob/master/LICENSE
 #----------------------------------------------------------------------
 require 'date'
 require 'fssm'
