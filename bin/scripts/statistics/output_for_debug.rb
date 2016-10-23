@@ -82,6 +82,7 @@ class OutputForDebug
       puts "デバイス:    #{log['device']}"
       puts "OS:          #{log['os']}"
       puts "ブラウザ:    #{log['blowser']}"
+      puts "リクエスト:  #{log['request']}"
       puts
     end
   end

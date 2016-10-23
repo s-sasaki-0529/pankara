@@ -46,17 +46,18 @@ class March
     log_data = Array.new
   
     while line = STDIN.gets
-      data_name = ['date', 'ip', 'user', 'url', 'referer', 'device', 'os', 'blowser']
+      data_name = ['date', 'ip', 'user', 'url', 'referer', 'device', 'os', 'blowser', 'request']
       data = line.split(',')
   
       hash = Hash.new
       data_name.each_index do | index |
         hash.store(data_name[index], data[index])
       end
-      
+    
       hash['date'] = hash['date'].split(' ')[0]
-      hash['blowser'].gsub!(/(\n)/, "")
-      
+      hash['request'] = 'GET' unless hash['request']
+      hash['request'].gsub!(/(\n)/, "")
+     
       log_data.push(hash)
     end
   

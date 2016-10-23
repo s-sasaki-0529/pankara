@@ -13,7 +13,7 @@ class OutputToJson
 
   # print - ログを出力する
   #--------------------------------------------------------------------
-  def print_log
+  def print_all_log_list
     @access_log.log_data_list.each do | log |
       puts JSON.generate(log)
     end
