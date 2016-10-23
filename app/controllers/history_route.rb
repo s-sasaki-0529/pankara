@@ -21,6 +21,7 @@ class HistoryRoute < March
 
     # ユーザクラスから歌唱履歴を取得して一覧表示
     @user = User.new(params[:username])
+    @user.exist? or raise Sinatra::NotFound
     @histories = @user.histories(opt)
 
     # 表示範囲の情報

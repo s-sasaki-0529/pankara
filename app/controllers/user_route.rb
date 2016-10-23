@@ -17,6 +17,7 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/userpage/:username' do
     @user = User.new(params[:username])
+    @user.exist? or raise Sinatra::NotFound
     @histories = @user.histories(:limit => 5 , :page => 1 , :song_info => true)
     @karaoke_list = @user.get_karaoke 5
     @most_sang_song = @user.get_most_sang_song
@@ -39,6 +40,7 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/songlist/:username' do
     @user = User.new(params[:username])
+    @user.exist? or raise Sinatra::NotFound
     opt = {}
 
     # デバイス確認
@@ -103,6 +105,7 @@ class UserRoute < March
   #--------------------------------------------------------------------
   get '/friend/list/:username/?' do
     @user = User.new(params[:username])
+    @user.exist? or raise Sinatra::NotFound
     friends_hash = @user.friend_list
     friends_hash.empty? or @users = friends_hash.values
     erb :friend_list

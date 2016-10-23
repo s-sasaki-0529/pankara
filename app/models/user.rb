@@ -30,7 +30,7 @@ class User < Base
     elsif id
       @params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
     end
-    @params['has_twitter'] = Twitter.has_twitter?(@params['username'])
+    @params and @params['has_twitter'] = Twitter.has_twitter?(@params['username'])
   end
 
   # histories - ユーザの歌唱履歴と関連情報を取得
