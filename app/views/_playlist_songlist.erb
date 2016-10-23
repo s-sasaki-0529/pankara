@@ -2,7 +2,7 @@
 <div id="player"></div>
 <h3>再生リスト(<%= @songs.size %>曲)</h3>
 <div id="playlist_table">
-  <table class="table">
+  <table id="playlist_tabel_main" class="table">
     <% @songs.values.each do |s| %>
     <tr class="song-rows" id="song_row_<%= s['song_id'] %>">
       <td>
