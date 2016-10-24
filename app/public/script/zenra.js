@@ -684,7 +684,6 @@ var register = (function() {
     $('#artist').val('');
     $('#seekbar').slider('value' , 0);
     $('#score').val('');
-    $('#song').focus();
     $('#tweet-checkbox').prop('checked' , false);
     $('#tweet_text_area').addClass('hidden');
     song_moshikashite.setStandardMoshikashite(song_list);
