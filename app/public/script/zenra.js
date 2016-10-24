@@ -484,6 +484,7 @@ var dialog = function(title , dialog_id , width , height) {
     id: URL内で取得する要素のID
     */
     this.show = function(url , id , opt) {
+      zenra.getLoader().show();
       opt = opt || {};
       funcs = opt['funcs'] || {};
       func_at_load = opt['func_at_load'] || function(){};
@@ -527,6 +528,7 @@ var dialog = function(title , dialog_id , width , height) {
       $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
     
       dialog.html(div);
+      zenra.getLoader().hide();
     };
     
     /*
@@ -684,8 +686,8 @@ var register = (function() {
     $('#artist').val('');
     $('#seekbar').slider('value' , 0);
     $('#score').val('');
-    $('#song').focus();
-    
+    $('#tweet-checkbox').prop('checked' , false);
+    $('#tweet_text_area').addClass('hidden');
     song_moshikashite.setStandardMoshikashite(song_list);
     artist_moshikashite.setStandardMoshikashite(artist_list);
   }
@@ -1073,7 +1075,11 @@ var register = (function() {
           setScoreTypeFromCookie();
 
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
-          $('#button2').on('click' , function() {location.href = "/karaoke/detail/" + karaoke_id}).val('終了');
+          $('#button2').val('終了').on('click' , function() {
+            if (confirm('歌唱履歴の登録を終了します。よろしいですか？')) {
+              location.href = "/karaoke/detail/" + karaoke_id
+            }
+          });
         } ,
         funcs: {
           beforeClose: beforeClose

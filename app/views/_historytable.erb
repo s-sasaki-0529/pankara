@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th class='center'>#</th>
-      <th class='center' width='<%= Util.is_pc? ? 150 : 90 %>'>ユーザ</th>
+      <th class='center' width='<%= Util.is_pc? ? 150 : 32 %>'>ユーザ</th>
       <th class='center' width='<%= Util.is_pc? ? 160 : 80 %>' >動画</th>
       <th class='center'>曲名</th>
       <th class='center'>歌手</th>
@@ -18,11 +18,12 @@
     <% @histories.each_with_index do |history , idx| %>
     <tr>
       <td class='center'><%= idx + 1 %></td>
-      <td class='center' width='<%= Util.is_pc? ? 150 : 90 %>'>
+      <td class='center' width='<%= Util.is_pc? ? 150 : 32 %>'>
         <% if Util.is_pc? %>
           <%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %>
         <% else %>
-          <%= user_link(history['userinfo']['username'], history['userinfo']['screenname'] , true , 24 , 1) %>
+          <%= icon_link history['userinfo']['username'] %>
+          <span class='hidden'><%= history['userinfo']['screenname'] %></span>
         <% end %>
      </td>
       <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
