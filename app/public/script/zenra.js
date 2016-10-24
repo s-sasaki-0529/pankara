@@ -522,13 +522,13 @@ var dialog = function(title , dialog_id , width , height) {
         }
         func_at_load();
         $('#' + id).tooltip('disable');
+        zenra.getLoader().hide();
       });
     
       //オプション: タイトルバーにオンマウス時のカーソル
       $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
     
       dialog.html(div);
-      zenra.getLoader().hide();
     };
     
     /*
@@ -1080,6 +1080,7 @@ var register = (function() {
               location.href = "/karaoke/detail/" + karaoke_id
             }
           });
+          zenra.getLoader().hide();
         } ,
         funcs: {
           beforeClose: beforeClose
