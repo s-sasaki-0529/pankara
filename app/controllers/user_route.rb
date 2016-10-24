@@ -74,7 +74,7 @@ class UserRoute < March
     end
 
     # 並び順
-    @sort_category = params[:sort_category] || 'last_sang_datetime'
+    @sort_category = params[:sort_category] || 'first_sang_datetime'
     @sort_order = params[:sort_order] || 'desc'
     opt[:sort_category] = @sort_category
     opt[:sort_order] = @sort_order
