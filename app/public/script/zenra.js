@@ -797,7 +797,6 @@ var register = (function() {
 
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/songlist' , {} , {
-      sync: true,
       success: function(result) {
         song_obj = zenra.parseJSON(result);
 
@@ -1168,7 +1167,7 @@ var register = (function() {
 
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke_id , history_id) {
-      zenra.getLoader().show();
+      //zenra.getLoader().show();
       zenra.post('/ajax/historylist/' , {id: history_id} , {
         success: function(result) {
           var history = zenra.parseJSON(result);
