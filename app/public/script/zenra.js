@@ -1123,8 +1123,8 @@ var register = (function() {
 
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke_id) {
+      zenra.getLoader().show();
       zenra.post('/ajax/karaokelist/' , {id: karaoke_id} , {
-        sync: true,
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
@@ -1145,8 +1145,8 @@ var register = (function() {
     
     /*[Method] 参加情報編集画面を表示する*/
     editAttendance : function(karaoke_id) {
+      zenra.getLoader().show();
       zenra.post('/ajax/attendance' , {id: karaoke_id} , {
-        sync: true,
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
@@ -1190,9 +1190,8 @@ var register = (function() {
     /*[Method] カラオケ情報登録リクエストを送信する*/
     submitKaraokeRegistrationRequest : function() {
       var data = getKaraokeData();
-
+      zenra.getLoader().show();
       zenra.post('/ajax/karaoke/create' , data , {
-        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
@@ -1224,8 +1223,8 @@ var register = (function() {
     submitKaraokeEditRequest : function(karaoke_id) {
       var json_data = zenra.toJSON(getKaraokeData());
 
+      zenra.getLoader().show();
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
-        sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
