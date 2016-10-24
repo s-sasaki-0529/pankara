@@ -484,6 +484,7 @@ var dialog = function(title , dialog_id , width , height) {
     id: URL内で取得する要素のID
     */
     this.show = function(url , id , opt) {
+      zenra.getLoader().show();
       opt = opt || {};
       funcs = opt['funcs'] || {};
       func_at_load = opt['func_at_load'] || function(){};
@@ -527,6 +528,7 @@ var dialog = function(title , dialog_id , width , height) {
       $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
     
       dialog.html(div);
+      zenra.getLoader().hide();
     };
     
     /*
