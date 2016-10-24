@@ -508,8 +508,10 @@ var dialog = function(title , dialog_id , width , height) {
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
         if (! zenra.ispc) {
+          $('ui-dialog').addClass('hidden');
           $(window).scrollTop(0);
           $('.ui-dialog').css({'top' : 0 , 'z-index': 9999});
+          $('ui-dialog').removeClass('hidden');
         }
         else if (position == 'center') {
           var margin = div.height() / 2;
