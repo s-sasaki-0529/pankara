@@ -60,10 +60,13 @@ class March < Sinatra::Base
       if with_icon
         img_tag = user_icon(username , "#{size}px" , "#{size}px")
         break_tag = with_break ? "<br>" : ""
-        return "#{img_tag}#{break_tag} <a class='userlink' href='#{link}'>#{screenname}</a>"
+        return "<a class='userlink' href='#{link}'>#{img_tag}#{break_tag} #{screenname}</a>"
       else
         return "<a class='userlink' href='#{link}'>#{screenname}</a>"
       end
+    end
+    def icon_link(username, size = 32)
+      user_link(username , '' , true , size)
     end
     def karaoke_link(id, name)
       name = h name
