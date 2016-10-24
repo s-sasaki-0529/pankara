@@ -797,6 +797,7 @@ var register = (function() {
 
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/songlist' , {} , {
+      sync: true,
       success: function(result) {
         song_obj = zenra.parseJSON(result);
 
@@ -1123,8 +1124,8 @@ var register = (function() {
 
     /*[Method] カラオケ編集画面を表示する*/
     editKaraoke : function(karaoke_id) {
-      zenra.getLoader().show();
       zenra.post('/ajax/karaokelist/' , {id: karaoke_id} , {
+        sync: true,
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
@@ -1145,8 +1146,8 @@ var register = (function() {
     
     /*[Method] 参加情報編集画面を表示する*/
     editAttendance : function(karaoke_id) {
-      zenra.getLoader().show();
       zenra.post('/ajax/attendance' , {id: karaoke_id} , {
+        sync: true,
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
