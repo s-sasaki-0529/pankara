@@ -36,16 +36,16 @@ describe '集計情報表示機能' , :js => true do
   describe 'ページング' do
     it '次へ' do
       all('#pager_next_page > a')[0].click
-      ex_record ',アンパンマンのマーチ ドリーミング 歌唱回数: 1 最終歌唱日: 2016-08-23,,チェリー スピッツ 歌唱回数: 7 最終歌唱日: 2016-08-23'
+      ex_record ',ふわふわ時間 放課後ティータイム 歌唱回数: 1 最終歌唱日: 2016-08-17,,PERFECT HUMAN RADIO FISH 歌唱回数: 1 最終歌唱日: 2016-07-23'
     end
     it '前へ' do
       visit URL + '?page=8'
       all('#pager_prev_page > a')[0].click
-      ex_record ',beautiful flower 美郷あき 歌唱回数: 3 最終歌唱日: 2016-06-11,,鳥の詩 Lia 歌唱回数: 1 最終歌唱日: 2016-06-11'
+      ex_record ',パンダヒーロー ハチ 歌唱回数: 1 最終歌唱日: 2016-04-16,,BLOOM OF YOUTH オーイシマサヨシ 歌唱回数: 1 最終歌唱日: 2016-04-16'
     end
     it '最後へ' do
       all('#pager_last_page > a')[0].click
-      ex_record ',月光 鬼束ちひろ 歌唱回数: 1 最終歌唱日: 2016-01-17,,ダイヤモンド BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-01-03'
+      ex_record ',オンリーロンリーグローリー BUMP OF CHICKEN 歌唱回数: 2 最終歌唱日: 2016-01-30,,ダイヤモンド BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-01-03'
     end
     it '先頭へ' do
       all('#pager_first_page > a')[0].click
@@ -53,11 +53,11 @@ describe '集計情報表示機能' , :js => true do
     end
     it '特定のページヘ' do
       all('#pager_page_3 > a')[0].click
-      ex_record ',地球最後の告白を kemu 歌唱回数: 7 最終歌唱日: 2016-08-17,,からくりピエロ 40mP 歌唱回数: 6 最終歌唱日: 2016-08-17'
+      ex_record ',ベストピクチャー BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-06-11,,脳漿炸裂ガール れるりり 歌唱回数: 1 最終歌唱日: 2016-06-11'
     end
     it '表示件数変更' do
-      ex1 = ',すろぉもぉしょん ピノキオP 歌唱回数: 12 最終歌唱日: 2016-08-23,,ゴーストルール DECO*27 歌唱回数: 15 最終歌唱日: 2016-08-23'
-      ex2 = ',Ending BUMP OF CHICKEN 歌唱回数: 3 最終歌唱日: 2016-08-17,,マジLOVE2000% ST☆RISH 歌唱回数: 1 最終歌唱日: 2016-08-17'
+      ex1 = ',炉心融解 iroha 歌唱回数: 1 最終歌唱日: 2016-08-17,,マジLOVE2000% ST☆RISH 歌唱回数: 1 最終歌唱日: 2016-08-17'
+      ex2 = ',海の声 浦島太郎 歌唱回数: 1 最終歌唱日: 2016-05-28,,隣に・・・ 三浦あずさ 歌唱回数: 1 最終歌唱日: 2016-05-28'
       expect(table_to_hash('song_list_table')[-1]['tostring']).to eq ex1
       visit URL + '?pagenum=72'
       expect(table_to_hash('song_list_table')[-1]['tostring']).to eq ex2
@@ -72,13 +72,13 @@ describe '集計情報表示機能' , :js => true do
       ex_record ex
     end
     it '歌手名' do
-      ex = ',グロリアスレボリューション BUMP OF CHICKEN 歌唱回数: 2 最終歌唱日: 2016-08-17,,Ending BUMP OF CHICKEN 歌唱回数: 3 最終歌唱日: 2016-08-17'
+      ex = ',続・くだらない唄 BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-06-27,,くだらない唄 BUMP OF CHICKEN 歌唱回数: 1 最終歌唱日: 2016-06-27'
       visit URL + '?filter_category=artist&filter_word=BUMP+OF+CHICKEN'
       expect(find('#range').text()).to eq '40 曲中1~24曲目を表示中'
       ex_record ex
     end
     it 'タグ' do
-      ex = ',MISTAKE ナナホシ管弦楽団 歌唱回数: 12 最終歌唱日: 2016-08-23,,magnet minato 歌唱回数: 7 最終歌唱日: 2016-08-23'
+      ex = ',初音ミクの消失 cosMo@暴走P 歌唱回数: 1 最終歌唱日: 2016-08-23,,炉心融解 iroha 歌唱回数: 1 最終歌唱日: 2016-08-17'
       visit URL + '?filter_category=tag&filter_word=VOCALOID'
       expect(find('#range').text()).to eq '111 曲中1~24曲目を表示中'
       ex_record ex
