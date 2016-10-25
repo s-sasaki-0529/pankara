@@ -287,7 +287,7 @@ class Util
     Util.read_file(SECRET , key)
   end
 
-  # write_secret - シークレット(gitで共有しない)情報を参照する
+  # write_secret - シークレット(gitで共有しない)情報に書き込む
   #--------------------------------------------------------------------
   def self.write_secret(key , value)
     Util.write_file(SECRET , key , value)
