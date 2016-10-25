@@ -22,6 +22,7 @@ else
   updates[0]['update'] = [{'category' => CATEGORY , 'text' => TEXT}]
 end
 
-open(UPDATES , 'w') do |io|
-  JSON.dump(updates , io)
+new_json = JSON.pretty_generate(updates)
+File.open(UPDATES , 'w') do |f|
+  f.puts new_json
 end
