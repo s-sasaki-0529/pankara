@@ -11,6 +11,7 @@ require 'wikipedia'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 PUBLIC = 'app/public'
+UPDATES = 'updates.json'
 IMGDIR = "#{PUBLIC}/image"
 ICONDIR = "#{IMGDIR}/user_icon"
 YOUTUBE = "https://www.youtube.com"
@@ -308,7 +309,8 @@ class Util
   # read_update_info - 更新情報ファイルを参照する
   #--------------------------------------------------------------------
   def self.read_update_info
-    File.open('update_text').read
+    updates_json = File.open(UPDATES).read
+    JSON.parse(updates_json)
   end
 
   # to_json - RubyオブジェクトをJSONに変換する
