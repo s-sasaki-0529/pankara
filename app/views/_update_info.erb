@@ -1,0 +1,25 @@
+<table class='table'>
+  <% @update_info.each do |ui| %>
+    <% if Util.is_pc? %>
+      <tr>
+        <td><%= ui['date'] %></td>
+        <td>
+          <% ui['update'].each_with_index do |t , idx| %>
+            <div><%= idx + 1 %>. [<%= t['category'] %>] <%= t['text'] %></div>
+          <% end %>
+        </td>
+      </tr>
+    <% else %>
+      <tr>
+        <td><%= ui['date'] %></td>
+      </tr>
+      <tr>
+        <td>
+          <% ui['update'].each_with_index do |t , idx| %>
+            <div><%= idx + 1 %>. <%= t['text'] %></div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

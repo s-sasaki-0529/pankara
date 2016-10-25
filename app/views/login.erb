@@ -51,9 +51,10 @@
         <li><a href="https://twitter.com/unagi_pai21" target="_blank">@unagi_pai21</a></li>
         <li><a href="https://twitter.com/backkomestage" target="_blank">@backkomestage</a></li>
       </ul>
-
       <h3>更新情報</h3>
-      <textarea id="update_information" readonly><%= @update_info %></textarea>
+      <div class='center'>
+        <%= erb :_update_info %>
+      </div>
     </div>
   </div>
   <%= erb :_bathtowel %>

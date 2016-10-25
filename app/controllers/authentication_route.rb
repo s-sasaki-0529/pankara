@@ -10,7 +10,7 @@ class AuthenticationRoute < March
       redirect '/'
     else
       @callback = params[:callback]
-      @update_info = Util.read_update_info
+      @update_info = Util.read_update_info[0 , 5]
       @song_list = History.recent_song(:sampling => 30)
       erb :login
     end
