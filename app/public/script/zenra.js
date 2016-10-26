@@ -1433,14 +1433,15 @@ zenra.addHistoryToRecentKaraoke = function() {
     if (response.result == 'success') {
       var karaoke = response.info;
       var mes = 'カラオケ [' + karaoke.name + ']' + 'に、この曲の歌唱履歴を登録しますか？';
-      if (confirm(mes , '確認')) {
+      jConfirm(mes , '確認' , function(r) {
+        if (!r) return;
         register.createHistory(karaoke.id , {
           defaultValue: {
             song: $('#song_name').text(),
             artist: $('#artist_name').text()
           }
         });
-      }
+      });
     } else {
       alert(response.info);
     }
