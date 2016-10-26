@@ -190,6 +190,12 @@ p.mini {
   cursor: pointer
 }
 
+/*楽曲詳細画面のアイコン*/
+.song-detail-icon {
+  margin 0px 0px 5px 8px;
+  width: 28px;
+}
+
 /*楽曲詳細画面の歌唱履歴タブ*/
 #history_tabs {
   font-size: 14px;
