@@ -9,6 +9,7 @@ UPDATES = 'updates.json'
 DATE = Date.today.strftime('%Y/%m/%d')
 CATEGORY = ARGV[0]
 TEXT = ARGV[1]
+(CATEGORY and TEXT) or return
 
 updates = open(UPDATES) do |io|
   JSON.load(io)

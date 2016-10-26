@@ -1,9 +1,9 @@
 <h2 class='center' style="margin-top: -5px">
   <span id="song_name"><%= h @song['name'] %></span> / <span id="artist_name"><%= artist_link @song['artist'], @song['artist_name'] %></span>
   <% if @current_user %>
-  <img id='editkaraoke' style="margin-left:5px; margin-bottom:8px"
-      class="center linkcursor" src="/image/edit.png" width="28"
+  <img id='editkaraoke' class="center linkcursor song-detail-icon" src="/image/edit.png"
       onclick="register.editSong(<%= @song['id'] %> , '<%= h @song['url'] %>')"
   >
+  <img id="create_history_image" src="/image/addhistory.png" class="linkcursor song-detail-icon" onclick="zenra.addHistoryToRecentKaraoke()">
   <% end %>
 </h2>

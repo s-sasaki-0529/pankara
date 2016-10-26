@@ -18,8 +18,7 @@ usage() {
 FLAG_S=0
 FLAG_E=0
 FLAG_U=0
-FLAG_LU=0
-while getopts uUhes OPT
+while getopts uU:hes OPT
 do
   case $OPT in
     h)  usage
@@ -31,7 +30,7 @@ do
         ;;
     u)  FLAG_U=1
         ;;
-    U)  FLAG_LU=1
+    U)  VALUE_LU=$OPTARG
         ;;
   esac
 done
@@ -47,6 +46,7 @@ elif [ $FLAG_E -eq 1 ]; then
   $ssh "zenra stop -v"
 elif [ $FLAG_U -eq 1 ]; then
   $ssh "export ZENRA=/home/zenra/March/; nohup zenra update -r yshirt -v"
-elif [ $FLAG_LU -eq 1 ]; then
-  git add update_text && git commit -m "更新情報" && git push origin master && zenra yshirt -u
+elif [ -n "$VALUE_LU" ]; then
+  bundle exec ruby bin/scripts/addUpdateInfo.rb $VALUE_LU
+  git add updates.json && git commit -m "更新情報" && git push origin master && zenra yshirt -u
 fi

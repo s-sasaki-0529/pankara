@@ -794,7 +794,7 @@ var register = (function() {
   }
 
   /*[method] 歌唱履歴入力画面用ウィジェットを作成する*/
-  function createWidgetForHistory() {
+  function createWidgetForHistory(defaultValue) {
     zenra.createSeekbar();
 
     // 曲名と歌手名の対応表を取得
@@ -857,6 +857,12 @@ var register = (function() {
       }
     });
     $('#tweet_text_count').text('');
+
+    // デフォルト値の設定
+    if (defaultValue) {
+      $('#song').val(defaultValue.song);
+      $('#artist').val(defaultValue.artist);
+    }
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/
@@ -1069,11 +1075,12 @@ var register = (function() {
     } ,
     
     /*[Method] 歌唱履歴入力画面を表示する*/
-    createHistory : function(karaoke_id) {
+    createHistory : function(karaoke_id , opt) {
+      opt = opt || {}
       input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450)
       input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
-          createWidgetForHistory();
+          createWidgetForHistory(opt.defaultValue);
           setScoreTypeFromCookie();
 
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
@@ -1418,6 +1425,28 @@ var register = (function() {
   }
 
 })();
+
+/* 楽曲詳細画面から、最近のカラオケに対して歌唱履歴を登録する */
+zenra.addHistoryToRecentKaraoke = function() {
+  zenra.post('/ajax/karaoke/recent' , {} , { success: function(json) {
+    var response = zenra.parseJSON(json);
+    if (response.result == 'success') {
+      var karaoke = response.info;
+      var mes = 'カラオケ [' + karaoke.name + ']' + 'に、この曲の歌唱履歴を登録しますか？';
+      jConfirm(mes , '確認' , function(r) {
+        if (!r) return;
+        register.createHistory(karaoke.id , {
+          defaultValue: {
+            song: $('#song_name').text(),
+            artist: $('#artist_name').text()
+          }
+        });
+      });
+    } else {
+      alert(response.info);
+    }
+  }});
+}
 
 zenra.showAggregateDialog = function(user) {
   var url = '/ajax/user/' + user + '/aggregate/dialog';
