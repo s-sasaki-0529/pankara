@@ -57,6 +57,23 @@ zenra.toJSON = function(obj) {
 }
 
 /*
+confirm - YES/NOのダイアログを表示
+*/
+zenra.confirm = function(message , callback) {
+  if (zenra.ispc) {
+    jConfirm(message , '確認' , function(r) {
+      if (r) {
+        callback();
+      }
+    });
+  } else {
+    if (confirm(message)) {
+      callback();
+    }
+  }
+}
+
+/*
 loader - 読み込み中画面を生成
 zenra.getLoader().show() - 画面を表示
 zenra.getLoader().hide() - 画面を非表示
@@ -1433,8 +1450,7 @@ zenra.addHistoryToRecentKaraoke = function() {
     if (response.result == 'success') {
       var karaoke = response.info;
       var mes = 'カラオケ [' + karaoke.name + ']' + 'に、この曲の歌唱履歴を登録しますか？';
-      jConfirm(mes , '確認' , function(r) {
-        if (!r) return;
+      zenra.confirm(mes , function() {
         register.createHistory(karaoke.id , {
           defaultValue: {
             song: $('#song_name').text(),
