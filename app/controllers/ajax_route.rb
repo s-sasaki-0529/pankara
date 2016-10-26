@@ -197,7 +197,17 @@ class AjaxRoute < March
     result and twitter and @current_user and @current_user.tweet_karaoke(params[:id] , tweet_text)
     return result ? success : error('modify failed')
   end
-  
+
+  # post '/ajax/karaoke/recent/?' - ユーザの参加するカラオケの中で最も新しいものを取得
+  #--------------------------------------------------------------------
+  post '/karaoke/recent/?' do
+    @current_user or return error('ログインしてください')
+    attends = @current_user.attend_ids(:want_karaoke => true)
+    attends.empty? and return error('参加しているカラオケがありません')
+    karaoke = Karaoke.new(attends[-1]['karaoke'])
+    return success(:id => karaoke['id'] , :name => karaoke['name'])
+  end
+
   # post '/ajax/attendance/modify/?' - 参加情報を編集する
   #--------------------------------------------------------------------
   post '/attendance/modify/?' do
