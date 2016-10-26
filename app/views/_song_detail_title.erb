@@ -4,6 +4,6 @@
   <img id='editkaraoke' class="center linkcursor song-detail-icon" src="/image/edit.png"
       onclick="register.editSong(<%= @song['id'] %> , '<%= h @song['url'] %>')"
   >
-  <img id="create_history_image" src="/image/addhistory.png" class="linkcursor song-detail-icon" onclick="">
+  <img id="create_history_image" src="/image/addhistory.png" class="linkcursor song-detail-icon" onclick="zenra.addHistoryToRecentKaraoke()">
   <% end %>
 </h2>

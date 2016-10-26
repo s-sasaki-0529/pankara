@@ -1419,6 +1419,19 @@ var register = (function() {
 
 })();
 
+/* 楽曲詳細画面から、最近のカラオケに対して歌唱履歴を登録する */
+zenra.addHistoryToRecentKaraoke = function() {
+  zenra.post('/ajax/karaoke/recent' , {} , { success: function(json) {
+    var response = zenra.parseJSON(json);
+    if (response.result == 'success') {
+      var karaoke = response.info;
+      alert(karaoke.name);
+    } else {
+      alert(response.info);
+    }
+  }});
+}
+
 zenra.showAggregateDialog = function(user) {
   var url = '/ajax/user/' + user + '/aggregate/dialog';
   var input_dialog = new dialog('集計情報' , 'aggregate_dialog' , 600 , 500);
