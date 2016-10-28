@@ -1066,7 +1066,7 @@ var register = (function() {
           beforeClose: beforeClose
         } ,
         func_at_load: function() {
-          s = zenra.formatDate(new Date , 'YYYY/MM/DD hh:mm');
+          var s = zenra.formatDate(new Date() , 'YYYY/MM/DD hh:mm');
           createWidgetForKaraoke();
           $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();')
           .val('次へ').addClass('form-control btn btn-default');
