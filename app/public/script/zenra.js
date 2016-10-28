@@ -758,7 +758,9 @@ var register = (function() {
         // オブジェクトのキーをお店リストとして取得
         store_list = [];
         for (var key in branch_list) {
-          store_list.push(key);
+          if (branch_list.hasOwnProperty(key)) {
+            store_list.push(key);
+          }
         }
 
         store_moshikashite = new moshikashite('store' , store_list);
@@ -820,10 +822,11 @@ var register = (function() {
         song_list = [];
         artist_list = [];
         for (var key in song_obj) {
-          song_list.push(key);
-
-          if (artist_list.indexOf(song_obj[key]) < 0) {
-            artist_list.push(song_obj[key]);
+          if (song_obj.hasOwnProperty(key)) {
+            song_list.push(key);
+            if (artist_list.indexOf(song_obj[key]) < 0) {
+              artist_list.push(song_obj[key]);
+            }
           }
         }
 
