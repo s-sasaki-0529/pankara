@@ -173,10 +173,10 @@ targetSelecter: 描画対象要素のセレクタ
 zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
   zenra.post(url , {id: id} , {
     success: function(json) {
-      response = zenra.parseJSON(json);
+      var response = zenra.parseJSON(json);
+      var data = response.info;
       if (response.result == 'success') {
         //データを元にユーザ一覧を生成
-        var data = response.info;
         users = [];
         data.forEach(function(e) { users = users.concat(Object.keys(e)); });
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
@@ -248,7 +248,7 @@ zenra.scoreBarChart = (function() {
   function _prev() {
     if (isBusy) return;
     currentScoreType--;
-    if (currentScoreType == 0) {
+    if (currentScoreType === 0) {
       currentScoreType = scoreTypeNum;
     }
     _create();
@@ -511,7 +511,7 @@ var dialog = function(title , dialog_id , width , height) {
         height: this.height ,
         width: this.width ,
         resizable: opt.resizable || false ,
-        draggable: opt.draggable == false ? false : true ,
+        draggable: opt.draggable === false ? false : true ,
         close: function(event) {
           $(this).dialog('destroy');
           $(event.target).remove();
@@ -559,7 +559,7 @@ var dialog = function(title , dialog_id , width , height) {
     transition - ダイアログ内の画面を遷移する
     */
     this.transition = function(url , id , opt) {
-      var opt = opt || {};
+      opt = opt || {};
       var func_at_load = opt.func_at_load || function(){};
     
       var div = $('#' + this.dialog_id);
@@ -641,10 +641,10 @@ var cookie = {
 
   /*[Method] クッキーを連想配列にして取得する*/
   getCookies : function() {
-    var result = new Array();
+    var result = [];
   
     var all_cookies = document.cookie;
-    if (all_cookies == '') {
+    if (all_cookies === '') {
       return;
     }
   
@@ -661,7 +661,7 @@ var cookie = {
   /*[Method] 指定したクッキーが設定されているか返す*/
   isExist : function(name) {
     var all_cookies = document.cookie;
-    if (all_cookies == '') {
+    if (all_cookies === '') {
       return false;
     }
   
@@ -836,7 +836,7 @@ var register = (function() {
     createInputArtistEvent();
 
     $('#score_type').change(function() {
-      if ($('#score_type').val() == 0) {
+      if ($('#score_type').val() === 0) {
         $('#score_area').hide();
       }
       else {
@@ -883,7 +883,7 @@ var register = (function() {
   function createInputSongEvent() {
     $('#song').blur(function() {
       // 曲名を入力すると歌手名を自動入力する
-      if ($(this).val() in song_obj && $('#artist').val() == '') {
+      if ($(this).val() in song_obj && $('#artist').val() === '') {
         $('#artist').val(song_obj[$(this).val()]);
       }
 
@@ -935,7 +935,7 @@ var register = (function() {
   /*[method] キーをajaxで取得して自動で入力する*/
   function autoInputSongKey() {
     // 曲名とアーティスト名が入力されたらキーを自動入力する
-    if ($('#song').val() != '' && $('#artist').val() != '') {
+    if ($('#song').val() !== '' && $('#artist').val() !== '') {
       var song = {
         name: $('#song').val() ,
         artist: $('#artist').val()
@@ -1011,7 +1011,7 @@ var register = (function() {
     };
     if ($('#tweet-checkbox').prop('checked')) {
       data.twitter = 1;
-      if ($('#tweet_textbox').val() != "") {
+      if ($('#tweet_textbox').val() !== "") {
         data.tweet_text = '\n\n' + $('#tweet_textbox').val();
       }
     }
@@ -1029,7 +1029,7 @@ var register = (function() {
     };
     if ($('#tweet-checkbox').prop('checked')) {
       data.twitter = 1;
-      if ($('#tweet_textbox').val() != "") {
+      if ($('#tweet_textbox').val() !== "") {
         data.tweet_text = '\n\n' + $('#tweet_textbox').val();
         $('#tweet_textbox').val("");
       }
@@ -1546,13 +1546,13 @@ zenra.playlist = (function() {
   /*[Event] プレイヤーのステータス変化を検知*/
   function onStateChange(e) {
     state = e.data;
-    if (state == -1) {        //再生前
-    } else if (state == 0) {  //再生終了
-    } else if (state == 1) {  //再生中
+    if (state === -1) {        //再生前
+    } else if (state === 0) {  //再生終了
+    } else if (state === 1) {  //再生中
       rewriteSongInfo();
-    } else if (state == 2) {  //一時停止
-    } else if (state == 3) {  //バッファ中
-    } else if (state == 5) {  //ビデオがキューに入った
+    } else if (state === 2) {  //一時停止
+    } else if (state === 3) {  //バッファ中
+    } else if (state === 5) {  //ビデオがキューに入った
     }
   }
 
