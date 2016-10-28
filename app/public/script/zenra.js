@@ -157,7 +157,7 @@ targetSelecter: 描画対象要素のセレクタ
 zenra.createFavoriteArtistsPieChart = function(targetSelecter , user) {
   zenra.post('/ajax/user/artist/favorite' , {'user': user} , {
     success: function(json) {
-      response = zenra.parseJSON(json);
+      var response = zenra.parseJSON(json);
       if (response.result == 'success') {
         zenra.createPieChart(targetSelecter , response.info);
       }
@@ -177,7 +177,7 @@ zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
       var data = response.info;
       if (response.result == 'success') {
         //データを元にユーザ一覧を生成
-        users = [];
+        var users = [];
         data.forEach(function(e) { users = users.concat(Object.keys(e)); });
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
@@ -283,7 +283,7 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     $img.on('click' , function(){});
     $("body").on("click" , '#bathtowel_' + id , function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
-      player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
+      var player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
         location.href = '/song/' + id;
@@ -500,8 +500,8 @@ var dialog = function(title , dialog_id , width , height) {
     this.show = function(url , id , opt) {
       zenra.getLoader().show();
       opt = opt || {};
-      funcs = opt.funcs || {};
-      func_at_load = opt.func_at_load || function(){};
+      var funcs = opt.funcs || {};
+      var func_at_load = opt.func_at_load || function(){};
       var position = opt.position || 'center';
       var dialog = $('<div>').attr('id' , this.dialog_id);
       var scroll = $(window).scrollTop();
