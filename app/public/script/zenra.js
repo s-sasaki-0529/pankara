@@ -757,7 +757,7 @@ var register = (function() {
 
         // オブジェクトのキーをお店リストとして取得
         store_list = [];
-        for (key in branch_list) {
+        for (var key in branch_list) {
           store_list.push(key);
         }
 
@@ -819,7 +819,7 @@ var register = (function() {
         // オブジェクトを曲名リストと歌手名リストに分割
         song_list = [];
         artist_list = [];
-        for (key in song_obj) {
+        for (var key in song_obj) {
           song_list.push(key);
 
           if (artist_list.indexOf(song_obj[key]) < 0) {
@@ -895,7 +895,7 @@ var register = (function() {
 
       // 入力された曲を歌っている歌手名でもしかしてリストを生成
       if ($('#song').val() in song_obj) {
-        for (key in song_obj) {
+        for (var key in song_obj) {
           if (key == $('#song').val()) {
             temp_artist_list.push(song_obj[key]);
           }
@@ -915,7 +915,7 @@ var register = (function() {
     $('#artist').blur(function() {
       var temp_song_list = [];
 
-      for (key in song_obj) {
+      for (var key in song_obj) {
         if (song_obj[key] === $('#artist').val()) {
           temp_song_list.push(key);
         }
