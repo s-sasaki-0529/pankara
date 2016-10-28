@@ -175,9 +175,9 @@ zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
     success: function(json) {
       var response = zenra.parseJSON(json);
       var data = response.info;
+      var users = [];
       if (response.result == 'success') {
         //データを元にユーザ一覧を生成
-        var users = [];
         data.forEach(function(e) { users = users.concat(Object.keys(e)); });
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
@@ -684,7 +684,6 @@ var cookie = {
 */
 var register = (function() {
   //var count = 0;
-  var close_flg = false;
   var store_list = [];
   var branch_list = [];
   var song_obj = [];
