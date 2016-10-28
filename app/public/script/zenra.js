@@ -11,14 +11,14 @@ zenra = {};
 post - 情報を非同期で送信する
 */
 zenra.post = function(url , data , opt) {
-  var beforeSend = opt['beforeSend'] || function(){};
-  var success = opt['success'] || function(){};
-  var error = opt['error'] || function(){};
-  var sync = opt['sync'] === true ? true : false
+  var beforeSend = opt.beforeSend || function(){};
+  var success = opt.success || function(){};
+  var error = opt.error || function(){};
+  var sync = opt.sync === true ? true : false;
   if (sync) {
-    zenra.getLoader().show()
+    zenra.getLoader().show();
   }
-  data['authenticity_token'] = $('#authenticity_token').val();
+  data.authenticity_token = $('#authenticity_token').val();
   $.ajax({
     type: "POST" ,
     url: url ,
@@ -54,14 +54,11 @@ zenra.toJSON = function(obj) {
     alert('ブラウザがJSONに対応していません');
   }
   return false;
-}
+};
 
-/*
-confirm - YES/NOのダイアログを表示
-*/
-zenra.confirm = function(message , callback) {
+zenra.confirm = function (message , callback) {
   if (zenra.ispc) {
-    jConfirm(message , '確認' , function(r) {
+    jConfirm(message , "確認" , function(r) {
       if (r) {
         callback();
       }
@@ -71,7 +68,7 @@ zenra.confirm = function(message , callback) {
       callback();
     }
   }
-}
+};
 
 /*
 loader - 読み込み中画面を生成
@@ -93,7 +90,7 @@ zenra.getLoader = function () {
       .css('width' , imageWidth + 'px')
       .css('height' , imageHeight + 'px');
     $screen.append($image).hide();
-    $('body').append($screen)
+    $('body').append($screen);
     return {
       show: function () {
         $('#loading-view').show();
@@ -103,7 +100,7 @@ zenra.getLoader = function () {
       }
     };
   })();
-}
+};
 
 /*
 createPieChart - 円グラフを生成する
@@ -120,7 +117,7 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
       order: null,
     }
   });
-}
+};
 
 /*
 createStickChart - 棒グラフを生成する
@@ -140,15 +137,15 @@ zenra.createBarChart = function(targetSelecter , data , key , values , groups , 
       groups: groups,
     },
     axis: {
-      rotated: param['rotated'],
+      rotated: param.rotated,
       x: {type: 'category'},
       y: {
-        max: param['max'],
-        min: param['min'],
+        max: param.max,
+        min: param.min,
       },
     },
     color: {
-      pattern: param['color'],
+      pattern: param.color,
     },
   });
 };
@@ -181,11 +178,11 @@ zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
         //データを元にユーザ一覧を生成
         var data = response.info;
         users = [];
-        data.forEach(function(e) {users = users.concat(Object.keys(e))});
+        data.forEach(function(e) { users = users.concat(Object.keys(e)); });
         users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       }
       zenra.createBarChart(targetSelecter , data , '_month' , users , [users] , {rotated: true});
-      $(targetSelecter + '_json').text(json)
+      $(targetSelecter + '_json').text(json);
     },
   });
 };
@@ -211,7 +208,7 @@ zenra.scoreBarChart = (function() {
         var response = zenra.parseJSON(json);
         if (response.result == 'success') {
           var scoreTypeName = response.info.score_type_name;
-          var scores = response.info.scores
+          var scores = response.info.scores;
           var values = [];
           var colors = [];
           if (scores[0]['あなた']) {
@@ -224,7 +221,7 @@ zenra.scoreBarChart = (function() {
           }
           zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
           $('#score_type_name').text(scoreTypeName);
-          $(targetSelecter + '_json').text(json)
+          $(targetSelecter + '_json').text(json);
         }
         isBusy = false;
       },
@@ -289,10 +286,10 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
       player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
-        location.href = '/song/' + id
+        location.href = '/song/' + id;
       });
     });
-    $('#thumbnail_' + idx).append($img)
+    $('#thumbnail_' + idx).append($img);
   } else {
     var $altText = $("<div>").text('未登録').css('width' , width).css('height' , height).css('line-height' , height + 'px');
     $('#thumbnail_' + idx).append($altText);
@@ -475,7 +472,7 @@ var moshikashite = function(arg_id , arg_source) {
     }
 
     return extractedSource;
-  };
+  }
 };
 
 /*
@@ -503,9 +500,9 @@ var dialog = function(title , dialog_id , width , height) {
     this.show = function(url , id , opt) {
       zenra.getLoader().show();
       opt = opt || {};
-      funcs = opt['funcs'] || {};
-      func_at_load = opt['func_at_load'] || function(){};
-      var position = opt['position'] || 'center';
+      funcs = opt.funcs || {};
+      func_at_load = opt.func_at_load || function(){};
+      var position = opt.position || 'center';
       var dialog = $('<div>').attr('id' , this.dialog_id);
       var scroll = $(window).scrollTop();
       dialog.dialog({
@@ -513,8 +510,8 @@ var dialog = function(title , dialog_id , width , height) {
         modal: true ,
         height: this.height ,
         width: this.width ,
-        resizable: opt['resizable'] || false ,
-        draggable: opt['draggable'] == false ? false : true ,
+        resizable: opt.resizable || false ,
+        draggable: opt.draggable == false ? false : true ,
         close: function(event) {
           $(this).dialog('destroy');
           $(event.target).remove();
@@ -545,7 +542,7 @@ var dialog = function(title , dialog_id , width , height) {
       });
     
       //オプション: タイトルバーにオンマウス時のカーソル
-      $('.ui-dialog-title').css('cursor' , opt['title_cursor'] || '');
+      $('.ui-dialog-title').css('cursor' , opt.title_cursor || '');
     
       dialog.html(div);
     };
@@ -563,7 +560,7 @@ var dialog = function(title , dialog_id , width , height) {
     */
     this.transition = function(url , id , opt) {
       var opt = opt || {};
-      var func_at_load = opt['func_at_load'] || function(){};
+      var func_at_load = opt.func_at_load || function(){};
     
       var div = $('#' + this.dialog_id);
     
@@ -720,35 +717,35 @@ var register = (function() {
     }
     
     return false;
-  };
+  }
 
   /*[method] カラオケ入力欄にカラオケ情報をセットする*/
   function setKaraokeToInput(karaoke) {
-    $('#name').val(karaoke['name']);
-    $('#datetime').val(karaoke['datetime']);
-    $('#plan').val(karaoke['plan']);
-    $('#store').val(karaoke['store_name']);
-    $('#branch').val(karaoke['branch_name']);
-    $('#product').val(karaoke['product']);
+    $('#name').val(karaoke.name);
+    $('#datetime').val(karaoke.datetime);
+    $('#plan').val(karaoke.plan);
+    $('#store').val(karaoke.store_name);
+    $('#branch').val(karaoke.branch_name);
+    $('#product').val(karaoke.product);
   }
 
   /*[method] 歌唱履歴入力欄に歌唱履歴情報をセットする*/
   function setHistoryToInput(history) {
-    $('#song').val(history['song_name']);
-    $('#artist').val(history['artist_name']);
-    $('#seekbar').slider('value' , history['songkey']);
-    $('#score_type').val(history['score_type']);
-    $('#score').val(history['score']);
+    $('#song').val(history.song_name);
+    $('#artist').val(history.artist_name);
+    $('#seekbar').slider('value' , history.songkey);
+    $('#score_type').val(history.score_type);
+    $('#score').val(history.score);
     
-    if (history['score_type'] > 0) {
+    if (history.score_type > 0) {
       $('#score_area').show();
     }
   }
 
   /*[method] 参加入力欄に情報をセットする*/
   function setAttendanceToInput(attendance) {
-    $('#price').val(attendance['price']);
-    $('#memo').val(attendance['memo']);
+    $('#price').val(attendance.price);
+    $('#memo').val(attendance.memo);
   }
   
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
@@ -794,8 +791,8 @@ var register = (function() {
     //ツイート内容が書き換わったとき、残り文字数を更新
     $('#tweet_textbox').keyup(function() {
       var usernameSize = zenra.currentUser.screenname.length;
-      var urlSize = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/'.length
-      var textSize = "さんがカラオケに行きました".length + $(this).val().length
+      var urlSize = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/'.length;
+      var textSize = "さんがカラオケに行きました".length + $(this).val().length;
       var currentSize = usernameSize + urlSize + textSize + 1 + 3;
       var len = 140 - currentSize;
       $('#tweet_text_count').text(len);
@@ -857,11 +854,11 @@ var register = (function() {
 
     //ツイート内容が書き換わったとき、残り文字数を更新
     $('.tweet-text').keyup(function() {
-      var url = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/'
+      var url = 'http://tk2-255-37407.vs.sakura.ne.jp/karaoke/detail/';
       var song = $('#song').val();
       var artist = $('#artist').val();
       var text = $('#tweet_textbox').val();
-      var len = 140 - ((song + '(' + artist + ')' + 'を歌いました ' +  url + text).length + 3 + 1)
+      var len = 140 - ((song + '(' + artist + ')' + 'を歌いました ' +  url + text).length + 3 + 1);
       $('#tweet_text_count').text(len);
       if (len < 0) {
         $('#tweet_text_count').addClass('red');
@@ -942,14 +939,14 @@ var register = (function() {
       var song = {
         name: $('#song').val() ,
         artist: $('#artist').val()
-      }
+      };
 
       zenra.post('/ajax/key' , song , {
         success: function(result) {
           var result_obj = zenra.parseJSON(result);
           
-          if (result_obj['result'] == 'success') {
-            var songkey = result_obj['songkey'];
+          if (result_obj.result == 'success') {
+            var songkey = result_obj.songkey;
 
             $('#seekbar').slider('value' , songkey);
           }
@@ -1054,7 +1051,7 @@ var register = (function() {
   function setScoreTypeFromCookie() {
     if (cookie.isExist('score_type')) {
       var cookies = cookie.getCookies();
-      $('#score_type').val(cookies['score_type']);
+      $('#score_type').val(cookies.score_type);
       $('#score_area').show();
     }
   }
@@ -1080,7 +1077,7 @@ var register = (function() {
 
     /*[Method] 参加情報登録画面を表示する*/
     createAttendance : function(karaoke_id) {
-      input_dialog = new dialog('参加情報登録' , 'input_dialog' , 600)
+      input_dialog = new dialog('参加情報登録' , 'input_dialog' , 600);
       input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
         funcs: {
           beforeClose: beforeClose
@@ -1093,8 +1090,8 @@ var register = (function() {
     
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id , opt) {
-      opt = opt || {}
-      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450)
+      opt = opt || {};
+      input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450);
       input_dialog.show('/ajax/history/dialog' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory(opt.defaultValue);
@@ -1103,7 +1100,7 @@ var register = (function() {
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
           $('#button2').val('終了').on('click' , function() {
             if (confirm('歌唱履歴の登録を終了します。よろしいですか？')) {
-              location.href = "/karaoke/detail/" + karaoke_id
+              location.href = "/karaoke/detail/" + karaoke_id;
             }
           });
           zenra.getLoader().hide();
@@ -1154,12 +1151,12 @@ var register = (function() {
         success: function(result) {
           var karaoke = zenra.parseJSON(result);
 
-          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450)
+          input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450);
           input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
-              createElementForEditKaraoke(karaoke['id']);
+              createElementForEditKaraoke(karaoke.id);
             } ,
             funcs: {
               beforeClose: beforeClose
@@ -1176,7 +1173,7 @@ var register = (function() {
         success: function(result) {
           var attendance = zenra.parseJSON(result);
       
-          input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600)
+          input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600);
           input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
             funcs: {
               beforeClose: beforeClose
@@ -1198,7 +1195,7 @@ var register = (function() {
         success: function(result) {
           var history = zenra.parseJSON(result);
 
-          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470)
+          input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
           input_dialog.show('/ajax/history/dialog' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
@@ -1221,8 +1218,8 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
-          if (response['result'] == 'success') {
-            var karaoke_id = response['karaoke_id'];
+          if (response.result == 'success') {
+            var karaoke_id = response.karaoke_id;
 
             input_dialog.transition('/ajax/history/dialog' , 'input_history' , {
               func_at_load: function() {
@@ -1231,12 +1228,12 @@ var register = (function() {
                   $(window).scrollTop(0);
                 }
                 $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
-                $('#button2').on('click' , function() {location.href = "/karaoke/detail/" + karaoke_id}).val('終了');
+                $('#button2').on('click' , function() { location.href = "/karaoke/detail/" + karaoke_id; }).val('終了');
               } ,
             });
           }
           else {
-            alert(response['info']);
+            alert(response.info);
           }
         } ,
         error: function() {
@@ -1254,11 +1251,11 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
-            alert(response['info']);
+            alert(response.info);
           }
         } ,
         error: function() {
@@ -1282,7 +1279,7 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
@@ -1304,7 +1301,7 @@ var register = (function() {
         sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = ('/song/' + song_id);
           } else {
             alert(response.info);
@@ -1328,11 +1325,11 @@ var register = (function() {
         sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             //count += 1;
-            var sangInfo = response['info'];
-            var mes = sangInfo['song'] + '(' + sangInfo['artist'] + ')' + 'を登録しました。</br>';
-            mes += 'あなたがこの曲を歌うのは ' + sangInfo['sang_count'] + ' 回目です。';
+            var sangInfo = response.info;
+            var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
+            mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
             $('#result').html('<p>' + mes + '</p>');
             if (! zenra.is_pc) {
               $(window).scrollTop(0);
@@ -1361,10 +1358,10 @@ var register = (function() {
         sync: true,
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
-          if (response['result'] == 'success') {
-            location.href = '/song/' + response['info'];
+          if (response.result == 'success') {
+            location.href = '/song/' + response.info;
           } else {
-            alert(response['info']);
+            alert(response.info);
           }
         },
         error: function () {
@@ -1381,7 +1378,7 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
           
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           }
           else {
@@ -1404,7 +1401,7 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = '/';
           } else {
             alert('カラオケの削除に失敗しました。');
@@ -1423,7 +1420,7 @@ var register = (function() {
         success: function(json_response) {
           var response = zenra.parseJSON(json_response);
 
-          if (response['result'] == 'success') {
+          if (response.result == 'success') {
             location.href = ('/karaoke/detail/' + karaoke_id);
           } else {
             alert('歌唱履歴の削除に失敗しました。');
@@ -1439,7 +1436,7 @@ var register = (function() {
     closeDialog : function() {
       input_dialog.close();
     } ,
-  }
+  };
 
 })();
 
@@ -1462,7 +1459,7 @@ zenra.addHistoryToRecentKaraoke = function() {
       alert(response.info);
     }
   }});
-}
+};
 
 zenra.showAggregateDialog = function(user) {
   var url = '/ajax/user/' + user + '/aggregate/dialog';
@@ -1482,9 +1479,9 @@ zenra.showSongTagList = function(id , user) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag['name'] + '">' + zenra.htmlescape(tag['name']) + '</a></td>');
+    var $td1 = $('<td><a href="/search/tag/?tag=' + tag.name + '">' + zenra.htmlescape(tag.name) + '</a></td>');
     var $removeIcon;
-    if (tag['created_by'] == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
+    if (tag.created_by == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
       $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
         zenra.removeSongTag(user , id , tag);
       });
@@ -1501,7 +1498,7 @@ zenra.showSongTagList = function(id , user) {
       if (response.result == 'error') return;
       var tags = response.info;
       resetTagElements();
-      tags.forEach(function(tag) { addTagElement(tag) });
+      tags.forEach(function(tag) { addTagElement(tag); });
       var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';
       $('#tag_list_header').text(title);
       if (tags.length < 10) {
@@ -1518,7 +1515,7 @@ zenra.addSongTag = function(user , id) {
   var url_to = url_from + '/tag/add';
   jPrompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
     var data = {tag_name: r};
-    var opt = {success: function() { zenra.showSongTagList(id , user) }};
+    var opt = {success: function() { zenra.showSongTagList(id , user); }};
     zenra.post(url_to , data , opt);
   });
 };
@@ -1526,11 +1523,11 @@ zenra.addSongTag = function(user , id) {
 zenra.removeSongTag = function(user , id , tag) {
   var url_from = '/song/' + id;
   var url_to = url_from + '/tag/remove';
-  var mes = 'タグ [' + tag['name'] + '] を削除します。よろしいですか？';
+  var mes = 'タグ [' + tag.name + '] を削除します。よろしいですか？';
   jConfirm(mes, '確認', function(r) {
     if (!r) return;
-    var data = {tag_name: tag['name'] , created_by: tag['created_by']};
-    var opt = {success: function() { zenra.showSongTagList(id , user) }};
+    var data = {tag_name: tag.name , created_by: tag.created_by};
+    var opt = {success: function() { zenra.showSongTagList(id , user); }};
     zenra.post(url_to , data , opt);
   });
 };
@@ -1543,7 +1540,7 @@ zenra.playlist = (function() {
   var player_height;
   var yt;
   var target;
-  var list
+  var list;
   var songs;
 
   /*[Event] プレイヤーのステータス変化を検知*/
@@ -1667,9 +1664,9 @@ zenra.htmlescape = function (string) {
         '"': '&quot;',
         '<': '&lt;',
         '>': '&gt;',
-      }[match]
-  })
-}
+      }[match];
+  });
+};
 
 zenra.formatDate = function (date, format) {
   if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
@@ -1685,4 +1682,4 @@ zenra.formatDate = function (date, format) {
     for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
   }
   return format;
-}
+};
