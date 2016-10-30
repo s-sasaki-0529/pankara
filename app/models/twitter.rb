@@ -47,7 +47,12 @@ class Twitter < Base
   #--------------------------------------------------------------------
   def get_access_token(req_token , req_secret , verifier)
     token = @twitter.authorize(req_token , req_secret , :oauth_verifier => verifier)
-    Util.write_secret(@username , {:token => token.token , :secret => token.secret})
+    Util.write_secret(@username , {
+      :token => token.token ,
+      :secret => token.secret ,
+      :username => @twitter.info['screen_name'] ,
+      :icon => @twitter.info['profile_image_url']
+    })
   end
 
   # username - ユーザ名を取得する
@@ -68,10 +73,17 @@ class Twitter < Base
     @twitter.update(text)
   end
 
-  # has_twitter? - 指定したユーザのTwitter連携情報が存在するかを戻す
+  # user_info - 指定したユーザのTwitter連携情報を取得
   #-------------------------------------------------------------------
-  def self.has_twitter?(userid)
-    token = Util.read_secret(userid)
-    return token ? true : false
+  def self.user_info(userid)
+    twitter_info = Util.read_secret(userid)
+    if twitter_info
+      {
+        :username => twitter_info[:username] ,
+        :icon => twitter_info[:icon]
+      }
+    else
+      false
+    end
   end
 end
