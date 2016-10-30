@@ -17,11 +17,12 @@ class ConfigRoute < March
     end
 
     # Twitterの認証状態を取得
-    twitter = Twitter.new(@current_user['username'])
-    if twitter.authed
+    twitter = @current_user['twitter_info']
+    if twitter
       @twitter_authed = true
-      @twitter_username = twitter.username
-      @twitter_icon = twitter.icon
+      Util.debug twitter
+      @twitter_username = twitter[:username]
+      @twitter_icon = twitter[:icon]
     end
 
     erb :config
