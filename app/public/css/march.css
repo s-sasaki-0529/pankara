@@ -267,6 +267,12 @@ p.mini {
   background-color: #d3d3d3;
 }
 
+/* 持ち歌一覧の歌唱履歴登録アイコン */
+.songlist-add-icon {
+  width: 20px;
+  margin-top: -5px;
+}
+
 /*ローディングビュー*/
 
 #loading-view {

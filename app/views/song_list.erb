@@ -83,12 +83,21 @@
           </script>
         </td>
         <td width='<% if Util.is_pc? %>30%<% else %>67%<% end %>'>
-          <p><%= song_link song['song_id'] , song['song_name'] %></p>
-          <p><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+          <p class="mini">
+            <%= song_link song['song_id'] , song['song_name'] %>
+            <% if @current_user && Util.is_pc? %>
+            <img src="/image/addhistory.png" class="linkcursor songlist-add-icon" 
+                                              onclick="zenra.addHistoryToRecentKaraoke({idx: <%= idx %>})">
+            <% end %>
+          </p>
+          <p class="mini"><%= artist_link song['artist_id'] , song['artist_name'] %></p>
           <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
           <p class="mini">
             最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
           </p>
+          <% if @current_user && Util.is_smartphone? %>
+          <button type="button" class="btn btn-success" onclick="zenra.addHistoryToRecentKaraoke({idx: <%= idx %>})">歌唱履歴に登録</button>
+          <% end %>
         </td>
       <% if idx + 1 % @columns == 0 %>
       </tr>

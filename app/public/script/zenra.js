@@ -273,8 +273,6 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
     var $img = $('<img>').attr('src' , image);
     var song = $('#song_name_' + idx).text();
     var artist = $('#artist_name_' + idx).text();
-    $('#song_name_' + idx).remove();
-    $('#artist_name_' + idx).remove();
     $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
     $img.attr('id' , 'bathtowel_' + id).attr('info' , song + ' (' + artist + ')');
 
@@ -1444,20 +1442,27 @@ var register = (function() {
 })();
 
 /* 楽曲詳細画面から、最近のカラオケに対して歌唱履歴を登録する */
-zenra.addHistoryToRecentKaraoke = function() {
+zenra.addHistoryToRecentKaraoke = function(opt) {
+
+  // パラメータに合わせて、DOMから対象の曲名/歌手名を取り出す
+  opt = opt || {};
+  var suffix = opt.idx ? ('_' + opt.idx) : '';
+  var params = {
+    defaultValue: {
+      song: $('#song_name' + suffix).text(),
+      artist: $('#artist_name' + suffix).text()
+    }
+  };
+
+  // ユーザの最近のカラオケを取得し、それを対象に歌唱履歴登録ダイアログを開く
   zenra.post('/ajax/karaoke/recent' , {} , { success: function(json) {
     var response = zenra.parseJSON(json);
     if (response.result == 'success') {
       var karaoke = response.info;
       var mes = 'カラオケ [' + karaoke.name + ']' + 'に、この曲の歌唱履歴を登録しますか？';
-      zenra.confirm(mes , function() {
-        register.createHistory(karaoke.id , {
-          defaultValue: {
-            song: $('#song_name').text(),
-            artist: $('#artist_name').text()
-          }
-        });
-      });
+      if (confirm(mes)) {
+        register.createHistory(karaoke.id , params);
+      }
     } else {
       alert(response.info);
     }
