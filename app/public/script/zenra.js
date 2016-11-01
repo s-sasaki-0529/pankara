@@ -1336,7 +1336,7 @@ var register = (function() {
             var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
             mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
             $('#result').html('<p>' + mes + '</p>');
-            if (! zenra.is_pc) {
+            if (! zenra.ispc) {
               $(window).scrollTop(0);
               $('#song').blur();
             }
