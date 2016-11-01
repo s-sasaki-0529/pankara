@@ -337,6 +337,7 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
+    karaoke_id and register_attendance(karaoke_id)
     karaoke_id
   end
 
