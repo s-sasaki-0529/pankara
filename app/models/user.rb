@@ -106,9 +106,8 @@ class User < Base
     incomplete_memo = attends.select {|a| a['memo'].nil?}.map {|a| a['karaoke']}
     attended_id_list = attends.map {|a| a['karaoke']}
 
-
-    # 全karaokeの情報から、ユーザが参加したカラオケについてのみ抽出
-    all_karaoke_info = Karaoke.list_all
+    # ユーザが参加したkaraokeIDから、karaokeの詳細情報取得
+    all_karaoke_info = Karaoke.list_all(:with_attendance => true)
     attended_karaoke_info = all_karaoke_info.select do |karaoke|
       attended_id_list.include?(karaoke['id'])
     end

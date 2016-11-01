@@ -13,11 +13,11 @@
         <th class='center' width='80'>時間</th>
         <th>お店</th>
         <th>機種</th>
-        <% if @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
+        <% end %>
+        <th>メンバー</th>
+        <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
           <th class='center' width="60">通知</th>
         <% end %>
-        <% end %>
-        <% unless @target_user %><th>メンバー</th><% end %>
       </tr>
     </thead>
     <tbody>
@@ -28,24 +28,26 @@
         <% if Util.is_pc? %>
         <td class='center'><%= karaoke['plan'] %></td>
         <td><%= h karaoke['store_name'] %> <%= h karaoke['branch_name'] %></td>
-        <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td>
+        <td><%= karaoke['brand_name'] %>(<%= karaoke['product_name'] %>)</td> 
+        <% end %>
+        <!-- 参加メンバー -->
+        <td>
+          <% karaoke['members'].each do |member| %>
+            <span style="display:none"><%= h member['screenname'] %></span>
+            <% if Util.is_pc? %>
+              <%= user_icon member['username'] , 32 , 32 %>
+            <% else %>
+              <%= user_icon member['username'] , 24 , 24 %>
+            <% end %>
+          <% end %>
+        </td>
         <!-- 通知アイコン列 -->
-        <% if @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
+        <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
         <td class='center' width="60">
           <% if karaoke['incomplete_price'] %>
             <img src="/image/alert.png" width="22" title="料金が入力されていません">
           <% elsif karaoke['incomplete_memo'] %>
             <img src="/image/alert.png" width="22" title="感想が入力されていません">
-          <% end %>
-        </td>
-        <% end %>
-        <% end %>
-        <!-- 参加メンバー -->
-        <% unless @target_user %>
-        <td>
-          <% karaoke['members'].each do |member| %>
-            <span style="display:none"><%= h member['screenname'] %></span>
-            <%= user_icon member['username'] , 32 , 32 %>
           <% end %>
         </td>
         <% end %>
