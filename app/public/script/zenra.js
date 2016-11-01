@@ -878,6 +878,7 @@ var register = (function() {
     if (defaultValue) {
       $('#song').val(defaultValue.song);
       $('#artist').val(defaultValue.artist);
+      autoInputSongKey();
     }
   }
 
