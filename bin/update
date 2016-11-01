@@ -42,9 +42,13 @@ if [ "$FLAG_V" -eq 1 ]; then
   git pull
   zenra init -b -v
   zenra run -r $VALUE_R -v
+  echo "バックアップファイルをpushします"
 else
   zenra stop
   git pull
   zenra init -b
   zenra run -r $VALUE_R
 fi
+git add backup/*
+git commit -m "ワイシャツサーバからの自動バックアップ"
+git push origin master
