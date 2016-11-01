@@ -51,9 +51,11 @@ else
   if [ -n "$VALUE_S" ]; then
     # テスト対象の指定なし / ランダムシードの指定有り
     zenra ci -t 0 -s $VALUE_S
+    exit 0
   else
     # テスト対象の指定なし / ランダムシードの指定無し
     zenra ci -t 0
+    exit 0
   fi
 fi
 
