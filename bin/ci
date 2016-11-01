@@ -5,15 +5,16 @@ PROGNAME=$(basename $0)
 # ヘルプ
 usage() {
   echo "インテグレーションテストを実施"
-  echo "  Usage: zenra $PROGNAME [-s seed] [-t testcode]"
+  echo "  Usage: zenra $PROGNAME [ [-s seed] [-t testcode] | -b target ]"
   echo "オプション"
   echo "  -s シードを指定することでテスト順序を固定に"
   echo "  -t 通し番号を指定して特定のテストのみ行う"
+  echo "  -b ベンチマークテストを行う"
   exit 1
 }
 
 # オプション解析
-while getopts s:t:h OPT
+while getopts s:t:b:h OPT
 do
   case $OPT in
   h)  usage
@@ -23,25 +24,42 @@ do
       ;;
   t)  VALUE_T=$OPTARG
       ;;
+  b)  VALUE_B=$OPTARG
+      ;;
   esac
 done
 shift $((OPTIND - 1))
 
-# メイン処理
 cd $MARCHDIR
+
+# run_modeをテスト用に変更し、オートログイン設定も削除する
 bundle exec ruby "bin/scripts/set_config.rb" set run_mode ci
 bundle exec ruby "bin/scripts/set_config.rb" unset auto_login
 
-if [ -n "$VALUE_S" ]; then
-  seed="--seed $VALUE_S"
-fi
-
-if [ -n "$VALUE_T" ]; then
-  bundle exec rspec spec/t/${VALUE_T}* $seed
+if [ -n "$VALUE_B" ]; then
+  # ベンチマークテストを実施
+  bundle exec rspec spec/t/900_benchmark_spec.rb -e "$VALUE_B"
+elif [ -n "$VALUE_T" ]; then
+  if [ -n "$VALUE_S" ]; then
+    # テスト対象の指定有り / ランダムシードの指定有り
+    bundle exec rspec spec/t/${VALUE_T}* --seed $VALUE_S
+  else
+    # テスト対象の指定有り / ランダムシードの指定無し
+    bundle exec rspec spec/t/${VALUE_T}*
+  fi
 else
-  bundle exec rspec $seed
+  if [ -n "$VALUE_S" ]; then
+    # テスト対象の指定なし / ランダムシードの指定有り
+    zenra ci -t 0 -s $VALUE_S
+  else
+    # テスト対象の指定なし / ランダムシードの指定無し
+    zenra ci -t 0
+  fi
 fi
 
+# テストカバレッジ結果をWebから参照できるように移動
 cp -r coverage app/public/
 rm -rf coverage
+
+# テスト完了をアラートで通知
 echo $'\a' 
