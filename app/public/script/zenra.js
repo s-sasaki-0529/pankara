@@ -1100,7 +1100,11 @@ var register = (function() {
 
           $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
           $('#button2').val('終了').on('click' , function() {
-            if (confirm('歌唱履歴の登録を終了します。よろしいですか？')) {
+            if (opt.callback && opt.callback == '#') {
+              input_dialog.close();
+            } else if (opt.callback) {
+              location.href = opt.callback;
+            } else {
               location.href = "/karaoke/detail/" + karaoke_id;
             }
           });
@@ -1451,7 +1455,8 @@ zenra.addHistoryToRecentKaraoke = function(opt) {
     defaultValue: {
       song: $('#song_name' + suffix).text(),
       artist: $('#artist_name' + suffix).text()
-    }
+    } ,
+    callback: '#'
   };
 
   // ユーザの最近のカラオケを取得し、それを対象に歌唱履歴登録ダイアログを開く
