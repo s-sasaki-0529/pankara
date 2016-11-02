@@ -52,7 +52,7 @@ class AjaxRoute < March
     song_list.each do |s|
       hash[s['song_name']] = s['artist_name']
     end
-    return Util.to_json(hash)
+    return success(hash)
   end
 
   # post '/ajax/song/list' - SongIDのリストをPOSTすると、該当する楽曲情報のリストを戻す
@@ -146,7 +146,7 @@ class AjaxRoute < March
   # post '/ajax/storelist' - 店と店舗のリストをJSONで戻す
   #---------------------------------------------------------------------
   post '/storelist/?' do
-    Util.to_json(Store.list)
+    success(Store.list)
   end
 
   # post '/ajax/attendance' - 参加情報をJSONで戻す
@@ -154,19 +154,21 @@ class AjaxRoute < March
   post '/attendance' do
     attendance = @current_user.get_attendance_at_karaoke(params[:id])
     
-    return attendance ? Util.to_json(attendance) : error('get attendance failed')
+    return attendance ? success(attendance) : error('get attendance failed')
   end
   
   # post '/ajax/karaokelist/?' - カラオケの一覧もしくは指定したカラオケを戻す
   #---------------------------------------------------------------------
   post '/karaokelist/?' do
-    params[:id].nil? ? Util.to_json(Karaoke.list_all) : Util.to_json(Karaoke.new(params[:id]).params)
+    result = params[:id].nil? ? Karaoke.list_all : Karaoke.new(params[:id]).params
+    return success(result)
   end
 
   # post '/ajax/historylist/?' - 歌唱履歴の一覧もしくは指定した歌唱履歴を戻す
   #---------------------------------------------------------------------
   post '/historylist/?' do
-    params[:id].nil? ? Util.to_json(History.recent_song(:limit => 20)) : Util.to_json(History.new(params[:id], true).params)
+    result = params[:id].nil? ? History.recent_song(:limit => 20) : History.new(params[:id], true).params
+    return success(result)
   end
 
   # post '/ajax/karaoke/delete/?' - カラオケを削除する
@@ -268,7 +270,8 @@ class AjaxRoute < March
   #--------------------------------------------------------------------
   post '/attended' do
     attended = @current_user.get_attendance_at_karaoke params[:karaoke_id]
-    return attended ? Util.to_json({:attended => true}) : Util.to_json({:attended => false})
+    result = attended ? {:attended => true} : {:attended => false}
+    return success(result)
   end
 
   # post '/ajax/karaoke/create' - カラオケ記録を登録する
@@ -291,12 +294,12 @@ class AjaxRoute < March
       result = @current_user.register_karaoke(karaoke) 
       if result.kind_of?(Integer)
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
-        Util.to_json({'result' => 'success', 'karaoke_id' => result})
+        return success(karaoke_id: result)
       else
-        result
+        return success(result)
       end
     else
-      Util.to_json({'result' => 'invalid current user'})
+      return error('invalid current user')
     end
   end
 
@@ -308,9 +311,9 @@ class AjaxRoute < March
 
     if @current_user
       @current_user.register_attendance karaoke_id
-      Util.to_json({'result' => 'success'})
+      success
     else
-      Util.error('invalid current user')
+      error('invalid current user')
     end
   end
   
@@ -336,7 +339,7 @@ class AjaxRoute < March
       twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
       return success(info)
     else
-      Util.to_json({'result' => 'invalid current user'})
+      error('invalid current user')
     end
   end
 
@@ -388,7 +391,7 @@ class AjaxRoute < March
     song = Song.name_to_id(params[:name], params[:artist]) or return error('never sang')
     key = @current_user.search_songkey(song['song_id'])
     if key
-      Util.to_json('result' => 'success' , 'songkey' => key)
+      success(key)
     else
       error('never sang')
     end

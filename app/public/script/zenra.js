@@ -750,7 +750,7 @@ var register = (function() {
     // お店のもしかしてリスト作成
     zenra.post('/ajax/storelist' , {} , {
       success: function(result) {
-        branch_list = zenra.parseJSON(result);
+        branch_list = zenra.parseJSON(result).info;
 
         // オブジェクトのキーをお店リストとして取得
         store_list = [];
@@ -813,7 +813,7 @@ var register = (function() {
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/songlist' , {} , {
       success: function(result) {
-        song_obj = zenra.parseJSON(result);
+        song_obj = zenra.parseJSON(result).info;
 
         // オブジェクトを曲名リストと歌手名リストに分割
         song_list = [];
@@ -947,7 +947,7 @@ var register = (function() {
           var result_obj = zenra.parseJSON(result);
           
           if (result_obj.result == 'success') {
-            var songkey = result_obj.songkey;
+            var songkey = result_obj.info;
 
             $('#seekbar').slider('value' , songkey);
           }
@@ -1154,7 +1154,7 @@ var register = (function() {
       zenra.post('/ajax/karaokelist/' , {id: karaoke_id} , {
         sync: true,
         success: function(result) {
-          var karaoke = zenra.parseJSON(result);
+          var karaoke = zenra.parseJSON(result).info;
 
           input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450);
           input_dialog.show('/ajax/karaoke/dialog' , 'input_karaoke' , {
@@ -1176,7 +1176,7 @@ var register = (function() {
       zenra.post('/ajax/attendance' , {id: karaoke_id} , {
         sync: true,
         success: function(result) {
-          var attendance = zenra.parseJSON(result);
+          var attendance = zenra.parseJSON(result).info;
       
           input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600);
           input_dialog.show('/ajax/karaoke/dialog' , 'input_attendance' , {
@@ -1198,7 +1198,7 @@ var register = (function() {
       zenra.getLoader().show();
       zenra.post('/ajax/historylist/' , {id: history_id} , {
         success: function(result) {
-          var history = zenra.parseJSON(result);
+          var history = zenra.parseJSON(result).info;
 
           input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
           input_dialog.show('/ajax/history/dialog' , 'input_history' , {
@@ -1224,7 +1224,7 @@ var register = (function() {
           var response = zenra.parseJSON(json_response);
           
           if (response.result == 'success') {
-            var karaoke_id = response.karaoke_id;
+            var karaoke_id = response.info.karaoke_id;
 
             input_dialog.transition('/ajax/history/dialog' , 'input_history' , {
               func_at_load: function() {
