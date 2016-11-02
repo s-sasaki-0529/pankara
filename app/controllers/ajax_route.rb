@@ -113,6 +113,31 @@ class AjaxRoute < March
     return success(tags)
   end
 
+  # post '/ajax/song/:id/tag/add' - 楽曲にタグを追加する
+  #--------------------------------------------------------------------
+  post '/song/:id/tag/add' do
+    @current_user or return error('ログインしてください')
+    id = params[:id]
+    tag = params[:tag_name]
+    song = Song.new(id)
+    song and tag and tag != "" and tag.split(/[\s　]/).each do |t|
+      song.add_tag(@current_user['id'] , t)
+    end
+    return success
+  end
+
+  # post '/ajax/song/:id/tag/remove' - 楽曲に登録されているタグを削除
+  #--------------------------------------------------------------------
+  post '/song/:id/tag/remove' do
+    @current_user or return error('ログインしてください')
+    @current_user['id'].to_s == params[:created_by] or return error('タグを削除できません')
+    id = params[:id]
+    tag = params[:tag_name]
+    song = Song.new(id)
+    song and tag and tag != "" and song.remove_tag(tag)
+    return success
+  end
+
   # post '/ajax/song/tally/monthly/count/?' - 指定した楽曲の月ごとの歌唱回数を戻す
   #--------------------------------------------------------------------
   post '/song/tally/monthly/count/?' do

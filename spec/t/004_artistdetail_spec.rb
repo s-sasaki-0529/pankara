@@ -78,14 +78,14 @@ describe '歌手詳細ページ' , :js => true do
     it '一人だけ歌っている' do
       visit '/artist/70' #暁切歌
       wait_for_ajax
-      result = to_hash('sang_count_chart_json')["info"]
+      result = to_hash('sang_count_chart_json')
       expect(result[-1]["ともちん"]).to eq 4
       expect(result[-3]["ともちん"]).to eq 2
     end
     it '複数人が歌っている' do
       visit '/artist/40' #水樹奈々
       wait_for_ajax
-      result = to_hash('sang_count_chart_json')["info"]
+      result = to_hash('sang_count_chart_json')
       expect(result[-1]["ともちん"]).to eq 1
       expect(result[-1]["ウォーリー"]).to eq 2
     end

@@ -43,15 +43,10 @@ $(function(){
 
   // Wikipediaの概要を非同期で取得
   zenra.post('/ajax/artist/wiki' , {'artist': "<%= @artist['name'] %>"} , {
-    success: function(json) {
-      var response = zenra.parseJSON(json);
-      if (response.result == 'success') {
-        var summary = response.info.summary;
-        var url = response.info.url;
-        $('#summary').text(summary);
-        $('#wikiurl').attr('href' , url);
-        $('#wiki').hide().removeClass('hidden').show('slow');
-      }
+    success: function(wiki) {
+      $('#summary').text(wiki.summary);
+      $('#wikiurl').attr('href' , wiki.url);
+      $('#wiki').hide().removeClass('hidden').show('slow');
     }
   });
 });

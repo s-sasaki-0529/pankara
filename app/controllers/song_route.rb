@@ -40,31 +40,6 @@ class SongRoute < March
     erb :song_detail
   end
 
-  # post '/song/:id/tag/add' - 楽曲にタグを追加する
-  # このURLは非同期で呼び出されるため、リダイレクトはクライアント側で行う
-  #--------------------------------------------------------------------
-  post '/:id/tag/add' do
-    @current_user or return
-    id = params[:id]
-    tag = params[:tag_name]
-    song = Song.new(id)
-    song and tag and tag != "" and tag.split(/[\s　]/).each do |t|
-      song.add_tag(@current_user['id'] , t) or return
-    end
-  end
-
-  # post '/song/:id/tag/remove' - 楽曲に登録されているタグを削除
-  # このURLは非同期で呼び出されるため、リダイレクトはクライアント側で行う
-  #--------------------------------------------------------------------
-  post '/:id/tag/remove' do
-    @current_user or return
-    @current_user['id'].to_s == params[:created_by] or return
-    id = params[:id]
-    tag = params[:tag_name]
-    song = Song.new(id)
-    song and tag and tag != "" and song.remove_tag(tag)
-  end
-
   # get '/song/:id/player' - youtubeプレイヤーを表示する
   #---------------------------------------------------------------------
   get '/:id/player' do

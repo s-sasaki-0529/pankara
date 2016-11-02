@@ -8,12 +8,22 @@ $(function(){
 zenra = {};
 
 /*
+nop - 空の関数
+*/
+zenra.nop = function() {};
+
+/*
 post - 情報を非同期で送信する
 */
 zenra.post = function(url , data , opt) {
-  var beforeSend = opt.beforeSend || function(){};
-  var success = opt.success || function(){};
-  var error = opt.error || function(){};
+  var success = opt.success || zenra.nop;
+  var error = opt.error || function (error) {
+    console.log(error);
+  };
+  var nwError = opt.nwError || function (error) { 
+    console.log(error);
+    alert('インターネットに接続されているか確認してください');
+  };
   var sync = opt.sync === true ? true : false;
   if (sync) {
     zenra.getLoader().show();
@@ -23,9 +33,15 @@ zenra.post = function(url , data , opt) {
     type: "POST" ,
     url: url ,
     data: data ,
-    beforeSend: beforeSend ,
-    success: success ,
-    error: error ,
+    success: function (json) {
+      var response = zenra.parseJSON(json);
+      if (response.result == 'success') {
+        success(response.info);
+      } else {
+        error(response.info);
+      }
+    },
+    error: nwError ,
     complete: function () {
       zenra.getLoader().hide();
     }
@@ -156,11 +172,8 @@ targetSelecter: 描画対象要素のセレクタ
 */
 zenra.createFavoriteArtistsPieChart = function(targetSelecter , user) {
   zenra.post('/ajax/user/artist/favorite' , {'user': user} , {
-    success: function(json) {
-      var response = zenra.parseJSON(json);
-      if (response.result == 'success') {
-        zenra.createPieChart(targetSelecter , response.info);
-      }
+    success: function(data) {
+        zenra.createPieChart(targetSelecter , data);
     },
   });
 };
@@ -172,17 +185,12 @@ targetSelecter: 描画対象要素のセレクタ
 */
 zenra.createMonthlySangCountBarChart = function(url , id , targetSelecter) {
   zenra.post(url , {id: id} , {
-    success: function(json) {
-      var response = zenra.parseJSON(json);
-      var data = response.info;
+    success: function(data) {
       var users = [];
-      if (response.result == 'success') {
-        //データを元にユーザ一覧を生成
-        data.forEach(function(e) { users = users.concat(Object.keys(e)); });
-        users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
-      }
+      data.forEach(function(e) { users = users.concat(Object.keys(e)); });
+      users = users.filter(function (x, i, self) { return self.indexOf(x) === i && x != '_month';});
       zenra.createBarChart(targetSelecter , data , '_month' , users , [users] , {rotated: true});
-      $(targetSelecter + '_json').text(json);
+      $(targetSelecter + '_json').text(zenra.toJSON(data));
     },
   });
 };
@@ -204,25 +212,22 @@ zenra.scoreBarChart = (function() {
   function _create() {
     isBusy = true;
     zenra.post('/ajax/song/tally/score' , {song: songId, score_type: currentScoreType} , {
-      success: function(json) {
-        var response = zenra.parseJSON(json);
-        if (response.result == 'success') {
-          var scoreTypeName = response.info.score_type_name;
-          var scores = response.info.scores;
-          var values = [];
-          var colors = [];
-          if (scores[0]['あなた']) {
-            values.push('あなた');
-            colors.push('rgb(31,119,180)');
-          }
-          if (scores[0]['みんな']) {
-            values.push('みんな');
-            colors.push('rgb(255,127,14)');
-          }
-          zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
-          $('#score_type_name').text(scoreTypeName);
-          $(targetSelecter + '_json').text(json);
+      success: function(data) {
+        var scoreTypeName = data.score_type_name;
+        var scores = data.scores;
+        var values = [];
+        var colors = [];
+        if (scores[0]['あなた']) {
+          values.push('あなた');
+          colors.push('rgb(31,119,180)');
         }
+        if (scores[0]['みんな']) {
+          values.push('みんな');
+          colors.push('rgb(255,127,14)');
+        }
+        zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
+        $('#score_type_name').text(scoreTypeName);
+        $(targetSelecter + '_json').text(zenra.toJSON(data));
         isBusy = false;
       },
     });
@@ -747,19 +752,18 @@ var register = (function() {
   
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
   function createWidgetForKaraoke() {
+    
     // お店のもしかしてリスト作成
     zenra.post('/ajax/store/list' , {} , {
-      success: function(result) {
-        branch_list = zenra.parseJSON(result).info;
-
+      success: function(response) {
         // オブジェクトのキーをお店リストとして取得
+        branch_list = response;
         store_list = [];
         for (var key in branch_list) {
           if (branch_list.hasOwnProperty(key)) {
             store_list.push(key);
           }
         }
-
         store_moshikashite = new moshikashite('store' , store_list);
       }
     });
@@ -812,10 +816,9 @@ var register = (function() {
 
     // 曲名と歌手名の対応表を取得
     zenra.post('/ajax/song/list/names' , {} , {
-      success: function(result) {
-        song_obj = zenra.parseJSON(result).info;
-
+      success: function(response) {
         // オブジェクトを曲名リストと歌手名リストに分割
+        song_obj = response;
         song_list = [];
         artist_list = [];
         for (var key in song_obj) {
@@ -826,7 +829,6 @@ var register = (function() {
             }
           }
         }
-
         song_moshikashite = new moshikashite('song' , song_list);
         artist_moshikashite = new moshikashite('artist' , artist_list);
       }
@@ -943,14 +945,8 @@ var register = (function() {
       };
 
       zenra.post('/ajax/user/history/recent/key' , song , {
-        success: function(result) {
-          var result_obj = zenra.parseJSON(result);
-          
-          if (result_obj.result == 'success') {
-            var songkey = result_obj.info;
-
-            $('#seekbar').slider('value' , songkey);
-          }
+        success: function(songkey) {
+          $('#seekbar').slider('value' , songkey);
         }
       });
     }
@@ -1153,9 +1149,7 @@ var register = (function() {
     editKaraoke : function(karaoke_id) {
       zenra.post('/ajax/karaoke/detail' , {id: karaoke_id} , {
         sync: true,
-        success: function(result) {
-          var karaoke = zenra.parseJSON(result).info;
-
+        success: function(karaoke) {
           input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450);
           input_dialog.show('/ajax/dialog/karaoke' , 'input_karaoke' , {
             func_at_load: function() {
@@ -1175,9 +1169,7 @@ var register = (function() {
     editAttendance : function(karaoke_id) {
       zenra.post('/ajax/user/karaoke/attendance' , {id: karaoke_id} , {
         sync: true,
-        success: function(result) {
-          var attendance = zenra.parseJSON(result).info;
-      
+        success: function(attendance) {
           input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600);
           input_dialog.show('/ajax/dialog/karaoke' , 'input_attendance' , {
             funcs: {
@@ -1197,9 +1189,7 @@ var register = (function() {
     editHistory : function(karaoke_id , history_id) {
       zenra.getLoader().show();
       zenra.post('/ajax/history/detail' , {id: history_id} , {
-        success: function(result) {
-          var history = zenra.parseJSON(result).info;
-
+        success: function(history) {
           input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
           input_dialog.show('/ajax/dialog/history' , 'input_history' , {
             func_at_load: function() {
@@ -1220,28 +1210,23 @@ var register = (function() {
       var data = getKaraokeData();
       zenra.getLoader().show();
       zenra.post('/ajax/karaoke/create' , data , {
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          
-          if (response.result == 'success') {
-            var karaoke_id = response.info.karaoke_id;
-
-            input_dialog.transition('/ajax/dialog/history' , 'input_history' , {
-              func_at_load: function() {
-                createWidgetForHistory();
-                if (! zenra.ispc) {
-                  $(window).scrollTop(0);
-                }
-                $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
-                $('#button2').on('click' , function() { location.href = "/karaoke/detail/" + karaoke_id; }).val('終了');
-              } ,
-            });
-          }
-          else {
-            alert(response.info);
-          }
+        success: function(karaoke) {
+          var karaoke_id = karaoke.karaoke_id;
+          input_dialog.transition('/ajax/dialog/history' , 'input_history' , {
+            func_at_load: function() {
+              createWidgetForHistory();
+              if (! zenra.ispc) {
+                $(window).scrollTop(0);
+              }
+              $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
+              $('#button2').on('click' , function() { location.href = "/karaoke/detail/" + karaoke_id; }).val('終了');
+            } ,
+          });
         } ,
-        error: function() {
+        error: function(data) {
+          alert(data);
+        } ,
+        nwError: function() {
           alert('カラオケの登録に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1253,17 +1238,13 @@ var register = (function() {
 
       zenra.getLoader().show();
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          
-          if (response.result == 'success') {
-            location.href = ('/karaoke/detail/' + karaoke_id);
-          }
-          else {
-            alert(response.info);
-          }
+        success: function() {
+          location.href = ('/karaoke/detail/' + karaoke_id);
         } ,
-        error: function() {
+        error: function(error) {
+          alert(error);
+        } ,
+        nwError: function() {
           alert('カラオケの編集に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1281,15 +1262,11 @@ var register = (function() {
       
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-
-          if (response.result == 'success') {
-            location.href = ('/karaoke/detail/' + karaoke_id);
-          }
-          else {
-            alert('参加情報の編集に失敗しました');
-          }
+        success: function() {
+          location.href = ('/karaoke/detail/' + karaoke_id);
+        } ,
+        error: function(error) {
+          alert(error);
         }
       });
     } ,
@@ -1305,14 +1282,12 @@ var register = (function() {
       zenra.post('/ajax/song/modify' , data , {
         sync: true,
         success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          if (response.result == 'success') {
-            location.href = ('/song/' + song_id);
-          } else {
-            alert(response.info);
-          }
+          location.href = ('/song/' + song_id);
         } ,
-        error: function() {
+        error: function(error) {
+          alert(error);
+        } ,
+        nwError: function() {
           alert('楽曲情報の編集に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1328,32 +1303,25 @@ var register = (function() {
       
       zenra.post('/ajax/history/create' , data , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          if (response.result == 'success') {
-            //count += 1;
-            var sangInfo = response.info;
-            var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
-            mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
-            $('#result').html('<p>' + mes + '</p>');
-            if (! zenra.ispc) {
-              $(window).scrollTop(0);
-              $('#song').blur();
-            }
-            //$('#result').html('<p>' + count + '件入力されました</p>');            
-          }
-          else {
-            alert(response.info);
+        success: function(sangInfo) {
+          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
+          mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
+          $('#result').html('<p>' + mes + '</p>');
+          if (! zenra.ispc) {
+            $(window).scrollTop(0);
+            $('#song').blur();
           }
         } ,
-        error: function() {
+        error: function(error) {
+          alert(error);
+        } ,
+        nwError: function() {
           alert('歌唱履歴の登録に失敗しました。サーバにアクセスできません。');
         }
       });
 
       cookie.setCookie('score_type' , $('#score_type').val());
       resetHistory();
-      
     } ,
 
     /*[Method] 楽曲新規登録リクエストを送信する*/
@@ -1361,15 +1329,13 @@ var register = (function() {
       var data = {song: $('#song').val(), artist: $('#artist').val()};
       zenra.post('/ajax/song/create' , data , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          if (response.result == 'success') {
-            location.href = '/song/' + response.info;
-          } else {
-            alert(response.info);
-          }
+        success: function(songID) {
+          location.href = '/song/' + songID;
+        } ,
+        error: function(error) {
+            alert(error);
         },
-        error: function () {
+        nwError: function () {
           alert('楽曲の登録に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1380,17 +1346,13 @@ var register = (function() {
 
       zenra.post('/ajax/history/modify/', {id: history_id, params: json_data} , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-          
-          if (response.result == 'success') {
-            location.href = ('/karaoke/detail/' + karaoke_id);
-          }
-          else {
-            alert(response.info);
-          }
+        success: function() {
+          location.href = ('/karaoke/detail/' + karaoke_id);
         } ,
-        error: function() {
+        error: function(error) {
+            alert(error);
+        } ,
+        nwError: function() {
           alert('歌唱履歴の編集に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1403,16 +1365,13 @@ var register = (function() {
       }
       zenra.post('/ajax/karaoke/delete/' , {id: karaoke_id} , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-
-          if (response.result == 'success') {
+        success: function() {
             location.href = '/';
-          } else {
-            alert('カラオケの削除に失敗しました。');
-          }
         } ,
         error: function() {
+            alert('カラオケの削除に失敗しました。');
+        } ,
+        nwError: function() {
           alert('カラオケの削除に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1422,16 +1381,13 @@ var register = (function() {
     submitHistoryDeleteRequest : function(karaoke_id , history_id) {
       zenra.post('/ajax/history/delete/' , {id: history_id} , {
         sync: true,
-        success: function(json_response) {
-          var response = zenra.parseJSON(json_response);
-
-          if (response.result == 'success') {
-            location.href = ('/karaoke/detail/' + karaoke_id);
-          } else {
-            alert('歌唱履歴の削除に失敗しました。');
-          }
+        success: function() {
+          location.href = ('/karaoke/detail/' + karaoke_id);
         } ,
-        error: function() {
+        error: function () {
+          alert('歌唱履歴の削除に失敗しました。');
+        } ,
+        nwError: function() {
           alert('歌唱履歴の削除に失敗しました。サーバにアクセスできません。');
         }
       });
@@ -1460,18 +1416,17 @@ zenra.addHistoryToRecentKaraoke = function(opt) {
   };
 
   // ユーザの最近のカラオケを取得し、それを対象に歌唱履歴登録ダイアログを開く
-  zenra.post('/ajax/user/karaoke/recent' , {} , { success: function(json) {
-    var response = zenra.parseJSON(json);
-    if (response.result == 'success') {
-      var karaoke = response.info;
+  zenra.post('/ajax/user/karaoke/recent' , {} , {
+    success: function(karaoke) {
       var mes = 'カラオケ [' + karaoke.name + ']' + 'に、この曲の歌唱履歴を登録しますか？';
       if (confirm(mes)) {
         register.createHistory(karaoke.id , params);
       }
-    } else {
-      alert(response.info);
+    } ,
+    error: function(error) {
+      alert(error);
     }
-  }});
+  });
 };
 
 zenra.showAggregateDialog = function(user) {
@@ -1506,10 +1461,7 @@ zenra.showSongTagList = function(id , user) {
     $('#tag_list_table').append($tr);
   }
   zenra.post(url , data , {
-    success: function(json) {
-      var response = zenra.parseJSON(json);
-      if (response.result == 'error') return;
-      var tags = response.info;
+    success: function(tags) {
       resetTagElements();
       tags.forEach(function(tag) { addTagElement(tag); });
       var title = tags.length > 0 ? '登録済みタグ' : 'タグが登録されていません';
@@ -1524,7 +1476,7 @@ zenra.showSongTagList = function(id , user) {
 };
 
 zenra.addSongTag = function(user , id) {
-  var url_from = '/song/' + id;
+  var url_from = '/ajax/song/' + id;
   var url_to = url_from + '/tag/add';
   jPrompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
     var data = {tag_name: r};
@@ -1534,7 +1486,7 @@ zenra.addSongTag = function(user , id) {
 };
 
 zenra.removeSongTag = function(user , id , tag) {
-  var url_from = '/song/' + id;
+  var url_from = '/ajax/song/' + id;
   var url_to = url_from + '/tag/remove';
   var mes = 'タグ [' + tag.name + '] を削除します。よろしいですか？';
   jConfirm(mes, '確認', function(r) {
