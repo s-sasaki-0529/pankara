@@ -32,6 +32,8 @@ class Tag < Base
   # add - タグを追加する
   #--------------------------------------------------------------------
   def add(created_by , name)
+    # 空白のみのタグは登録できない
+    name.gsub(/\s|　/ , '') == '' and return false
     # 既に登録済みのタグの場合追加失敗
     self.include?(name) and return false
     # 既に１０種類のタグが登録されている場合追加失敗

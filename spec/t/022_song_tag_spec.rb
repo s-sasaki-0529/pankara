@@ -47,6 +47,13 @@ describe 'タグ機能' , :js => true do
       islack ['011' , '012' , '013']
       islack '追加'
     end
+    it '空白を含んだ登録' do
+      visit '/song/242'
+      add_tag "A B   C　D　　　E"
+      tags = `zenra mysql -se "select name from tag where object = 242;"`.lines.each {|l| l.chomp!}
+      expect(tags.length).to eq 5
+      expect(tags.include?('')).to eq false
+    end
     it 'キャンセル' do
       visit '/song/354'; wait_for_ajax
       islack '新しいタグ'
