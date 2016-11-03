@@ -48,5 +48,5 @@ elif [ $FLAG_U -eq 1 ]; then
   $ssh "export ZENRA=/home/zenra/March/; nohup zenra update -r yshirt -v"
 elif [ -n "$VALUE_LU" ]; then
   bundle exec ruby bin/scripts/addUpdateInfo.rb $VALUE_LU
-  git add updates.json && git commit -m "更新情報" && git push origin master && zenra yshirt -u
+  git add updates.json && git commit -m "更新情報" && git pull origin master && git push origin master && zenra yshirt -u
 fi
