@@ -72,6 +72,10 @@ zenra.toJSON = function(obj) {
   return false;
 };
 
+/*
+confirm - PC版ではjConfirm,スマフォ版ではconfirmを呼び出す
+ただし、jConfirmは非同期になってしまうので使い方に注意が必要
+*/
 zenra.confirm = function (message , callback) {
   if (zenra.ispc) {
     jConfirm(message , "確認" , function(r) {
@@ -85,6 +89,21 @@ zenra.confirm = function (message , callback) {
     }
   }
 };
+
+/*
+prompt - PC版ではjPrompt,スマフォ版ではpromptを呼び出す
+ただし、jPromptは非同期になってしまうので使い方に注意が必要
+*/
+zenra.prompt = function (message , initValue , title , callback) {
+  if (zenra.ispc) {
+    jPrompt(message , initValue , title , function(r) {
+      callback(r);
+    });
+  } else {
+    var r = prompt(message , initValue);
+    callback(r);
+  }
+}
 
 /*
 loader - 読み込み中画面を生成
@@ -1478,9 +1497,12 @@ zenra.showSongTagList = function(id , user) {
 zenra.addSongTag = function(user , id) {
   var url_from = '/ajax/song/' + id;
   var url_to = url_from + '/tag/add';
-  jPrompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
+  zenra.prompt('追加するタグ名を入力してください。空白区切りで複数のタグを一度に登録できます', '', 'タグを新規登録', function(r) {
     var data = {tag_name: r};
-    var opt = {success: function() { zenra.showSongTagList(id , user); }};
+    var opt = {success: function() {
+      zenra.showSongTagList(id , user);
+      $('html, body').animate({scrollTop: $(this).height()},'fast');
+    }};
     zenra.post(url_to , data , opt);
   });
 };
@@ -1489,8 +1511,7 @@ zenra.removeSongTag = function(user , id , tag) {
   var url_from = '/ajax/song/' + id;
   var url_to = url_from + '/tag/remove';
   var mes = 'タグ [' + tag.name + '] を削除します。よろしいですか？';
-  jConfirm(mes, '確認', function(r) {
-    if (!r) return;
+  zenra.confirm(mes,  function() {
     var data = {tag_name: tag.name , created_by: tag.created_by};
     var opt = {success: function() { zenra.showSongTagList(id , user); }};
     zenra.post(url_to , data , opt);
@@ -1620,10 +1641,15 @@ zenra.playlist = (function() {
   };
 })();
 
-/*スクロールを強制定期に先頭へ移動する*/
+/*スクロールを強制的に先頭へ移動する*/
 zenra.scrollToTop = function () {
   $('html, body').animate({scrollTop:0},'fast');
 };
+
+/*スクロールを強制的に一番下へ移動する*/
+zenra.scrollToBottom = function () {
+  $('html, body').animate({scrollTop: $(this).height()},'fast');
+}
 
 zenra.htmlescape = function (string) {
   return string.replace(/[&'`"<>]/g, function(match) {
