@@ -20,7 +20,7 @@
 <% end %>
 
 <h4>最高点数</h4>
-<% if @histories.size > 0 %>
+<% if @histories.size > 0 && @max_score['score'] %>
   <table id="max_score_table" class="table" style="clear: both">
     <tbody style="background-color: white">
       <tr>
@@ -38,5 +38,5 @@
     </tbody>
   </table>
 <% else %>
-  歌唱履歴がありません
+  採点履歴がありません
 <% end %>

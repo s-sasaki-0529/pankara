@@ -41,6 +41,7 @@ describe '新規登録したユーザで各ページを閲覧' do
     visit 'user/userpage'
     iscontain 'カラオケ記録がありません'
     iscontain '歌唱履歴がありません'
+    iscontain '採点履歴がありません'
   end
   it '設定画面' do
     visit '/config'
