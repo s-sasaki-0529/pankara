@@ -153,8 +153,13 @@ class Register < Base
   #---------------------------------------------------------------------
   def create_store(store)
 
+    # 名前の指定が無い場合'未登録'に差し替え
     store['name'].strip!
     store['branch'].strip!
+    if store['name'] == ''
+      store['name'] = '未登録'
+      store['branch'] = ''
+    end
 
     store_id = DB.new(
       :SELECT => 'id' , :FROM => 'store' , :WHERE => ['name = ?' , 'branch = ?'] ,
