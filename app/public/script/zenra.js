@@ -371,7 +371,7 @@ zenra.createNameGuideLines = function () {
     });
     // スマフォの場合画面をスクロール
     if (! zenra.ispc) {
-      $(window).scrollTop(0);
+      zenra.scrollToTop();
     }
   })();
 };
@@ -526,7 +526,7 @@ var dialog = function(title , dialog_id , width , height) {
       div.load(url + " #" + id , function(date , status) {
         if (! zenra.ispc) {
           $('ui-dialog').addClass('hidden');
-          $(window).scrollTop(0);
+          zenra.scrollToTop();
           $('.ui-dialog').css({'top' : 0 , 'z-index': 9999});
           $('ui-dialog').removeClass('hidden');
         }
@@ -537,7 +537,7 @@ var dialog = function(title , dialog_id , width , height) {
           $(window).scrollTop(scroll);
         } else if (position == 'head') {
           $('.ui-dialog').css({'top' : 70 , 'z-index': 9999});
-          $(window).scrollTop(0);
+          zenra.scrollToTop();
         }
         func_at_load();
         $('#' + id).tooltip('disable');
@@ -1216,7 +1216,7 @@ var register = (function() {
             func_at_load: function() {
               createWidgetForHistory();
               if (! zenra.ispc) {
-                $(window).scrollTop(0);
+                zenra.scrollToTop();
               }
               $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
               $('#button2').on('click' , function() { location.href = "/karaoke/detail/" + karaoke_id; }).val('終了');
@@ -1308,7 +1308,7 @@ var register = (function() {
           mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
           $('#result').html('<p>' + mes + '</p>');
           if (! zenra.ispc) {
-            $(window).scrollTop(0);
+            zenra.scrollToTop();
             $('#song').blur();
           }
         } ,
@@ -1619,6 +1619,11 @@ zenra.playlist = (function() {
     pause: _pause ,
   };
 })();
+
+/*スクロールを強制定期に先頭へ移動する*/
+zenra.scrollToTop = function () {
+  $('html, body').animate({scrollTop:0},'fast');
+};
 
 zenra.htmlescape = function (string) {
   return string.replace(/[&'`"<>]/g, function(match) {
