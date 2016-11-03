@@ -7,7 +7,8 @@ class RankingRoute < March
   # GETでshowmineが指定されている時、ログイン中ユーザを戻す
   #--------------------------------------------------------------------
   def target_user
-    @target_user = params[:showmine] && @current_user ? @current_user : nil
+    @showmine = params[:showmine] == 'true'
+    @target_user = @showmine && @current_user ? @current_user : nil
     return @target_user
   end
 

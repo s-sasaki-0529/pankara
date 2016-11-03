@@ -5,6 +5,7 @@ include Rbase
 score_types = []
 selecter = 'score_type_selecter'
 nondata = '該当データなし'
+url = '/ranking/score'
 
 # テスト用データベース構築
 init = proc do
@@ -18,7 +19,7 @@ describe '得点ランキング機能' do
 
   before do
     login 'sa2knight'
-    visit '/ranking/score/'
+    visit url
   end
 
   it 'ランキングが正常に表示されるか' do
@@ -31,6 +32,20 @@ describe '得点ランキング機能' do
     # 該当データがない場合
     visit '5'
     expect(find('#nondata').text).to eq nondata
+  end
+
+  it 'あなたのランキングへの切り替え' do
+    link 'あなたのランキングへ'
+    table = table_to_hash('scoreranking_table')
+    expect(table[19]['tostring']).to eq '20,嘘 シド,ないと,嘘,シド,87.87'
+    link '全体のランキングへ'
+  end
+
+  it 'あなたのランキングへの切り替えリンク' do
+    iscontain 'あなたのランキングへ'
+    logout
+    visit url
+    islack 'あなたのランキングへ'
   end
 
   it 'リンクが正常に登録されているか' do

@@ -1,0 +1,7 @@
+<% if @current_user %>
+  <% if @showmine %>
+  <a href="<%= Util.add_get_params(:showmine => false) %>">全体のランキングへ</a>
+  <% else %>
+  <a href="<%= Util.add_get_params(:showmine => true) %>">あなたのランキングへ</a>
+  <% end %>
+<% end %>

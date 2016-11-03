@@ -1,5 +1,8 @@
 <h1>得点ランキング</h1>
-<div class='right'>採点モード <%= erb :_score_type_selecter %></div>
+<div class='right'>
+  <p><%= erb :_ranking_mode_link %></p>
+  <p>採点モード <%= erb :_score_type_selecter %></p>
+</div>
 <% if @scores.empty? %>
 <p id="nondata">該当データなし</p>
 <% else %>

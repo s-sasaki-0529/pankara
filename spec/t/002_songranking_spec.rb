@@ -26,6 +26,21 @@ describe '楽曲ランキング機能' , :js => true do
     expect(tables[0]['tostring']).to eq '1,,Hello, world!,BUMP OF CHICKEN,12'
     expect(tables[1]['tostring']).to eq '2,未登録,ray,BUMP OF CHICKEN,10'
   end
+
+  it 'あなたのランキングに切り替え' do
+    link 'あなたのランキングへ'
+    tables = table_to_hash('songranking_table')
+    expect(tables[3]['tostring']).to eq '4,,MISTAKE,ナナホシ管弦楽団,8'
+    link '全体のランキングへ'
+  end
+
+  it 'あなたのランキングへの切り替えリンク' do
+    iscontain 'あなたのランキングへ'
+    logout
+    visit url
+    islack 'あなたのランキングへ'
+  end
+
   it 'リンクが正常に登録されているか' do
     examine_songlink('ray' , 'BUMP OF CHICKEN' , url)
     examine_artistlink('BUMP OF CHICKEN' , url)
