@@ -35,11 +35,7 @@ class AuthenticationRoute < March
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
       session[:logined] = @params[:username]
-      if callback = params[:callback]
-        redirect callback
-      else
-        redirect '/'
-      end
+      redirect params[:callback]
     else
       redirect Util.request.url
     end
