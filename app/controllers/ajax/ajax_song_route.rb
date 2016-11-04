@@ -17,11 +17,7 @@ class AjaxSongRoute < AjaxRoute
     register = Register.new(user)
     artist_id = register.create_artist(artist)
     song_id = register.create_song(artist_id , artist , song)
-    if artist_id && song_id
-      return success(song_id)
-    else
-      return error('fails create song')
-    end
+    return (artist_id && song_id) ? success(song_id) : error('楽曲またはアーティストの登録に失敗しました')
   end
 
   # post '/ajax/song/list/names' - 全ての楽曲を取得し、曲名→歌手名のハッシュをJSONで戻す

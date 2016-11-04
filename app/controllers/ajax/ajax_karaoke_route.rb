@@ -40,11 +40,7 @@ class AjaxKaraokeRoute < AjaxRoute
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     result = karaoke.delete
-    if result
-      return success
-    else
-      return error('delete failed')
-    end
+    return result ? success : error('カラオケの削除に失敗しました')
   end
 
   # post '/ajax/karaoke/modify/?' - カラオケを編集する

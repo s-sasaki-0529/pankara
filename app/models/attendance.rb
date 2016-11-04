@@ -18,7 +18,6 @@ class Attendance < Base
     arg.select! do |k , v|
       ['price' , 'memo'].include?(k)
     end
-
     arg['price'] and arg['price'] == '' and arg['price'] = nil
     arg['memo'] and arg['memo'] == '' and arg['memo'] = nil
 
@@ -27,15 +26,12 @@ class Attendance < Base
       :WHERE => 'id = ?' ,
       :SET => arg.values.push(@params['id'])
     ).execute
+    result or return false
 
-    if result
-      old_params = @params
-      @params = DB.new.get('attendance' , old_params['id'])
-      Util.write_log('event' , "【参加情報修正】#{old_params} → #{@params}")
-      return true
-    else
-      return false
-    end
+    old_params = @params
+    @params = DB.new.get('attendance' , old_params['id'])
+    Util.write_log('event' , "【参加情報修正】#{old_params} → #{@params}")
+    return true
   end
 
   # delete - レコードを削除

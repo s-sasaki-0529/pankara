@@ -12,6 +12,7 @@ class AjaxHistoryRoute < AjaxRoute
   # post '/ajax/history/create - ユーザの歌唱履歴を登録
   #---------------------------------------------------------------------
   post '/create' do
+    @current_user or return error('ログインしてください')
     history = {}
     karaoke_id = params[:karaoke_id]
     history['song_name'] = params[:song_name]
@@ -26,13 +27,9 @@ class AjaxHistoryRoute < AjaxRoute
     elsif history['artist_name'].nil? || history['artist_name'] == ''
       return error('歌手名を入力してください')
     end
-    if @current_user
-      info = @current_user.register_history(karaoke_id , history)
-      twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
-      return success(info)
-    else
-      error('invalid current user')
-    end
+    info = @current_user.register_history(karaoke_id , history)
+    twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
+    return success(info)
   end
 
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する

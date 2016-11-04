@@ -18,7 +18,7 @@ class SearchRoute < March
       # 該当する楽曲、歌手、タグの一覧を取得
       @song_list.concat(Song.list({:name_like => @search_word , :artist_info => true}))
       @artist_list.concat(Artist.list({:name_like => @search_word}))
-      @tag_list.concat(Tag.tags(:like => @search_word))
+      @tag_list.concat(Tag.tags(:like => @search_word , :class => 's'))
       @users = User.search(@search_word)
 
       # 全体で１件しかヒットしなかった場合、そのページにリダイレクト
