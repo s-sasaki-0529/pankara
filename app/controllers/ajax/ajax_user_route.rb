@@ -12,14 +12,6 @@ class AjaxUserRoute < AjaxRoute
     return success(:id => karaoke['id'] , :name => karaoke['name'])
   end
 
-  # post '/ajax/user/karaoke/attended' - カラオケに参加済みか確認する
-  #--------------------------------------------------------------------
-  post '/karaoke/attended' do
-    attended = @current_user.get_attendance_at_karaoke params[:karaoke_id]
-    result = attended ? {:attended => true} : {:attended => false}
-    return success(result)
-  end
-
   # post '/ajax/user/aggregate/?' - 指定したユーザの集計情報
   #--------------------------------------------------------------------
   get '/:user/aggregate/dialog' do
