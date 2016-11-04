@@ -23,14 +23,14 @@ class AjaxKaraokeRoute < AjaxRoute
 
     if @current_user
       result = @current_user.register_karaoke(karaoke)
-      if result.kind_of?(Integer)
+      if result
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         return success(karaoke_id: result)
       else
-        return success(result)
+        return error('カラオケの登録に失敗しました。入力内容を確認してください')
       end
     else
-      return error('invalid current user')
+      return error('ログインしてください')
     end
   end
 

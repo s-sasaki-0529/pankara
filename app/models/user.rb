@@ -336,8 +336,12 @@ class User < Base
       {'name' => karaoke['store'], 'branch' => karaoke['branch']},
       Product.get(karaoke['product'])
     )
-    karaoke_id and register_attendance(karaoke_id)
-    karaoke_id
+    if karaoke_id
+      register_attendance(karaoke_id)
+      return karaoke_id
+    else
+      return false
+    end
   end
 
   # register_attendance - 入力された出席情報をDBに登録する

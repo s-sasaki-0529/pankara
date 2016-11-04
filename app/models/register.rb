@@ -24,7 +24,7 @@ class Register < Base
   def create_karaoke(datetime , name , plan , store , product)
 
     # 入力値を検証/補正
-    Validate.is_datetime?(datetime) or return Util.error('date time parse error')
+    Validate.is_datetime?(datetime) or return false
     plan = plan.to_f #時間が0はありえないので0なら拒否
     plan < 0.5 and return Util.error('invalid plan')
     name.strip!
