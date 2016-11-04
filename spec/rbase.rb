@@ -64,6 +64,7 @@ module Rbase
   end
 
   # 指定した要素が存在しないことを検証
+  # Todo すこぶる遅いので別な方法を考える
   def cant_find(selecter)
     expect { find(selecter) }.to raise_error(Capybara::ElementNotFound)
   end
