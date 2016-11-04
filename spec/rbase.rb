@@ -63,6 +63,11 @@ module Rbase
     page.all(".#{classname}")
   end
 
+  # 指定した要素が存在しないことを検証
+  def cant_find(selecter)
+    expect { find(selecter) }.to raise_error(Capybara::ElementNotFound)
+  end
+
   # 曲名に楽曲詳細ページへのリンクが設定されているかを検証する
   def examine_songlink(name , artist , referer = nil)
     link name
