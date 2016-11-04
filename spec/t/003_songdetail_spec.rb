@@ -177,6 +177,100 @@ describe '楽曲詳細ページ' , :js => true do
     #現在は022_song_tag_spec.rbにて個別対応
   end
 
+  describe '楽曲の編集' do
+    def f (song_name , artist_name , url = nil)
+      wait_for_ajax
+      find('#editsong').click; wait_for_ajax
+      song_name and fill_in 'song' , with: song_name
+      artist_name and fill_in 'artist' , with: artist_name
+      url and fill_in 'url' , with: url
+      click_on '登録'; wait_for_ajax
+    end
+    before do
+      login 'sa2knight'
+    end
+    it '正常' do
+      visit '/song/366'
+      iscontain '妄想税 / DECO*27'
+      f '住民税' , 'DECO*69'
+      islack '妄想税 / DECO*27'
+      iscontain '住民税 / DECO*69'
+    end
+    it '曲名なし' do
+      visit '/song/365'
+      f '' , 'HOGEHOGE'
+      iscontain 'ニビョウカン / MARUDARUMA'
+      islack 'HOGEHOGE'
+    end
+    it '歌手名なし' do
+      visit '/song/364'
+      f 'FUGAFUGA' , ''
+      iscontain 'すろぉもぉしょん / ピノキオP'
+      islack 'FUGAFUGA'
+    end
+    it 'URL無効' do
+      visit '/song/360'
+      f 'HAGEHAGE' , 'TIBITIBI' , '52,ないと,,袖触れ合うも他生の縁,磯P,0,,,'
+      iscontain 'パンチラ・オブ・ジョイトイ / グループ魂'
+      islack ['HAGEHAGE' , 'TIBITIBI']
+    end
+    it 'キャンセル' do
+      visit '/song/363'
+      find('#editsong').click; wait_for_ajax
+      fill_in 'song' , with: '新しいの'
+      fill_in 'artist' , with: '新アーティスト'
+      click_on 'キャンセル'
+      iscontain 'Boys be Smile / 鈴湯'
+      islack ['新しいの' , '新アーティスト']
+    end
+    it '未ログイン時' do
+      logout()
+      visit '/song/363'; wait_for_ajax
+      cant_find('#editsong')
+    end
+  end
+
+  describe '歌唱履歴に追加' do
+    def f (mode = 0)
+      find('#create_history_image').click; wait_for_ajax
+      if mode == 1
+        click_on '終了';
+      end
+      if mode == 2
+        click_on '登録'; wait_for_ajax
+        click_on '終了';
+        visit '/'
+        find('#recent_karaoke_link').click
+      end
+      wait_for_ajax
+    end
+    before do
+      login 'sa2knight'
+    end
+    it '曲名/歌手名が自動入力される' do
+      visit '/song/314'
+      f()
+      expect(find('#song').value()).to eq 'スカイクラッドの観測者'
+      expect(find('#artist').value()).to eq 'いとうかなこ'
+    end
+    it '登録ダイアログを閉じてもリダイレクトしない' do
+      visit '/song/68'
+      f(1)
+      expect(current_path).to eq '/song/68'
+    end
+    it '前回のカラオケに登録される' do
+      visit '/song/67'
+      f(2)
+      history = table_to_hash('karaoke_detail_history_1')
+      expect(history[-1]['tostring']).to eq '52,ないと,,袖触れ合うも他生の縁,磯P,0,,,'
+    end
+    it 'ログインしていないとアイコンが表示されない' do
+      logout
+      visit '/song/350'
+      cant_find('#create_history_image')
+    end
+  end
+
   describe 'リンク' do
     it '歌手名' do
       visit '/song/38'

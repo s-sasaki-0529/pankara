@@ -16,7 +16,7 @@
         <p>
           前回のカラオケ<br>
           <% if @recent_karaoke %>
-            <%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
+            <span id="recent_karaoke_link"><%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %></span>
           <% else %>
             記録がありません
           <% end %>
