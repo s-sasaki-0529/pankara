@@ -175,7 +175,7 @@ describe '集計情報表示機能' , :js => true do
     it '前回のカラオケに登録される' do
       f(2)
       history = table_to_hash('karaoke_detail_history_1')
-      expect(history[-1]['tostring']).to eq '44,ないと,,ライアーダンス,DECO*27,0,,,'
+      expect(history[-1]['tostring']).to eq '44,ないと,,ライアーダンス,DECO*27,5,,,'
     end
     it 'ログインしていないとアイコンが表示されない' do
       cant_find('.songlist-add-icon')

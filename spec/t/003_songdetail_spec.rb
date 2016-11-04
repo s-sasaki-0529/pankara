@@ -262,7 +262,7 @@ describe '楽曲詳細ページ' , :js => true do
       visit '/song/67'
       f(2)
       history = table_to_hash('karaoke_detail_history_1')
-      expect(history[-1]['tostring']).to eq '52,ないと,,袖触れ合うも他生の縁,磯P,0,,,'
+      expect(history[-1]['tostring']).to eq '52,ないと,,袖触れ合うも他生の縁,磯P,-3,,,'
     end
     it 'ログインしていないとアイコンが表示されない' do
       logout

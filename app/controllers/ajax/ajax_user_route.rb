@@ -52,8 +52,6 @@ class AjaxUserRoute < AjaxRoute
   # post '/ajax/user/history/recent/key - 歌ったことがある楽曲ならば最近歌ったときのキーを返す
   #---------------------------------------------------------------------
   post '/history/recent/key' do
-    # テスト実行時は失敗を返す
-    Util.run_mode == 'ci' and return error('never sang')
     @current_user or return error('never sang')
 
     song = Song.name_to_id(params[:name], params[:artist]) or return error('never sang')
