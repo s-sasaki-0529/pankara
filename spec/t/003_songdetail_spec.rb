@@ -286,4 +286,17 @@ describe '楽曲詳細ページ' , :js => true do
     end
   end
 
+  describe '歌う曲に迷ったら' do
+    it 'ログイン済み' do
+      login 'sa2knight'
+      visit '/song/'
+      expect(!!current_path.match(%r|/song/[0-9]+|)).to eq true
+    end
+    it 'ログインなし' do
+      logout
+      visit '/song/'
+      expect(!!current_path.match(%r|/song/[0-9]+|)).to eq true
+    end
+  end
+
 end
