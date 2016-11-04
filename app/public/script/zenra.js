@@ -22,7 +22,6 @@ zenra.post = function(url , data , opt) {
   };
   var nwError = opt.nwError || function (error) { 
     console.log(error);
-    alert('インターネットに接続されているか確認してください');
   };
   var sync = opt.sync === true ? true : false;
   if (sync) {
