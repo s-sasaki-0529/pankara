@@ -148,6 +148,15 @@ describe '集計情報表示機能' , :js => true do
     end
   end
 
+  it '検索条件のリセット' do
+    visit URL
+    url1 = current_url
+    click_on '表示'
+    expect(url1 == current_url).to eq false
+    click_on 'リセット'
+    expect(url1 == current_url).to eq true
+  end
+
   describe '歌唱履歴に追加' do
     def f (mode = 0)
       visit '/user/songlist/sa2knight'
