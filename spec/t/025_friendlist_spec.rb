@@ -31,8 +31,14 @@ describe '友達一覧機能' do
     islack '友達がいません'
   end
 
+  it 'ログイン中の友達一覧' do
+    login 'sa2knight'
+    visit '/user/friend/list/'
+    iscontain 'ないと さんの友達一覧'
+  end
+
   describe 'リンク' do
-    
+
     it 'ユーザページ' do
       show_friend_list 'worry'
       link_strictly 'へたれ'
