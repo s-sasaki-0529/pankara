@@ -254,21 +254,6 @@ class DB
     self.execute_row
   end
 
-  # all - 対象テーブルから全レコードを取得
-  #---------------------------------------------------------------------
-  def self.all(table)
-    self.from(table)
-    self.execute_all
-  end
-
-  # sql - SQLを実行
-  #---------------------------------------------------------------------
-  def self.sql(sql , params = [])
-    @sql = sql
-    @params = params
-    execute_all
-  end
-
   # make - SQL分を生成する
   #---------------------------------------------------------------------
   private

@@ -179,20 +179,13 @@ class Register < Base
   # get_product - 機種名からIDを取得
   #---------------------------------------------------------------------
   def get_product(product)
-
     product['brand'].strip!
     product['product'].strip!
-
     product_id = DB.new(
       :SELECT => 'id' , :FROM => 'product' , :WHERE => ['brand = ?' , 'product = ?'] ,
       :SET => [product['brand'] , product['product']]
     ).execute_column
-
-    if product_id
-      product_id
-    else
-      false
-    end
+    return product_id ? product_id : false
   end
 
   # get_scoretype - 採点モードのIDを取得。固定データのため新規登録は無し

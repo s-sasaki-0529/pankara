@@ -211,10 +211,6 @@ class Song < Base
       :OPTION => 'ORDER BY karaoke.datetime DESC' ,
     )
 
-    if limit = opt[:limit]
-      db.option "LIMIT #{limit}"
-    end
-
     if target = opt[:target_user]
       db.where 'attendance.user = ?'
       db.set target
