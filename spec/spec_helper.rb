@@ -1,8 +1,11 @@
 # テストカバレッジを実行
 require 'simplecov'
 SimpleCov.start do
-  add_filter "/vendor/" #ライブラリはカバレッジから除外
-  add_filter "/spec/" #テストコードはカバレッジから除外
+  # 外部ライブラリ、テストコード、アクセス解析機能、ツイッター機能はカバレッジ対象外に
+  add_filter "/vendor/"
+  add_filter "/spec/"
+  add_filter "app/controllers/stat_route.rb"
+  add_filter "app/models/twitter.rb"
 end
 
 require 'capybara/rspec'
