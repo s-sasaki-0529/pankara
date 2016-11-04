@@ -1,14 +1,15 @@
-require 'capybara/rspec'
+# テストカバレッジを実行
 require 'simplecov'
+SimpleCov.start do
+  add_filter "/vendor/" #ライブラリはカバレッジから除外
+  add_filter "/spec/" #テストコードはカバレッジから除外
+end
+
+require 'capybara/rspec'
 require 'capybara-webkit'
 require 'headless'
 require 'tilt/erb'
 require_relative '../app/controllers/index_route'
-
-# テストカバレッジを実行
-SimpleCov.start do
-  add_filter "/vendor/" #ライブラリはカバレッジから除外
-end
 
 RSpec.configure do |config|
   
