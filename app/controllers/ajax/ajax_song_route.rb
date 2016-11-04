@@ -35,16 +35,6 @@ class AjaxSongRoute < AjaxRoute
     return success(hash)
   end
 
-  # post '/ajax/song/list/details' - SongIDのリストをPOSTすると、該当する楽曲情報のリストを戻す
-  #--------------------------------------------------------------------
-  post '/list/details' do
-    songs = params[:songs]
-    (songs && songs.size > 0) or return error('invalid songs')
-    songs_info = Song.list(:songs => songs)
-    (songs_info && songs_info.size > 0) or return error('failed get songs info')
-    return success(songs_info)
-  end
-
   # post '/ajax/song/modify/?' - 楽曲情報を編集する
   #--------------------------------------------------------------------
   post '/modify/?' do
