@@ -254,7 +254,7 @@ describe '楽曲詳細ページ' , :js => true do
       expect(find('#artist').value()).to eq 'いとうかなこ'
     end
     it '登録ダイアログを閉じてもリダイレクトしない' do
-      visit '/song/68'
+      visit '/song/68'; wait_for_ajax
       f(1)
       expect(current_path).to eq '/song/68'
     end
