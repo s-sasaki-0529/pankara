@@ -5,7 +5,9 @@ class AjaxHistoryRoute < AjaxRoute
   # post '/ajax/history/detail/?' - 歌唱履歴の詳細を取得
   #---------------------------------------------------------------------
   post '/detail/?' do
-    result = params[:id].nil? ? History.recent_song(:limit => 20) : History.new(params[:id], true).params
+    params[:id] or return error('invalid history id')
+    result = History.new(params[:id], true).params
+    result or return error('歌唱履歴を取得できませんでした')
     return success(result)
   end
 

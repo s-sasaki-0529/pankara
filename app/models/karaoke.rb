@@ -103,16 +103,9 @@ class Karaoke < Base
   # get_history - カラオケ記録に対応した歌唱履歴を取得する
   #---------------------------------------------------------------------
   def get_history
-
     # karaokeに参加しているユーザ一覧を取得
     @params['members'] = []
     users_info = Util.array_to_hash(self.get_members , 'attendance')
-    if users_info.empty?
-      @params['members'] = users_info.values
-      @histories = []
-      return []
-    end
-
     @histories = DB.new(
       :SELECT => {
         'history.id' => 'history_id' ,

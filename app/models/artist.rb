@@ -112,12 +112,13 @@ class Artist < Base
   end
 
   # download_image - 歌手の画像を検索し、ローカルに保存する
+  # 現状使い道なし
   #--------------------------------------------------------------------
-  def download_image
-    url = Util.search_image(@params['name'] , {:thumbnail => 1})
-    path = "app/public/image/artists/#{@params['id']}.png" #強制png
-    system "wget '#{url}' -O '#{path}'"
-  end
+  #def download_image
+  #  url = Util.search_image(@params['name'] , {:thumbnail => 1})
+  #  path = "app/public/image/artists/#{@params['id']}.png" #強制png
+  #  system "wget '#{url}' -O '#{path}'"
+  #end
 
   # self.name_to_id - 歌手名を元にIDを戻す
   #--------------------------------------------------------------------
@@ -131,15 +132,12 @@ class Artist < Base
     id and return id
 
     # [オプション] 該当IDがない場合新規作成する
-    if opt[:create]
-      id = DB.new(
-        :INSERT => ['artist' , ['name']] ,
-        :SET => name
-      ).execute_insert_id
-      id and return id
-    end
-
-    return false
+    opt[:create] or return false
+    id = DB.new(
+      :INSERT => ['artist' , ['name']] ,
+      :SET => name
+    ).execute_insert_id
+    id and return id
   end
 
   # self.list - 歌手の一覧を取得

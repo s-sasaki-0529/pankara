@@ -74,9 +74,6 @@ class History < Base
       :FROM => 'history' ,
       :OPTION => ['ORDER BY history.id DESC']
     )
-    if opt[:limit]
-      db.option("LIMIT #{opt[:limit]}")
-    end
     songs = db.execute_columns
     songs.empty? and return []
 
@@ -99,13 +96,6 @@ class History < Base
       :SET => songs
     ).execute_all
     songs_info.empty? and return []
-
-    # 重複を排除した結果limitを下回った場合、limistになるまで同じデータを繰り返す
-    if opt[:limit]
-      while songs_info.length < opt[:limit]
-        songs_info = (songs_info + songs_info).each_slice(opt[:limit]).to_a[0]
-      end
-    end
     return songs_info
   end
 
