@@ -45,30 +45,12 @@ class AuthenticationRoute < March
     end
   end
 
-  # post '/auth/rpc/login' - RPCログインリクエスト
-  #---------------------------------------------------------------------
-  post '/rpc/login' do
-    auth = User.authenticate(@params[:username] , @params[:password])
-    if auth
-      user = User.new(@params[:username])
-      session[:logined] = user
-      userinfo = {:username => user['username'] , :screenname => user['screenname']}
-      Util.to_json([{
-        :result => 'success' , 
-        :username => user['username'] ,
-        :screenname => user['screenname']
-      }])
-    else
-      Util.to_json([{:result => 'error'}])
-    end
-  end
-
   # post '/auth/registration' - ユーザの登録をリクエスト
   #---------------------------------------------------------------------
   post '/registration' do
     if @params[:password] == @params[:repassword]
       ret = User.create(@params[:username] , @params[:password] , @params[:screenname])
-      
+
       if ret[:result] == 'successful' 
         erb :registration_successful
       else
