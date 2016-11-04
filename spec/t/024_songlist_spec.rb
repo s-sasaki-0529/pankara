@@ -148,4 +148,38 @@ describe '集計情報表示機能' , :js => true do
     end
   end
 
+  describe '歌唱履歴に追加' do
+    def f (mode = 0)
+      visit '/user/songlist/sa2knight'
+      js("zenra.addHistoryToRecentKaraoke({idx: '0'})")
+      if mode == 1
+        click_on '終了';
+      end
+      if mode == 2
+        click_on '登録'; wait_for_ajax
+        click_on '終了';
+        visit '/'
+        find('#recent_karaoke_link').click
+      end
+      wait_for_ajax
+    end
+    it '曲名/歌手名が自動入力される' do
+      f()
+      expect(find('#song').value()).to eq 'ライアーダンス'
+      expect(find('#artist').value()).to eq 'DECO*27'
+    end
+    it '登録ダイアログを閉じてもリダイレクトしない' do
+      f(1)
+      expect(current_path).to eq '/user/songlist/sa2knight'
+    end
+    it '前回のカラオケに登録される' do
+      f(2)
+      history = table_to_hash('karaoke_detail_history_1')
+      expect(history[-1]['tostring']).to eq '44,ないと,,ライアーダンス,DECO*27,0,,,'
+    end
+    it 'ログインしていないとアイコンが表示されない' do
+      cant_find('.songlist-add-icon')
+    end
+  end
+
 end
