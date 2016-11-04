@@ -60,6 +60,19 @@ describe 'Historyの編集/削除' , :js => true do
 
   describe '編集(異常値)' do
     url = '/karaoke/detail/18'
+    def modify(history)
+      js("register.editHistory(18 , #{history});")
+      fill_in 'song' , with: "hogehoge#{history}"
+      fill_in 'artist' , with: "fugafuga#{history}"
+      js("register.submitHistoryEditRequest(18 , #{history});")
+    end
+    def delete(history)
+      js("register.editHistory(18 , #{history});")
+      js("register.submitHistoryDeleteRequest(102 , #{history});")
+    end
+    def history_to_song(history)
+      `zenra mysql -se "select song from history where id = #{history}"`
+    end
     before do
       login 'sa2knight'
       visit url
@@ -83,12 +96,23 @@ describe 'Historyの編集/削除' , :js => true do
       click_on '保存'; wait_for_ajax
       expect(table_string(5)).to eq '6,ないと,,人生リセットボタン,kemu,5,,,'
     end
-    #Todo 編集できてしまう問題を解決するのが先
-    it '自分が歌った曲しか編集不可' do
-      js('register.editHistory(18 , 524)')
-      fill_in 'score' , with: '100'
-      select '', from: 'score_type'
-      click_on '保存'; wait_for_ajax
+    it 'ログインしないと変更/削除できない' do
+      logout
+      visit url
+      old_song = history_to_song(520)
+      modify(520)
+      expect(old_song).to eq history_to_song(520)
+      delete(520)
+      expect(old_song).to eq history_to_song(520)
+    end
+    it '自分の歌唱履歴じゃないと編集/削除できない' do
+      login 'tomotin'
+      visit url
+      old_song = history_to_song(520)
+      modify(520)
+      expect(old_song).to eq history_to_song(520)
+      delete(520)
+      expect(old_song).to eq history_to_song(520)
     end
   end
 end

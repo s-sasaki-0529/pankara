@@ -37,9 +37,9 @@ class AjaxHistoryRoute < AjaxRoute
   # post '/ajax/history/delete/?' - 歌唱履歴を削除する
   #--------------------------------------------------------------------
   post '/delete/?' do
-    @current_user or return error('no login')
+    @current_user or return error('ログインしてください')
     history = History.new(params[:id])
-    @current_user['username'] == Attendance.to_user_info([history['attendance']])[0]['user_name'] or return error('invalid user')
+    @current_user.attend_ids.include?(history['attendance']) or return error ('あなたの歌唱履歴ではありません')
     history.params or return error('no record')
     history.delete
     return success
@@ -48,7 +48,9 @@ class AjaxHistoryRoute < AjaxRoute
   # post '/ajax/history/modify/?' - 歌唱履歴を編集する
   #--------------------------------------------------------------------
   post '/modify/?' do
+    @current_user or return error('ログインしてください')
     history = History.new(params[:id])
+    @current_user.attend_ids.include?(history['attendance']) or return error ('あなたの歌唱履歴ではありません')
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
     twitter = arg['twitter']
