@@ -153,6 +153,10 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     def histories_num
       return `zenra mysql -se "select count(history.id) from history"`
     end
+    def is_null_score_last_history
+      history = `zenra mysql -se "select score_type , score from history order by id desc limit 1"`.gsub(/\s/ , '')
+      expect(history).to eq 'NULLNULL'
+    end
     describe 'カラオケ登録' do
       it '未ログイン' do
         logout()
@@ -188,6 +192,22 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         click_on '登録'; wait_for_ajax
         new_num = histories_num
         expect(old_num).to eq new_num
+      end
+      it '得点0' do
+        fill_in 'song' , with: 'hoge'
+        fill_in 'artist' , with: 'fuga'
+        select 'JOYSOUND 全国採点', from: 'score_type'
+        fill_in 'score' , with: '0'
+        click_on '登録'; wait_for_ajax
+        is_null_score_last_history
+      end
+      it '採点方法なし' do
+        fill_in 'song' , with: 'hoge'
+        fill_in 'artist' , with: 'fuga'
+        select '', from: 'score_type'
+        fill_in 'score' , with: '100'
+        click_on '登録'; wait_for_ajax
+        is_null_score_last_history
       end
     end
   end

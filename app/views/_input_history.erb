@@ -22,7 +22,7 @@
       <div class='form-inline'>
         <div class='form-group'>
           <label class='control-label' for="score_type">採点方法</label>
-          <select class='form-control' id="score_type" title="採点方法を選択してください。" name="socre_type">
+          <select class='form-control' id="score_type" title="採点方法を選択してください。" name="score_type">
             <option value="0"></option>
             <% @score_type.each do |value| %>
               <option value="<%= value['id'] %>"><%= "#{value['brand']} #{value['name']}" %></option>
