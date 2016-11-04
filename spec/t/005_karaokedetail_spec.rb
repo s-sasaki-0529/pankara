@@ -118,4 +118,15 @@ describe 'カラオケ詳細ページ' , :js => true do
       islack '新しい楽曲'
       expect(table_to_hash('karaoke_detail_history_all').length).to eq 75
   end
+  it '歌唱履歴登録(未ログイン)' , :js => true do
+    logout
+    visit url
+    old_num = `zenra mysql -se "select count(history.id) from history"`
+    js('register.createHistory(8)'); wait_for_ajax
+    fill_in 'song' , with: 'songname'
+    fill_in 'artist' , with: 'artistname'
+    click_on '登録'; wait_for_ajax
+    new_num = `zenra mysql -se "select count(history.id) from history"`
+    expect(old_num).to eq new_num
+  end
 end
