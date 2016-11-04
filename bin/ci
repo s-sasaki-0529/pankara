@@ -51,17 +51,15 @@ else
   if [ -n "$VALUE_S" ]; then
     # テスト対象の指定なし / ランダムシードの指定有り
     zenra ci -t 0 -s $VALUE_S
+    cp -r coverage app/public/
     exit 0
   else
     # テスト対象の指定なし / ランダムシードの指定無し
     zenra ci -t 0
+    cp -r coverage app/public/
     exit 0
   fi
 fi
-
-# テストカバレッジ結果をWebから参照できるように移動
-cp -r coverage app/public/
-rm -rf coverage
 
 # テスト完了をアラートで通知
 echo $'\a' 
