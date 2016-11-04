@@ -36,7 +36,7 @@ class Register < Base
 
     # 店名、機種名からそれぞれのIDを取得
     store_id = self.create_store(store)
-    product_id = self.create_product(product)
+    product_id = self.get_product(product)
 
     # karaokeレコードを挿入し、そのIDを取得
     db = DB.new(
@@ -176,9 +176,9 @@ class Register < Base
     end
   end
 
-  # create_product - 機種を新規登録。既出の場合IDを戻す
+  # get_product - 機種名からIDを取得
   #---------------------------------------------------------------------
-  def create_product(product)
+  def get_product(product)
 
     product['brand'].strip!
     product['product'].strip!
@@ -191,10 +191,7 @@ class Register < Base
     if product_id
       product_id
     else
-      DB.new(
-        :INSERT => ['product' , ['brand' , 'product']] ,
-        :SET => [product['brand'], product['product']] ,
-      ).execute_insert_id
+      false
     end
   end
 
