@@ -136,6 +136,7 @@ class Util
   # 送信元/送信先はpandarin.karaoke@gmail.com で固定
   #----------------------------------------------------------------------
   def self.send_mail(title , body , opt = {})
+    Util.run_mode == 'ci' and return true
     gmail = Gmail.new(MAILADDR, Util.read_secret('mail_pw'))
     message =
       gmail.generate_message do

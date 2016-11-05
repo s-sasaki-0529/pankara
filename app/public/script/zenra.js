@@ -1531,13 +1531,16 @@ zenra.sendContactMail = function () {
   var params = {
     name: $('#name').val() ,
     title: $('#title').val() ,
-    mail: $('#mail').val() ,
+    mail: $('#email').val() ,
     contact: $('#contact').val()
   };
-  if (params.name == '') alert('お名前を入力してください');
-  else if (params.mail == '') alert('メールアドレスを入力してください');
-  else if (params.title == '') alert('題名を入力してください');
-  else if (params.contact == '') alert('お問い合わせ内容を入力してください');
+  if (params.name == '' || params.mail == '' || params.title == '' || params.contact == '') {
+    if (params.name == '') alert('お名前を入力してください');
+    else if (params.mail == '') alert('メールアドレスを入力してください');
+    else if (params.title == '') alert('題名を入力してください');
+    else if (params.contact == '') alert('お問い合わせ内容を入力してください');
+    return false;
+  }
   zenra.post('/ajax/contact' , params , {
     sync: true,
     success: function () {
