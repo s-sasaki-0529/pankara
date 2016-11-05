@@ -248,7 +248,7 @@ describe '楽曲詳細ページ' , :js => true do
       login 'sa2knight'
     end
     it '曲名/歌手名が自動入力される' do
-      visit '/song/314'
+      visit '/song/314'; wait_for_ajax
       f()
       expect(find('#song').value()).to eq 'スカイクラッドの観測者'
       expect(find('#artist').value()).to eq 'いとうかなこ'
@@ -259,14 +259,14 @@ describe '楽曲詳細ページ' , :js => true do
       expect(current_path).to eq '/song/68'
     end
     it '前回のカラオケに登録される' do
-      visit '/song/67'
+      visit '/song/67'; wait_for_ajax
       f(2)
       history = table_to_hash('karaoke_detail_history_1')
       expect(history[-1]['tostring']).to eq '52,ないと,,袖触れ合うも他生の縁,磯P,-3,,,'
     end
     it 'ログインしていないとアイコンが表示されない' do
       logout
-      visit '/song/350'
+      visit '/song/350'; wait_for_ajax
       cant_find('#create_history_image')
     end
   end
