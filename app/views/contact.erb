@@ -18,8 +18,7 @@
     <textarea class='size-fixed form-control' rows='6' name='contact' required></textarea>
   </div>
   <div class='form-group'>
-    <button class='<%= Util.is_pc? ? 'right' : 'form-control' %> btn btn-default' type='submit'
-      onclick="return confirm('お問い合わせ内容を送信します。よろしいですか？')">送信</button>
+    <button class='<%= Util.is_pc? ? 'right' : 'form-control' %> btn btn-default' type='submit'>送信</button>
   </div>
   <%= csrftoken() %>
 </form>
