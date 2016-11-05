@@ -82,13 +82,13 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     it 'ダイアログの画面が正常に遷移されるか' do
       input_karaoke
-      click_on '次へ'
+      js('register.submitKaraokeRegistrationRequest();');
       iscontain history_contents
     end
 
     it '入力内容が正しく登録されるか' do
       input_karaoke
-      click_on '次へ'
+      js('register.submitKaraokeRegistrationRequest();');
       input_history_with_data history_data, 1
       click_on '登録'; wait_for_ajax
       click_on '終了'; wait_for_ajax
@@ -114,7 +114,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     it '歌唱回数が正しく表示されるか' do
       input_karaoke
-      click_on '次へ'
+      js('register.submitKaraokeRegistrationRequest();');
 
       3.times do |i|
         input_history 1234 , 4567
@@ -126,7 +126,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
 
     it '20件登録されるか' do
       input_karaoke
-      click_on '次へ'
+      js('register.submitKaraokeRegistrationRequest();');
       20.times do |i|
         input_history i
         click_on '登録'
@@ -161,14 +161,14 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it '未ログイン' do
         logout()
         js('register.createKaraoke();')
-        click_on '次へ'; wait_for_ajax
+        js('register.submitKaraokeRegistrationRequest();');
         is_karaoke_register
       end
       it '日時バリデーションエラー' do
         login 'unagipai'
         js('register.createKaraoke();')
         fill_in 'datetime' , with: 'fuwafuwatime'
-        click_on '次へ'; wait_for_ajax
+        js('register.submitKaraokeRegistrationRequest();');
         is_karaoke_register
       end
     end
@@ -176,7 +176,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       before do
         login 'unagipai'
         js('register.createKaraoke();')
-        click_on '次へ'; wait_for_ajax
+        js('register.submitKaraokeRegistrationRequest();');
         is_history_register
       end
       it '曲名なし' do
