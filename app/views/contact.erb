@@ -1,7 +1,33 @@
+<% if @sended %>
+
+<!-- お問い合わせ完了後 -->
+<% if Util.is_pc? %>
+<div class="row">
+  <img align="right" src="/image/kaeru.png" width='330px' height=auto>
+  <div style="padding-top: 150px">
+    <h2>お問い合わせ内容を送信しました</h2>
+    <p>お問い合わせいただきありがとうございました。</p>
+    <p>後ほど、入力いただいたメールアドレスに、ご回答を送信致します。</p>
+    <p><a href="/">トップへ</a></p>
+  </div>
+</div>
+<% else %>
+  <div class='center'>
+    <h2>お問い合わせ内容を送信しました</h2>
+    <img src="/image/kaeru.png" width='150px' height=auto>
+  </div>
+  <div>
+    <p>お問い合わせいただきありがとうございました。</p>
+    <p>後ほど、入力いただいたメールアドレスに、ご回答を送信致します。</p>
+    <p><a href="/">トップへ</a></p>
+  </div>
+<% end %>
+
+<!-- お問い合わせ完了前 -->
+<% else %>
 <h1>お問い合わせ</h1>
 <p>
   お問い合わせ内容を入力し、「送信」ボタンをクリックしてください。
-  後ほど、ご回答を入力しましたメールアドレス宛にお送りいたします。
 </p>
 <hr>
 <form method="POST">
@@ -26,3 +52,4 @@
   </div>
   <%= csrftoken() %>
 </form>
+<% end %>

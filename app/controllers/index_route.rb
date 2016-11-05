@@ -39,6 +39,9 @@ class IndexRoute < March
   # get '/contact' - お問い合わせページ
   #---------------------------------------------------------------------
   get '/contact' do
+    if params[:sended]
+      @sended = true
+    end
     erb :contact
   end
 
@@ -52,7 +55,7 @@ class IndexRoute < March
     @HIDELAYOUT = true
     body = erb :_mail_template_contact
     Util.send_mail('お問い合わせフォームより' , body)
-    redirect '/contact'
+    redirect '/contact?sended=1'
   end
 
 end
