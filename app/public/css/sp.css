@@ -58,3 +58,8 @@ h3 {
 .karaoke_detail_info > table > tbody > tr > td {
   background-color: white;
 }
+
+/* ページャを拡大 */
+.pagination > li > a, .pagination > li > span {
+  font-size: 18px;
+}
