@@ -30,26 +30,25 @@
   お問い合わせ内容を入力し、「送信」ボタンをクリックしてください。
 </p>
 <hr>
-<form method="POST">
+<div>
   <div class='form-group'>
     <label for="name" class='control-label'>お名前</label>
-    <input class='form-control' type="text" name="name" required>
+    <input class='form-control' type="text" id="name">
   </div>
   <div class='form-group'>
     <label for="mail" class='control-label'>メールアドレス</label>
-    <input class='form-control' type="email" name="email" required>
+    <input class='form-control' type="email" id="email">
   </div>
   <div class='form-group'>
     <label for="title">題名</label>
-    <input class='form-control' type="text" name="title" required>
+    <input class='form-control' type="text" id="title">
   </div>
   <div class='form-group'>
     <label for="contact" class='control-label'>お問い合わせ内容</label>
-    <textarea class='size-fixed form-control' rows='6' name='contact' required></textarea>
+    <textarea class='size-fixed form-control' rows='6' id='contact' required></textarea>
   </div>
   <div class='form-group'>
-    <button class='<%= Util.is_pc? ? 'right' : 'form-control' %> btn btn-default' type='submit'>送信</button>
+    <button class='<%= Util.is_pc? ? 'right' : 'form-control' %> btn btn-default' onclick="zenra.sendContactMail()">送信</button>
   </div>
-  <%= csrftoken() %>
-</form>
+</div>
 <% end %>

@@ -18,6 +18,7 @@ map('/song') {run SongRoute.new}
 map('/user') {run UserRoute.new}
 map('/stat') {run StatRoute.new}
 
+map('/ajax') {run AjaxRoute.new}
 map('/ajax/user') {run AjaxUserRoute.new}
 map('/ajax/song') {run AjaxSongRoute.new}
 map('/ajax/artist') {run AjaxArtistRoute.new}

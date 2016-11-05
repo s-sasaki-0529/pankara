@@ -22,4 +22,19 @@ class AjaxRoute < March
     return Util.to_json({:result => 'error' , :info => info})
   end
 
+  # /ajax/contact/? - お問い合わせメールを送信
+  #-------------------------------------------------------------------
+  post '/contact/?' do
+    @title = params[:title]
+    @name = params[:name]
+    @mail = params[:email]
+    @contact = h(params[:contact]).gsub(/\n/ , '<br>')
+    @HIDELAYOUT = true
+    body = erb :_mail_template_contact
+    Util.send_mail('お問い合わせフォームより' , body)
+    return success
+  end
+
+
+
 end

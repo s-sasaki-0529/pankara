@@ -1526,6 +1526,29 @@ zenra.removeSongTag = function(user , id , tag) {
   });
 };
 
+/*お問い合わせメールを送信する*/
+zenra.sendContactMail = function () {
+  var params = {
+    name: $('#name').val() ,
+    title: $('#title').val() ,
+    mail: $('#mail').val() ,
+    contact: $('#contact').val()
+  };
+  if (params.name == '') alert('お名前を入力してください');
+  else if (params.mail == '') alert('メールアドレスを入力してください');
+  else if (params.title == '') alert('題名を入力してください');
+  else if (params.contact == '') alert('お問い合わせ内容を入力してください');
+  zenra.post('/ajax/contact' , params , {
+    sync: true,
+    success: function () {
+      location.href = "/contact?sended=1";
+    } ,
+    nwError: function () {
+      alert('お問い合わせメールの送信に失敗しました');
+    }
+  });
+};
+
 /*プレイリストオブジェクト*/
 zenra.playlist = (function() {
 
