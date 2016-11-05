@@ -1,4 +1,5 @@
 <!-- PC版持ち歌一覧 -->
+<% if Util.is_pc? %>
 
 <table id="song_list_table" class='table'>
   <tbody>
@@ -6,7 +7,7 @@
       <% if idx % @columns == 0 %>
       <tr>
       <% end %>
-        <td id="thumbnail_<%= idx %>" class='center' width='<% if Util.is_pc? %>20%<% else %>33%<% end %>'>
+        <td id="thumbnail_<%= idx %>" class='center' width='20%'>
           <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
           <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
           <script>
@@ -19,10 +20,10 @@
           );
           </script>
         </td>
-        <td width='<% if Util.is_pc? %>30%<% else %>67%<% end %>'>
+        <td width='30%'>
           <p class="mini">
             <%= song_link song['song_id'] , song['song_name'] %>
-            <% if @current_user && Util.is_pc? %>
+            <% if @current_user %>
             <img src="/image/addhistory.png" class="linkcursor songlist-add-icon".
                                               onclick="zenra.addHistoryToRecentKaraoke({idx: '<%= idx %>'})">
             <% end %>
@@ -32,7 +33,47 @@
           <p class="mini">
             最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
           </p>
-          <% if @current_user && Util.is_smartphone? %>
+        </td>
+      <% if idx + 1 % @columns == 0 %>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+
+<!-- スマートフォン版 -->
+
+<table id="song_list_table" class='table'>
+  <tbody>
+    <% @song_list[:list].each_with_index do |song , idx| %>
+      <% if idx % @columns == 0 %>
+      <tr>
+      <% end %>
+        <td id="thumbnail_<%= idx %>" class='center' width='33%'>
+          <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
+          <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
+          <script>
+          zenra.createThumbnail(
+            "<%= idx %>" ,
+            "<%= song['song_id'] %>" ,
+            "<%= youtube_image song['song_url'] %>" ,
+            "100%",
+            "auto"
+          );
+          </script>
+        </td>
+        <td width='67%'>
+          <p class="mini">
+            <%= song_link song['song_id'] , song['song_name'] %>
+          </p>
+          <p class="mini"><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+          <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
+          <p class="mini">
+            最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
+          </p>
+          <% if @current_user %>
           <button type="button" class="btn btn-success" onclick="zenra.addHistoryToRecentKaraoke({idx: '<%= idx %>'})">歌唱履歴に登録</button>
           <% end %>
         </td>
@@ -43,4 +84,4 @@
   </tbody>
 </table>
 
-<!-- スマートフォン版 -->
+<% end %>
