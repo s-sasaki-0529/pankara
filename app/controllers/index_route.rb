@@ -36,4 +36,16 @@ class IndexRoute < March
     end
   end
 
+  # get '/contact' - お問い合わせページ
+  #---------------------------------------------------------------------
+  get '/contact' do
+    erb :contact
+  end
+
+  # post '/contact' - お問い合わせの送信
+  #---------------------------------------------------------------------
+  post '/contact' do
+    redirect '/contact'
+  end
+
 end
