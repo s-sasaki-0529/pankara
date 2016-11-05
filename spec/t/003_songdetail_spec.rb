@@ -82,11 +82,8 @@ describe '楽曲詳細ページ' , :js => true do
       end
     end
     it '採点記録がない場合' do
-      data = score_chart('sa2knight' , 200)
-      data.values.each do |v|
-        expect(v['みんな'].nil?).to eq true
-        expect(v['あなた'].nil?).to eq true
-      end
+      visit '/song/200'; wait_for_ajax
+      expect(find('#no_scores').text()).to eq '採点情報がありません'
     end
     it '自分の採点記録のみある場合' do
       data = score_chart('sa2knight' , 100)

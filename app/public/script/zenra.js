@@ -17,6 +17,7 @@ post - 情報を非同期で送信する
 */
 zenra.post = function(url , data , opt) {
   var success = opt.success || zenra.nop;
+  var complete = opt.complete || zenra.nop;
   var error = opt.error || function (error) {
     console.log(error);
   };
@@ -42,6 +43,7 @@ zenra.post = function(url , data , opt) {
     },
     error: nwError ,
     complete: function () {
+      complete();
       zenra.getLoader().hide();
     }
   });
@@ -246,8 +248,15 @@ zenra.scoreBarChart = (function() {
         zenra.createBarChart(targetSelecter , scores , 'name' , values , [] , {max: 100 , min: 60 , color: colors});
         $('#score_type_name').text(scoreTypeName);
         $(targetSelecter + '_json').text(zenra.toJSON(data));
-        isBusy = false;
       },
+      error: function(score_type_name) {
+        $('#score_type_name').text(score_type_name);
+        $(targetSelecter).html('<p id="no_scores" class="center">採点情報がありません</p>');
+        $(targetSelecter + '_json').text('no scores');
+      } ,
+      complete: function() {
+        isBusy = false;
+      }
     });
   }
 

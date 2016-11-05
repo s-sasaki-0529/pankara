@@ -113,6 +113,9 @@ class AjaxSongRoute < AjaxRoute
       agg_myscore.keys.each { |k| agg_myscore[k] and agg_myscore[k] = sprintf('%.2f' , agg_myscore[k]) }
     end
 
+    # 採点情報がない場合にエラーを戻す
+    agg_score['score_max'].nil? and agg_myscore['score_max'].nil? and return error(score_type_name)
+
     # グラフ生成用にデータを加工
     avg_data = {:name => '平均', :みんな => agg_score['score_avg'], :あなた => agg_myscore['score_avg']}
     max_data = {:name => '最高', :みんな => agg_score['score_max'], :あなた => agg_myscore['score_max']}
