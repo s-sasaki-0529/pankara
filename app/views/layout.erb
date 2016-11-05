@@ -104,6 +104,7 @@
               <li><a href="/user/userpage">マイページ</a></li>
               <li><a href="/user/friend/list">友達一覧</a></li>
               <li><a href="/config">設定</a></li>
+              <li><a href="/contact">お問い合わせ</a></li>
               <% if Util.is_smartphone_strictly? %>
                 <% if Util.session['view_pc_mode'] %>
                   <li><a href="/config/viewtype?callback=<%= Util.request.path %>">スマートフォン用ページへ</a></li>
