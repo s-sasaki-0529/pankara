@@ -9,6 +9,7 @@ gem 'searchbing'
 gem 'wikipedia-client'
 gem "rack-user_agent"
 gem 'fssm'
+gem 'ruby-gmail'
 group :develop do
   gem "watir-webdriver"
   gem 'rspec'

@@ -7,7 +7,10 @@ require 'open-uri'
 require 'json'
 require 'yaml'
 require 'wikipedia'
+require 'gmail'
+
 #require 'searchbing'
+MAILADDR = 'pandarin.karaoke@gmail.com'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
 PUBLIC = 'app/public'
@@ -127,6 +130,25 @@ class Util
       end
     end
     return url
+  end
+
+  # send_mail - メールを送信する
+  # 送信元/送信先はpandarin.karaoke@gmail.com で固定
+  #----------------------------------------------------------------------
+  def self.send_mail(title , body , opt = {})
+    gmail = Gmail.new(MAILADDR, Util.read_secret('mail_pw'))
+    message =
+      gmail.generate_message do
+        from "\"パンダリンのカラオケランド\" <#{MAILADDR}>"
+        to MAILADDR
+        subject title
+        html_part do
+          content_type "text/html; charset=UTF-8"
+          body body
+        end
+      end
+    gmail.deliver(message)
+    gmail.logout
   end
 
   # icon_file - ユーザ名を指定し、アイコンファイルのパスを取得する
