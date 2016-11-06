@@ -178,10 +178,6 @@
   <!-- カラオケタイトル -->
   <div style="margin-bottom: 10px">
     <h2 class="inline"><%= h @karaoke['name'] %></h3>
-    <% if @current_user %>
-      <img src="/image/edit.png" width="16" onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
-      <img src="/image/addhistory.png" width="16" onclick="register.createHistory(<%= @karaoke['id'] %>)"> 
-    <% end %>
   </div>
 
   <!-- カラオケ基本情報 -->
@@ -208,6 +204,16 @@
         <td><%= @karaoke.histories.count %></td>
       </tr>
     </table>
+    <% if @current_user %>
+    <div class='form-group'>
+      <button type="button" class='form-control btn btn-default btn-sm' onclick="register.editKaraoke(<%= @karaoke['id'] %>)">
+        カラオケ情報を編集
+      </button>
+      <button type="button" class='form-control btn btn-default btn-sm' onclick="register.createHistory(<%= @karaoke['id'] %>)">
+        歌唱履歴を追加する
+      </button>
+    </div>
+    <% end %>
   </div>
 
   <!-- 表示内容選択ラジオボックス -->
