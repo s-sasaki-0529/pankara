@@ -1,6 +1,6 @@
 <h2 class='center' style="margin-top: -5px">
   <span id="song_name"><%= h @song['name'] %></span> / <span id="artist_name"><%= artist_link @song['artist'], @song['artist_name'] %></span>
-  <% if @current_user %>
+  <% if @current_user && Util.is_pc? %>
   <img id='editsong' class="center linkcursor song-detail-icon" src="/image/edit.png"
       onclick="register.editSong(<%= @song['id'] %> , '<%= h @song['url'] %>')"
   >

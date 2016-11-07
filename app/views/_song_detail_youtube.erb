@@ -7,3 +7,13 @@
 <% else %>
   <p class='center'>Youtubeプレイヤー用のURLが未設定です</p>
 <% end %>
+<% if @current_user && Util.is_smartphone? %>
+<div class='form-group'>
+  <button type="button" class='form-control btn btn-default btn-sm' onclick="register.editSong(<%= @song['id'] %> , '<%= h @song['url'] %>')">
+    楽曲情報を編集する
+  </button>
+  <button type="button" class='form-control btn btn-default btn-sm' onclick="zenra.addHistoryToRecentKaraoke()">
+    歌唱履歴を追加する
+  </button>
+</div>
+<% end %>
