@@ -44,8 +44,8 @@ class AjaxSongRoute < AjaxRoute
     url = params[:url]
     song = Song.new(song_id)
     song or return error('no song')
-    result = song.modify('name' => song_name, 'artist' => artist_id, 'url' => url)
-    return result ? success : error('invalid params')
+    err = song.modify('name' => song_name, 'artist' => artist_id, 'url' => url)
+    return err ? error(err) : success
   end
 
   # post '/song/tag/list' - 指定した楽曲のタグ一覧を戻す

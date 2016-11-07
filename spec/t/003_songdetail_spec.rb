@@ -211,6 +211,11 @@ describe '楽曲詳細ページ' , :js => true do
       iscontain 'パンチラ・オブ・ジョイトイ / グループ魂'
       islack ['HAGEHAGE' , 'TIBITIBI']
     end
+    it '既存楽曲あり' do
+      visit '/song/222'
+      f '天体観測' , 'BUMP OF CHICKEN'
+      iscontain '夏空 / Galileo Galilei'
+    end
     it 'キャンセル' do
       visit '/song/363'
       find('#editsong').click; wait_for_ajax

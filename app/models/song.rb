@@ -15,6 +15,17 @@ class Song < Base
     @params and self.artist
   end
 
+  # name_to_object - 曲名と歌手名の組み合わせからsongオブジェクトを戻す
+  #---------------------------------------------------------------------
+  def self.name_to_object(song_name , artist_name)
+    DB.new(
+      :FROM => 'song',
+      :JOIN => ['song' , 'artist'] ,
+      :WHERE => ['song.name = ?' , 'artist.name = ?'] ,
+      :SET => [song_name , artist_name]
+    ).execute_row
+  end
+
   # list - クラスメソッド 楽曲の一覧を取得
   # opt[:songs] - Array 取得する楽曲をIDで指定
   # opt[:name_like] - String 楽曲名で部分検索
@@ -253,12 +264,19 @@ class Song < Base
       ['name' , 'artist' , 'url'].include?(k) && v.to_s != ""
     end
 
+    # 変更後の曲名、歌手名の組み合わせが既に存在する場合は拒否
+    if song_arg['name'] != @params['name'] || song_arg['artist'] != @params['artist']
+      artist_name = Artist.new(song_arg['artist'])['name']
+      is_none = Song.name_to_object(song_arg['name'] , artist_name).nil?
+      is_none or return '既に同名の楽曲が存在するため、変更できません'
+    end
+
     DB.new(
       :UPDATE => ['song' , song_arg.keys] ,
       :WHERE => 'id = ?' ,
       :SET => song_arg.values.push(@params['id'])
     ).execute
     @params = DB.new.get('song' , @params['id'])
+    return nil
   end
-
 end
