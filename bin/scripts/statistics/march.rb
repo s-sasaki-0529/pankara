@@ -92,9 +92,7 @@ class March
         hash.store(data_name[index], data[index])
       end
     
-      hash['date'] = hash['date'].split(' ')[0]
       hash['request'] = 'GET' unless hash['request']
-     
       log_data.push(hash)
     end
   

@@ -26,7 +26,7 @@ class AjaxSongRoute < AjaxRoute
     hash = Hash.new
     song_list = Song.list({:artist_info => true})
     song_list.each do |s|
-      hash[s['song_name']] = s['artist_name']
+      hash[s['song_id']] = {'song' => s['song_name'], 'artist' => s['artist_name']}
     end
     return success(hash)
   end

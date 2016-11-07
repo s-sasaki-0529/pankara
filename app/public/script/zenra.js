@@ -848,13 +848,18 @@ var register = (function() {
         song_obj = response;
         song_list = [];
         artist_list = [];
-        for (var key in song_obj) {
-          if (song_obj.hasOwnProperty(key)) {
-            song_list.push(key);
-            if (artist_list.indexOf(song_obj[key]) < 0) {
-              artist_list.push(song_obj[key]);
+        
+        for (var id in song_obj) {
+          if (song_obj.hasOwnProperty(id)) {
+            if (song_list.indexOf(song_obj[id].song) < 0) {
+              song_list.push(song_obj[id].song);
+            }
+            
+            if (artist_list.indexOf(song_obj[id].artist) < 0) {
+              artist_list.push(song_obj[id].artist);
             }
           }
+        
         }
         song_moshikashite = new moshikashite('song' , song_list);
         artist_moshikashite = new moshikashite('artist' , artist_list);
@@ -912,9 +917,21 @@ var register = (function() {
   /*[method] 曲名入力に関するイベントを作成する*/
   function createInputSongEvent() {
     $('#song').blur(function() {
+      var temp_artist_list = [];
+      
       // 曲名を入力すると歌手名を自動入力する
-      if ($(this).val() in song_obj && $('#artist').val() === '') {
-        $('#artist').val(song_obj[$(this).val()]);
+      if ($('#artist').val() === '') {
+        for (var id in song_obj) {
+          if (song_obj.hasOwnProperty(id)) {
+            if ($('#song').val() === song_obj[id].song) {
+              temp_artist_list.push(song_obj[id].artist);
+            }
+          }
+        }
+        
+        if (temp_artist_list.length === 1) {
+          $('#artist').val(temp_artist_list[0]);
+        }
       }
 
       autoInputSongKey();
@@ -924,13 +941,15 @@ var register = (function() {
       var temp_artist_list = [];
 
       // 入力された曲を歌っている歌手名でもしかしてリストを生成
-      if ($('#song').val() in song_obj) {
-        for (var key in song_obj) {
-          if (key == $('#song').val()) {
-            temp_artist_list.push(song_obj[key]);
+      for (var id in song_obj) {
+        if (song_obj.hasOwnProperty(id)) {
+          if ($('#song').val() === song_obj[id].song) {
+            temp_artist_list.push(song_obj[id].artist);
           }
         }
-        
+      }
+      
+      if (temp_artist_list.length > 0) {
         artist_moshikashite.setNoNeedInputMoshikashite(temp_artist_list);
       }
       else {
@@ -945,9 +964,11 @@ var register = (function() {
     $('#artist').blur(function() {
       var temp_song_list = [];
 
-      for (var key in song_obj) {
-        if (song_obj[key] === $('#artist').val()) {
-          temp_song_list.push(key);
+      for (var id in song_obj) {
+        if (song_obj.hasOwnProperty(id)) {
+          if ($('#artist').val() === song_obj[id].artist) {
+            temp_song_list.push(song_obj[id].song);
+          }
         }
       }
 

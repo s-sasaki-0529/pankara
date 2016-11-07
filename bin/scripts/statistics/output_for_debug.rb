@@ -71,7 +71,7 @@ class OutputForDebug
   private
   def print_log(log_data_list)
     log_data_list.each do | log |
-      puts "日付:        #{log['date']}"
+      puts "日時:        #{log['date']}"
       puts "IPアドレス:  #{log['ip']}"
       puts "ユーザ:      #{log['user']}"
       puts "URL:         #{log['url']}"

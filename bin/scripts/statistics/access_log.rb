@@ -15,13 +15,13 @@ class AccessLog
   # from - 設定された下限値に応じて不要なデータをlog_dataから削除する
   #--------------------------------------------------------------------
   def from(date)
-    @log_data_list.select! { | log | log['date'] >= date }
+    @log_data_list.select! { | log | log['date'].split(' ')[0] >= date }
   end
 
   # to - 設定された上限値に応じて不要なデータをlog_dataから削除する
   #--------------------------------------------------------------------
   def to(date)
-    @log_data_list.select! { | log | log['date'] <= date }
+    @log_data_list.select! { | log | log['date'].split(' ')[0] <= date }
   end
 
   # get_unique_access_log_list - ユニークなアクセスのみを取得する
@@ -58,11 +58,12 @@ class AccessLog
     each_day_log_hash = Hash.new
     
     log_data_list.each do | log |
-      unless each_day_log_hash.key? log['date']
-        each_day_log_hash[log['date']] = Array.new
+      date = log['date'].split(' ')[0]
+      unless each_day_log_hash.key? date
+        each_day_log_hash[date] = Array.new
       end
       
-      each_day_log_hash[log['date']].push(log)
+      each_day_log_hash[date].push(log)
     end
 
     return each_day_log_hash
