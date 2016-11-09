@@ -8,8 +8,9 @@ require 'json'
 require 'yaml'
 require 'wikipedia'
 require 'gmail'
-
+require 'fastimage'
 #require 'searchbing'
+
 MAILADDR = 'pandarin.karaoke@gmail.com'
 CONFIG = 'config.yml'
 SECRET = '../secret.yml'
@@ -160,23 +161,6 @@ class Util
     File.exist?("#{ICONDIR}/#{username}.png") ? user_icon : sample_icon
   end
 
-  # image_size - 指定したファイルが画像ファイルであった場合、その幅と高さを戻す
-  #--------------------------------------------------------------------
-  def self.image_size(filepath , type)
-    file_info = `file #{filepath}`
-    params = file_info.split(' ')
-    if type == 'image/jpg' || type == 'image/jpeg'
-      size = params[-3].split('x')
-      return {:width => size[0].to_i, :height => size[1].to_i}
-    elsif type == 'image/png'
-      return {:width => params[4].to_i, :height => params[6].to_i}
-    elsif type == 'image/gif'
-      return {:width => params[6].to_i, :height => params[8].to_i}
-    else
-      return nil
-    end
-  end
-
   # create_user_icon - サンプルユーザアイコンを指定したユーザに適用する
   #--------------------------------------------------------------------
   def self.create_user_icon(username)
@@ -199,8 +183,8 @@ class Util
       File.open(tmppath , 'wb') do |f|
         f.write file.read
       end
-      size = Util.image_size(tmppath , type)
-      if size && 0 < size[:width] && size[:width] <= 1280 && 0 < size[:height] && size[:height] <= 720
+      size = FastImage.size(tmppath)
+      if size && 0 < size[0] && size[0] <= 1280 && 0 < size[1] && size[1] <= 720
         FileUtils.move(tmppath , filepath)
       else
         FileUtils.rm(tmppath)
@@ -209,7 +193,7 @@ class Util
     else
       return "アップロードできるファイルは、jpg/png/gifのみです"
     end
-    return 'アイコンファイルを変更しました'
+    return 'アイコンファイルを変更しました。変更が反映されるまで時間がかかる場合があります。'
   end
 
   # get_wikipedia - 指定したワードでWikipedia検索する
