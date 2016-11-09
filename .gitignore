@@ -5,7 +5,6 @@
 *.swo
 Gemfile.lock
 config.yml
-app/public/image/user_icon/
 /.config
 /coverage/
 /InstalledFiles
