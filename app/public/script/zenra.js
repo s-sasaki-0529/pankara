@@ -1696,6 +1696,13 @@ zenra.playlist = (function() {
   };
 })();
 
+/*カレンダー表示*/
+zenra.calendar = {
+  init: function() {
+    $('#calendar').fullCalendar({});
+  },
+};
+
 /*スクロールを強制的に先頭へ移動する*/
 zenra.scrollToTop = function () {
   $('html, body').animate({scrollTop:0},'fast');
