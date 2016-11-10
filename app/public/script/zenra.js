@@ -1698,13 +1698,46 @@ zenra.playlist = (function() {
 
 /*カレンダー表示*/
 zenra.calendar = (function() {
+
+  var year = '';
+  var month = '';
+
+  /*URLから表示する年月を取得*/
+  function setCalendarParams () {
+    year = zenra.getParam('calendar-year') || new Date().getFullYear();
+    month = zenra.getParam('calendar-month') || new Date().getMonth() + 1;
+  }
+
+  /*翌月を設定*/
+  function setNextMonth () {
+    month += 1;
+    if (month == 13) {
+      year += 1;
+      month = 1;
+    }
+  }
+
+  /*前月を設定*/
+  function setPrevMonth () {
+    month -= 1;
+    if (month == 0) {
+      year -= 1;
+      month = 12;
+    }
+  }
+
+  /*パラメータを指定してページを再読込*/
+  function reloadCalendar () {
+    var path = '/?' + 'calendar-year=' + year + 'calendar-month=' + month;
+    location.href = path;
+  }
+
   function _init () {
-      // カレンダー生成
+      setCalendarParams();
       $('#mini-calendar').miniCalendar({
-        year: 2000 ,
-        month: 5
+        year: year ,
+        month: month
       });
-      // ボタンイベント
       $('.mini-calendar-btn').click(function() {
         alert($(this).text());
       });
@@ -1722,7 +1755,17 @@ zenra.scrollToTop = function () {
 /*スクロールを強制的に一番下へ移動する*/
 zenra.scrollToBottom = function () {
   $('html, body').animate({scrollTop: $(this).height()},'fast');
-}
+};
+
+/*GETパラメータをキーを取得して取得*/
+zenra.getParam = function (key) {
+  var matched = location.search.match(new RegExp(key + '=(.*?)(&|$)'));
+  if (matched) {
+    return matched[1];
+  } else {
+    return false;
+  }
+};
 
 zenra.htmlescape = function (string) {
   return string.replace(/[&'`"<>]/g, function(match) {
