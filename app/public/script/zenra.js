@@ -1697,14 +1697,22 @@ zenra.playlist = (function() {
 })();
 
 /*カレンダー表示*/
-zenra.calendar = {
-  init: function() {
-    $('#mini-calendar').miniCalendar({
-      year: 2000 ,
-      month: 5
-    });
-  },
-};
+zenra.calendar = (function() {
+  function _init () {
+      // カレンダー生成
+      $('#mini-calendar').miniCalendar({
+        year: 2000 ,
+        month: 5
+      });
+      // ボタンイベント
+      $('.mini-calendar-btn').click(function() {
+        alert($(this).text());
+      });
+  }
+  return {
+    init: _init
+  };
+})();
 
 /*スクロールを強制的に先頭へ移動する*/
 zenra.scrollToTop = function () {

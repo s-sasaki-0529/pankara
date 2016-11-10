@@ -298,6 +298,10 @@ p.mini {
 /* ========================================
  * #mini-calendar
  * ========================================*/
+.calendar-head {
+  text-align: center;
+}
+
 #mini-calendar .calendar-year-month {
 	text-align: center;
 	font-size: 24px;
@@ -351,7 +355,7 @@ p.mini {
 */
 #mini-calendar td {
 	width: 14.3%;
-	height: 60px;
+	height: 70px;
 	vertical-align: top;
 }
 #mini-calendar td.calendar-day-off {

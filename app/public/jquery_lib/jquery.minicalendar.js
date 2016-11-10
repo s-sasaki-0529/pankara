@@ -38,7 +38,13 @@
      * 枠を作成
      */
     createFrame : function() {
-      this.ele.append('<div class="calendar-head"><p class="calendar-year-month"></p></div>');
+      var $header = $('<div>').addClass('calendar-head').css('text-align' , 'left');
+      var $title = $('<p>').addClass('calendar-year-month').css('display' , 'inline-block');
+      var $prevBtn = $('<button>').text('先月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $todayBtn = $('<button>').text('今日').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $nextBtn = $('<button>').text('来月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      $header.append($nextBtn).append($todayBtn).append($prevBtn).append($title);
+      this.ele.append($header);
 
       var outText = '<table><thead><tr>';
       for (var i = 0; i < this.opts.weekType.length; i++) {
@@ -49,7 +55,6 @@
         } else {
           outText += '<th>';  
         }
-        
         outText += this.opts.weekType[i] +'</th>';
       }
       outText += '</thead><tbody></tbody></table>';
