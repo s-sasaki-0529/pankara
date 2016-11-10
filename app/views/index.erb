@@ -28,7 +28,7 @@
     <!-- 右カラム -->
     <div class="col-xs-10">
       <p class="center"><img style="margin-top: -20px" src="/image/pankara.png"></p>
-      <div id='calendar'></div>
+      <div id='mini-calendar'></div>
     </div>
     <!-- PCここまで -->
 
@@ -50,7 +50,7 @@
           <% end %>
         </p>
       </div>
-      <div id='calendar'></div>
+      <div id='mini-calendar'></div>
       <h3 class='center'>友達の記録</h3>
       <%= erb :_timeline %>
       <div style="margin-bottom: 120px"></div>
@@ -61,4 +61,4 @@
   <%= erb :_bathtowel %>
 </div>
 
-<script>zenra.calendar.init()</script>
+<script>$(function(){ zenra.calendar.init(); });</script>

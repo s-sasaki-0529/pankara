@@ -1699,7 +1699,10 @@ zenra.playlist = (function() {
 /*カレンダー表示*/
 zenra.calendar = {
   init: function() {
-    $('#calendar').fullCalendar({});
+    $('#mini-calendar').miniCalendar({
+      year: 2000 ,
+      month: 5
+    });
   },
 };
 
