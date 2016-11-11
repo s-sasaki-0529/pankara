@@ -1780,9 +1780,7 @@ zenra.calendar = (function() {
       }
     });
   }
-  return {
-    init: _init
-  };
+  return _init;
 })();
 
 /*スクロールを強制的に先頭へ移動する*/
