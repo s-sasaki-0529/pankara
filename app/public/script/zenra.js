@@ -1743,6 +1743,7 @@ zenra.calendar = (function() {
       events.push({
         day: k.karaoke_day,
         images: icons,
+        link: '/karaoke/detail/' + k.karaoke_id,
         type: 'blue'
       });
     });

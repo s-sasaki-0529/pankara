@@ -141,15 +141,18 @@
           type = '-' + this.events[i].type;
         }
         var calendarLabel = $('<span>').addClass('calendar-label').addClass(type);
+        if (this.events[i].link) {
+          (function(url) {
+            calendarLabel.addClass('pointer').click(function() {
+              location.href = url;
+            });
+          })(this.events[i].link);
+        }
+
         $(this.ele).find('#' + dateID).append(calendarLabel);
         this.events[i].images.forEach(function(i) {
           calendarLabel.append($('<img src="' + i + '">').prop('width' , '32'));
         });
-      }
-
-      // 休日
-      for (var i=0; i<this.holiday.length; i++) {
-        $(this.ele).find('#calender-id' + this.holiday[i]).addClass('calendar-holiday');
       }
     },
   };
