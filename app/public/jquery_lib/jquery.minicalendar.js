@@ -136,16 +136,15 @@
     setEvent : function() {
       for(var i = 0; i < this.events.length; i++) {
         var dateID = 'calender-id' + this.events[i].day;
-        var $image = $('<img src="' + this.events[i].image + '">');
-        //var image = $('<textarea>' + this.events[i].title + '</textarea>');
-        // typeがある場合classを付与
         var type = "";
         if (this.events[i].type) {
           type = '-' + this.events[i].type;
         }
-        var calendarLabel = $('<span>').addClass('calendar-label').addClass(type).append($image);
-        $(this.ele)
-            .find('#' + dateID).calendarLabel;
+        var calendarLabel = $('<span>').addClass('calendar-label').addClass(type);
+        $(this.ele).find('#' + dateID).append(calendarLabel);
+        this.events[i].images.forEach(function(i) {
+          calendarLabel.append($('<img src="' + i + '">').prop('width' , '32'));
+        });
       }
 
       // 休日

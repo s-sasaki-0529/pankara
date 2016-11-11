@@ -1736,11 +1736,13 @@ zenra.calendar = (function() {
   function karaokeToCalendarEvents (karaoke) {
     var events = [];
     karaoke.forEach(function(k) {
-      var member = k.members.map(function(m) { return m.username })[0];
-      var iconPath = '/image/user_icon/' + member + '.png';
+      var icons = [];
+      k.members.forEach(function(m) {
+        icons.push('/image/user_icon/' + m.username + '.png');
+      });
       events.push({
         day: k.karaoke_day,
-        image: iconPath,
+        images: icons,
         type: 'blue'
       });
     });
