@@ -22,6 +22,11 @@ class AjaxRoute < March
     return Util.to_json({:result => 'error' , :info => info})
   end
 
+  # post /ajax/calendar/? - カレンダー表示に必要な情報を取得
+  #------------------------------------------------------------------
+  post '/calendar/?' do
+  end
+
   # /ajax/contact/? - お問い合わせメールを送信
   #-------------------------------------------------------------------
   post '/contact/?' do

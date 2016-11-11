@@ -1732,24 +1732,34 @@ zenra.calendar = (function() {
     location.href = path;
   }
 
+  /*カレンダーを生成*/
+  function create() {
+    setCalendarParams();
+    $('#mini-calendar').miniCalendar({
+      year: year ,
+      month: month,
+      events: [
+        { "day": "1", "title": "イベント1", "type": "blue" },
+        { "day": "2", "title": "イベント2", "type": "red" },
+        { "day": "3", "title": "イベント3", "type": "green" },
+      ],
+    });
+    $('.mini-calendar-btn').click(function() {
+      var btnName = $(this).text();
+      if (btnName == '先月') {
+        setPrevMonth();
+        reloadCalendar();
+      } else if (btnName == '来月') {
+        setNextMonth();
+        reloadCalendar();
+      } else {
+        location.href = '/';
+      }
+    });
+  }
+
   function _init () {
-      setCalendarParams();
-      $('#mini-calendar').miniCalendar({
-        year: year ,
-        month: month
-      });
-      $('.mini-calendar-btn').click(function() {
-        var btnName = $(this).text();
-        if (btnName == '先月') {
-          setPrevMonth();
-          reloadCalendar();
-        } else if (btnName == '来月') {
-          setNextMonth();
-          reloadCalendar();
-        } else {
-          location.href = '/';
-        }
-      });
+    create();
   }
   return {
     init: _init
