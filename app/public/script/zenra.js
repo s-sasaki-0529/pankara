@@ -1732,16 +1732,25 @@ zenra.calendar = (function() {
     location.href = path;
   }
 
+  /*サーバから取得したカラオケ情報よりカレンダーイベントを作成*/
+  function karaokeToCalendarEvents (karaoke) {
+    var events = [];
+    karaoke.forEach(function(k) {
+      events.push({
+        day: k.karaoke_day,
+        title: k.karaoke_name,
+        type: 'blue'
+      });
+    });
+    return events;
+  }
+
   /*カレンダーを生成*/
-  function create() {
+  function create(events) {
     $('#mini-calendar').miniCalendar({
       year: year ,
       month: month,
-      events: [
-        { "day": "1", "title": "イベント1", "type": "blue" },
-        { "day": "2", "title": "イベント2", "type": "red" },
-        { "day": "3", "title": "イベント3", "type": "green" },
-      ],
+      events: events
     });
     $('.mini-calendar-btn').click(function() {
       var btnName = $(this).text();
@@ -1761,9 +1770,10 @@ zenra.calendar = (function() {
     setCalendarParams();
     zenra.post('/ajax/calendar' , {year: year , month: month} , {
       success: function (karaoke) {
+        var events = karaokeToCalendarEvents(karaoke);
+        create(events);
       }
     });
-    create();
   }
   return {
     init: _init
