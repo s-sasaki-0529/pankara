@@ -7,6 +7,7 @@ require_relative '../../models/karaoke'
 require_relative '../../models/history'
 require_relative '../../models/register'
 require_relative '../../models/attendance'
+require_relative '../../models/calendar'
 
 class AjaxRoute < March
 
@@ -25,6 +26,9 @@ class AjaxRoute < March
   # post /ajax/calendar/? - カレンダー表示に必要な情報を取得
   #------------------------------------------------------------------
   post '/calendar/?' do
+    calendar = Calendar.new(params['year'] , params['month'])
+    karaoke_list = calendar.karaoke_list
+    return success(karaoke_list)
   end
 
   # post /ajax/contact/? - お問い合わせメールを送信

@@ -1734,7 +1734,6 @@ zenra.calendar = (function() {
 
   /*カレンダーを生成*/
   function create() {
-    setCalendarParams();
     $('#mini-calendar').miniCalendar({
       year: year ,
       month: month,
@@ -1759,6 +1758,11 @@ zenra.calendar = (function() {
   }
 
   function _init () {
+    setCalendarParams();
+    zenra.post('/ajax/calendar' , {year: year , month: month} , {
+      success: function (karaoke) {
+      }
+    });
     create();
   }
   return {

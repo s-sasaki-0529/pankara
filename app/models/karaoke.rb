@@ -219,6 +219,13 @@ class Karaoke < Base
       db.set(ids)
     end
 
+    # 特定の月を対象にする
+    if opt[:year] && opt[:month]
+      month = sprintf('%d-%02d' , opt[:year].to_i , opt[:month].to_i)
+      db.where('datetime like ?')
+      db.set("#{month}%")
+    end
+
     db.execute_all
   end
 end
