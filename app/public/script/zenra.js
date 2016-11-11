@@ -1699,31 +1699,36 @@ zenra.playlist = (function() {
 /*カレンダー表示*/
 zenra.calendar = (function() {
 
+  var today = new Date();
   var year;
   var month;
 
   /*URLから表示する年月を取得*/
   function setCalendarParams () {
-    year = Number(year || new Date().getFullYear());
-    month = Number(month || new Date().getMonth() + 1);
+    year = Number(year || today.getFullYear());
+    month = Number(month || today.getMonth() + 1);
   }
 
   /*翌月を設定*/
   function setNextMonth () {
+    if (year == today.getFullYear() && month == today.getMonth() + 1) return false;
     month += 1;
     if (month > 12) {
       year += 1;
       month = 1;
     }
+    return true;
   }
 
   /*前月を設定*/
   function setPrevMonth () {
+    if (year == 2016 && month == 1) return false;
     month -= 1;
     if (month <= 0) {
       year -= 1;
       month = 12;
     }
+    return true;
   }
 
   /*サーバから取得したカラオケ情報よりカレンダーイベントを作成*/
@@ -1754,14 +1759,16 @@ zenra.calendar = (function() {
     });
     $('.mini-calendar-btn').click(function() {
       var btnName = $(this).text();
+      var changeMonthFlag = false;
       if (btnName == '先月') {
-        setPrevMonth();
+        changeMonthFlag = setPrevMonth();
       } else if (btnName == '来月') {
-        setNextMonth();
+        changeMonthFlag = setNextMonth();
       } else {
         year = month = undefined;
+        changeMonthFlag = true;
       }
-      init();
+      changeMonthFlag && init();
     });
   }
 
