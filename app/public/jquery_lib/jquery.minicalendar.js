@@ -9,10 +9,15 @@
  * http://www.opensource.org/licenses/MIT
  */
 
+ /*
+  * 上記のjQueryプラグインを、パンダリンのカラオケランドに合わせて改造
+  * JSON読み込みから、カレンダー生成時に各種パラメータを与えられるように変更し、
+  * イベントに画像やリンクを含めるようにする
+  */
+
 ;(function($) {
   $.wop = $.wop || {};
   $.wop.miniCalendar = function(targets,option){
-    console.log(option);
     this.opts = $.extend({},$.wop.miniCalendar.defaults,option);
     this.ele = targets;
 
@@ -30,6 +35,7 @@
     this.createFrame();
     this.printType(this.year, this.month);
     // 取得したイベントを表示
+    this.events = this.opts.events;
     this.setEvent();
   };
   $.wop.miniCalendar.prototype = {
