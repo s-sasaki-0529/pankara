@@ -47,7 +47,7 @@
       var $header = $('<div>').addClass('calendar-head').css('text-align' , 'left');
       var $title = $('<p>').addClass('calendar-year-month').css('display' , 'inline-block');
       var $prevBtn = $('<button>').text('先月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
-      var $todayBtn = $('<button>').text('本日').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $todayBtn = $('<button>').text('今月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
       var $nextBtn = $('<button>').text('来月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
       $header.append($nextBtn).append($todayBtn).append($prevBtn).append($title);
       this.ele.append($header);

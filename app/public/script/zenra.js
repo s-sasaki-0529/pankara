@@ -1699,13 +1699,13 @@ zenra.playlist = (function() {
 /*カレンダー表示*/
 zenra.calendar = (function() {
 
-  var year = 0;
-  var month = 0;
+  var year;
+  var month;
 
   /*URLから表示する年月を取得*/
   function setCalendarParams () {
-    year = Number(zenra.getParam('calendar-year') || new Date().getFullYear());
-    month = Number(zenra.getParam('calendar-month') || new Date().getMonth() + 1);
+    year = Number(year || new Date().getFullYear());
+    month = Number(month || new Date().getMonth() + 1);
   }
 
   /*翌月を設定*/
@@ -1724,12 +1724,6 @@ zenra.calendar = (function() {
       year -= 1;
       month = 12;
     }
-  }
-
-  /*パラメータを指定してページを再読込*/
-  function reloadCalendar () {
-    var path = '/?' + 'calendar-year=' + year + '&' + 'calendar-month=' + month;
-    location.href = path;
   }
 
   /*サーバから取得したカラオケ情報よりカレンダーイベントを作成*/
@@ -1752,7 +1746,8 @@ zenra.calendar = (function() {
 
   /*カレンダーを生成*/
   function create(events) {
-    $('#mini-calendar').miniCalendar({
+
+    $('#mini-calendar').html('').miniCalendar({
       year: year ,
       month: month,
       events: events
@@ -1761,17 +1756,16 @@ zenra.calendar = (function() {
       var btnName = $(this).text();
       if (btnName == '先月') {
         setPrevMonth();
-        reloadCalendar();
       } else if (btnName == '来月') {
         setNextMonth();
-        reloadCalendar();
       } else {
-        location.href = '/';
+        year = month = undefined;
       }
+      init();
     });
   }
 
-  function _init () {
+  function init () {
     setCalendarParams();
     zenra.post('/ajax/calendar' , {year: year , month: month} , {
       success: function (karaoke) {
@@ -1780,7 +1774,7 @@ zenra.calendar = (function() {
       }
     });
   }
-  return _init;
+  return init;
 })();
 
 /*スクロールを強制的に先頭へ移動する*/
