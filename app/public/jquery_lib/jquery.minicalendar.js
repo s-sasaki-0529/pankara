@@ -46,9 +46,9 @@
     createFrame : function() {
       var $header = $('<div>').addClass('calendar-head').css('text-align' , 'left');
       var $title = $('<p>').addClass('calendar-year-month').css('display' , 'inline-block');
-      var $prevBtn = $('<button>').text('先月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
-      var $todayBtn = $('<button>').text('今月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
-      var $nextBtn = $('<button>').text('来月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $prevBtn = $('<button id="last_month_btn">').text('先月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $todayBtn = $('<button id="today_btn">').text('今月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
+      var $nextBtn = $('<button id="next_month_btn">').text('来月').addClass('mini-calendar-btn btn btn-default').css('float' , 'right');
       $header.append($nextBtn).append($todayBtn).append($prevBtn).append($title);
       this.ele.append($header);
 
@@ -114,7 +114,7 @@
 
       function printTD(count, col) {
         var dayText = "";
-        var tmpId = ' id="calender-id'+ count + '"';
+        var tmpId = ' id="calendar-id'+ count + '"';
         // 曜日classを割り当てる
         if (col === 0) tmpId += ' class="calendar-sun"';
         if (col === 6) tmpId += ' class="calendar-sat"';
@@ -125,7 +125,7 @@
       var toDay = new Date();
       if (thisYear === toDay.getFullYear()) {
         if (thisMonth === (toDay.getMonth()+1)) {
-          var dateID = 'calender-id' + toDay.getDate();
+          var dateID = 'calendar-id' + toDay.getDate();
           $(this.ele).find('#' + dateID).addClass('calendar-today');
         }
       }
@@ -135,12 +135,12 @@
      */
     setEvent : function() {
       for(var i = 0; i < this.events.length; i++) {
-        var dateID = 'calender-id' + this.events[i].day;
+        var dateID = 'calendar-id' + this.events[i].day;
         var labelClass = "calendar-label";
         if (this.events[i].type) {
           labelClass += '-' + this.events[i].type;
         }
-        var calendarLabel = $('<span>').addClass(labelClass);
+        var calendarLabel = $('<span>').addClass('calendar-event').addClass(labelClass);
         if (this.events[i].link) {
           (function(url) {
             calendarLabel.addClass('pointer').click(function() {
