@@ -22,11 +22,12 @@ class Calendar < Base
   # カラオケ一覧を取得
   #--------------------------------------------------------------------
   def karaoke_list(opt = {})
-    karaoke = Karaoke.list(:year => @year , :month => @month)
+    # Todo: 不要なパラメータも多くてに入るので削りたい
+    karaoke = Karaoke.list(:year => @year , :month => @month , :with_attendance => true)
     karaoke.each do |k|
-      # 日のみを抽出
       k['karaoke_day'] = k['karaoke_datetime'].day
-   end
+    end
+    return karaoke
   end
 
 end

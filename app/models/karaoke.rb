@@ -226,6 +226,16 @@ class Karaoke < Base
       db.set("#{month}%")
     end
 
-    db.execute_all
+    list = db.execute_all
+
+    # 参加者情報を取得する
+    if opt[:with_attendance]
+      list.each do |karaoke|
+        k = Karaoke.new(karaoke['karaoke_id'] , {:id_only => true})
+        karaoke['members'] = k.get_members
+      end
+    end
+
+    return list
   end
 end
