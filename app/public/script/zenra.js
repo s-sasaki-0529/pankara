@@ -1744,7 +1744,7 @@ zenra.calendar = (function() {
         day: k.karaoke_day,
         images: icons,
         link: '/karaoke/detail/' + k.karaoke_id,
-        type: 'blue'
+        type: k.color
       });
     });
     return events;

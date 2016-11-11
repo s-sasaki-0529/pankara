@@ -136,11 +136,11 @@
     setEvent : function() {
       for(var i = 0; i < this.events.length; i++) {
         var dateID = 'calender-id' + this.events[i].day;
-        var type = "";
+        var labelClass = "calendar-label";
         if (this.events[i].type) {
-          type = '-' + this.events[i].type;
+          labelClass += '-' + this.events[i].type;
         }
-        var calendarLabel = $('<span>').addClass('calendar-label').addClass(type);
+        var calendarLabel = $('<span>').addClass(labelClass);
         if (this.events[i].link) {
           (function(url) {
             calendarLabel.addClass('pointer').click(function() {

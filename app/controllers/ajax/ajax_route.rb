@@ -26,7 +26,8 @@ class AjaxRoute < March
   # post /ajax/calendar/? - カレンダー表示に必要な情報を取得
   #------------------------------------------------------------------
   post '/calendar/?' do
-    calendar = Calendar.new(params['year'] , params['month'])
+    @current_user or return error('ログインしてください')
+    calendar = Calendar.new(@current_user , params['year'] , params['month'])
     karaoke_list = calendar.karaoke_list
     return success(karaoke_list)
   end
