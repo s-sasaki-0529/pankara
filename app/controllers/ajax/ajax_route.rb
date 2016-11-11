@@ -27,7 +27,7 @@ class AjaxRoute < March
   post '/calendar/?' do
   end
 
-  # /ajax/contact/? - お問い合わせメールを送信
+  # post /ajax/contact/? - お問い合わせメールを送信
   #-------------------------------------------------------------------
   post '/contact/?' do
     @title = params[:title]
