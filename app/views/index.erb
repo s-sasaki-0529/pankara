@@ -27,7 +27,7 @@
     </div>
     <!-- 右カラム -->
     <div class="col-xs-10">
-      <p class="center"><img style="margin: -40px" src="/image/pankara.png" width="550px"></p>
+      <p class="center"><a href="/"><img style="margin: -40px" src="/image/pankara.png" width="550px"></a></p>
       <div id='mini-calendar'></div>
     </div>
     <!-- PCここまで -->
@@ -35,7 +35,7 @@
     <!-- スマートフォンここから -->
     <% else %>
     <div class='center'>
-      <p class="center"><img style="margin: -35px" src="/image/pankara.png" width="100%"></p>
+      <p class="center"><a href="/"><img style="margin: -25px" src="/image/pankara.png" width="100%"></a></p>
       <h2><%= h @user['screenname'] %></h2>
       <div id="top_my_icon">
         <%= user_icon @user['username'] , '100%' , '100%' %>
