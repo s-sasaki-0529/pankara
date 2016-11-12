@@ -167,7 +167,7 @@ class Util
     if File.exists? "#{ICONDIR}/#{username}.png"
       return false
     else
-      FileUtils.cp("#{IMGDIR}/sample_icon.png" , "#{ICONDIR}/#{name}.png")
+      FileUtils.cp("#{IMGDIR}/sample_icon.png" , "#{ICONDIR}/#{username}.png")
     end
   end
 

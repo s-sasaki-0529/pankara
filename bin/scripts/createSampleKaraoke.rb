@@ -27,7 +27,7 @@ def get_datetime
   hour = Random.rand(0 .. 23)
   min = Random.rand(0 .. 59)
   sec = Random.rand(0 .. 59)
-  return "2016/%02d/%02d %02d:%02d:%03d"%[month,day,hour,min,sec]
+  return "2016-%02d-%02d %02d:%02d:%02d"%[month,day,hour,min,sec]
 end
 
 def get_product
@@ -36,7 +36,7 @@ def get_product
     {'brand' => 'JOYSOUND' , 'product' => 'f1'},
     {'brand' => 'JOYSOUND' , 'product' => 'CROSSO'},
     {'brand' => 'JOYSOUND' , 'product' => 'WAVE'},
-    {'brand' => 'DAM' , 'product' => 'Premire DAM'},
+    {'brand' => 'DAM' , 'product' => 'Premier DAM'},
     {'brand' => 'DAM' , 'product' => 'LIVE DAM'},
     {'brand' => 'その他' , 'product' => 'その他'},
   ].sample
@@ -108,7 +108,7 @@ KARAOKENUM.times do
   registers[0] = Register.new(users[0])
   karaoke = create_karaoke(registers[0])
   registers[0].attend_karaoke(get_price)
-
+  
   (USERNUM - 1).times do |i|
     registers[i + 1] = Register.new(users[i + 1])
     registers[i + 1].set_karaoke(karaoke)

@@ -1696,6 +1696,94 @@ zenra.playlist = (function() {
   };
 })();
 
+/*カレンダー表示*/
+zenra.calendar = (function() {
+
+  var today = new Date();
+  var year;
+  var month;
+
+  /*URLから表示する年月を取得*/
+  function setCalendarParams () {
+    year = Number(year || today.getFullYear());
+    month = Number(month || today.getMonth() + 1);
+  }
+
+  /*翌月を設定*/
+  function setNextMonth () {
+    if (year == today.getFullYear() && month == today.getMonth() + 1) return false;
+    month += 1;
+    if (month > 12) {
+      year += 1;
+      month = 1;
+    }
+    return true;
+  }
+
+  /*前月を設定*/
+  function setPrevMonth () {
+    if (year == 2016 && month == 1) return false;
+    month -= 1;
+    if (month <= 0) {
+      year -= 1;
+      month = 12;
+    }
+    return true;
+  }
+
+  /*サーバから取得したカラオケ情報よりカレンダーイベントを作成*/
+  function karaokeToCalendarEvents (karaoke) {
+    var events = [];
+    karaoke.forEach(function(k) {
+      var icons = [];
+      k.members.forEach(function(m) {
+        icons.push('/image/user_icon/' + m.username + '.png');
+      });
+      events.push({
+        day: k.karaoke_day,
+        images: icons,
+        link: '/karaoke/detail/' + k.karaoke_id,
+        type: k.color
+      });
+    });
+    return events;
+  }
+
+  /*カレンダーを生成*/
+  function create(events) {
+
+    $('#mini-calendar').html('').miniCalendar({
+      year: year ,
+      month: month,
+      events: events
+    });
+    $('.mini-calendar-btn').click(function() {
+      var btnName = $(this).text();
+      var changeMonthFlag = false;
+      if (btnName == '先月') {
+        changeMonthFlag = setPrevMonth();
+      } else if (btnName == '来月') {
+        changeMonthFlag = setNextMonth();
+      } else {
+        year = month = undefined;
+        changeMonthFlag = true;
+      }
+      changeMonthFlag && init();
+    });
+  }
+
+  function init () {
+    setCalendarParams();
+    zenra.post('/ajax/calendar' , {year: year , month: month} , {
+      success: function (karaoke) {
+        var events = karaokeToCalendarEvents(karaoke);
+        create(events);
+      }
+    });
+  }
+  return init;
+})();
+
 /*スクロールを強制的に先頭へ移動する*/
 zenra.scrollToTop = function () {
   $('html, body').animate({scrollTop:0},'fast');
@@ -1704,7 +1792,17 @@ zenra.scrollToTop = function () {
 /*スクロールを強制的に一番下へ移動する*/
 zenra.scrollToBottom = function () {
   $('html, body').animate({scrollTop: $(this).height()},'fast');
-}
+};
+
+/*GETパラメータをキーを取得して取得*/
+zenra.getParam = function (key) {
+  var matched = location.search.match(new RegExp(key + '=(.*?)(&|$)'));
+  if (matched) {
+    return matched[1];
+  } else {
+    return false;
+  }
+};
 
 zenra.htmlescape = function (string) {
   return string.replace(/[&'`"<>]/g, function(match) {

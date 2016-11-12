@@ -219,6 +219,23 @@ class Karaoke < Base
       db.set(ids)
     end
 
-    db.execute_all
+    # 特定の月を対象にする
+    if opt[:year] && opt[:month]
+      month = sprintf('%d-%02d' , opt[:year].to_i , opt[:month].to_i)
+      db.where('datetime like ?')
+      db.set("#{month}%")
+    end
+
+    list = db.execute_all
+
+    # 参加者情報を取得する
+    if opt[:with_attendance]
+      list.each do |karaoke|
+        k = Karaoke.new(karaoke['karaoke_id'] , {:id_only => true})
+        karaoke['members'] = k.get_members
+      end
+    end
+
+    return list
   end
 end

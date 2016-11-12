@@ -11,7 +11,7 @@ class AjaxArtistRoute < AjaxRoute
     return success(monthly_data)
   end
 
-  # ppost '/ajax/artist/wiki' - 指定したアーティストのWikiページを取得
+  # post '/ajax/artist/wiki' - 指定したアーティストのWikiページを取得
   #--------------------------------------------------------------------
   post '/wiki' do
     artist = params[:artist]

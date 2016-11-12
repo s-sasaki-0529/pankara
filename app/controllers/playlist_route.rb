@@ -1,6 +1,9 @@
 require_relative '../models/song'
 
 class PlaylistRoute < March
+
+  # get '/playlist' - 再生リスト
+  #------------------------------------------------------------------------
   get '/' do
     songs = params[:songs].split('_')
     songs_list = Song.list(:songs => songs , :artist_info => true , :sort => 'origin')

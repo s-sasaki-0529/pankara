@@ -8,14 +8,12 @@
   <% if Util.is_smartphone? %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <% end %>
-  <link rel="stylesheet" href="/css/plugines.css" type="text/css">
+  <link rel="stylesheet" href="/css/plugines.css?<%= Util.filemtime('css/plugines.css') %>" type="text/css">
   <link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css?" type="text/css">
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" type="text/css">
   <link rel="stylesheet" href="/c3js/c3.css" type="text/css">
   <link rel="stylesheet" href="/jquery_alerts/jquery.alerts.css" type="text/css">
   <link rel="stylesheet" href="/css/march.css?<%= Util.filemtime('css/march.css') %>" type="text/css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.print.css">
   <% if Util.is_smartphone? %><link rel="stylesheet" href="/css/sp.css" type="text/css"><% end %>
   <script src="/script/jquery-2.2.0.min.js"></script> <!-- jQuery本体-->
   <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> <!-- jQueryUI -->
@@ -23,12 +21,10 @@
   <script src="/d3js/d3.min.js"></script> <!-- データ可視化ライブラリ D3.JS -->
   <script src="/jquery_lib/jquery.simplyscroll.min.js"></script> <!-- バスタオルスクリプト -->
   <script src="/jquery_lib/tablesort/jquery.tablesorter.min.js"></script> <!-- テーブルソートスクリプト-->
-  <script src="/jquery_lib/jquery.datetimepicker.js"></script><!-- カレンダースクリプト-->
+  <script src="/jquery_lib/jquery.datetimepicker.js"></script><!-- 日時入力UI -->
   <script src="/jquery_alerts/jquery.alerts.js"></script><!-- アラートスクリプト -->
+  <script src="/jquery_lib/jquery.minicalendar.js"></script> <!-- カレンダー -->
   <script src="/script/zenra.js?<%= Util.filemtime('script/zenra.js') %>"></script> <!-- 全裸スクリプト -->
-  <script src='http://fullcalendar.io/js/fullcalendar-3.0.1/lib/moment.min.js'></script>
-  <script src="http://fullcalendar.io/js/fullcalendar-3.0.1/lib/jquery-ui.custom.min.js"></script>
-  <script src='http://fullcalendar.io/js/fullcalendar-3.0.1/fullcalendar.min.js'></script>
   <link rel="shortcut icon" href="/image/favicon.ico" />
   <title>パンダリンのカラオケランド(β版テスト期間中)</title>
   <!-- JavaScriptへの値の受け渡 -->

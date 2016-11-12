@@ -26,9 +26,13 @@ class IndexRoute < March
   #---------------------------------------------------------------------
   get '/' do
     if @current_user
+      # ログイン中のユーザ情報
       @user = @current_user
+      # タイムライン
       @timeline = @user.timeline
+      # ユーザの前回のカラオケ
       @recent_karaoke = @user.get_karaoke(1)[0]
+      # バスタオル用の楽曲一覧
       @song_list = History.recent_song(:sampling => 30)
       erb :index
     else

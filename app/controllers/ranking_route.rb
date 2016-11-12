@@ -13,11 +13,13 @@ class RankingRoute < March
   end
 
   # get '/ranking/score/?' - 得点ランキングを表示
-  # get '/ranking/score/:score_type - 指定した採点モードの得点ランキングを表示
-  #--------------------------------------------------------------------
+  #-------------------------------------------------------------------
   get '/score/?' do
     redirect '/ranking/score/1' #取り急ぎデフォルトはJOY全国採点
   end
+
+  # get '/ranking/score/:score_type - 指定した採点モードの得点ランキングを表示
+  #--------------------------------------------------------------------
   get '/score/:score_type' do
     @current_score_type = params[:score_type]
     param = {:score_type => @current_score_type , :user => target_user}
