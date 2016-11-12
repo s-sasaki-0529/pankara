@@ -28,10 +28,13 @@ describe '楽曲ランキング機能' , :js => true do
   end
 
   it 'あなたのランキングに切り替え' do
-    link 'あなたのランキングへ'
+    iscontain 'あなたのランキングへ'
+    visit '/ranking/song?showmine=true'
     tables = table_to_hash('songranking_table')
     expect(tables[3]['tostring']).to eq '4,,MISTAKE,ナナホシ管弦楽団,8'
-    link '全体のランキングへ'
+    visit url
+    tables = table_to_hash('songranking_table')
+    expect(tables[0]['tostring']).to eq '1,,Hello, world!,BUMP OF CHICKEN,12'
   end
 
   it 'あなたのランキングへの切り替えリンク' do
