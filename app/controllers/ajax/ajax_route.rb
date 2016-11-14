@@ -41,6 +41,7 @@ class AjaxRoute < March
     @contact = h(params[:contact]).gsub(/\n/ , '<br>')
     @HIDELAYOUT = true
     body = erb :_mail_template_contact
+    flash['contact_result'] = true
     Util.send_mail('お問い合わせフォームより' , body)
     return success
   end

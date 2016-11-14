@@ -43,9 +43,7 @@ class IndexRoute < March
   # get '/contact' - お問い合わせページ
   #---------------------------------------------------------------------
   get '/contact' do
-    if params[:sended]
-      @sended = true
-    end
+    @sended = flash[:contact_result]
     erb :contact
   end
 

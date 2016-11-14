@@ -1565,7 +1565,7 @@ zenra.sendContactMail = function () {
   zenra.post('/ajax/contact' , params , {
     sync: true,
     success: function () {
-      location.href = "/contact?sended=1";
+      location.href = "/contact";
     } ,
     nwError: function () {
       alert('お問い合わせメールの送信に失敗しました');
