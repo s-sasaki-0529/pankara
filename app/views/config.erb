@@ -1,9 +1,10 @@
 
 <% if @current_user %>
 
+<% if @mod_config_result %><p class="red"><%= @mod_config_result %></p><% end %>
+
 <form method="POST" action="/config/icon" enctype="multipart/form-data">
   <h3>アイコン設定</h3>
-  <% if @mod_icon_result %><p class="red"><%= @mod_icon_result %></p><% end %>
   <p><%= user_icon @current_user['username'] , 48 , 48%></p>
   <input type="file" name="icon_file" accept="image/jpeg,image/png,image/gif">
   <input type="submit" name="upload_icon_file" value="アップロード">

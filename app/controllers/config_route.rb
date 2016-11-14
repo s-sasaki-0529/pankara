@@ -13,6 +13,7 @@ class ConfigRoute < March
       req_secret = session[:request_token_secret] || ''
       twitter = Twitter.new(@current_user['username'])
       twitter.get_access_token(req_token , req_secret , verifier)
+      flash[:mod_config_result] = 'Twitter連携を設定しました'
       redirect '/config/'
     end
 
@@ -24,6 +25,9 @@ class ConfigRoute < March
       @twitter_username = twitter[:username]
       @twitter_icon = twitter[:icon]
     end
+
+    # 設定変更のメッセージ
+    @mod_config_result = flash[:mod_config_result]
 
     erb :config
   end
@@ -45,9 +49,9 @@ class ConfigRoute < March
   #--------------------------------------------------------------------
   post '/icon/?' do
     if params[:icon_file] && @current_user
-      @mod_icon_result = Util.save_icon_file(params[:icon_file] , @current_user['username'])
+     flash[:mod_config_result] = Util.save_icon_file(params[:icon_file] , @current_user['username'])
     end
-    erb :config
+    redirect '/config'
   end
 
   # post '/config/twitter/?' - ツイッター連携の設定を適用
@@ -66,6 +70,7 @@ class ConfigRoute < March
     # Twitter認証解除リクエスト
     elsif params[:remove_oauth]
       Util.write_secret(username , nil)
+      flash[:mod_config_result] = 'Twitter連携を解除しました'
       redirect '/config/'
     end
     erb :config
