@@ -4,6 +4,7 @@
 
 require 'sinatra/base'
 require 'rack/user_agent'
+require 'rack/flash'
 require_relative '../models/util'
 
 class March < Sinatra::Base
@@ -15,6 +16,7 @@ class March < Sinatra::Base
   #---------------------------------------------------------------------
   configure do
     use Rack::UserAgent
+    use Rack::Flash
     enable :sessions
   end
 

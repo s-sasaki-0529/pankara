@@ -11,6 +11,7 @@ gem "rack-user_agent"
 gem 'fssm'
 gem 'ruby-gmail'
 gem 'fastimage'
+gem "rack-flash3"
 group :develop do
   gem "watir-webdriver"
   gem 'rspec'
