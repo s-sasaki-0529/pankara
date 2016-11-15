@@ -50,5 +50,6 @@ else
   zenra run -r $VALUE_R
 fi
 git add backup/*
+git add app/public/image/user_icon/*
 git commit -m "ワイシャツサーバからの自動バックアップ"
 git push origin master
