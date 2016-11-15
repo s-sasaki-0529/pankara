@@ -25,7 +25,12 @@ class Calendar < Base
   def karaoke_list(opt = {})
     # Todo: 不要なパラメータも多くてに入るので削りたい
     @karaoke = Karaoke.list(:year => @year , :month => @month , :with_attendance => true)
-    @karaoke.each { |k| k['karaoke_day'] = k['karaoke_datetime'].day }
+    @karaoke.each do |k|
+      # 日付時刻から日のみ取り出す
+      k['karaoke_day'] = k['karaoke_datetime'].day
+      # 各参加ユーザのアイコンパスを取得
+      k['members'].each { |m| m['user_icon'] = Util.icon_file(m['username']) }
+    end
     setColorInfo()
     return @karaoke
   end

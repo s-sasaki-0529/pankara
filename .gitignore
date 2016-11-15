@@ -15,7 +15,7 @@ config.yml
 /bundle
 /realdata
 app/public/coverage
-app/public/image/user_icon
+app/public/image/user_icon/
 ## Specific to RubyMotion:
 .dat*
 .repl_history

@@ -1737,7 +1737,7 @@ zenra.calendar = (function() {
     karaoke.forEach(function(k) {
       var icons = [];
       k.members.forEach(function(m) {
-        icons.push('/image/user_icon/' + m.username + '.png');
+        icons.push(m.user_icon);
       });
       events.push({
         day: k.karaoke_day,
