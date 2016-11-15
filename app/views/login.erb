@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row" style="margin-bottom: 110px">
     <div class="col-sm-3">
+      <% if @login_message %><p class='red'><%= @login_message %></p><% end %>
       <form method="POST">
         <div class='form-group'>
           <label class='control-label'>ユーザ名:</label>

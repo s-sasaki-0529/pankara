@@ -10,13 +10,19 @@ end
 # テスト実行
 describe '認証系ページ' do
   before(:all,&init)
+  mes1 = 'IDまたはパスワードが正しいかチェックしてください'
+  mes2 = 'ログアウトが完了しました'
+  
   it '画面表示' do
     visit '/'
     current_path_is "/auth/login"
+    islack [mes1 , mes2]
   end
   it '不正ログインパターン' do
     login 'failed_user'
     current_path_is "/auth/login"
+    iscontain mes1
+    islack mes2
   end
   it '正常ログインパターン' do
     login 'march_user'
@@ -27,6 +33,8 @@ describe '認証系ページ' do
     current_path_is "/"
     visit '/auth/logout'
     current_path_is "/auth/login"
+    iscontain mes2
+    islack mes1
   end
   it 'ログイン成功時に直前のページにリダイレクト' do
     visit '/auth/logout'
