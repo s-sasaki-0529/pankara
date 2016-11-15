@@ -157,8 +157,13 @@ class Util
   #----------------------------------------------------------------------
   def self.icon_file(username)
     user_icon = "/image/user_icon/#{username}.png"
+    user_icon_mtime = Util.filemtime(user_icon)
     sample_icon = "/image/sample_icon.png"
-    File.exist?("#{ICONDIR}/#{username}.png") ? user_icon : sample_icon
+    if File.exist?("#{ICONDIR}/#{username}.png")
+      return "#{user_icon}?#{user_icon_mtime}"
+    else
+      sample_icon
+    end
   end
 
   # create_user_icon - サンプルユーザアイコンを指定したユーザに適用する
@@ -172,6 +177,7 @@ class Util
   end
 
   # save_icon_file - 画像ファイルとユーザ名を指定し、アイコンファイルを上書きする
+  # Todo: これがUtilにあってメッセージを戻すのはさすがにおかしい。Iconクラスあったほうがいいかも
   #--------------------------------------------------------------------
   def self.save_icon_file(image , username)
     accept_type = ['image/jpg' , 'image/jpeg' , 'image/png' , 'image/gif']
@@ -193,7 +199,7 @@ class Util
     else
       return "アップロードできるファイルは、jpg/png/gifのみです"
     end
-    return 'アイコンファイルを変更しました。変更が反映されるまで時間がかかる場合があります。'
+    return 'アイコンファイルを変更しました'
   end
 
   # get_wikipedia - 指定したワードでWikipedia検索する
