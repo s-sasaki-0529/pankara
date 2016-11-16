@@ -4,7 +4,6 @@ include Rbase
 # 定数を定義
 USER = 'test'
 SUCCESS = 'アイコンファイルを変更しました'
-SIZEOVER = 'アップロードできるファイルサイズは1280×720までです'
 TYPEERROR = 'アップロードできるファイルは、jpg/png/gifのみです'
 
 # ファイルをアップロードする
@@ -27,26 +26,14 @@ describe 'ユーザアイコンの設定' do
     example 'gifファイルをアップロード' do
       expect(upload('gif.gif' , 'image/gif')).to eq SUCCESS
     end
-  end
-
-  context 'ファイルサイズチェック' do
-    example 'サイズオーバーしたjpegファイル' do
-      expect(upload('large_jpg.jpg' , 'image/jpeg')).to eq SIZEOVER
-    end
-    example 'サイズオーバーしたpngファイル' do
-      expect(upload('large_png.png' , 'image/png')).to eq SIZEOVER 
-    end
-    example 'サイズオーバーしたgifファイル' do
-      expect(upload('large_gif.gif' , 'image/gif')).to eq SIZEOVER
+    example '巨大ファイルをアップロード' do
+      expect(upload('bigimage.jpg' , 'image/jpeg')).to eq SUCCESS
     end
   end
 
   context 'ファイルタイプチェック' do
     example 'テキストファイル' do
       expect(upload('text.txt' , 'text/plain')).to eq TYPEERROR
-    end
-    example 'コンテントタイプを偽造したテキストファイル' do
-      expect(upload('text.txt' , 'image/png')).to eq SIZEOVER 
     end
   end
 end

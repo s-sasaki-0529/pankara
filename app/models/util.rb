@@ -190,11 +190,10 @@ class Util
         f.write file.read
       end
       size = FastImage.size(tmppath)
-      if size && 0 < size[0] && size[0] <= 1280 && 0 < size[1] && size[1] <= 720
-        FileUtils.move(tmppath , filepath)
-      else
-        FileUtils.rm(tmppath)
-        return "アップロードできるファイルサイズは1280×720までです"
+      FileUtils.move(tmppath , filepath)
+      # 横幅が96px以上なら縮小する
+      if size[0] > 255
+        `convert -geometry 255 #{filepath} #{filepath}`
       end
     else
       return "アップロードできるファイルは、jpg/png/gifのみです"
