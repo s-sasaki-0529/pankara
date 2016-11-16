@@ -2,6 +2,7 @@
 $(function(){
   //テーブルをソート可能に
   $('.sortable').tablesorter();
+  $('input[type=submit]').click(function () { zenra.getLoader().show(); });
 });
 
 /*呼び出して使用するメソッドを定義*/
