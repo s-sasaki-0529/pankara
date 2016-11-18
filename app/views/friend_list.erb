@@ -1,7 +1,20 @@
 <h3><%= user_link @user['username'] , @user['screenname'] %> さんの友達一覧</h3>
 
-<% if @users %>
-<%= erb :_user_list %>
+<% if @friends %>
+  <% @users = @friends %>
+  <%= erb :_user_list %>
 <% else %>
 <p>友達がいません</p>
+<% end %>
+
+<% if @current_user && @current_user['username'] == @user['username'] %>
+
+<% if @follows %>
+<h3>以下のユーザは友達登録承認待ちです</h3>
+<% end %>
+
+<% if @followers %>
+<h3>以下のユーザから友達申請が来ています</h3>
+<% end %>
+
 <% end %>

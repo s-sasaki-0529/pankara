@@ -107,7 +107,7 @@ class UserRoute < March
     @user = User.new(params[:username])
     @user.exist? or raise Sinatra::NotFound
     friends_hash = @user.friend_list
-    friends_hash.empty? or @users = friends_hash.values
+    friends_hash.empty? or @friends = friends_hash.values
     erb :friend_list
   end
 
