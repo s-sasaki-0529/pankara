@@ -107,7 +107,13 @@ class UserRoute < March
     @user = User.new(params[:username])
     @user.exist? or raise Sinatra::NotFound
     friends_hash = @user.friend_list
-    friends_hash.empty? or @friends = friends_hash.values
+
+    # 友達
+    @friends = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FRIEND}
+    # 申請中
+    @follows = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FOLLOW}
+    # 承認待ち
+    @followers = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FOLLOWED}
     erb :friend_list
   end
 
