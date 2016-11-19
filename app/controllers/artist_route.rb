@@ -3,6 +3,13 @@ require_relative '../models/artist'
 
 class ArtistRoute < March
 
+  # get '/artist/list' - 歌手一覧を表示
+  #--------------------------------------------------------------------
+  get '/list' do
+    @artistlist = Artist.list({:song_num => 1})
+    erb :artist_list
+  end
+
   # get '/artist' - 歌手情報を表示(歌手名をパラメータで指定)
   #---------------------------------------------------------------------
   get '/' do
@@ -41,13 +48,6 @@ class ArtistRoute < March
     end
     @songs_chart_json = Util.to_json(songs_chart)
     erb :artist_detail
-  end
-
-  # get '/artist/list' - 歌手一覧を表示
-  #--------------------------------------------------------------------
-  get '/list' do
-    @artistlist = Artist.list({:song_num => 1})
-    erb :artist_list
   end
 
 end
