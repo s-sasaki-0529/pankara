@@ -288,6 +288,47 @@ describe '楽曲詳細ページ' , :js => true do
     end
   end
 
+  describe 'URLで歌手名を指定して詳細画面へ移動' do
+    def exam(song , artist , result = true)
+      visit URI.escape("/song?name=#{song}&artist=#{artist}")
+      if result
+        iscontain "#{song} / #{artist}"
+      else
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+    describe '該当あり' do
+      it '曲名がアルファベットのみ' do
+        exam('MISTAKE' , 'ナナホシ管弦楽団')
+      end
+      it '曲名が空白含むアルファベットのみ' do
+        exam('IN MY DREAM' , '真行寺 恵理')
+      end
+      it '曲名が日本語' do
+        exam('地球最後の告白を' , 'kemu')
+      end
+    end
+    describe '該当なし' do
+      it 'アーティスト該当あり　曲名該当なし' do
+        exam('盆踊りフィーバーナイト' , 'BUMP OF CHICKEN' , false)
+      end
+      it 'アーティスト該当なし　曲名該当あり' do
+        exam('天体観測' , '地球のはじまり' , false)
+      end
+      it 'アーティスト該当なし　曲名該当なし' do
+        exam('ずんどこほいでいきましょか' , 'ザ・ボンバーズ' , false)
+      end
+      it 'パラメータ指定なし' do
+        visit '/artist'
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+      it 'パラメータ空文字' do
+        visit '/artist?name=&artist='
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+  end
+
   describe '歌う曲に迷ったら' do
     it 'ログイン済み' do
       login 'sa2knight'

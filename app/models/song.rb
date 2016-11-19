@@ -18,12 +18,15 @@ class Song < Base
   # name_to_object - 曲名と歌手名の組み合わせからsongオブジェクトを戻す
   #---------------------------------------------------------------------
   def self.name_to_object(song_name , artist_name)
-    DB.new(
+    id = DB.new(
+      :SELECT => {'song.id' => 'id'},
       :FROM => 'song',
       :JOIN => ['song' , 'artist'] ,
       :WHERE => ['song.name = ?' , 'artist.name = ?'] ,
       :SET => [song_name , artist_name]
-    ).execute_row
+    ).execute_column
+    id or return nil
+    return Song.new(id)
   end
 
   # list - クラスメソッド 楽曲の一覧を取得

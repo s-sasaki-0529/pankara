@@ -17,7 +17,19 @@ class SongRoute < March
     redirect "/song/#{song_ids.sample}"
   end
 
-  # get '/song/:id' - 曲情報を表示
+  # get '/song' - 楽曲情報を表示(歌手名と曲名をパラメータで指定)
+  #---------------------------------------------------------------------
+  get '/' do
+    name = params[:name]
+    artist = params[:artist]
+    if name && name.size > 0 && artist && artist.size > 0 && song = Song.name_to_object(name , artist)
+      redirect "/song/#{song['id']}"
+    else
+      raise Sinatra::NotFound
+    end
+  end
+
+  # get '/song/:id' - 楽曲情報を表示(URLで曲IDを指定)
   #---------------------------------------------------------------------
   get '/:id' do
     score_type = 1 #現在は仮で固定
