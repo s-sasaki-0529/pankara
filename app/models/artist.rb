@@ -14,6 +14,15 @@ class Artist < Base
     @params = DB.new.get('artist' , id)
   end
 
+  # name_to_object - 歌手名からインスタンスを生成(歌手名ユニーク前提)
+  #---------------------------------------------------------------------
+  def self.name_to_object(name)
+    db = DB.new(:SELECT => 'id' , :FROM => 'artist' , :WHERE => 'name = ?' , :SET => name)
+    id = db.execute_column or return nil
+    return Artist.new(id)
+  end
+
+
   # songs - 楽曲一覧を取得
   #---------------------------------------------------------------------
   def songs(opt = {})
@@ -145,7 +154,7 @@ class Artist < Base
   def self.list(opt = {})
     db = DB.new(:FROM => 'artist')
 
-    # 曲名で曖昧検索
+    # 歌手名で曖昧検索
     if opt[:name_like]
       db.where('artist.name like ?')
       db.set("%#{opt[:name_like]}%")
