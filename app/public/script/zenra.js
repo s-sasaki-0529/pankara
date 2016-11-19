@@ -214,6 +214,7 @@ zenra.createFavoriteArtistsPieChart = function(targetSelecter , user) {
           links[artist] = '/artist?name=' + encodeURIComponent(artist);
         });
         zenra.createPieChart(targetSelecter , data , {links: links});
+        $(targetSelecter + '_json').text(zenra.toJSON(data));
     },
   });
 };

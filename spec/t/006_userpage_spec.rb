@@ -81,9 +81,6 @@ describe 'ユーザページ機能' do
 
     most_sang_song_table = table_to_hash('most_sang_song_table')
     expect(most_sang_song_table[0]['tostring']).to eq '2回,Butter-Fly,和田光司'
-
-    #iscontain 'Aqua Timez / 3回' Todo グラフをテスト
-
     max_score_table = table_to_hash('max_score_table')
     expect(max_score_table[0]['tostring']).to eq '82.00点,心絵,ロードオブメジャー,全国採点'
   end
@@ -104,5 +101,19 @@ describe 'ユーザページ機能' do
 
     examine_songlink('心絵', 'ロードオブメジャー', url)
     examine_artistlink('ロードオブメジャー', url)
+  end
+  describe 'よく歌うアーティストベスト10' , :js => true do
+    before do
+      login 'unagipai'
+      visit url; wait_for_ajax
+    end
+    it '歌唱履歴が存在する場合' do
+      result = evaluate_script("$('#user_sang_artists_chart_json').text();")
+      expect(result).to eq '[["Aqua Timez",42.9],["和田光司",28.6],["ロードオブメジャー",14.3],["Galileo Galilei",14.3]]'
+    end
+    it '項目名クリックで移動' do
+      js("$('#user_sang_artists_chart .c3-legend-item:first').click()");
+      expect(current_path).to eq '/artist/1'
+    end
   end
 end
