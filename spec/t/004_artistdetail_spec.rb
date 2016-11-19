@@ -72,18 +72,6 @@ describe '歌手詳細ページ' , :js => true do
       expect(result[1][1][0]).to eq 2
       expect(result[2][1][0]).to eq 2
     end
-    it '項目クリックで移動' do
-      visit '/artist/1' #BUMP OF CHICKEN
-      wait_for_ajax
-      js("$('#artist_songs_chart .c3-legend-item:first').click()");
-      iscontain 'Hello, world! / BUMP OF CHICKEN'
-    end
-    it 'その他 クリックでリロード' do
-      visit '/artist/1' #BUMP OF CHICKEN
-      wait_for_ajax
-      js("$('#artist_songs_chart .c3-legend-item:last').click()");
-      expect(current_path).to eq '/artist/1'
-    end
   end
 
   describe '歌唱回数グラフ' do

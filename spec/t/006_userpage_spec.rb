@@ -111,9 +111,5 @@ describe 'ユーザページ機能' do
       result = evaluate_script("$('#user_sang_artists_chart_json').text();")
       expect(result).to eq '[["Aqua Timez",42.9],["和田光司",28.6],["ロードオブメジャー",14.3],["Galileo Galilei",14.3]]'
     end
-    it '項目名クリックで移動' do
-      js("$('#user_sang_artists_chart .c3-legend-item:first').click()");
-      expect(current_path).to eq '/artist/1'
-    end
   end
 end

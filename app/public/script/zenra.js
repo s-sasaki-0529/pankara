@@ -148,26 +148,27 @@ opt: 拡張オプション
 zenra.createPieChart = function(targetSelecter , data, opt) {
   opt = opt || {};
   c3.generate({
+    // グラグを表示するセレクタ
     bindto: targetSelecter,
+    // グラフに表示するデータ
     data: {
       columns: data,
       type: 'pie',
       order: null,
+    },
+    // 項目クリックで関連ページに移動(オプション)
+    legend: {
+      item: opt.links ? {
+        onclick: function (id) {
+          if (! opt.links) {
+            return;
+          } else if (opt.links[id]) {
+            location.href = opt.links[id];
+          }
+        }
+      } : {}
     }
   });
-
-  // 項目名クリック時のリンク
-  // {項目名: URL} のフォーマットで指定
-  if (opt.links) {
-    $('.c3-legend-item').click(function() {
-      var name = $(this).children('text').text();
-      if (opt.links[name]) {
-        location.href = opt.links[name];
-      } else {
-        location.reload();
-      }
-    });
-  }
 };
 
 /*
