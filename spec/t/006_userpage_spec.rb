@@ -26,7 +26,7 @@ init = proc do
   )
   register.attend_karaoke(1500 , 'ユーザページテスト用attend2')
   register.create_history('決意の朝に' , 'Aqua Timez' , 0 , score_type , 76.3)
-  
+
   karaoke_id = register.create_karaoke(
     '2016-01-01 01:00:00' , 'ユーザページテスト用カラオケ3' , 2 ,
     {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
@@ -35,7 +35,7 @@ init = proc do
   register.attend_karaoke(1500 , 'ユーザページテスト用attend3')
   register.create_history('つぼみ' , 'Aqua Timez' , 0 , score_type , 59)
   register.create_history('Butter-Fly' , '和田光司' , 0 , score_type , 70)
-  
+
   karaoke_id = register.create_karaoke(
     '2016-01-12 12:00:00' , 'ユーザページテスト用カラオケ4' , 2 ,
     {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
@@ -43,7 +43,7 @@ init = proc do
   )
   register.attend_karaoke(1500 , 'ユーザページテスト用attend4')
   register.create_history('Butter-Fly' , '和田光司' , 0 , score_type , 80)
-  
+
   karaoke_id = register.create_karaoke(
     '2016-12-26 20:00:00' , 'ユーザページテスト用カラオケ5' , 2 ,
     {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
@@ -63,7 +63,7 @@ describe 'ユーザページ機能' do
     login 'unagipai'
     visit url
     karaoke_table = table_to_hash('recent_karaoke_table')
-    
+
     expect(karaoke_table.length).to eq 5
     expect(karaoke_table[0]['tostring']).to eq '2016-12-26,ユーザページテスト用カラオケ5'
   end
@@ -71,19 +71,19 @@ describe 'ユーザページ機能' do
     login 'unagipai'
     visit url
     karaoke_table = table_to_hash('recent_sang_table')
-    
+
     expect(karaoke_table.length).to eq 5
     expect(karaoke_table[0]['tostring']).to eq '夏空,Galileo Galilei'
   end
   it '各種集計が正常に表示されるか' do
     login 'unagipai'
     visit url
-    
+
     most_sang_song_table = table_to_hash('most_sang_song_table')
     expect(most_sang_song_table[0]['tostring']).to eq '2回,Butter-Fly,和田光司'
-    
+
     #iscontain 'Aqua Timez / 3回' Todo グラフをテスト
-    
+
     max_score_table = table_to_hash('max_score_table')
     expect(max_score_table[0]['tostring']).to eq '82.00点,心絵,ロードオブメジャー,全国採点'
   end
