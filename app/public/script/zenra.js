@@ -146,6 +146,7 @@ dataSelecter: 対象データのJSONを持つ要素のセレクタ
 opt: 拡張オプション
 */
 zenra.createPieChart = function(targetSelecter , data, opt) {
+  opt = opt || {};
   c3.generate({
     bindto: targetSelecter,
     data: {
@@ -154,6 +155,15 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
       order: null,
     }
   });
+
+  // 項目名クリック時のリンク
+  // {項目名: URL} のフォーマットで指定
+  if (opt.links) {
+    $('.c3-legend-item').click(function() {
+      var name = $(this).children('text').text();
+      location.href = opt.links[name];
+    });
+  }
 };
 
 /*
@@ -194,7 +204,12 @@ targetSelecter: 描画対象要素のセレクタ
 zenra.createFavoriteArtistsPieChart = function(targetSelecter , user) {
   zenra.post('/ajax/user/artist/favorite' , {'user': user} , {
     success: function(data) {
-        zenra.createPieChart(targetSelecter , data);
+        var links = {};
+        data.forEach(function(o) {
+          var artist = o[0];
+          links[artist] = '/artist?name=' + encodeURIComponent(artist);
+        });
+        zenra.createPieChart(targetSelecter , data , {links: links});
     },
   });
 };
