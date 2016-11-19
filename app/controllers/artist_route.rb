@@ -3,9 +3,9 @@ require_relative '../models/artist'
 
 class ArtistRoute < March
 
-  # get '/artist' - 歌手一覧を表示
+  # get '/artist/list' - 歌手一覧を表示
   #--------------------------------------------------------------------
-  get '/' do
+  get '/list' do
     @artistlist = Artist.list({:song_num => 1})
     erb :artist_list
   end
