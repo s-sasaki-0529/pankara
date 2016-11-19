@@ -4,9 +4,9 @@ require_relative '../models/score_type'
 
 class SongRoute < March
 
-  # get '/song' - ランダムで１曲表示
+  # get '/song/random' - ランダムで１曲表示
   #--------------------------------------------------------------------
-  get '/' do
+  get '/random' do
     # 楽曲一覧を取得する。ログイン済みの場合そのユーザが歌った曲からのみ
     song_ids = []
     @current_user and song_ids = @current_user.histories.map {|h| h['song']}.uniq
