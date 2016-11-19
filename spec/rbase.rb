@@ -1,3 +1,4 @@
+require 'uri'
 require 'spec_helper'
 require_relative '../app/models/util'
 module Rbase
