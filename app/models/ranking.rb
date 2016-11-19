@@ -60,11 +60,12 @@ class Ranking < Base
     limit = opt[:limit] || 20
 
     # 歌唱履歴より、song列ごとの件数上位limitレコードを取得
-    db = DB.new(
-      :SELECT => {'song' => 'song_id' , 'COUNT(song)' => 'count'},
-      :FROM => 'history',
-      :OPTION => ['GROUP BY song' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
-    )
+    #db = DB.new(
+    #  :SELECT => {'song' => 'song_id' , 'COUNT(song)' => 'count'},
+    #  :FROM => 'history',
+    #  :OPTION => ['GROUP BY song' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
+    #)
+    db = DB.new(:SELECT => ['song' , 'attendance'], :FROM => 'history')
 
     # ユーザ指定がある場合、そのユーザの歌唱回数のみで集計
     if user = opt[:user]
@@ -75,6 +76,9 @@ class Ranking < Base
 
     ranking = db.execute_all
 
+    # 同じattendanceで同じsongは省略する
+    opt[:disdinct] and ranking.uniq!
+    Util.debug ranking.uniq.count
     # 楽曲、アーティストの情報を取得
     songs_ids = ranking.map {|s| s['song_id']}
     songs_info = Song.list(:songs => songs_ids, :artist_info => true, :want_hash => true)
@@ -108,4 +112,11 @@ class Ranking < Base
     end
     db.execute_all
   end
+
+  # create_ranking - クラスメソッド: 指定したキーを用いてランキングを生成する
+  #----------------------------------------------------------------------
+  def self.create_ranking(list , key)
+    
+  end
+
 end
