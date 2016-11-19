@@ -161,7 +161,11 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
   if (opt.links) {
     $('.c3-legend-item').click(function() {
       var name = $(this).children('text').text();
-      location.href = opt.links[name];
+      if (opt.links[name]) {
+        location.href = opt.links[name];
+      } else {
+        location.reload();
+      }
     });
   }
 };
