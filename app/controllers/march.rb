@@ -112,17 +112,23 @@ class March < Sinatra::Base
   # before - 全てのURLにおいて初めに実行される
   #---------------------------------------------------------------------
   before do
+
     # 自動ログイン(debug用)
     if (!session[:logined] && user = Util.read_config('auto_login'))
       session[:logined] = user
     end
-
     @current_user = User.new(session[:logined]) if session[:logined]
 
     #セション情報、リクエストパラメータをUtilクラスで参照できるようにする
     Util.set_session session
     Util.set_request request
     Util.write_access_log(@current_user)
+
+    # メンテナンス中の場合リダイレクト
+    if Util.is_maintenance?
+      raise Sinatra::NotFound
+    end
+
   end
 
 end

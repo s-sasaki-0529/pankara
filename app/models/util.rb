@@ -104,6 +104,12 @@ class Util
     return ! Util.is_smartphone?
   end
 
+  # is_maintenance - 現在メンテナンス中かを取得
+  #---------------------------------------------------------------------
+  def self.is_maintenance?
+    false
+  end
+
   # url - URLを生成する
   #---------------------------------------------------------------------
   def self.url(*path)
