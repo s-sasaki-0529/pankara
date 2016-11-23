@@ -205,7 +205,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         fill_in 'song' , with: 'hoge'
         fill_in 'artist' , with: 'fuga'
         select '', from: 'score_type'
-        fill_in 'score' , with: '100'
+        js("$('#score').val('100')");
         click_on '登録'; wait_for_ajax
         is_null_score_last_history
       end
