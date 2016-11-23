@@ -69,7 +69,6 @@ class Util
   # write_access_log - アクセスログを生成する
   #--------------------------------------------------------------------
   def self.write_access_log(user)
-    @@request.xhr? and return # ajaxリクエストはログに残さない
     @@request.path.scan(/\./).empty? or return  #静的ファイルへのアクセスは除外
     username = user.nil? ? '' : user['username']
     params = []
