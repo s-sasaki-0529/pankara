@@ -352,7 +352,8 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
 createSeekbar - シークバーを作成する
 */
 zenra.createSeekbar = function() {
-  $('#seekbar').slider({
+  var $seekBar = $('#seekbar');
+  $seekBar.slider({
     value: 0 ,
     max: 6 ,
     min: -6 ,
@@ -367,6 +368,11 @@ zenra.createSeekbar = function() {
     slide: function(event , ui) {
       $('#slidervalue').html(ui.value);
     } ,
+  });
+  $('.slider-btn').click(function() {
+    var currentValue = $seekBar.slider('value');
+    var newValue = currentValue + Number($(this).data('value'));
+    $seekBar.slider('value' , newValue);
   });
 };
 

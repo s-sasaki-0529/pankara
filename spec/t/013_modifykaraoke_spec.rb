@@ -33,7 +33,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     wait_for_ajax
     iscontain('カラオケ編集')
     fill_in 'name' , with: '変更後のカラオケ名'
-    fill_in 'datetime' , with: '2020/03/25 20:30'
+    js('$("#datetime").val("2020-03-25 20:30")')
     fill_in 'store' , with: 'シダックス'
     fill_in 'branch' , with: '盛岡店'
     select '12時間00分' , from: '時間'

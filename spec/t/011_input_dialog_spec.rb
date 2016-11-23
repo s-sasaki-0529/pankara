@@ -38,7 +38,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   def input_karaoke
     page.find('#name')
     fill_in 'name', with: '入力ダイアログテスト用カラオケ'
-    fill_in 'datetime', with: '2016-02-20 12:00:00'
+    js('$("#datetime").val("2016-02-20 12:00")')
     select '02時間00分', from: 'plan'
     fill_in 'store', with: '歌広場'
     fill_in 'branch', with: '相模大野店'
@@ -167,7 +167,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it '日時バリデーションエラー' do
         login 'unagipai'
         js('register.createKaraoke();')
-        fill_in 'datetime' , with: 'fuwafuwatime'
+        js('$("#datetime").val("hogehoge")')
         js('register.submitKaraokeRegistrationRequest();');
         is_karaoke_register
       end
@@ -208,6 +208,24 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         fill_in 'score' , with: '100'
         click_on '登録'; wait_for_ajax
         is_null_score_last_history
+      end
+    end
+  end
+
+  describe 'ダイアログウィジェット' do
+    describe 'キースライダ' do
+      before do
+        input_karaoke
+        js('register.submitKaraokeRegistrationRequest();');
+        expect(find('#slidervalue').text()).to eq '0'
+      end
+      it 'プラスボタン' do
+        js("$('.slider-btn').last().click()")
+        expect(find('#slidervalue').text()).to eq '1'
+      end
+      it 'マイナスボタン' do
+        js("$('.slider-btn').first().click()")
+        expect(find('#slidervalue').text()).to eq '-1'
       end
     end
   end
