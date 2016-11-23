@@ -830,7 +830,11 @@ var register = (function() {
       $.datetimepicker.setLocale('ja');
       $('#datetime').datetimepicker({
         lang: 'ja' ,
-        step: 10 ,
+        step: 30 ,
+        timepickerScrollbar: false,
+        scrollMonth: false,
+        scrollTime: false,
+        scrollInput: false,
         format: 'Y-m-d H:i',
         validateOnBlur: true,
         onGenerate: function(ct) {
