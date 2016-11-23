@@ -911,7 +911,8 @@ var register = (function() {
     createInputArtistEvent();
 
     $('#score_type').change(function() {
-      if ($('#score_type').val() === 0) {
+      console.log('tori');
+      if ($('#score_type').val() == 0) {
         $('#score_area').hide();
       }
       else {
@@ -1138,7 +1139,9 @@ var register = (function() {
     if (cookie.isExist('score_type')) {
       var cookies = cookie.getCookies();
       $('#score_type').val(cookies.score_type);
-      $('#score_area').show();
+      if (cookies.score_type != 0) {
+        $('#score_area').show();
+      }
     }
   }
 
