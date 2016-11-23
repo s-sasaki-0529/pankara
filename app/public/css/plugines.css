@@ -433,8 +433,6 @@ http://xdsoft.net/jqplugins/datetimepicker/
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_other_month.xdsoft_disabled {
-	opacity: 0.2;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td:hover,

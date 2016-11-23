@@ -832,6 +832,11 @@ var register = (function() {
         lang: 'ja' ,
         step: 10 ,
         format: 'Y-m-d H:i',
+        validateOnBlur: true,
+        onGenerate: function(ct) {
+          console.log('hoge');
+          $('.xdsoft_disabled').removeClass('xdsoft_disabled');
+        },
       });
     }
 
