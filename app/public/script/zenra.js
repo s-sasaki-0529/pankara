@@ -576,7 +576,7 @@ var dialog = function(title , dialog_id , width , height) {
         } ,
         beforeClose: funcs.beforeClose ,
       });
-    
+      console.log(position);
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
         if (! zenra.ispc) {
@@ -592,6 +592,9 @@ var dialog = function(title , dialog_id , width , height) {
           $(window).scrollTop(scroll);
         } else if (position == 'head') {
           $('.ui-dialog').css({'top' : 70 , 'z-index': 9999});
+          zenra.scrollToTop();
+        } else {
+          $('.ui-dialog').css('top' , position);
           zenra.scrollToTop();
         }
         func_at_load();
@@ -1160,7 +1163,8 @@ var register = (function() {
           $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();')
           .val('次へ').addClass('form-control btn btn-default');
           $('#datetime').val(s);
-        }
+        } ,
+        position: '50px',
       });
     } ,
 
@@ -1200,7 +1204,7 @@ var register = (function() {
         } ,
         funcs: {
           beforeClose: beforeClose
-        }
+        } ,
       });
     } ,
 
@@ -1251,7 +1255,8 @@ var register = (function() {
             } ,
             funcs: {
               beforeClose: beforeClose
-            }
+            } ,
+            position: '60px',
           });
         }
       });
@@ -1271,7 +1276,8 @@ var register = (function() {
               createElementForEditAttendance(karaoke_id , 'edit');
 
               setAttendanceToInput(attendance);
-            }
+            },
+            position: '80px',
           });
         }
       });
@@ -1830,7 +1836,11 @@ zenra.calendar = (function() {
 
 /*スクロールを強制的に先頭へ移動する*/
 zenra.scrollToTop = function () {
-  $('html, body').animate({scrollTop:0},'fast');
+  if (zenra.ispc) {
+    $(window).scrollTop(0);
+  } else {
+    $('html, body').animate({scrollTop:0},'fast');
+  }
 };
 
 /*スクロールを強制的に一番下へ移動する*/
