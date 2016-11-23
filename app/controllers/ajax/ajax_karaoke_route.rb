@@ -27,7 +27,7 @@ class AjaxKaraokeRoute < AjaxRoute
         params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
         return success(karaoke_id: result)
       else
-        return error('カラオケの登録に失敗しました。入力内容を確認してください')
+        return error('カラオケの登録に失敗しました。管理者に問い合わせてください。')
       end
     else
       return error('ログインしてください')

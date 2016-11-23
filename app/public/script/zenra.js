@@ -826,10 +826,14 @@ var register = (function() {
     });
 
     //日付時刻入力用のカレンダーを生成
-    $('#datetime').datetimepicker({
-      lang: 'ja' ,
-      step: 10 ,
-    });
+    if (zenra.runMode != 'ci') {
+      $.datetimepicker.setLocale('ja');
+      $('#datetime').datetimepicker({
+        lang: 'ja' ,
+        step: 10 ,
+        format: 'Y-m-d H:i',
+      });
+    }
 
     //ツイートするチェックボックスのイベントを定義
     $('#tweet-checkbox').change(function() {
@@ -1127,13 +1131,13 @@ var register = (function() {
     /*[Method] カラオケ入力画面を表示する*/
     createKaraoke : function() {
       input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 450);
-      
+
       input_dialog.show('/ajax/dialog/karaoke' , 'input_karaoke' , {
         funcs: {
           beforeClose: beforeClose
         } ,
         func_at_load: function() {
-          var s = zenra.formatDate(new Date() , 'YYYY/MM/DD hh:mm');
+          var s = zenra.formatDate(new Date() , 'YYYY-MM-DD hh:mm');
           createWidgetForKaraoke();
           $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();')
           .val('次へ').addClass('form-control btn btn-default');
