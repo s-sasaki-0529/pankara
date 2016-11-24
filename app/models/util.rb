@@ -106,7 +106,11 @@ class Util
   # is_maintenance - 現在メンテナンス中かを取得
   #---------------------------------------------------------------------
   def self.is_maintenance?
-    false
+    mt = Util.read_config('maintenance')
+    if mt && mt.size > 0
+      return mt.include?(@@request.ip) ? false : true
+    end
+    return false
   end
 
   # url - URLを生成する
