@@ -107,8 +107,8 @@ class Util
   #---------------------------------------------------------------------
   def self.is_maintenance?
     mt = Util.read_config('maintenance')
-    if mt && mt.size > 0
-      return mt.include?(@@request.ip) ? false : true
+    if mt && mt != ""
+      return mt == @@request.ip ? false : true
     end
     return false
   end

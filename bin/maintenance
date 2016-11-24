@@ -1,0 +1,33 @@
+#!/bin/bash
+
+PROGNAME=$(basename $0)
+
+# ヘルプ
+usage() {
+  echo "環境をメンテナンス中状態に設定する"
+  echo "  Usage: zenra $PROGNAME [addr]"
+  echo "オプション"
+  echo "  addrにIPアドレスを引き渡すと、そのIPアドレスのみアクセスを許可する状態に"
+  echo "  addrの指定を省略した場合、メンテナンス状態を終了する"
+  exit 1
+}
+
+# オプション解析
+FLAG_V=0
+while getopts h OPT
+do
+  case $OPT in
+    h)  usage
+        exit 1
+        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# メイン処理
+cd $MARCHDIR
+if [ "$#" -eq 0 ]; then
+  bundle exec ruby "bin/scripts/set_config.rb" unset maintenance
+else
+  bundle exec ruby "bin/scripts/set_config.rb" set maintenance $1
+fi
