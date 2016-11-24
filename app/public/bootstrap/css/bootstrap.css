@@ -4557,6 +4557,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #555;
   background-color: #e7e7e7;
 }
+.navbar-maintenance { /*zenra edition*/
+  background-color: #bcbcbc;
+  border-color: #bcbcbc;
+}
 @media (max-width: 843px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #777;

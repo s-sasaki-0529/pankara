@@ -125,8 +125,12 @@ class March < Sinatra::Base
     Util.write_access_log(@current_user)
 
     # メンテナンス中の場合リダイレクト
-    if Util.is_maintenance?
-      raise Sinatra::NotFound
+    status = Util.maintenance_status
+    unless status == Util::Const::Maintenance::OPEN
+      @maintenance = true
+      if status == Util::Const::Maintenance::CLOSE
+        raise Sinatra::NotFound
+      end
     end
 
   end

@@ -34,6 +34,11 @@ class Util
       FOLLOWED = 1
       NONE = 0
     end
+    class Maintenance
+      ACCEPT = 2
+      CLOSE = 1
+      OPEN = 0
+    end
   end
 
   # set_request - リクエスト情報を設定
@@ -103,14 +108,18 @@ class Util
     return ! Util.is_smartphone?
   end
 
-  # is_maintenance - 現在メンテナンス中かを取得
+  # maintenance_status - 現在メンテナンス中かを取得
   #---------------------------------------------------------------------
-  def self.is_maintenance?
+  def self.maintenance_status
     mt = Util.read_config('maintenance')
     if mt && mt != ""
-      return mt == @@request.ip ? false : true
+      if mt == @@request.ip
+        return Util::Const::Maintenance::ACCEPT
+      else
+        return Util::Const::Maintenance::CLOSE
+      end
     end
-    return false
+    return Util::Const::Maintenance::OPEN
   end
 
   # url - URLを生成する

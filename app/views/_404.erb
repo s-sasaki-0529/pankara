@@ -3,7 +3,7 @@
 <div class="row">
   <img align="right" src="/image/kaeru.png" width='330px' height=auto>
   <div style="padding-top: 150px">
-    <% if Util.is_maintenance? %>
+    <% if Util.maintenance_status == Util::Const::Maintenance::CLOSE %>
       <h2>現在メンテナンス中です</h2>
       <p>現在パンダリンのカラオケランドはメンテナンス中です。</p>
       <p>申し訳ありませんが、メンテナンス中は全ての機能をご利用になれません。</p>
@@ -21,7 +21,7 @@
     <img src="/image/kaeru.png" width='150px' height=auto>
   </div>
   <div>
-    <% if Util.is_maintenance? %>
+    <% if Util.maintenance_status == Util::Const::Maintenance::CLOSE %>
       <h2>現在メンテナンス中です</h2>
       <p>現在パンダリンのカラオケランドはメンテナンス中です。</p>
       <p>申し訳ありませんが、メンテナンス中は全ての機能をご利用になれません。</p>
