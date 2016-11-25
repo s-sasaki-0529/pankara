@@ -21,8 +21,8 @@ describe '楽曲ランキング機能' do
   it 'ランキングが正常に表示される' do
     tables = table_to_hash('artistranking_table')
     expect(tables.length).to eq 20
-    expect(tables[0]['tostring']).to eq '1,BUMP OF CHICKEN,95'
-    expect(tables[4]['tostring']).to eq '5,雪音クリス,34'
+    expect(tables[0]['tostring']).to eq '1,BUMP OF CHICKEN,95,43,2.21'
+    expect(tables[4]['tostring']).to eq '5,雪音クリス,34,7,4.86'
   end
 
   it 'リンクが正常に登録されているか' do
@@ -33,7 +33,7 @@ describe '楽曲ランキング機能' do
   it 'あなたのランキングへの切り替え' do
     link 'あなたのランキングへ'
     tables = table_to_hash('artistranking_table')
-    expect(tables[4]['tostring']).to eq '5,40mP,29'
+    expect(tables[4]['tostring']).to eq '5,40mP,29,11,2.64'
     link '全体のランキングへ'
   end
   

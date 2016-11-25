@@ -148,7 +148,7 @@ class Artist < Base
     # IDを指定
     if opt[:ids]
       ids = opt[:ids]
-      db.where_in(['id' , ids.length])
+      db.where_in(['artist.id' , ids.length])
       db.set(ids)
     end
 
@@ -163,7 +163,8 @@ class Artist < Base
       db.select(
         'COUNT(song.id)' => 'song_num',
         'artist.id' => 'id',
-        'artist.name' => 'name',)
+        'artist.name' => 'name'
+      )
       db.flexible_join({:target => 'song' , :from => 'song' , :to => 'artist'})
       db.option(['GROUP BY song.artist' , 'ORDER BY song_num DESC'])
     end

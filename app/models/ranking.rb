@@ -113,11 +113,10 @@ class Ranking < Base
     ranking = Ranking.create(artists , limit)
 
     # アーティスト情報を取得
-    artists_info = Artist.list(:ids => artists.uniq , :want_hash => true)
+    artists_info = Artist.list(:ids => artists.uniq , :song_num => true , :want_hash => true)
 
     # ランキングにアーティスト情報をマージ
     ranking.each { |r| r.merge!(artists_info[r['value']]) }
-
     return ranking
   end
 
@@ -141,8 +140,4 @@ class Ranking < Base
     return ranking
   end
 
-  # create_from_hash - クラスメソッド: ハッシュを対象にランキングを生成する
-  #--------------------------------------------------------------------
-  def self.create_from_hash(hash , key)
-  end
 end
