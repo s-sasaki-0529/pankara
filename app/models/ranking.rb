@@ -57,15 +57,6 @@ class Ranking < Base
   # opt[:user] - 対象ユーザを指定。idでなくUserインスタンス
   #--------------------------------------------------------------------
   def self.sang_count(opt = {})
-    limit = opt[:limit] || 20
-
-    # 歌唱履歴より、song列ごとの件数上位limitレコードを取得
-    #db = DB.new(
-    #  :SELECT => {'song' => 'song_id' , 'COUNT(song)' => 'count'},
-    #  :FROM => 'history',
-    #  :OPTION => ['GROUP BY song' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
-    #)
-
     # 歌唱履歴をまとめて取得
     db = DB.new(:SELECT => ['song' , 'attendance'], :FROM => 'history')
 
@@ -82,6 +73,7 @@ class Ranking < Base
     songs = songs.map {|r| r['song']}
 
     # ランキングの生成
+    limit = opt[:limit] || 20
     ranking = Ranking.create_from_array(songs , limit)
 
     # 楽曲、アーティストの情報を付与
