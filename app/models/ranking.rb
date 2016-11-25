@@ -65,6 +65,8 @@ class Ranking < Base
     #  :FROM => 'history',
     #  :OPTION => ['GROUP BY song' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
     #)
+
+    # 歌唱履歴をまとめて取得
     db = DB.new(:SELECT => ['song' , 'attendance'], :FROM => 'history')
 
     # ユーザ指定がある場合、そのユーザの歌唱回数のみで集計
@@ -73,17 +75,21 @@ class Ranking < Base
       db.where_in(['attendance' , attend_ids.length])
       db.set(attend_ids)
     end
+    songs = db.execute_all
 
-    ranking = db.execute_all
-
-    # 同じattendanceで同じsongは省略する
+    # 楽曲IDのみ抜き出す
     opt[:disdinct] and ranking.uniq!
-    Util.debug ranking.uniq.count
-    # 楽曲、アーティストの情報を取得
-    songs_ids = ranking.map {|s| s['song_id']}
-    songs_info = Song.list(:songs => songs_ids, :artist_info => true, :want_hash => true)
-    ranking.each { |r| r.merge!(songs_info[r['song_id']] || {}) }
+    songs = songs.map {|r| r['song']}
 
+    # ランキングの生成
+    ranking = Ranking.create_from_array(songs , limit)
+
+    # 楽曲、アーティストの情報を付与
+    songs_ids = ranking.map {|s| s['value']}
+    songs_info = Song.list(:songs => songs_ids, :artist_info => true, :want_hash => true)
+    ranking.each do |r|
+      r.merge!(songs_info[r['value']])
+    end
     return ranking
   end
 
@@ -113,10 +119,28 @@ class Ranking < Base
     db.execute_all
   end
 
-  # create_ranking - クラスメソッド: 指定したキーを用いてランキングを生成する
-  #----------------------------------------------------------------------
-  def self.create_ranking(list , key)
-    
+  # create_from_array - クラスメソッド: 配列を対象にランキングを生成する
+  #--------------------------------------------------------------------
+  def self.create_from_array(array , limit = nil)
+    # 値ごとの出現回数を数える
+    counts = array.inject(Hash.new(0)) {|hash , v| hash[v] += 1; hash}
+    # 回数が多い順に並び替え
+    counts = counts.sort {|(k1 , v1) , (k2 , v2)| v2 <=> v1}
+    limit and counts = counts.first(limit)
+    # ハッシュ配列に変換し、連番を振って戻す
+    ranking = []
+    counts.each_with_index do |v , idx|
+      ranking.push({
+        'rank' => idx + 1 ,
+        'value' => v[0] ,
+        'count' => v[1]
+      })
+    end
+    return ranking
   end
 
+  # create_from_hash - クラスメソッド: ハッシュを対象にランキングを生成する
+  #--------------------------------------------------------------------
+  def self.create_from_hash(hash , key)
+  end
 end
