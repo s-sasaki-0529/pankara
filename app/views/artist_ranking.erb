@@ -9,10 +9,10 @@
     </tr>
   </thead>
   <tbody>
-    <% @artists.each_with_index do |artist , rank| %>
+    <% @artists.each do |artist| %>
     <tr>
-      <td class='center' width='15%'><%= rank + 1 %></td>
-      <td><%= artist_link artist['artist_id'], artist['artist_name'] %></td>
+      <td class='center' width='15%'><%= artist['rank'] %></td>
+      <td><%= artist_link artist['id'], artist['name'] %></td>
       <td class='center width='60'><%= artist['count'] %></td>
     </tr>
     <% end %>

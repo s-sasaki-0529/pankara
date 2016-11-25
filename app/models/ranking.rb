@@ -60,7 +60,7 @@ class Ranking < Base
     # 歌唱履歴をまとめて取得
     db = DB.new(:SELECT => ['song' , 'attendance'], :FROM => 'history')
 
-    # ユーザ指定がある場合、そのユーザの歌唱回数のみで集計
+    # [オプション] 特定ユーザの歌唱回数のみで集計
     if user = opt[:user]
       attend_ids = user.attend_ids
       db.where_in(['attendance' , attend_ids.length])
@@ -68,52 +68,62 @@ class Ranking < Base
     end
     songs = db.execute_all
 
-    # 楽曲IDのみ抜き出す
+    # [オプション] 同じカラオケ、同じユーザの歌唱を重複カウントしない
     opt[:disdinct] and ranking.uniq!
+
+    # 楽曲IDのみ抜き出す
     songs = songs.map {|r| r['song']}
 
     # ランキングの生成
     limit = opt[:limit] || 20
-    ranking = Ranking.create_from_array(songs , limit)
+    ranking = Ranking.create(songs , limit)
 
     # 楽曲、アーティストの情報を付与
     songs_ids = ranking.map {|s| s['value']}
     songs_info = Song.list(:songs => songs_ids, :artist_info => true, :want_hash => true)
-    ranking.each do |r|
-      r.merge!(songs_info[r['value']])
-    end
+    ranking.each { |r| r.merge!(songs_info[r['value']]) }
     return ranking
   end
 
   # artist_sang_count - クラスメソッド: 歌手の歌唱数ランキングを取得
   #--------------------------------------------------------------------
   def self.artist_sang_count(opt = {})
-    limit = opt[:limit] || 20
+    # アーティスト情報を含めて歌唱履歴を取得
+    # Todo: ３テーブルJOINしちゃってる
     db = DB.new(
-      :SELECT => {
-        'artist.id' => 'artist_id' ,
-        'artist.name' => 'artist_name' ,
-        'count(*)' => 'count'
-      } ,
-      :FROM => 'history' ,
-      :JOIN => [
-        ['history' , 'song'] ,
-        ['song' , 'artist'] ,
-      ] ,
-      :OPTION => ['GROUP BY artist.id' , 'ORDER BY count DESC' , "LIMIT #{limit}"]
+      :SELECT => { 'artist.id' => 'artist_id', 'history.attendance' => 'attendance'},
+      :FROM => 'history',
+      :JOIN => [ ['history' , 'song'], ['song' , 'artist'] ]
     )
-    # ユーザ指定がある場合、そのユーザのみを対象に
+    # [オプション] 対象ユーザのみを対象に
     if user = opt[:user]
       attends = user.attend_ids
       db.where_in(['history.attendance' , attends.length])
       db.set(attends)
     end
-    db.execute_all
+    histories = db.execute_all
+
+    # 集計用にアーティストIDのみを抜き出す
+    # [オプション] １度のカラオケで同じユーザが複数回歌った場合に重複カウントしない
+    opt[:distinct] and  histories.uniq!
+    artists = histories.map {|a| a['artist_id']}
+
+    # ランキングを生成
+    limit = opt[:limit] || 20
+    ranking = Ranking.create(artists , limit)
+
+    # アーティスト情報を取得
+    artists_info = Artist.list(:ids => artists.uniq , :want_hash => true)
+
+    # ランキングにアーティスト情報をマージ
+    ranking.each { |r| r.merge!(artists_info[r['value']]) }
+
+    return ranking
   end
 
-  # create_from_array - クラスメソッド: 配列を対象にランキングを生成する
+  # create - クラスメソッド: 配列を対象にランキングを生成する
   #--------------------------------------------------------------------
-  def self.create_from_array(array , limit = nil)
+  def self.create(array , limit = nil)
     # 値ごとの出現回数を数える
     counts = array.inject(Hash.new(0)) {|hash , v| hash[v] += 1; hash}
     # 回数が多い順に並び替え

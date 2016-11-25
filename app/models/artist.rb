@@ -145,6 +145,13 @@ class Artist < Base
   def self.list(opt = {})
     db = DB.new(:FROM => 'artist')
 
+    # IDを指定
+    if opt[:ids]
+      ids = opt[:ids]
+      db.where_in(['id' , ids.length])
+      db.set(ids)
+    end
+
     # 曲名で曖昧検索
     if opt[:name_like]
       db.where('artist.name like ?')
@@ -161,6 +168,12 @@ class Artist < Base
       db.option(['GROUP BY song.artist' , 'ORDER BY song_num DESC'])
     end
 
-    db.execute_all
+    # 実行結果を配列、もしくはハッシュで戻す
+    list = db.execute_all
+    if opt[:want_hash]
+      Util.array_to_hash(list , 'id')
+    else
+      list
+    end
   end
 end
