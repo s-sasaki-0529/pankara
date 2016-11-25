@@ -20,7 +20,7 @@ describe '楽曲ランキング機能' do
 
   it 'ランキングが正常に表示される' do
     tables = table_to_hash('artistranking_table')
-    expect(tables.length).to eq 20
+    expect(tables.length).to eq 50
     expect(tables[0]['tostring']).to eq '1,BUMP OF CHICKEN,95,43,2.21'
     expect(tables[4]['tostring']).to eq '5,雪音クリス,34,7,4.86'
   end

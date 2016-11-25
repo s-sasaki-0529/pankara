@@ -69,13 +69,13 @@ class Ranking < Base
     songs = db.execute_all
 
     # [オプション] 同じカラオケ、同じユーザの歌唱を重複カウントしない
-    opt[:disdinct] and ranking.uniq!
+    opt[:distinct] and songs.uniq!
 
     # 楽曲IDのみ抜き出す
     songs = songs.map {|r| r['song']}
 
     # ランキングの生成
-    limit = opt[:limit] || 20
+    limit = opt[:limit] || 50
     ranking = Ranking.create(songs , limit)
 
     # 楽曲、アーティストの情報を付与
@@ -109,7 +109,7 @@ class Ranking < Base
     artists = histories.map {|a| a['artist_id']}
 
     # ランキングを生成
-    limit = opt[:limit] || 20
+    limit = opt[:limit] || 50
     ranking = Ranking.create(artists , limit)
 
     # アーティスト情報を取得
