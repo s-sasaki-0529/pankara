@@ -4,11 +4,11 @@ $(function(){
   $('.sortable').tablesorter();
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });
   $("a").click(function() {
-    console.log('hoge');
     if ($(this).attr('href')[0] != '#') {
       zenra.getLoader().show();
     }
   });
+  zenra.getLoader().hide();
 });
 
 /*呼び出して使用するメソッドを定義*/
