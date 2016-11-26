@@ -419,6 +419,13 @@ class Util
     file.mtime.to_i.to_s
   end
 
+  # url_with_filemtime - 指定したファイルパスに、更新日時を付与して戻す
+  #--------------------------------------------------------------------
+  def self.url_with_filemtime(filepath)
+    mtime = Util.filemtime(filepath)
+    return "#{filepath}?#{mtime}"
+  end
+
   # run_mode - 現在のrun modeを取得
   #--------------------------------------------------------------------
   def self.run_mode
