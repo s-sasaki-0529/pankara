@@ -12,7 +12,7 @@
  /*
   * 上記のjQueryプラグインを、パンダリンのカラオケランドに合わせて改造
   * JSON読み込みから、カレンダー生成時に各種パラメータを与えられるように変更し、
-  * イベントに画像やリンクを含めるようにする
+  * イベントに画像やイベントを含めるようにする
   */
 
 ;(function($) {
@@ -141,12 +141,13 @@
           labelClass += '-' + this.events[i].type;
         }
         var calendarLabel = $('<span>').addClass('calendar-event').addClass(labelClass);
-        if (this.events[i].link) {
-          (function(url) {
+        if (this.events[i].onclick) {
+          (function(f) {
             calendarLabel.addClass('pointer').click(function() {
-              location.href = url;
+              console.log('hoge');
+              f();
             });
-          })(this.events[i].link);
+          })(this.events[i].onclick);
         }
 
         $(this.ele).find('#' + dateID).append(calendarLabel);
