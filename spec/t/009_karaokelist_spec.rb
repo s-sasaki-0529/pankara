@@ -33,6 +33,16 @@ describe 'カラオケ一覧機能' do
       'karaoke/user/worry' , 'ウォーリーさんのカラオケ一覧' , 1 , 
       '2016-01-08,新年初カラオケ,5.0,JOYJOY 甚目寺店,JOYSOUND(MAX),')
   end
+  describe 'カラオケの件数' do
+    it '全カラオケ' do
+      visit '/karaoke/list'
+      expect(find('#karaoke_num').text()).to eq '5'
+    end
+    it 'ユーザのカラオケ' do
+      visit '/karaoke/user/sa2knight'
+      expect(find('#karaoke_num').text()).to eq '3'
+    end
+  end
   it 'リンクが正常か' , :js => true do
     visit '/karaoke/list'
     find('#karaokelist_table').all('tr')[3].click

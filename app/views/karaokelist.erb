@@ -4,6 +4,7 @@
 <% if Util.is_pc? %></h1><% end %>
 
 <% if @karaoke_list.size > 0 %>
+  <div class='right'>全<span id="karaoke_num"><%= @karaoke_list.size %></span>件</div>
   <table id="karaokelist_table" class="table sortable table-hover linkcursor">
     <thead>
       <tr>
