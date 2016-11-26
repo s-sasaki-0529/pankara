@@ -2,7 +2,13 @@
 $(function(){
   //テーブルをソート可能に
   $('.sortable').tablesorter();
-  $('input[type=submit]').click(function () { zenra.getLoader().show(); });
+  $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });
+  $("a").click(function() {
+    console.log('hoge');
+    if ($(this).attr('href')[0] != '#') {
+      zenra.getLoader().show();
+    }
+  });
 });
 
 /*呼び出して使用するメソッドを定義*/
@@ -105,7 +111,7 @@ zenra.prompt = function (message , initValue , title , callback) {
     var r = prompt(message , initValue);
     callback(r);
   }
-}
+};
 
 /*
 loader - 読み込み中画面を生成
@@ -140,6 +146,15 @@ zenra.getLoader = function () {
 };
 
 /*
+visit - 指定したURLに移動
+移動前にローディングビューを描画する
+*/
+zenra.visit = function (url) {
+  zenra.getLoader().show();
+  location.href = url;
+};
+
+/*
 createPieChart - 円グラフを生成する
 targetSelecter: 描画対象要素のセレクタ
 dataSelecter: 対象データのJSONを持つ要素のセレクタ
@@ -163,7 +178,7 @@ zenra.createPieChart = function(targetSelecter , data, opt) {
           if (! opt.links) {
             return;
           } else if (opt.links[id]) {
-            location.href = opt.links[id];
+            zenra.visit(opt.links[id]);
           }
         }
       } : {}
@@ -338,7 +353,7 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
       var player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
       player_dialog.show('/song/' + id + '/player' , 'player' , opt);
       $('.ui-dialog-title').unbind('click').click(function() {
-        location.href = '/song/' + id;
+        zenra.visit('/song/' + id);
       });
     });
     $('#thumbnail_' + idx).append($img);
@@ -1195,9 +1210,9 @@ var register = (function() {
             if (opt.callback && opt.callback == '#') {
               input_dialog.close();
             } else if (opt.callback) {
-              location.href = opt.callback;
+              zenra.visit(opt.callback);
             } else {
-              location.href = "/karaoke/detail/" + karaoke_id;
+              zenra.visit("/karaoke/detail/" + karaoke_id);
             }
           });
           zenra.getLoader().hide();
@@ -1317,7 +1332,7 @@ var register = (function() {
                 zenra.scrollToTop();
               }
               $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
-              $('#button2').on('click' , function() { location.href = "/karaoke/detail/" + karaoke_id; }).val('終了');
+              $('#button2').on('click' , function() { zenra.visit("/karaoke/detail/" + karaoke_id); }).val('終了');
             } ,
           });
         } ,
@@ -1337,7 +1352,7 @@ var register = (function() {
       zenra.getLoader().show();
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
         success: function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+          zenra.visit('/karaoke/detail/' + karaoke_id);
         } ,
         error: function(error) {
           alert(error);
@@ -1361,7 +1376,7 @@ var register = (function() {
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
         sync: true,
         success: function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+          zenra.visit('/karaoke/detail/' + karaoke_id);
         } ,
         error: function(error) {
           alert(error);
@@ -1380,7 +1395,7 @@ var register = (function() {
       zenra.post('/ajax/song/modify' , data , {
         sync: true,
         success: function(json_response) {
-          location.href = ('/song/' + song_id);
+          zenra.visit('/song/' + song_id);
         } ,
         error: function(error) {
           alert(error);
@@ -1428,7 +1443,7 @@ var register = (function() {
       zenra.post('/ajax/song/create' , data , {
         sync: true,
         success: function(songID) {
-          location.href = '/song/' + songID;
+          zenra.visit('/song/' + songID);
         } ,
         error: function(error) {
             alert(error);
@@ -1445,7 +1460,7 @@ var register = (function() {
       zenra.post('/ajax/history/modify/', {id: history_id, params: json_data} , {
         sync: true,
         success: function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+          zenra.visit('/karaoke/detail/' + karaoke_id);
         } ,
         error: function(error) {
             alert(error);
@@ -1464,7 +1479,7 @@ var register = (function() {
       zenra.post('/ajax/karaoke/delete/' , {id: karaoke_id} , {
         sync: true,
         success: function() {
-            location.href = '/';
+            zenra.visit('/');
         } ,
         error: function() {
             alert('カラオケの削除に失敗しました。');
@@ -1480,7 +1495,7 @@ var register = (function() {
       zenra.post('/ajax/history/delete/' , {id: history_id} , {
         sync: true,
         success: function() {
-          location.href = ('/karaoke/detail/' + karaoke_id);
+          zenra.visit('/karaoke/detail/' + karaoke_id);
         } ,
         error: function () {
           alert('歌唱履歴の削除に失敗しました。');
@@ -1545,7 +1560,8 @@ zenra.showSongTagList = function(id , user) {
     $('.song-tag').remove();
   }
   function addTagElement(tag) {
-    var $td1 = $('<td><a href="/search/tag/?tag=' + tag.name + '">' + zenra.htmlescape(tag.name) + '</a></td>');
+    var link = '/search/tag?tag=' + tag.name;
+    var $td1 = $('<td>').text(zenra.htmlescape(tag.name)).click(function () { zenra.visit(link); }).addClass('link');
     var $removeIcon;
     if (tag.created_by == user) {  //自身が登録したタグの場合のみ、削除アイコンを表示
       $removeIcon = $("<img src='/image/delete_tag.png' width=16px'>").click(function() {
@@ -1615,7 +1631,7 @@ zenra.sendContactMail = function () {
   zenra.post('/ajax/contact' , params , {
     sync: true,
     success: function () {
-      location.href = "/contact";
+      zenra.visit("/contact");
     } ,
     nwError: function () {
       alert('お問い合わせメールの送信に失敗しました');

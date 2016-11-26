@@ -108,7 +108,7 @@ describe 'タグ機能' , :js => true do
     it 'タグ検索へのリンク' do
       visit '/song/231'
       iscontain ['VOCALOID' , '初音ミク']
-      link 'VOCALOID'
+      all('.song-tag')[0].click
       iscontain 'タグ "VOCALOID" が登録された楽曲一覧(109件)'
     end
     it '楽曲ページヘのリンク' do

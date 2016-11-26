@@ -23,7 +23,7 @@
     </thead>
     <tbody>
       <% @karaoke_list.each do |karaoke| %>
-      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+      <tr onclick="zenra.visit('/karaoke/detail/<%= karaoke['id'] %>')">
         <td class='cell-date'><%= date(karaoke['datetime']) %></td>
         <td><%= h karaoke['name'] %></td>
         <% if Util.is_pc? %>

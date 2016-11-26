@@ -30,6 +30,13 @@ tr *.cell-datetime {
   cursor: pointer;
 }
 
+/*aタグで囲ったものと同じスタイル*/
+.link {
+  color: #0080c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /*半透明の要素*/
 .translucent {
   opacity: 0.5;
@@ -286,9 +293,9 @@ p.mini {
  /* 背景関連の設定 */
  background-color: #000000;
  filter: alpha(opacity=45);
- -moz-opacity: 0.25;
- -khtml-opacity: 0.25;
- opacity: 0.25;
+ -moz-opacity: 0.5;
+ -khtml-opacity: 0.5;
+ opacity: 0.5;
  background-position: center center;
  background-repeat: no-repeat;
  background-attachment: fixed;

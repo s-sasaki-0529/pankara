@@ -2,11 +2,11 @@
 function getURL(page) {
   var current = location.href;
   if (current.match(/page=/)) {
-    location.href = current.replace(/page=[0-9]+/g , "page=" + page);
+    zenra.visit(current.replace(/page=[0-9]+/g , "page=" + page));
   } else if (current.match(/\?/)) {
-    location.href = current + "&page=" + page;
+    zenra.visit(current + "&page=" + page);
   } else {
-    location.href = "?page=" + page;
+    zenra.visit("?page=" + page);
   }
 }
 </script>
