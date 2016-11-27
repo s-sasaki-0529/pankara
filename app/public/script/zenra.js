@@ -591,7 +591,6 @@ var dialog = function(title , dialog_id , width , height) {
         } ,
         beforeClose: funcs.beforeClose ,
       });
-      console.log(position);
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
         if (! zenra.ispc) {
@@ -1548,7 +1547,7 @@ zenra.showAggregateDialog = function(user) {
   input_dialog.show(url , 'aggregate' , {
     func_at_load: function() {
     } ,
-    position: zenra.ispc ? 'auto' : 'head' ,
+    position: '60px' ,
     resizable: true
   });
 };
