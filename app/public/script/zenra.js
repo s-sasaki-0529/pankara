@@ -3,12 +3,6 @@ $(function(){
   //テーブルをソート可能に
   $('.sortable').tablesorter();
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });
-  $("a").click(function() {
-    if ($(this).attr('href')[0] != '#') {
-      zenra.getLoader().show();
-    }
-  });
-  zenra.getLoader().hide();
 });
 
 /*呼び出して使用するメソッドを定義*/
@@ -150,7 +144,8 @@ visit - 指定したURLに移動
 移動前にローディングビューを描画する
 */
 zenra.visit = function (url) {
-  zenra.getLoader().show();
+  //バグが多いので一時的に無効
+  //zenra.getLoader().show();
   location.href = url;
 };
 
