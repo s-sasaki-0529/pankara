@@ -918,6 +918,7 @@ var register = (function() {
     createInputSongEvent();
     createInputArtistEvent();
 
+    // 採点モードと得点欄の開閉を同期
     $('#score_type').change(function() {
       if ($('#score_type').val() == 0) {
         $('#score_area').hide();
@@ -927,6 +928,21 @@ var register = (function() {
       }
     });
 
+    // 得点欄入力時のオートバリデーション
+    $('#score').change(function() {
+      var currentValue = $(this).val();
+      console.log(currentValue);
+      var newValue = parseFloat(currentValue.replace(/[^(\d|.)]/g, ''));
+      if (newValue === undefined || isNaN(newValue)) {
+        $(this).val('');
+      } else if (newValue > 100) {
+        $(this).val('100');
+      } else {
+        $(this).val(newValue);
+      }
+    });
+
+    // ツイートチェックボックスとツイート内容欄の開閉を同期
     $('#tweet-checkbox').change(function() {
       if ($(this).prop('checked')) {
         $('#tweet_text_area').removeClass('hidden');
