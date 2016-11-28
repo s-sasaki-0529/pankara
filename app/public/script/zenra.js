@@ -856,7 +856,6 @@ var register = (function() {
         format: 'Y-m-d H:i',
         validateOnBlur: true,
         onGenerate: function(ct) {
-          console.log('hoge');
           $('.xdsoft_disabled').removeClass('xdsoft_disabled');
         },
       });
@@ -901,18 +900,15 @@ var register = (function() {
         song_obj = response;
         song_list = [];
         artist_list = [];
-        
         for (var id in song_obj) {
           if (song_obj.hasOwnProperty(id)) {
             if (song_list.indexOf(song_obj[id].song) < 0) {
               song_list.push(song_obj[id].song);
             }
-            
             if (artist_list.indexOf(song_obj[id].artist) < 0) {
               artist_list.push(song_obj[id].artist);
             }
           }
-        
         }
         song_moshikashite = new moshikashite('song' , song_list);
         artist_moshikashite = new moshikashite('artist' , artist_list);
@@ -923,7 +919,6 @@ var register = (function() {
     createInputArtistEvent();
 
     $('#score_type').change(function() {
-      console.log('tori');
       if ($('#score_type').val() == 0) {
         $('#score_area').hide();
       }
