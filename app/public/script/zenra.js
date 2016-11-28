@@ -365,8 +365,8 @@ zenra.createSeekbar = function() {
   var $seekBar = $('#seekbar');
   $seekBar.slider({
     value: 0 ,
-    max: 6 ,
-    min: -6 ,
+    max: 7 ,
+    min: -7 ,
     step: 1 ,
 
     create: function() {
