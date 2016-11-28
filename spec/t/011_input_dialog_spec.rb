@@ -213,19 +213,52 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   end
 
   describe 'ダイアログウィジェット' do
-    describe 'キースライダ' do
-      before do
+    before do
         input_karaoke
         js('register.submitKaraokeRegistrationRequest();');
-        expect(find('#slidervalue').text()).to eq '0'
-      end
+    end
+    describe 'キースライダ' do
       it 'プラスボタン' do
+        expect(find('#slidervalue').text()).to eq '0'
         js("$('.slider-btn').last().click()")
         expect(find('#slidervalue').text()).to eq '1'
       end
       it 'マイナスボタン' do
+        expect(find('#slidervalue').text()).to eq '0'
         js("$('.slider-btn').first().click()")
         expect(find('#slidervalue').text()).to eq '-1'
+      end
+    end
+    describe '得点入力欄' do
+      before do
+        select 'JOYSOUND 全国採点', from: 'score_type'
+      end
+      it '採点モード指定なしの場合得点欄を表示しない' do
+        select '', from: 'score_type'
+        expect(evaluate_script("$('#score_area').css('display')")).to eq 'none'
+      end
+      it '採点モード指定ありの場合得点欄を表示する' do
+        expect(evaluate_script("$('#score_area').css('display')")).to eq 'block'
+      end
+      it '101点以上入力で100点に修正' do
+        fill_in 'score', with: 120
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '100'
+      end
+      it '-n点入力でn点に修正' do
+        fill_in 'score', with: -50
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '50'
+      end
+      it '小数点が複数ある場合に補正' do
+        fill_in 'score', with: '85.92.38.59'
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '85.92'
+      end
+      it 'アルファベットが含まれている場合に訂正' do
+        fill_in 'score', with: '8fadlsfl2.jfaa38'
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '82.38'
       end
     end
   end
