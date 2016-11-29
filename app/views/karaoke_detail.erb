@@ -25,7 +25,7 @@
         <td class='center cell-date'><%= date(@karaoke['datetime']) %></td>
         <td class='center'><%= @karaoke['plan'] %></td>
         <td class='center'><%= h @karaoke['store_full_name'] %></td>
-        <td class='center'><%= @karaoke['product_name'] %></td>
+        <td class='center'><%= @karaoke['product_full_name'] %></td>
         <td class='center'><%= @karaoke.histories.count %></td>
         <% if @current_user %>
         <td class='center'>
@@ -197,7 +197,7 @@
       </tr>
       <tr>
         <th>機種</th>
-        <td><%= @karaoke['product_name'] %></td>
+        <td><%= @karaoke['product_full_name'] %></td>
       </tr>
       <tr>
         <th>歌唱数</th>

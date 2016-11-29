@@ -13,6 +13,7 @@ class AjaxDialogRoute < AjaxRoute
   # get '/ajax/dialog/karaoke/:karaoke_id/history - 歌唱履歴の入力画面を表示
   #---------------------------------------------------------------------
   get '/karaoke/:karaoke_id/history' do
+    karaoke = Karaoke.new(params[:karaoke_id])
     @score_type = ScoreType.List
     @twitter = @current_user ? @current_user['twitter_info'] : nil
     erb :_input_history
