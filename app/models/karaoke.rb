@@ -25,6 +25,8 @@ class Karaoke < Base
     @params or return nil
 
     product = Product.new(@params['product'])
+    @params['product_brand'] = product.params['brand']
+    @params['product_name'] = product.params['product']
     @params['product_full_name'] = "#{product.params['brand']}(#{product.params['product']})"
 
     store = Store.new(@params['store'])

@@ -14,7 +14,7 @@ class AjaxDialogRoute < AjaxRoute
   #---------------------------------------------------------------------
   get '/karaoke/:karaoke_id/history' do
     karaoke = Karaoke.new(params[:karaoke_id])
-    @score_type = ScoreType.List
+    @score_type = ScoreType.List(:product => karaoke['product_brand'])
     @twitter = @current_user ? @current_user['twitter_info'] : nil
     erb :_input_history
   end

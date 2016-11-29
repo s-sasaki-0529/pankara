@@ -10,7 +10,7 @@ url = '/ranking/score'
 # テスト用データベース構築
 init = proc do
   `zenra init -d 2016_02_21_15_54`
-  score_types = ScoreType.List(true).collect {|st| "#{st['brand']} #{st['name']}"}
+  score_types = ScoreType.List(:wanthash => true).collect {|st| "#{st['brand']} #{st['name']}"}
 end
 
 # テスト実行
