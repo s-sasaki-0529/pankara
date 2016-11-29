@@ -136,10 +136,17 @@ module Rbase
     page.all('.thumbnail').collect {|element| element['src']}
   end
 
-  # JavaScriptを実行
+  # JavaScriptを実行(戻り値を取らないが高速)
   def js(script)
     execute_script script
     wait_for_ajax
+  end
+
+  # JavaScriptを実行(戻り値を取るが低速)
+  def ejs(script)
+    result = evaluate_script script
+    wait_for_ajax
+    return result
   end
 
   # JavaScriptの非同期処理が完了するまで待機

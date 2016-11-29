@@ -108,7 +108,7 @@ describe 'ユーザページ機能' do
       visit url; wait_for_ajax
     end
     it '歌唱履歴が存在する場合' do
-      result = evaluate_script("$('#user_sang_artists_chart_json').text();")
+      result = ejs("$('#user_sang_artists_chart_json').text();")
       expect(result).to eq '[["Aqua Timez",42.9],["和田光司",28.6],["ロードオブメジャー",14.3],["Galileo Galilei",14.3]]'
     end
   end

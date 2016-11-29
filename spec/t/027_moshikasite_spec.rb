@@ -74,7 +74,7 @@ describe '楽曲登録機能' , :js => true do
       create_song(nil , nil)
       fill_in 'song' , with: '天体観測'; wait_for_ajax
       js("$('#artist').focus();")
-      expect(evaluate_script("$('#artist').val()")).to eq 'BUMP OF CHICKEN'
+      expect(ejs("$('#artist').val()")).to eq 'BUMP OF CHICKEN'
     end
 
     it '曲名が入力された場合に対応する歌手名を表示(曲名重複パターン)' do
@@ -82,7 +82,7 @@ describe '楽曲登録機能' , :js => true do
       fill_in 'song' , with: 'ピエロ'; wait_for_ajax
       js("$('#artist').focus();")
       iscontain ['上木彩矢' , 'KEI']
-      expect(evaluate_script("$('#artist').val()")).to eq ''
+      expect(ejs("$('#artist').val()")).to eq ''
     end
 
   end

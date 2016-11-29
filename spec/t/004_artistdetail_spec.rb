@@ -13,7 +13,7 @@ describe '歌手詳細ページ' , :js => true do
 
   def to_hash(id)
     js = "$('##{id}').text();"
-    json = evaluate_script(js)
+    json = ejs(js)
     return Util.to_hash(json)
   end
 

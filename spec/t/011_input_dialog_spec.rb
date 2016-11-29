@@ -254,10 +254,10 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       end
       it '採点モード指定なしの場合得点欄を表示しない' do
         select '', from: 'score_type'
-        expect(evaluate_script("$('#score_area').css('display')")).to eq 'none'
+        expect(ejs("$('#score_area').css('display')")).to eq 'none'
       end
       it '採点モード指定ありの場合得点欄を表示する' do
-        expect(evaluate_script("$('#score_area').css('display')")).to eq 'block'
+        expect(ejs("$('#score_area').css('display')")).to eq 'block'
       end
       it '101点以上入力で100点に修正' do
         fill_in 'score', with: 120

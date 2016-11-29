@@ -11,7 +11,7 @@ end
 def sang_count_chart(user , song)
   login user
   visit "/song/#{song}"; wait_for_ajax
-  json = evaluate_script("$('#sang_count_chart_json').text();")
+  json = ejs("$('#sang_count_chart_json').text();")
   info = Util.to_hash(json)
   return Util.array_to_hash(info , '_month' , true)
 end
@@ -20,7 +20,7 @@ end
 def score_chart(user , song)
   login user
   visit "/song/#{song}"; wait_for_ajax
-  json = evaluate_script("$('#score_bar_chart_json').text();")
+  json = ejs("$('#score_bar_chart_json').text();")
   scores = Util.to_hash(json)["scores"]
   return Util.array_to_hash(scores , 'name' , true)
 end
