@@ -236,14 +236,17 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it 'JOYSOUNDの場合' do
         select 'JOYSOUND MAX', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他その他 その他'
       end
       it 'DAMの場合' do
         select 'DAM LIVE DAM', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
       end
       it 'その他の場合' do
         select 'その他 その他', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
       end
     end
     describe '得点入力欄' do
