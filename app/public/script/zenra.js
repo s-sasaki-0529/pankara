@@ -1205,7 +1205,7 @@ var register = (function() {
     createHistory : function(karaoke_id , opt) {
       opt = opt || {};
       input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450);
-      input_dialog.show('/ajax/dialog/history' , 'input_history' , {
+      input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory(opt.defaultValue);
           setScoreTypeFromCookie();
@@ -1309,7 +1309,7 @@ var register = (function() {
       zenra.post('/ajax/history/detail' , {id: history_id} , {
         success: function(history) {
           input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
-          input_dialog.show('/ajax/dialog/history' , 'input_history' , {
+          input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               createElementForEditHistory(karaoke_id , history_id);
@@ -1330,7 +1330,7 @@ var register = (function() {
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
-          input_dialog.transition('/ajax/dialog/history' , 'input_history' , {
+          input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               if (! zenra.ispc) {
