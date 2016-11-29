@@ -213,11 +213,11 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   end
 
   describe 'ダイアログウィジェット' do
-    before do
+    describe 'キースライダ' do
+      before do
         input_karaoke
         js('register.submitKaraokeRegistrationRequest();');
-    end
-    describe 'キースライダ' do
+      end
       it 'プラスボタン' do
         expect(find('#slidervalue').text()).to eq '0'
         js("$('.slider-btn').last().click()")
@@ -229,8 +229,27 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         expect(find('#slidervalue').text()).to eq '-1'
       end
     end
+    describe '採点モード' do
+      before do
+        input_karaoke
+      end
+      it 'JOYSOUNDの場合' do
+        select 'JOYSOUND MAX', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+      end
+      it 'DAMの場合' do
+        select 'DAM LIVE DAM', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+      end
+      it 'その他の場合' do
+        select 'その他 その他', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+      end
+    end
     describe '得点入力欄' do
       before do
+        input_karaoke
+        js('register.submitKaraokeRegistrationRequest();');
         select 'JOYSOUND 全国採点', from: 'score_type'
       end
       it '採点モード指定なしの場合得点欄を表示しない' do
