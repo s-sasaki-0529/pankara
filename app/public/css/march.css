@@ -303,6 +303,37 @@ p.mini {
   margin-top: -5px;
 }
 
+/* ============================================
+ * 設定画面
+ * ============================================*/
+.config {
+}
+.config-content-header {
+  line-height: 36px;
+  background-color: #999999;
+  width: 100%;
+  padding-left: 8px;
+  padding-right: 24px;
+  border: #eeeeee solid 2px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: white;
+}
+.config-content-body {
+  margin-top: -2px;
+  padding: 8px;
+  width: 100%;
+  border: #eeeeee solid 2px;
+  border-left-bottom-radius: 3px;
+  border-right-bottom-radius: 3px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #FEFEFE;
+}
+
 /* =======================================
  * ローディングビュー
  * =======================================*/

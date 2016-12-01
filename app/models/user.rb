@@ -423,9 +423,9 @@ class User < Base
   #---------------------------------------------------------------------
   def tweet(text)
     if twitter = self.twitter_account
-      twitter.tweet(text)
+      result = twitter.tweet(text)
     end
-    return twitter
+    return result
   end
 
   # tweet_karaoke - ツイッターにカラオケについてツイートする
