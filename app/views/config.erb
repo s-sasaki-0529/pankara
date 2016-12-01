@@ -1,3 +1,16 @@
+<script>
+$(function () {
+  /* アイコンを変更するボタンクリックで、ファイル選択*/
+  $('#change_icon_btn').click(function() {
+    $('input[name=icon_file]').click();
+  });
+  /* ファイルが選択されたらアップロード*/
+  $('input[name=icon_file]').change(function() {
+    $('form#change_icon_form').submit();
+  });
+});
+</script>
+
 <!-- システムメッセージ -->
 <% if @mod_config_result %>
   <p class="system-msg">
@@ -5,17 +18,24 @@
   </p>
 <% end %>
 
-<h2>ユーザ設定</h2>
-
 <div class="config">
   <!-- アイコン設定 -->
   <div class="config-content">
     <div class="config-content-header">プロフィール</div>
     <div class="config-content-body">
-      <form method="POST" action="/config/icon" enctype="multipart/form-data">
-        <p><%= user_icon @current_user['username'] , 64 , 64%></p>
-        <input type="file" name="icon_file" accept="image/jpeg,image/png,image/gif">
-        <input type="submit" name="upload_icon_file" value="アップロード">
+      <form method="POST" id="change_icon_form" action="/config/icon" enctype="multipart/form-data">
+        <div id="usericon">
+          <%= user_icon @current_user['username'] , 64 , 64%>
+        </div>
+        <div id="userinfo">
+          <div id="user_screenname"><%= @current_user['screenname'] %></div>
+          <div id="user_name" class="mini">ID: <%= @current_user['username'] %></div>
+        </div>
+        <div id="iconuploader">
+          <button id="change_icon_btn" type="button" class="btn btn-primary btn-sm">アイコンを変更する</button>
+          <input type="file" name="icon_file" class="hidden" accept="image/jpeg,image/png,image/gif">
+          <input type="submit" name="upload_icon_file" class="hidden" value="アップロード">
+        </div>
         <%= csrftoken %>
       </form>
     </div>
@@ -25,16 +45,13 @@
     <div class="config-content-header">Twitter設定</div>
     <div class="config-content-body">
       <form method="POST" action="/config/twitter">
-        <h3>Twitter連携</h3>
         <% if @twitter_authed %>
-          <p>認証済み</p>
           <p><img src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
-          <input type="submit" name="remove_oauth" value="認証解除">
+          <button type="submit" name="remove_oauth" class="btn btn-primary btn-sm" >認証解除</div>
         <% else %>
-          <p>
-            まだ認証を行っていません
-            <input type="submit" name="start_oauth" value="認証する">
-          </p>
+          <img src="image/twitter.png" width="28"/>
+          <span>まだ認証を行っていません</span>
+          <button type="submit" name="start_oauth" class="btn btn-primary btn-sm" >認証する</div>
         <% end %>
         <%= csrftoken %>
       </form>

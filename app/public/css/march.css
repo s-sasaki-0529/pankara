@@ -8,6 +8,15 @@ body {
   background-image: url("../image/bg2.png");
 }
 
+/*システムメッセージ領域*/
+.system-msg {
+  width: 99%;
+  color: #666;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: solid 4px #aaa;
+}
+
 /*ヘッダメニューのz-indexを上書き*/
 .navbar-fixed-top,
 .navbar-fixed-bottom {
@@ -307,6 +316,7 @@ p.mini {
  * 設定画面
  * ============================================*/
 .config {
+  width: 50%;
 }
 .config-content-header {
   line-height: 36px;
@@ -332,6 +342,19 @@ p.mini {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   background-color: #FEFEFE;
+}
+.config-content-body #usericon {
+  float: left;
+}
+.config-content-body #userinfo {
+  float: left;
+  margin-left: 10px;
+}
+.config-content-body #user_screenname {
+  font-size: 24px;
+}
+.config-content-body #iconuploader {
+  clear: both;
 }
 
 /* =======================================
