@@ -7,6 +7,9 @@ class ConfigRoute < March
   #--------------------------------------------------------------------
   get '/' do
 
+    #ログインユーザのみアクセス可能
+    @current_user or raise Sinatra::NotFound
+
     #TwitterAPIからのリダイレクト
     if params[:oauth_token] && verifier = params[:oauth_verifier]
       req_token = session[:request_token] || ''
