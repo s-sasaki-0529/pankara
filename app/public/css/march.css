@@ -357,6 +357,11 @@ p.mini {
   clear: both;
 }
 
+.config-content-body #twitter_format textarea {
+  width: 100%;
+  resize: none;
+}
+
 /* =======================================
  * ローディングビュー
  * =======================================*/

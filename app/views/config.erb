@@ -44,17 +44,26 @@ $(function () {
   <div class="config-content">
     <div class="config-content-header">Twitter設定</div>
     <div class="config-content-body">
+      <div class="config-content-body-title">連携設定</div>
       <form method="POST" action="/config/twitter">
         <% if @twitter_authed %>
           <p><img src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
-          <button type="submit" name="remove_oauth" class="btn btn-primary btn-sm" >認証解除</div>
+          <button type="submit" name="remove_oauth" class="btn btn-primary btn-sm" >認証解除</button>
         <% else %>
           <img src="image/twitter.png" width="28"/>
           <span>まだ認証を行っていません</span>
-          <button type="submit" name="start_oauth" class="btn btn-primary btn-sm" >認証する</div>
+          <button type="submit" name="start_oauth" class="btn btn-primary btn-sm" >認証する</button>
         <% end %>
         <%= csrftoken %>
       </form>
+      <% if @twitter_authed %>
+      <div id="twitter_format">
+        <div class="config-content-body-title">カラオケ登録時のツイート内容</div>
+        <textarea style="width: 100%"></textarea>
+        <div class="config-content-body-title">歌唱履歴登録時のツイート内容</div>
+        <textarea style="width: 100%"></textarea>
+      </div>
+      <% end %>
     </div>
   </div>
 <div>
