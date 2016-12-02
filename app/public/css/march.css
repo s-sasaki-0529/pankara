@@ -333,7 +333,7 @@ p.mini {
 }
 .config-content-body {
   margin-top: -2px;
-  padding: 8px;
+  padding: 20px;
   width: 100%;
   border: #eeeeee solid 2px;
   border-left-bottom-radius: 3px;
@@ -355,6 +355,10 @@ p.mini {
 }
 .config-content-body #iconuploader {
   clear: both;
+}
+
+.config-contnet-body button {
+  padding-bottom: 30px;
 }
 
 .config-content-body #twitter_format textarea {
