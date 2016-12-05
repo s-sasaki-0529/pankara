@@ -48,7 +48,7 @@ DROP TABLE IF EXISTS `user_attr`;
 CREATE TABLE `user_attr` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `user` INTEGER NOT NULL COMMENT 'ユーザID',
-  `attr` VARCHAR(16) NOT NULL COMMENt '属性名',
+  `attr` VARCHAR(32) NOT NULL COMMENt '属性名',
   `value` MEDIUMTEXT DEFAULT NULL COMMENT '属性',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`) ,
