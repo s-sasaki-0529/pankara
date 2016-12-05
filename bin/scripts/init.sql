@@ -51,7 +51,8 @@ CREATE TABLE `user_attr` (
   `attr` VARCHAR(16) NOT NULL COMMENt '属性名',
   `value` MEDIUMTEXT DEFAULT NULL COMMENT '属性',
   `created_at` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`) ,
+  UNIQUE (`user` , `attr`)
 ) COMMENT 'ユーザ属性';
 
 -- ---
