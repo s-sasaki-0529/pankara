@@ -50,9 +50,9 @@ $(function () {
           <p><img src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
           <div id="twitter_format">
             <div class="config-content-body-title">カラオケ登録時のツイート内容</div>
-            <textarea style="width: 100%"></textarea>
+            <textarea style="width: 100%"><%= @tweet_karaoke_format %></textarea>
             <div class="config-content-body-title">歌唱履歴登録時のツイート内容</div>
-            <textarea style="width: 100%"></textarea>
+            <textarea style="width: 100%"><%= @tweet_history_format %></textarea>
             <button type="submit" name="remove_oauth" class="btn btn-primary btn-sm right" >認証解除</button>
           </div>
         <% else %>
