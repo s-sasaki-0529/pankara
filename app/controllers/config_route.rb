@@ -78,6 +78,13 @@ class ConfigRoute < March
       Util.write_secret(username , nil)
       flash[:mod_config_result] = 'Twitter連携を解除しました'
       redirect '/config/'
+    # TweetFormatの変更リクエスト
+    elsif params[:modify_format]
+      user_attr = UserAttr.new(@current_user['id'])
+      user_attr.set_tweet_karaoke_format(params[:karaoke_format])
+      user_attr.set_tweet_history_format(params[:history_format])
+      flash[:mod_config_result] = 'ツイートフォーマットを変更しました'
+      redirect '/config/'
     end
     erb :config
   end

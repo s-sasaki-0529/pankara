@@ -62,7 +62,7 @@ class UserAttr < Base
 
   # set_tweet_history_format - 歌唱履歴についてのツイートのフォーマットを設定
   #--------------------------------------------------------------------------
-  def set_tweet_history_format
+  def set_tweet_history_format(format)
     self.set('tweet-history-format' , format)
   end
 
