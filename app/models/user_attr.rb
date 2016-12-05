@@ -40,4 +40,30 @@ class UserAttr < Base
     end
   end
 
+  # get_tweet_karaoke_format - カラオケについてのツイートのフォーマットを取得
+  #--------------------------------------------------------------------------
+  def get_tweet_karaoke_format
+    format = self.get('tweet-karaoke-format')
+    format ? format : "$$username$$さんがカラオケに行きました $$url$$"
+  end
+
+  # get_tweet_history_format - 歌唱履歴についてのツイートのフォーマットを取得
+  #--------------------------------------------------------------------------
+  def get_tweet_history_format
+    format = self.get('tweet-history-format')
+    format ? format : "$$song$$($$artist$$)を歌いました $$url$$"
+  end
+
+  # set_tweet_karaoke_format - カラオケについてのツイートのフォーマットを設定
+  #--------------------------------------------------------------------------
+  def set_tweet_karaoke_format(format)
+    self.set('tweet-karaoke-format' , format)
+  end
+
+  # set_tweet_history_format - 歌唱履歴についてのツイートのフォーマットを設定
+  #--------------------------------------------------------------------------
+  def set_tweet_history_format
+    self.set('tweet-history-format' , format)
+  end
+
 end
