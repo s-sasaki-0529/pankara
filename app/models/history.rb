@@ -6,6 +6,7 @@ require_relative 'util'
 require_relative 'db'
 require_relative 'song'
 require_relative 'register'
+require_relative 'attendance'
 
 class History < Base
 
@@ -14,12 +15,16 @@ class History < Base
   def initialize(id , withInfo = false)
     @params = DB.new.get('history' , id)
     @params['score'] and @params['score'] = sprintf('%.2f',@params['score'])
-    if withInfo
-      songInfo = Song.new(@params['song']).params
-      @params['song_name'] = songInfo['name']
-      @params['artist_name'] = songInfo['artist_name']
-      @params['url'] = songInfo['url']
-    end
+    withInfo and self.set_song_info
+  end
+
+  # set_song_info - 楽曲情報をparamsにセットする
+  #--------------------------------------------------------------------
+  def set_song_info
+    songInfo = Song.new(@params['song']).params
+    @params['song_name'] = songInfo['name']
+    @params['artist_name'] = songInfo['artist_name']
+    @params['url'] = songInfo['url']
   end
 
   # modify - カラオケレコードを修正する
@@ -61,6 +66,26 @@ class History < Base
     DB.new(:DELETE => 1 , :FROM => 'history' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     Util.write_log('event' , "【歌唱履歴削除】#{@params} / #{song.params}")
     @params = nil
+  end
+
+  # karaoke_url - 歌唱履歴が所属するカラオケのURLを取得
+  #--------------------------------------------------------------------
+  def karaoke_url
+    karaoke_id = Attendance.new(@params['attendance'])['karaoke']
+    return Karaoke.new(karaoke_id).url
+  end
+
+  # tweet_format - 歌唱履歴についてツイートするフォーマットを生成する
+  #--------------------------------------------------------------------
+  def tweet_format(format)
+    @params['song_name'] or self.set_song_info
+    params.each do |key , value|
+      format.gsub!(/$$#{key}$$/ , value)
+    end
+    format.gsub!(/\$\$song\$\$/ , @params['song_name'])
+    format.gsub!(/\$\$artist\$\$/ , @params['artist_name'])
+    format.gsub!(/\$\$url\$\$/ , self.karaoke_url)
+    return format
   end
 
   # recent_song - 最近歌われた楽曲のリストを戻す
