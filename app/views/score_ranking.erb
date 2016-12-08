@@ -9,18 +9,18 @@
 <table id="scoreranking_table" class="table sortable table-hover linkcursor">
   <thead>
     <tr>
-      <th class='center' width='100px'>順位</th>
-      <th class='center'>動画</th>
+      <th class='center'>順位</th>
+      <% if Util.is_pc? %><th class='center'>動画</th><% end %>
       <th class='center'>ユーザ</th>
-      <th class='center'>曲名</th>
-      <th class='center'>歌手名</th>
+      <th class='center'>曲名(歌手名)</th>
       <th class='center'>得点</th>
     </tr>
   </thead>
   <tbody>
     <% @scores.each_with_index do |row , rank| %>
     <tr>
-      <td class='center' width='100px'><%= rank + 1 %></td>
+      <td class='center' width='50'><%= rank + 1 %></td>
+      <% if Util.is_pc? %>
       <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'160'<% else %>'80'<% end %>>
         <span id="song_name_<%= rank %>" class="hidden"><%= h row["song_name"] %></span>
         <span id="artist_name_<%= rank %>" class="hidden"><%= h row["artist_name"] %></span>
@@ -32,9 +32,12 @@
           );
         </script>
       </td>
+      <% end %>
       <td class='center'><%= user_link row['username'] , row['screenname'] %></td>
-      <td class='center'><%= song_link row['song'], row['song_name'] %></td>
-      <td class='center'><%= artist_link row['artist_id'], row['artist_name'] %></td>
+      <td class='center'>
+        <div class='ranking-song-name'><%= song_link row['song'], row['song_name'] %></div>
+        <div class='ranking-artist-name'>(<%= artist_link row['artist_id'], row['artist_name'] %>)</div>
+      </td>
       <td class='center'><%= h row['score'] %></td>
     </tr>
     <% end %>
