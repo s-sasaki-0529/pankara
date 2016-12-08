@@ -83,6 +83,12 @@ class Karaoke < Base
     return true
   end
 
+  # url - カラオケ詳細画面のURLを取得
+  #--------------------------------------------------------------------
+  def url
+    Util.url('karaoke' , 'detail' , @params['id'])
+  end
+
   # get_members - カラオケに参加しているユーザ一覧を取得する
   #--------------------------------------------------------------------
   def get_members
