@@ -27,8 +27,8 @@ describe '得点ランキング機能' do
     visit '1'
     table = table_to_hash('scoreranking_table')
     expect(table.length).to eq 20
-    expect(table[0]['tostring']).to eq '1,夢に消えたジュリア サザンオールスターズ,ないと,夢に消えたジュリア,サザンオールスターズ,92.12'
-    expect(table[19]['tostring']).to eq '20,もんだいガール きゃりーぱみゅぱみゅ,ともちん,もんだいガール,きゃりーぱみゅぱみゅ,88.15'
+    expect(table[0]['tostring']).to eq '1,夢に消えたジュリア サザンオールスターズ,2016-02-13,ないと,夢に消えたジュリア (サザンオールスターズ),92.12'
+    expect(table[19]['tostring']).to eq '20,もんだいガール きゃりーぱみゅぱみゅ,2016-02-13,ともちん,もんだいガール (きゃりーぱみゅぱみゅ),88.15'
     # 該当データがない場合
     visit '5'
     expect(find('#nondata').text).to eq nondata
@@ -37,7 +37,7 @@ describe '得点ランキング機能' do
   it 'あなたのランキングへの切り替え' do
     link 'あなたのランキングへ'
     table = table_to_hash('scoreranking_table')
-    expect(table[19]['tostring']).to eq '20,嘘 シド,ないと,嘘,シド,87.87'
+    expect(table[19]['tostring']).to eq '20,嘘 シド,2016-02-13,ないと,嘘 (シド),87.87'
     link '全体のランキングへ'
   end
 

@@ -10,8 +10,11 @@
   <thead>
     <tr>
       <th class='center'>順位</th>
-      <% if Util.is_pc? %><th class='center'>動画</th><% end %>
-      <th class='center'>ユーザ</th>
+      <% if Util.is_pc? %>
+        <th class='center'>動画</th>
+        <th class='center'>日付</th>
+      <% end %>
+      <th class='center' width=110>ユーザ</th>
       <th class='center'>曲名(歌手名)</th>
       <th class='center'>得点</th>
     </tr>
@@ -32,8 +35,9 @@
           );
         </script>
       </td>
+      <td class='center'><%= date row['datetime'] %></td>
       <% end %>
-      <td class='center'><%= user_link row['username'] , row['screenname'] %></td>
+      <td class='center' width=110><%= user_link row['username'] , row['screenname'] %></td>
       <td class='center'>
         <div class='ranking-song-name'><%= song_link row['song'], row['song_name'] %></div>
         <div class='ranking-artist-name'>(<%= artist_link row['artist_id'], row['artist_name'] %>)</div>
