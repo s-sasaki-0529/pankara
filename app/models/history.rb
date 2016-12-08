@@ -82,6 +82,14 @@ class History < Base
     format.gsub!(/\$\$song\$\$/ , @params['song_name'])
     format.gsub!(/\$\$artist\$\$/ , @params['artist_name'])
     format.gsub!(/\$\$url\$\$/ , self.karaoke_url)
+    format.gsub!(/\$\$key\$\$/ ,@params['songkey'] >= 0 ? "+#{@params['songkey']}" : @params['songkey'].to_s)
+    if @params['score'] && @params['score_type']
+      format.gsub!(/\$\$score\$\$/ , @params['score'].to_s)
+      format.gsub!(/\$\$scoretype\$\$/ , ScoreType.id_to_name(@params['score_type']))
+    else
+      format.gsub!(/\$\$score\$\$/ , '未採点')
+      format.gsub!(/\$\$scoretype\$\$/ , '未採点')
+    end
     return format
   end
 
