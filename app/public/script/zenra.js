@@ -1225,6 +1225,7 @@ var register = (function() {
         funcs: {
           beforeClose: beforeClose
         } ,
+        position: '50px' ,
       });
     } ,
 
@@ -1317,7 +1318,8 @@ var register = (function() {
             } ,
             funcs: {
               beforeClose: beforeClose
-            }
+            } ,
+            position: '50px',
           });
         }
       });
