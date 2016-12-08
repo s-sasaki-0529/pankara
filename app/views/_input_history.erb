@@ -32,7 +32,7 @@
         <label class='control-label' for="score">得点</label>
         <input class='form-control' id="score" title="採点結果を入力してください。" type="text" name="score" value="" size="10"/>
       </div>
-      <% if @twitter %>
+      <% if @show_twitter && @twitter %>
       <div>
         <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
         <label for="tweet-checkbox"> ツイートする</label>

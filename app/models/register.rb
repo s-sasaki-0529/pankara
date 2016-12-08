@@ -99,7 +99,7 @@ class Register < Base
     artist_id = create_artist(artist)
     song_id = create_song(artist_id , artist , song)
     scoretype_id = get_scoretype(score_type)
-    DB.new(
+    history_id = DB.new(
       :INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score']] ,
       :SET => [@attendance , song_id , key , scoretype_id , score] ,
     ).execute_insert_id
@@ -110,7 +110,7 @@ class Register < Base
 
     # 歌唱回数を戻す
     sang_count = Song.new(song_id).sangcount(:target_user => @userid)
-    return {:sang_count => sang_count , :song => song , :artist => artist}
+    return {:history_id => history_id , :sang_count => sang_count , :song => song , :artist => artist}
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

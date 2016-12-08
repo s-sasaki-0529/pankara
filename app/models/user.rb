@@ -13,6 +13,7 @@ require_relative 'twitter'
 require_relative 'friend'
 require_relative 'pager'
 require_relative 'tag'
+require_relative 'user_attr'
 
 class User < Base
 
@@ -31,6 +32,12 @@ class User < Base
       @params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
     end
     @params and @params['twitter_info'] = Twitter.user_info(@params['username'])
+  end
+
+  # userattr - UserAttrクラスを生成
+  #---------------------------------------------------------------------
+  def userattr
+    return UserAttr.new(@params['id'])
   end
 
   # histories - ユーザの歌唱履歴と関連情報を取得
@@ -428,20 +435,29 @@ class User < Base
     return result
   end
 
+  # tweet_format - ツイートフォーマットにユーザ情報を埋め込む
+  #--------------------------------------------------------------------
+  def tweet_format(format)
+    format.gsub!(/\$\$username\$\$/ , @params['screenname'])
+    return format
+  end
+
   # tweet_karaoke - ツイッターにカラオケについてツイートする
   #--------------------------------------------------------------------
-  def tweet_karaoke(karaoke_id , tweet_text = "")
-    tweet = "#{@params['screenname']}さんがカラオケに行きました"
-    url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}#{tweet_text}")
+  def tweet_karaoke(karaoke , tweet_text = "")
+    format = self.userattr.get_tweet_karaoke_format
+    format = self.tweet_format(format)
+    format = karaoke.tweet_format(format)
+    self.tweet("#{format}\n#{tweet_text}")
   end
 
   # tweet_history - ツイッターに歌唱履歴についてツイートする
   #--------------------------------------------------------------------
-  def tweet_history(karaoke_id , history , tweet_text = "")
-    tweet = "#{history['song_name']}(#{history['artist_name']})を歌いました"
-    url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}#{tweet_text}")
+  def tweet_history(history , tweet_text = "")
+    format = self.userattr.get_tweet_history_format
+    format = self.tweet_format(format)
+    format = history.tweet_format(format)
+    self.tweet("#{format}\n#{tweet_text}")
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得

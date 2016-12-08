@@ -1135,7 +1135,7 @@ var register = (function() {
     createKaraoke : function() {
       input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 450);
 
-      input_dialog.show('/ajax/dialog/karaoke' , 'input_karaoke' , {
+      input_dialog.show('/ajax/dialog/karaoke?mode=create' , 'input_karaoke' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -1153,7 +1153,7 @@ var register = (function() {
     /*[Method] 参加情報登録画面を表示する*/
     createAttendance : function(karaoke_id) {
       input_dialog = new dialog('参加情報登録' , 'input_dialog' , 600);
-      input_dialog.show('/ajax/dialog/karaoke' , 'input_attendance' , {
+      input_dialog.show('/ajax/dialog/karaoke?mode=create' , 'input_attendance' , {
         funcs: {
           beforeClose: beforeClose
         } ,
@@ -1167,7 +1167,7 @@ var register = (function() {
     createHistory : function(karaoke_id , opt) {
       opt = opt || {};
       input_dialog = new dialog('歌唱履歴追加' , 'input_dialog' , 450);
-      input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
+      input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=create' , 'input_history' , {
         func_at_load: function() {
           createWidgetForHistory(opt.defaultValue);
           setScoreTypeFromCookie();
@@ -1229,7 +1229,7 @@ var register = (function() {
         sync: true,
         success: function(karaoke) {
           input_dialog = new dialog('カラオケ編集' , 'input_dialog' , 450);
-          input_dialog.show('/ajax/dialog/karaoke' , 'input_karaoke' , {
+          input_dialog.show('/ajax/dialog/karaoke?mode=edit' , 'input_karaoke' , {
             func_at_load: function() {
               createWidgetForKaraoke();
               setKaraokeToInput(karaoke);
@@ -1250,7 +1250,7 @@ var register = (function() {
         sync: true,
         success: function(attendance) {
           input_dialog = new dialog('参加情報編集' , 'input_dialog' , 600);
-          input_dialog.show('/ajax/dialog/karaoke' , 'input_attendance' , {
+          input_dialog.show('/ajax/dialog/karaoke?mode=edit' , 'input_attendance' , {
             funcs: {
               beforeClose: beforeClose
             } ,
@@ -1271,7 +1271,7 @@ var register = (function() {
       zenra.post('/ajax/history/detail' , {id: history_id} , {
         success: function(history) {
           input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
-          input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
+          input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=edit' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               createElementForEditHistory(karaoke_id , history_id);
@@ -1292,7 +1292,7 @@ var register = (function() {
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
-          input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history' , 'input_history' , {
+          input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=create' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
               if (! zenra.ispc) {

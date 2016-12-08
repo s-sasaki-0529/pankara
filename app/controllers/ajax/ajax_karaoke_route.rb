@@ -1,4 +1,5 @@
 require_relative 'ajax_route'
+require_relative '../../models/karaoke'
 
 class AjaxKaraokeRoute < AjaxRoute
 
@@ -24,7 +25,7 @@ class AjaxKaraokeRoute < AjaxRoute
     if @current_user
       result = @current_user.register_karaoke(karaoke)
       if result
-        params[:twitter] and @current_user.tweet_karaoke(result , params[:tweet_text])
+        params[:twitter] and @current_user.tweet_karaoke(Karaoke.new(result) , params[:tweet_text])
         return success(karaoke_id: result)
       else
         return error('カラオケの登録に失敗しました。管理者に問い合わせてください。')
@@ -52,7 +53,6 @@ class AjaxKaraokeRoute < AjaxRoute
     twitter = arg["twitter"]
     tweet_text = arg["tweet_text"]
     result = karaoke.modify(arg)
-    result and twitter and @current_user and @current_user.tweet_karaoke(params[:id] , tweet_text)
     return result ? success : error('modify failed')
   end
 
