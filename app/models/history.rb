@@ -79,9 +79,6 @@ class History < Base
   #--------------------------------------------------------------------
   def tweet_format(format)
     @params['song_name'] or self.set_song_info
-    params.each do |key , value|
-      format.gsub!(/$$#{key}$$/ , value)
-    end
     format.gsub!(/\$\$song\$\$/ , @params['song_name'])
     format.gsub!(/\$\$artist\$\$/ , @params['artist_name'])
     format.gsub!(/\$\$url\$\$/ , self.karaoke_url)
