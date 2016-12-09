@@ -1,7 +1,14 @@
 /*全てのページで読み込み時に実行*/
 $(function(){
-  //テーブルをソート可能に
+  //tablesort
   $('.sortable').tablesorter();
+  //colorbox
+  $('.color-box').colorbox({
+    iframe: true,
+    width: '80%',
+    height: '80%'
+  });
+  //submit時にローディング画面描画
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });
 });
 
