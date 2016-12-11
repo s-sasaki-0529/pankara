@@ -25,7 +25,11 @@ class RankingRoute < March
     param = {:score_type => @current_score_type , :user => target_user}
     @scores = Ranking.score(param)
     @score_type = ScoreType.id_to_name(@current_score_type , :hash => true)
-    @score_type_list = ScoreType.List
+    # brandで参照できる採点モード一覧
+    @score_type_list = Hash.new {|h , k| h[k] = Array.new}
+    ScoreType.List.each do |st|
+      @score_type_list[st["brand"]].push(st)
+    end
     erb :score_ranking
   end
 
