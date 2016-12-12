@@ -35,17 +35,9 @@ describe '得点ランキング機能' do
   end
 
   it 'あなたのランキングへの切り替え' do
-    link 'あなたのランキングへ'
+    visit "1?showmine=true"
     table = table_to_hash('scoreranking_table')
     expect(table[19]['tostring']).to eq '20,嘘 シド,2016-02-13,ないと,嘘 (シド),87.87'
-    link '全体のランキングへ'
-  end
-
-  it 'あなたのランキングへの切り替えリンク' do
-    iscontain 'あなたのランキングへ'
-    logout
-    visit url
-    islack 'あなたのランキングへ'
   end
 
   it 'リンクが正常に登録されているか' do

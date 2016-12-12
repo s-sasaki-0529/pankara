@@ -151,6 +151,14 @@ class Util
     return url
   end
 
+  # get_get_param - 現在のURLのGETパラメータを取得する
+  #----------------------------------------------------------------------
+  def self.get_get_param(key)
+    url = @@request.url.dup
+    matched = url.scan(/#{key}=(.+?)(&.+|$)/)
+    return matched.empty? ? '' : matched[0][0]
+  end
+
   # send_mail - メールを送信する
   # 送信元/送信先はpandarin.karaoke@gmail.com で固定
   #----------------------------------------------------------------------
