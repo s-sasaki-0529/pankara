@@ -34,6 +34,7 @@ class Song < Base
   # opt[:name_like] - String 楽曲名で部分検索
   # opt[:artist_info] - Bool 歌手情報を取得するか
   # opt[:want_hash] - Bool song_idをkeyにしたハッシュに変換
+  # opt[:null] - 動画URLが設定されていない楽曲を抽出
   #--------------------------------------------------------------------
   def self.list(opt = {})
     db = DB.new(:FROM => 'song')
@@ -56,6 +57,11 @@ class Song < Base
     if word = opt[:name_like]
       db.where('song.name like ?')
       db.set("%#{word}%")
+    end
+
+    # 動画URLが設定されていない楽曲のみ
+    if opt[:null]
+      db.where('song.url is NULL')
     end
 
     # opt[:songs]の順番を維持
