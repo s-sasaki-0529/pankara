@@ -16,6 +16,7 @@
         <th>機種</th>
         <% end %>
         <th>メンバー</th>
+        <th class='center' width='60'>曲数</th>
         <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
           <th class='center' width="60">通知</th>
         <% end %>
@@ -38,10 +39,12 @@
             <% if Util.is_pc? %>
               <%= user_icon member['username'] , 32 , 32 %>
             <% else %>
-              <%= user_icon member['username'] , 24 , 24 %>
+              <%= user_icon member['username'] , 16 , 16 %>
             <% end %>
           <% end %>
         </td>
+        <!-- 登録楽曲数 -->
+        <td class='center'><%= karaoke['sang_count'] %></td>
         <!-- 通知アイコン列 -->
         <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
         <td class='center' width="60">

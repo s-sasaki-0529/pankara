@@ -107,7 +107,7 @@ class User < Base
     attended_id_list = attends.map {|a| a['karaoke']}
 
     # ユーザが参加したkaraokeIDから、karaokeの詳細情報取得
-    all_karaoke_info = Karaoke.list_all(:with_attendance => true)
+    all_karaoke_info = Karaoke.list_all(:with_attendance => true , :with_sang_count => true)
     attended_karaoke_info = all_karaoke_info.select do |karaoke|
       attended_id_list.include?(karaoke['id'])
     end

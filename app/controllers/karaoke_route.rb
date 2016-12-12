@@ -6,7 +6,7 @@ class KaraokeRoute < March
   # get '/karaoke/list' - 全カラオケ記録を一覧表示
   #---------------------------------------------------------------------
   get '/list/?' do
-    @karaoke_list = Karaoke.list_all({:with_attendance => true})
+    @karaoke_list = Karaoke.list_all({:with_attendance => true , :with_sang_count => true})
     erb :karaokelist
   end
 
