@@ -1232,7 +1232,11 @@ var register = (function() {
         } ,
         funcs: {
           beforeClose: beforeClose,
-          close: function() { zenra.visit("/karaoke/detail/" + karaoke_id); }
+          close: function() { 
+            if (! opt.callback) {
+              zenra.visit("/karaoke/detail/" + karaoke_id);
+            }
+          }
         } ,
         position: '50px' ,
       });

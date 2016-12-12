@@ -212,7 +212,7 @@ class Karaoke < Base
       ).execute_all
       counts_hash = Util.array_to_hash(counts_array , 'karaoke_id' , true)
       list.each do |karaoke|
-        karaoke['sang_count'] = counts_hash[karaoke['id']]['sang_count']
+        karaoke['sang_count'] = counts_hash[karaoke['id']] ? counts_hash[karaoke['id']]['sang_count'] : 0
       end
     end
     return list

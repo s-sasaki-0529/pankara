@@ -241,8 +241,7 @@ describe '楽曲詳細ページ' , :js => true do
       if mode == 2
         click_on '登録'; wait_for_ajax
         click_on '終了';
-        visit '/'
-        find('#recent_karaoke_link').click
+        visit '/karaoke/recent'
       end
       wait_for_ajax
     end
