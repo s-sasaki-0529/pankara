@@ -13,14 +13,9 @@
         </a>
       </div>
       <div id="div_myprofile">
-        <p>
-          前回のカラオケ<br>
-          <% if @recent_karaoke %>
-            <span id="recent_karaoke_link"><%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %></span>
-          <% else %>
-            記録がありません
-          <% end %>
-        </p>
+        <% if @has_karaoke %>
+          <a href="/karaoke/recent">直近のカラオケ</a>
+        <% end %>
       </div>
       <h3 class='center'>友達の記録</h3>
       <%= erb :_timeline %>
