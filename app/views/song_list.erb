@@ -30,6 +30,7 @@
     <option value="sang_count" <% if @sort_category == "sang_count" %> selected <% end %>>歌唱回数</option>
     <option value="song_name" <% if @sort_category == "song_name" %> selected <% end %>>曲名</option>
     <option value="artist_name" <% if @sort_category == "artist_name" %> selected <% end %>>アーティスト名</option>
+    <option value="random" <% if @sort_category == "random" %> selected <% end %>>ランダム</option>
   </select>
   <select id="sort_order" name="sort_order" class=<% if Util.is_smartphone? %><%= 'form-control' %><% end %>>
     <option value="desc" <% if @sort_order == 'desc' %> selected <% end %>>降順</option>
