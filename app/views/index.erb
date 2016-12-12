@@ -6,7 +6,7 @@
     <% if Util.is_pc? %>
     <!-- 左カラム -->
     <div class="col-xs-2 center">
-      <h2><%= h @user['screenname'] %></h2>
+      <h3><%= h @user['screenname'] %></h3>
       <div id="top_my_icon">
         <a class='pointer' href="/user/userpage">
           <%= user_icon @user['username'] , '100%' , '100%' %>
@@ -33,17 +33,14 @@
     <% else %>
     <div class='center'>
       <p class="center"><a href="/"><img style="margin: -25px" src="/image/pankara.png" width="100%"></a></p>
-      <h2><%= h @user['screenname'] %></h2>
+      <h3><%= h @user['screenname'] %></h3>
       <div id="top_my_icon">
         <%= user_icon @user['username'] , '100%' , '100%' %>
       </div>
       <div id="div_myprofile">
-        <p>
-          前回のカラオケ<br>
-          <% if @recent_karaoke %>
-            <%= karaoke_link @recent_karaoke['id'] , @recent_karaoke['datetime'] %>
-          <% else %>
-            記録がありません
+        <p id='recent-karaoke'>
+          <% if @has_karaoke %>
+            <a href="/karaoke/recent">直近のカラオケ</a>
           <% end %>
         </p>
       </div>

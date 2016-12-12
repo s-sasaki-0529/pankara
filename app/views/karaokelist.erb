@@ -1,7 +1,4 @@
-
-<% if Util.is_pc? %><h1><% end %>
-  <% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧
-<% if Util.is_pc? %></h1><% end %>
+<h2 class='pack'><% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧</h2>
 
 <% if @karaoke_list.size > 0 %>
   <div class='right'>全<span id="karaoke_num"><%= @karaoke_list.size %></span>件</div>

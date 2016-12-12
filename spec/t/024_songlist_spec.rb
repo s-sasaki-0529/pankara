@@ -29,7 +29,7 @@ describe '集計情報表示機能' , :js => true do
     end
     it '最終歌唱日' do
       page.all('.lastSangKaraoke')[1].click
-      expect(page.all('h3')[0].text).to eq '盆休み最終日カラオケ'
+      expect(page.all('h2')[0].text).to eq '盆休み最終日カラオケ'
     end
   end
 

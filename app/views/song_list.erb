@@ -1,6 +1,6 @@
-<h3>
+<h2>
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
-</h3>
+</h2>
 <% if @pager && @pager.page_num > 1 %>
   <p class="right" id="range"><%= @song_list[:num] %> 曲中<%= @show_from %>~<%= @show_to %>曲目を表示中</p>
 <% elsif @song_list[:num] > 0 %>

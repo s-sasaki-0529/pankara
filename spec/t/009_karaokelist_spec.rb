@@ -6,10 +6,10 @@ init = proc do
   `zenra init -d 2016_02_14_17_39`
 end
 
-def prove(url , h1 , length , tostring)
+def prove(url , h2 , length , tostring)
   visit url
   table = table_to_hash('karaokelist_table')
-  expect(page.find('h1').text).to eq h1
+  expect(page.find('h2').text).to eq h2
   expect(table.length).to eq length
   expect(table[0]['tostring']).to eq tostring
 end

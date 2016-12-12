@@ -96,7 +96,7 @@ module Rbase
   # カラオケ名にカラオケ詳細ページへのリンクが設定されているかを確認する
   def examine_karaokelink(name , referer = nil)
     link name
-    expect(page.all('h3')[0].text).to eq name
+    expect(page.all('h2')[0].text).to eq name
     referer and visit referer
   end
 

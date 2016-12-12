@@ -15,12 +15,12 @@ describe 'プレイリスト機能' , :js => true do
     visit url
     iscontain '動画を連続再生する'
     link_strictly '動画を連続再生する'
-    iscontain '再生リストを連続再生'
+    iscontain '再生リスト'
   end
 
   def abnormal(url)
     visit url
-    islack '動画を連続再生する'
+    islack '再生リスト'
   end
 
   describe 'プレイリストへのリンク' do
