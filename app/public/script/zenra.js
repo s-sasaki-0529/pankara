@@ -1433,12 +1433,16 @@ var register = (function() {
 
       // 参加情報の登録リクエストを送信する
       register.submintAttendanceRegistrationRequest(karaoke_id);
-      
+
       zenra.post('/ajax/history/create' , data , {
         sync: true,
         success: function(sangInfo) {
-          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
-          mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
+          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。';
+          if (sangInfo.sang_count >= 2) {
+            mes += 'あなたがこの曲を歌うのは、' + sangInfo.since + '日ぶり、' + sangInfo.sang_count + '回目です!';
+          } else {
+            mes += 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！';
+          }
           $('#result').html('<p>' + mes + '</p>');
           if (! zenra.ispc) {
             zenra.scrollToTop();

@@ -115,12 +115,15 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     it '歌唱回数が正しく表示されるか' do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
-
+      input_history 1234 , 4567
+      click_on '登録'; wait_for_ajax
+      iscontain "song1234(artist4567)を登録しました。"
+      iscontain 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！'
       3.times do |i|
         input_history 1234 , 4567
-        click_on '登録'
+        click_on '登録'; wait_for_ajax
         iscontain "song1234(artist4567)を登録しました。"
-        iscontain "あなたがこの曲を歌うのは #{i + 1} 回目です。"
+        iscontain "あなたがこの曲を歌うのは、0日ぶり、#{i + 2}回目です!"
       end
     end
 

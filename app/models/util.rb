@@ -394,6 +394,15 @@ class Util
     return monthly_data
   end
 
+  # date_diff - ２つの日付の日数差を求める
+  # to/fromは、下記のフォーマットに従った日時を表す文字列
+  #---------------------------------------------------------------------
+  def self.date_diff(to , from)
+    format = '%Y-%m-%d %H:%M:%S'
+    diff = DateTime.strptime(to , format) - DateTime.strptime(from , format)
+    return diff.to_i
+  end
+
   # make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する
   #---------------------------------------------------------------------
   def self.make_questions(num)
