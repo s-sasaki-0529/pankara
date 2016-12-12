@@ -592,6 +592,7 @@ var dialog = function(title , dialog_id , width , height) {
           $(event.target).remove();
         } ,
         beforeClose: funcs.beforeClose ,
+        close: funcs.close ,
       });
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
@@ -1230,7 +1231,8 @@ var register = (function() {
           zenra.getLoader().hide();
         } ,
         funcs: {
-          beforeClose: beforeClose
+          beforeClose: beforeClose,
+          close: function() { zenra.visit("/karaoke/detail/" + karaoke_id); }
         } ,
         position: '50px' ,
       });
