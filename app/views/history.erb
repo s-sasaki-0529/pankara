@@ -1,5 +1,5 @@
 <h2><%= h @user['screenname'] %>さんの歌唱履歴</h2>
-<p class='right' id="range">
+<p class='right' id='range'>
   <%= @history_size %> 曲中 <%= @show_from %> 〜 <%= @show_to %> 曲目を表示中
 </p>
 <% if @histories.size > 0 %>
@@ -18,7 +18,9 @@
     <tbody>
       <% @histories.each do |history| %>
       <tr>
-        <td class='center'><%= history['number'] %></td>
+        <td class='center'>
+          <a class='color-box' href="/history/detail/<%= history['id'] %>"><%= history['number'] %></a>
+        </td>
         <td class='center cell-date'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
         <td width='<%= Util.is_pc? ? 160 : 80 %>' id='thumbnail_<%= "#{history['number']}" %>' class='center'>
           <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
