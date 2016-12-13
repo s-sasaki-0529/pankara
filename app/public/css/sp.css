@@ -79,3 +79,12 @@ h4 {
  .config {
    width: 100%;
  }
+
+
+/*-------------------------------------------
+ * Twitter連携について
+ *------------------------------------------*/
+.twitter-description-section {
+  font-size: 10px;
+  margin-bottom: 15px;
+}

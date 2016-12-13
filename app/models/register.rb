@@ -115,7 +115,7 @@ class Register < Base
     else
       since = 0
     end
-    return {:sang_count => histories.length , :since => since , :song => song , :artist => artist}
+    return {:history_id => history_id , :sang_count => histories.length , :since => since , :song => song , :artist => artist}
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

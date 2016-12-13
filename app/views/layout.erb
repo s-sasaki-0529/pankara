@@ -39,6 +39,7 @@
 <body>
 <div class="container">
   <!-- メインメニューバー -->
+  <% unless @HIDEHEADMENU %>
   <nav class="navbar navbar-default navbar-fixed-top <%= @maintenance ? 'navbar-maintenance' : '' %> ">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -133,6 +134,7 @@
       </div>
     </div>
   </nav>
+  <% end %>
   <!-- コンテンツのインクルード-->
   <%= yield %>
 </div>

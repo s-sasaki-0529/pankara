@@ -27,4 +27,11 @@ class AjaxDialogRoute < AjaxRoute
     erb :_input_song
   end
 
+  # get '/ajax/dialog/twitter/description' - ツイッター連携に関する説明
+  #--------------------------------------------------------------------
+  get '/twitter/description' do
+    @HIDEHEADMENU = true
+    erb :_twitter_description
+  end
+
 end

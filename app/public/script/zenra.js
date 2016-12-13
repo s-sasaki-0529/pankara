@@ -5,8 +5,8 @@ $(function(){
   //colorbox
   $('.color-box').colorbox({
     iframe: true,
-    width: '80%',
-    height: '80%'
+    width: zenra.ispc ? '75%' : '95%',
+    height: zenra.ispc ? '75%' : '95%'
   });
   //submit時にローディング画面描画
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });

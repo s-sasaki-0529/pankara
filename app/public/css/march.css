@@ -336,7 +336,7 @@ p.mini {
 }
 .config-content-body {
   margin-top: -2px;
-  padding: 20px;
+  padding: 20px 5px 0px 20px;
   width: 100%;
   border: #eeeeee solid 2px;
   border-left-bottom-radius: 3px;
@@ -360,14 +360,18 @@ p.mini {
   clear: both;
 }
 
-.config-contnet-body button {
-  padding-bottom: 30px;
-}
-
 .config-content-body #twitter_format textarea {
   width: 100%;
   resize: none;
 }
+
+.config-content-body .submit-block {
+  text-align: right;
+}
+
+.config-content-body .submit-block button {
+  margin-top: 10px;
+}.
 
 /* =======================================
  * ローディングビュー
@@ -530,3 +534,4 @@ p.mini {
   font-size: 77%;
   margin-left: 4px;
 }
+

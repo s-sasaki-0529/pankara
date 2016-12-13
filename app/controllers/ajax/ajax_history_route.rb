@@ -31,7 +31,6 @@ class AjaxHistoryRoute < AjaxRoute
       return error('歌手名を入力してください')
     end
     info = @current_user.register_history(karaoke_id , history)
-    Util.debug info
     twitter and @current_user.tweet_history(History.new(info[:history_id]) , params[:tweet_text])
     return success(info)
   end
