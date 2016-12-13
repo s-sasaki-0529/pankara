@@ -1,5 +1,5 @@
 <% if @artist['songs'].count > 0 %>
-<h4>この歌手の楽曲一覧</h4>
+<h3>この歌手の楽曲一覧</h3>
 <table id="artistdetail_table" class="table sortable table-striped">
   <thead>
     <tr>
@@ -30,7 +30,7 @@
     <% end %>
   </tbody>
 </table>
-<p class='right'><%= playlist_link @artist['songs'].select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
+<div class='right'><%= playlist_link @artist['songs'].select {|s| s['song_url']}.map {|s| s['song_id']} %></div>
 <% else %>
 <h4>このアーティストには楽曲が登録されていません</h4>
 <% end %>

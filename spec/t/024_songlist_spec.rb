@@ -29,7 +29,7 @@ describe '集計情報表示機能' , :js => true do
     end
     it '最終歌唱日' do
       page.all('.lastSangKaraoke')[1].click
-      expect(page.all('h3')[0].text).to eq '盆休み最終日カラオケ'
+      expect(page.all('h2')[0].text).to eq '盆休み最終日カラオケ'
     end
   end
 
@@ -115,6 +115,14 @@ describe '集計情報表示機能' , :js => true do
       visit URL + '?sort_category=artist_name'
       ex_record ex
     end
+    it 'ランダム順' do
+      old = ''
+      3.times do |i|  # 奇跡が起こって落ちるかも
+        visit URL + '?sort_category=random'
+        expect(table_to_hash('song_list_table')[0]['tostring'] != old).to eq true
+        old = table_to_hash('song_list_table')[0]['tostring'];
+      end
+    end
     it '昇順に変更' do
       ex = ',はなまるぴっぴはよいこだけ A応P 歌唱回数: 1 最終歌唱日: 2016-01-03,,SIX SAME FACES イヤミ、おそ松、カラ松、チョロ松、一松、十四松、トド松 歌唱回数: 1 最終歌唱日: 2016-01-03'
       visit URL + '?sort_category=last_sang_datetime&sort_order=asc'
@@ -167,8 +175,7 @@ describe '集計情報表示機能' , :js => true do
       if mode == 2
         click_on '登録'; wait_for_ajax
         click_on '終了';
-        visit '/'
-        find('#recent_karaoke_link').click
+        visit '/karaoke/recent'
       end
       wait_for_ajax
     end

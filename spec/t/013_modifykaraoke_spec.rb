@@ -51,7 +51,7 @@ describe 'Karaokeの編集/削除' , :js => true do
     old_target_row = table_to_hash('karaokelist_table')[0]['tostring']
     expect(old_karaoke_num).to eq 7
     expect(old_rows_num).to eq 5
-    expect(old_target_row).to eq '2020-03-25,変更後のカラオケ名,12.0,シダックス 盛岡店,JOYSOUND(WAVE),,'
+    expect(old_target_row).to eq '2020-03-25,変更後のカラオケ名,12.0,シダックス 盛岡店,JOYSOUND(WAVE),,55,'
 
     # karaokeを削除する
     page.all('tr')[1].click

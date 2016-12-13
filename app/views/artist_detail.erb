@@ -1,6 +1,6 @@
-<h2>
+<h1 class='unpack'>
   <%= h @artist['name'] %>
-</h2>
+</h1>
 
 <p id="wiki" class="hidden">
   <span id="summary"></span>
@@ -9,19 +9,19 @@
 
 <!-- PC -->
 <% if Util.is_pc? %>
-<div class="row">
-  <div id="chart_column" class="col-xs-3">
+<div style="margin-top: 50px">
+  <div id="chart_column" class="col-sm-3">
     <%= erb :_artist_detail_songs_chart %>
     <%= erb :_artist_detail_sang_count_chart %>
   </div>
-  <div id="song_list_column" class="col-xs-9">
+  <div id="song_list_column" class="col-sm-9">
     <%= erb :_artist_detail_songlist %>
   </div>
 </div>
 
 <!-- スマートフォン -->
 <% else %>
-<div class="row">
+<div style="margin-top: 50px">
   <%= erb :_artist_detail_songlist %>
   <%= erb :_artist_detail_songs_chart %>
   <%= erb :_artist_detail_sang_count_chart %>

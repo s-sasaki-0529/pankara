@@ -17,6 +17,13 @@ class SongRoute < March
     redirect "/song/#{song_ids.sample}"
   end
 
+  # get '/song/null' - URL列が設定されていない楽曲一覧を表示(管理者向け)
+  #---------------------------------------------------------------------
+  get '/null' do
+    @null_songs = Song.list(:null => true , :artist_info => true)
+    erb :null_songs
+  end
+
   # get '/song' - 楽曲情報を表示(歌手名と曲名をパラメータで指定)
   #---------------------------------------------------------------------
   get '/' do

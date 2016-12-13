@@ -17,7 +17,7 @@ require_relative '../app/controllers/index_route'
 RSpec.configure do |config|
   
   # テストに失敗した時点で以降のテストを行わない
-  config.fail_fast = false
+  config.fail_fast = true
 
   # 実行順に依存したテストを排除するために、テスト順をランダムに
   config.order = "random"

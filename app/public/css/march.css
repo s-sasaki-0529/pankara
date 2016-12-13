@@ -8,6 +8,24 @@ body {
   background-image: url("../image/bg2.png");
 }
 
+/*見出し要素*/
+h1,h2,h3,h4 {
+  background: #dcd3b2;
+  color: #94846a;
+  width: 100%;
+  border-radius: 0 30px 30px 0 / 0 30px 30px 0;
+  box-shadow: 0 1px 10px 0 #94846a;
+  text-shadow: 0 0 5px;
+  padding: 10px;
+  text-align: center;
+}
+h1,h2,h3,h4 .pack {
+  margin-top: -10px;
+}
+h1,h2,h3,h4 .unpack {
+  margin-top: 10px;
+}
+
 /*システムメッセージ領域*/
 .system-msg {
   width: 99%;
@@ -64,11 +82,6 @@ tr *.cell-datetime {
 .center {
   text-align: center;
   vertical-align: center;
-}
-
-/*要素を右寄せにする*/
-.right {
-  float: right;
 }
 
 /*要素をインラインにする*/
@@ -264,16 +277,6 @@ p.mini {
 /* =============================================
  * ユーザーページ
  * =============================================*/
-.recent_karaoke_area {
-  border-bottom: 1px solid rgb(255,255,204);
-  background-color: rgb(255,255,204);
-}
-
-.recent_sang_area {
-  border-bottom: 1px solid rgb(255,165,0);
-  background-color: rgb(255,165,0);
-}
-
 #most_sang_song_table > tbody > tr > td {
   font-size: 15px;
 }

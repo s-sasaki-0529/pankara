@@ -114,7 +114,7 @@ class User < Base
     attended_id_list = attends.map {|a| a['karaoke']}
 
     # ユーザが参加したkaraokeIDから、karaokeの詳細情報取得
-    all_karaoke_info = Karaoke.list_all(:with_attendance => true)
+    all_karaoke_info = Karaoke.list_all(:with_attendance => true , :with_sang_count => true)
     attended_karaoke_info = all_karaoke_info.select do |karaoke|
       attended_id_list.include?(karaoke['id'])
     end
@@ -530,8 +530,12 @@ class User < Base
 
     # 並び順を設定
     sc = opt[:sort_category]
-    song_list[:list].sort! {|a , b| b[sc] <=> a[sc]}
-    opt[:sort_order] == 'asc' and song_list[:list].reverse!
+    if sc == 'random'
+      song_list[:list].shuffle!
+    else
+      song_list[:list].sort! {|a , b| b[sc] <=> a[sc]}
+      opt[:sort_order] == 'asc' and song_list[:list].reverse!
+    end
 
     # [オプション] ページャで戻すデータ量を制限
     song_list[:num] = song_list[:list].size

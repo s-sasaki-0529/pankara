@@ -108,9 +108,14 @@ class Register < Base
     log = "【歌唱履歴登録】#{@attendance} / #{song}(#{song_id}) / #{artist}(#{artist_id}) / #{score_type}(#{scoretype_id}) / #{key} / #{score}"
     Util.write_log('event' , log)
 
-    # 歌唱回数を戻す
-    sang_count = Song.new(song_id).sangcount(:target_user => @userid)
-    return {:history_id => history_id , :sang_count => sang_count , :song => song , :artist => artist}
+    # 歌唱回数、最終歌唱日を戻す
+    histories = Song.new(song_id).history_list(:target_user => @userid)
+    if histories.length >= 2
+      since = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
+    else
+      since = 0
+    end
+    return {:sang_count => histories.length , :since => since , :song => song , :artist => artist}
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

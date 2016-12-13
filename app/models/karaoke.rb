@@ -207,10 +207,28 @@ class Karaoke < Base
       :OPTION => 'ORDER BY datetime DESC'
     ).execute_all
 
+    # 参加者情報を取得
     if opt[:with_attendance]
       list.each do |karaoke|
         k = Karaoke.new(karaoke['id'] , {:id_only => true})
         karaoke['members'] = k.get_members
+      end
+    end
+
+    # 楽曲登録数を取得
+    if opt[:with_sang_count]
+      counts_array = DB.new(
+        :SELECT => {
+          'attendance.karaoke' => 'karaoke_id',
+          'count(history.id)' => 'sang_count',
+        },
+        :FROM => 'history' ,
+        :JOIN => ['history' , 'attendance'] ,
+        :OPTION => 'GROUP BY attendance.karaoke'
+      ).execute_all
+      counts_hash = Util.array_to_hash(counts_array , 'karaoke_id' , true)
+      list.each do |karaoke|
+        karaoke['sang_count'] = counts_hash[karaoke['id']] ? counts_hash[karaoke['id']]['sang_count'] : 0
       end
     end
     return list

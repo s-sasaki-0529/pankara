@@ -129,4 +129,8 @@ describe 'カラオケ詳細ページ' , :js => true do
     new_num = `zenra mysql -se "select count(history.id) from history"`
     expect(old_num).to eq new_num
   end
+  it '直近のカラオケ' do
+    visit '/karaoke/recent'
+    current_path_is '/karaoke/detail/62'
+  end
 end

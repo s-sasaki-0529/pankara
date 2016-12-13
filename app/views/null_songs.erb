@@ -1,0 +1,22 @@
+<h2>動画URLが設定されていない楽曲一覧(毎朝3時更新)</h2>
+<p class='right'> 全<%= @null_songs.length %>件</p>
+<% if @null_songs.size > 0 %>
+  <table class="table sortable table-hover linkcursor">
+    <thead>
+      <tr>
+        <th>曲名</th>
+        <th>歌手名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @null_songs.each do |song| %>
+      <tr>
+          <td><%= song_link(song['song_id'] , song["song_name"]) %></td>
+          <td><%= artist_link(song['artist_id'] , song['artist_name']) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  全ての楽曲に動画URLが設定されています
+<% end %>

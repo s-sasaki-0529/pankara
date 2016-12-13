@@ -151,6 +151,14 @@ class Util
     return url
   end
 
+  # get_get_param - 現在のURLのGETパラメータを取得する
+  #----------------------------------------------------------------------
+  def self.get_get_param(key)
+    url = @@request.url.dup
+    matched = url.scan(/#{key}=(.+?)(&.+|$)/)
+    return matched.empty? ? '' : matched[0][0]
+  end
+
   # send_mail - メールを送信する
   # 送信元/送信先はpandarin.karaoke@gmail.com で固定
   #----------------------------------------------------------------------
@@ -392,6 +400,15 @@ class Util
       m.delete(:month)
     end
     return monthly_data
+  end
+
+  # date_diff - ２つの日付の日数差を求める
+  # to/fromは、下記のフォーマットに従った日時を表す文字列
+  #---------------------------------------------------------------------
+  def self.date_diff(to , from)
+    format = '%Y-%m-%d %H:%M:%S'
+    diff = DateTime.strptime(to , format) - DateTime.strptime(from , format)
+    return diff.to_i
   end
 
   # make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する

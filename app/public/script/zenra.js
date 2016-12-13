@@ -592,6 +592,7 @@ var dialog = function(title , dialog_id , width , height) {
           $(event.target).remove();
         } ,
         beforeClose: funcs.beforeClose ,
+        close: funcs.close ,
       });
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
@@ -1192,7 +1193,12 @@ var register = (function() {
           zenra.getLoader().hide();
         } ,
         funcs: {
-          beforeClose: beforeClose
+          beforeClose: beforeClose,
+          close: function() { 
+            if (! opt.callback) {
+              zenra.visit("/karaoke/detail/" + karaoke_id);
+            }
+          }
         } ,
         position: '50px' ,
       });
@@ -1389,12 +1395,16 @@ var register = (function() {
 
       // 参加情報の登録リクエストを送信する
       register.submintAttendanceRegistrationRequest(karaoke_id);
-      
+
       zenra.post('/ajax/history/create' , data , {
         sync: true,
         success: function(sangInfo) {
-          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。</br>';
-          mes += 'あなたがこの曲を歌うのは ' + sangInfo.sang_count + ' 回目です。';
+          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。';
+          if (sangInfo.sang_count >= 2) {
+            mes += 'あなたがこの曲を歌うのは、' + sangInfo.since + '日ぶり、' + sangInfo.sang_count + '回目です!';
+          } else {
+            mes += 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！';
+          }
           $('#result').html('<p>' + mes + '</p>');
           if (! zenra.ispc) {
             zenra.scrollToTop();

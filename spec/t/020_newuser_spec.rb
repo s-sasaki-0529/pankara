@@ -13,7 +13,7 @@ describe '新規登録したユーザで各ページを閲覧' do
     login 'test'
   end
   it 'トップページ' do
-    iscontain '記録がありません'
+    expect(find('#recent-karaoke').text).to eq ''
     iscontain '友達がいません(笑)'
   end
   it 'カラオケ一覧' do
