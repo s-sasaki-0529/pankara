@@ -17,6 +17,7 @@
       <th class='center' width=110>ユーザ</th>
       <th class='center'>曲名(歌手名)</th>
       <th class='center'>得点</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -43,6 +44,7 @@
         <div class='ranking-artist-name'>(<%= artist_link row['artist_id'], row['artist_name'] %>)</div>
       </td>
       <td class='center'><%= h row['score'] %></td>
+      <td class='center'><%= history_link(row['history_id'] , :size => Util.is_pc? ? 24 : 16 )%></td>
     </tr>
     <% end %>
   </tbody>

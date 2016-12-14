@@ -94,7 +94,7 @@ class March < Sinatra::Base
       opt[:icon] === false or opt[:icon] = true
       opt[:colorbox] === false or opt[:colorbox] = true
       if opt[:icon]
-        size = opt[:size] || '32'
+        size = opt[:size] || '16'
         img = "<img src='/image/information.png' width=#{size}>"
         opt[:text] = img
         opt[:icon] = false

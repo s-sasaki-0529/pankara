@@ -23,7 +23,7 @@
       <td class='center' width='100'><%= i['scoretype_name'] %></td>
       <td class='center' width='8%'><%= h i['score'] %></td>
       <% end %>
-      <td class='center'><%= history_link(i['history_id'] , :size => 16) %></td>
+      <td class='center'><%= history_link i['history_id'] %></td>
     </tr>
     <% end %>
   </tbody>
