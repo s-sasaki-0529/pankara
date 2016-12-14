@@ -22,6 +22,7 @@ class Ranking < Base
         'karaoke.datetime' => 'datetime' ,
         'attendance.user' => 'user' ,
         'history.song' => 'song' ,
+        'history.id' => 'history_id' ,
         'history.score_type' => 'score_type' ,
         'history.score' => 'score'
       } ,

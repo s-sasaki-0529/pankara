@@ -1,8 +1,22 @@
 require_relative './march'
 require_relative '../models/user'
 require_relative '../models/pager'
+require_relative '../models/attendance'
 
 class HistoryRoute < March
+
+  # get '/history/detail/:id' - 歌唱履歴の詳細を表示
+  #--------------------------------------------------------------------
+  get '/detail/:id' do
+    @HIDEHEADMENU = true
+    @history = History.new(params[:id] , true)
+    @history or raise Sinatra::NotFound
+    @attendance = Attendance.new(@history['attendance'])
+    @karaoke = Karaoke.new(@attendance['karaoke'])
+    @user = Attendance.to_user_info([@history['attendance']])[0]
+    @history.params['score_type_name'] = ScoreType.id_to_name(@history['score_type'])
+    erb :history_detail
+  end
 
   # get '/history/list - ログイン中のユーザの歌唱履歴を表示
   #---------------------------------------------------------------------

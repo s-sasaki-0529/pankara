@@ -10,6 +10,7 @@
     <th class='center'>採点</th>
     <th class='center'>得点</th>
     <% end %>
+    <th class='center'></th>
   </thead>
   <tbody>
     <% @info.each do |i| %>
@@ -22,6 +23,7 @@
       <td class='center' width='100'><%= i['scoretype_name'] %></td>
       <td class='center' width='8%'><%= h i['score'] %></td>
       <% end %>
+      <td class='center'><%= history_link i['history_id'] %></td>
     </tr>
     <% end %>
   </tbody>

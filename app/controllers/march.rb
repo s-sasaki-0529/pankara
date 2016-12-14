@@ -90,6 +90,21 @@ class March < Sinatra::Base
         return "<a href=/playlist?songs=#{param}>#{name}</a>"
       end
     end
+    def history_link(history , opt = {})
+      opt[:icon] === false or opt[:icon] = true
+      opt[:colorbox] === false or opt[:colorbox] = true
+      if opt[:icon]
+        size = opt[:size] || '16'
+        img = "<img src='/image/information.png' width=#{size}>"
+        opt[:text] = img
+        opt[:icon] = false
+        return history_link(history , opt)
+      else
+        text = opt[:text] || '詳細'
+        _class = opt[:colorbox] ? 'color-box history-link' : 'history-link'
+        return "<a class='#{_class}' href=/history/detail/#{history}>#{text}</a>"
+      end
+    end
     def user_icon(username , width = 32 , height = 32)
       username = h username
       src = Util.icon_file(username)

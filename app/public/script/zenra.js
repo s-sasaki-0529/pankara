@@ -6,7 +6,8 @@ $(function(){
   $('.color-box').colorbox({
     iframe: true,
     width: zenra.ispc ? '75%' : '95%',
-    height: zenra.ispc ? '75%' : '95%'
+    height: zenra.ispc ? '75%' : '95%',
+    opacity: 0.5
   });
   //submit時にローディング画面描画
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });

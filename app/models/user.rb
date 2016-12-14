@@ -54,7 +54,7 @@ class User < Base
 
     # 歌唱履歴を全て取得し、場号を振る
     db = DB.new(
-      :SELECT => ['song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
+      :SELECT => ['id' , 'song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
       :FROM => 'history' ,
       :WHERE_IN => ['attendance' , attend_ids.length],
       :SET => attend_ids ,
@@ -191,9 +191,10 @@ class User < Base
   def get_max_score
     db = DB.new(
       :SELECT => {
+        'history.id' => 'id',
         'history.song' => 'song',
         'history.score_type' => 'score_type',
-        'history.score' => 'score'
+        'history.score' => 'score',
       } ,
       :FROM => 'history' ,
       :JOIN => ['history' , 'attendance'] ,
