@@ -91,11 +91,13 @@ class March < Sinatra::Base
       end
     end
     def history_link(history , opt = {})
+      opt[:icon] === false or opt[:icon] = true
+      opt[:colorbox] === false or opt[:colorbox] = true
       if opt[:icon]
         size = opt[:size] || '32'
         img = "<img src='/image/information.png' width=#{size}>"
         opt[:text] = img
-        opt.delete(:icon)
+        opt[:icon] = false
         return history_link(history , opt)
       else
         text = opt[:text] || '詳細'

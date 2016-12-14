@@ -19,7 +19,7 @@
       <% @histories.each do |history| %>
       <tr>
         <td class='center'>
-          <a class='color-box' href="/history/detail/<%= history['id'] %>"><%= history['number'] %></a>
+          <%= history_link(history['id'] , {:icon => false , :text => history['number']}) %>
         </td>
         <td class='center cell-date'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
         <td width='<%= Util.is_pc? ? 160 : 80 %>' id='thumbnail_<%= "#{history['number']}" %>' class='center'>

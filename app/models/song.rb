@@ -216,6 +216,7 @@ class Song < Base
         'karaoke.datetime' => 'datetime' ,
         'user.username' => 'username' ,
         'user.screenname' => 'user_screenname' ,
+        'history.id' => 'history_id',
         'history.songkey' => 'songkey' ,
         'history.score_type' => 'score_type' ,
         'history.score' => 'score'
