@@ -101,7 +101,7 @@ class March < Sinatra::Base
         return history_link(history , opt)
       else
         text = opt[:text] || '詳細'
-        _class = opt[:colorbox] ? 'color-box' : ''
+        _class = opt[:colorbox] ? 'color-box history-link' : 'history-link'
         return "<a class='#{_class}' href=/history/detail/#{history}>#{text}</a>"
       end
     end

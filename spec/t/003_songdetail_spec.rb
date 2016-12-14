@@ -157,7 +157,7 @@ describe '楽曲詳細ページ' , :js => true do
       islack '歌唱履歴がありません'
       history = table_to_hash('song_detail_table_user')
       expect(history.size).to eq 14
-      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他,85.00'
+      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他,85.00,'
     end
     it '他のユーザだけが歌っている楽曲' do
       login 'sa2knight'
@@ -166,7 +166,14 @@ describe '楽曲詳細ページ' , :js => true do
       islack 'あなたの'
       history = table_to_hash('song_detail_table_all')
       expect(history.size).to eq 1
-      expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,'
+      expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,,'
+    end
+    it '楽曲詳細画面へのリンク' do
+      login 'sa2knight'
+      visit '/song/197'
+      iscontain 'IN MY DREAM'
+      visit all('.history-link')[0]['href']
+      examine_historylink('ないと' , 'ないととともちん10回目' , 'IN MY DREAM')
     end
   end
 

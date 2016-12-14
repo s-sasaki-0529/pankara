@@ -69,6 +69,10 @@ describe 'カラオケ詳細ページ' , :js => true do
       examine_songlink('Dragon Night' , 'SEKAI NO OWARI' , url)
       examine_artistlink('サイキックラバー' , url)
     end
+    it '歌唱履歴詳細' do
+      link '67'
+      examine_historylink 'へたれ' , '祝本番環境リリースカラオケ' , 'イドラのサーカス'
+    end
   end
   describe 'Attendnaceの編集' do
     it '値段' do

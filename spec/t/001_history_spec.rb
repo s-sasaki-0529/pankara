@@ -26,6 +26,8 @@ describe '歌唱履歴ページ' do
   it 'リンク' do
     examine_songlink('ロミオとシンデレラ' , 'doriko' , url)
     examine_artistlink('BUMP OF CHICKEN' , url)
+    link '405'
+    examine_historylink('ないと' , 'ないととともちん１１回目' , 'オリオンをなぞる')
   end
 
   it 'ページング' do
