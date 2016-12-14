@@ -8,6 +8,7 @@
     <tr>
       <th>曲</th>
       <th>歌手</th>
+      <th></th>
     </tr>
   </thead>
   <tbody style="background-color: white">
@@ -15,6 +16,7 @@
       <tr>
         <td><%= song_link history['song'], history['song_name'] %></td>
         <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+        <td><%= history_link history['id'] %></td>
       </tr>
     <% end %>
     </tr>

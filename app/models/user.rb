@@ -191,9 +191,10 @@ class User < Base
   def get_max_score
     db = DB.new(
       :SELECT => {
+        'history.id' => 'id',
         'history.song' => 'song',
         'history.score_type' => 'score_type',
-        'history.score' => 'score'
+        'history.score' => 'score',
       } ,
       :FROM => 'history' ,
       :JOIN => ['history' , 'attendance'] ,
