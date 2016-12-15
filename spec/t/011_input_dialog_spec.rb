@@ -38,7 +38,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
   def input_karaoke
     page.find('#name')
     fill_in 'name', with: '入力ダイアログテスト用カラオケ'
-    fill_in 'datetime', with: '2016-02-20 12:00:00'
+    js('$("#datetime").val("2016-02-20 12:00")')
     select '02時間00分', from: 'plan'
     fill_in 'store', with: '歌広場'
     fill_in 'branch', with: '相模大野店'
@@ -115,12 +115,15 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     it '歌唱回数が正しく表示されるか' do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
-
+      input_history 1234 , 4567
+      click_on '登録'; wait_for_ajax
+      iscontain "song1234(artist4567)を登録しました。"
+      iscontain 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！'
       3.times do |i|
         input_history 1234 , 4567
-        click_on '登録'
+        click_on '登録'; wait_for_ajax
         iscontain "song1234(artist4567)を登録しました。"
-        iscontain "あなたがこの曲を歌うのは #{i + 1} 回目です。"
+        iscontain "あなたがこの曲を歌うのは、0日ぶり、#{i + 2}回目です!"
       end
     end
 
@@ -167,7 +170,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it '日時バリデーションエラー' do
         login 'unagipai'
         js('register.createKaraoke();')
-        fill_in 'datetime' , with: 'fuwafuwatime'
+        js('$("#datetime").val("hogehoge")')
         js('register.submitKaraokeRegistrationRequest();');
         is_karaoke_register
       end
@@ -205,9 +208,82 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         fill_in 'song' , with: 'hoge'
         fill_in 'artist' , with: 'fuga'
         select '', from: 'score_type'
-        fill_in 'score' , with: '100'
+        js("$('#score').val('100')");
         click_on '登録'; wait_for_ajax
         is_null_score_last_history
+      end
+    end
+  end
+
+  describe 'ダイアログウィジェット' do
+    describe 'キースライダ' do
+      before do
+        input_karaoke
+        js('register.submitKaraokeRegistrationRequest();');
+      end
+      it 'プラスボタン' do
+        expect(find('#slidervalue').text()).to eq '0'
+        js("$('.slider-btn').last().click()")
+        expect(find('#slidervalue').text()).to eq '1'
+      end
+      it 'マイナスボタン' do
+        expect(find('#slidervalue').text()).to eq '0'
+        js("$('.slider-btn').first().click()")
+        expect(find('#slidervalue').text()).to eq '-1'
+      end
+    end
+    describe '採点モード' do
+      before do
+        input_karaoke
+      end
+      it 'JOYSOUNDの場合' do
+        select 'JOYSOUND MAX', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他その他 その他'
+      end
+      it 'DAMの場合' do
+        select 'DAM LIVE DAM', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
+      end
+      it 'その他の場合' do
+        select 'その他 その他', from: 'product'
+        js('register.submitKaraokeRegistrationRequest();');
+        expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
+      end
+    end
+    describe '得点入力欄' do
+      before do
+        input_karaoke
+        js('register.submitKaraokeRegistrationRequest();');
+        select 'JOYSOUND 全国採点', from: 'score_type'
+      end
+      it '採点モード指定なしの場合得点欄を表示しない' do
+        select '', from: 'score_type'
+        expect(ejs("$('#score_area').css('display')")).to eq 'none'
+      end
+      it '採点モード指定ありの場合得点欄を表示する' do
+        expect(ejs("$('#score_area').css('display')")).to eq 'block'
+      end
+      it '101点以上入力で100点に修正' do
+        fill_in 'score', with: 120
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '100'
+      end
+      it '-n点入力でn点に修正' do
+        fill_in 'score', with: -50
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '50'
+      end
+      it '小数点が複数ある場合に補正' do
+        fill_in 'score', with: '85.92.38.59'
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '85.92'
+      end
+      it 'アルファベットが含まれている場合に訂正' do
+        fill_in 'score', with: '8fadlsfl2.jfaa38'
+        js("$('#score').blur()")
+        expect(find('#score').value()).to eq '82.38'
       end
     end
   end

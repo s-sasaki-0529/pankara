@@ -30,10 +30,10 @@ class IndexRoute < March
       @user = @current_user
       # タイムライン
       @timeline = @user.timeline
-      # ユーザの前回のカラオケ
-      @recent_karaoke = @user.get_karaoke(1)[0]
       # バスタオル用の楽曲一覧
       @song_list = History.recent_song(:sampling => 30)
+      # カラオケ実績の有無
+      @has_karaoke = @user.get_karaoke(1).size == 1
       erb :index
     else
       redirect '/auth/login'

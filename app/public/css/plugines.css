@@ -1,6 +1,270 @@
+/* =======================================
+ * jQueryAlerts
+ *
+ * ======================================*/
+#popup_container {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	min-width: 300px; /* Dialog will be no smaller than this */
+	max-width: 600px; /* Dialog will wrap after this width */
+	background: #FFF;
+	border: solid 5px #999;
+	color: #000;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#popup_title {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.75em;
+	color: #666;
+	background: #CCC url(/image/title.gif) top repeat-x;
+	border: solid 1px #FFF;
+	border-bottom: solid 1px #999;
+	cursor: default;
+	padding: 0em;
+	margin: 0em;
+}
+
+#popup_content {
+	background: 16px 16px no-repeat url(/image/info.gif);
+	padding: 1em 1.75em;
+	margin: 0em;
+}
+
+#popup_content.alert {
+	background-image: url(/image/info.gif);
+}
+
+#popup_content.confirm {
+	background-image: url(/image/important.gif);
+}
+
+#popup_content.prompt {
+	background-image: url(/image/help.gif);
+}
+
+#popup_message {
+	padding-left: 48px;
+}
+
+#popup_panel {
+	text-align: center;
+	margin: 1em 0em 0em 1em;
+}
+
+#popup_prompt {
+	margin: .5em 0em;
+}
+
+/* ========================================
+ * color box
+ * http://www.jacklmoore.com/colorbox/
+ * ========================================*/
+#colorbox, #cboxOverlay, #cboxWrapper{position:absolute; top:0; left:0; z-index:9999; overflow:hidden; -webkit-transform: translate3d(0,0,0);}
+#cboxWrapper {max-width:none;}
+#cboxOverlay{position:fixed; width:100%; height:100%;}
+#cboxMiddleLeft, #cboxBottomLeft{clear:left;}
+#cboxContent{position:relative;}
+#cboxLoadedContent{overflow:auto; -webkit-overflow-scrolling: touch;}
+#cboxTitle{margin:0;}
+#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:0; left:0; width:100%; height:100%;}
+#cboxPrevious, #cboxNext, #cboxClose, #cboxSlideshow{cursor:pointer;}
+.cboxPhoto{float:left; margin:auto; border:0; display:block; max-width:none; -ms-interpolation-mode:bicubic;}
+.cboxIframe{width:100%; height:100%; display:block; border:0; padding:0; margin:0;}
+#colorbox, #cboxContent, #cboxLoadedContent{box-sizing:content-box; -moz-box-sizing:content-box; -webkit-box-sizing:content-box;}
+#cboxOverlay{background:#000; opacity: 0.9; filter: alpha(opacity = 90);}
+#colorbox{outline:0;}
+#cboxContent{margin-top:20px;background:#000;}
+.cboxIframe{background:#fff;}
+#cboxError{padding:50px; border:1px solid #ccc;}
+#cboxLoadedContent{border:5px solid #000; background:#fff;}
+#cboxTitle{position:absolute; top:-20px; left:0; color:#ccc;}
+#cboxCurrent{position:absolute; top:-20px; right:0px; color:#ccc;}
+#cboxLoadingGraphic{background:url(/images/loading.gif) no-repeat center center;}
+
+/* these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles */
+#cboxPrevious, #cboxNext, #cboxSlideshow, #cboxClose {border:0; padding:0; margin:0; overflow:visible; width:auto; background:none; }
+
+/* avoid outlines on :active (mouseclick), but preserve outlines on :focus (tabbed navigating) */
+#cboxPrevious:active, #cboxNext:active, #cboxSlideshow:active, #cboxClose:active {outline:0;}
+
+#cboxSlideshow{position:absolute; top:-20px; right:90px; color:#fff;}
+#cboxPrevious{position:absolute; top:50%; left:5px; margin-top:-32px; background:url(/image/controls.png) no-repeat top left; width:28px; height:65px; text-indent:-9999px;}
+#cboxPrevious:hover{background-position:bottom left;}
+#cboxNext{position:absolute; top:50%; right:5px; margin-top:-32px; background:url(/image/controls.png) no-repeat top right; width:28px; height:65px; text-indent:-9999px;}
+#cboxNext:hover{background-position:bottom right;}
+#cboxClose{position:absolute; top:5px; right:5px; display:block; background:url(/image/controls.png) no-repeat top center; width:38px; height:19px; text-indent:-9999px;}
+#cboxClose:hover{background-position:bottom center;}
+
+/* ========================================
+ * mini calendar
+ * http://www.webopixel.net/javascript/1107.html
+ * ========================================*/
+.calendar-head {
+  text-align: center;
+}
+#mini-calendar .calendar-year-month {
+  text-align: center;
+  font-size: 24px;
+}
+#mini-calendar table {
+  width: 100%;
+  border-spacing: 0;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-radius: 7px;
+}
+#mini-calendar th:first-child {
+  border-top-left-radius: 7px;
+}
+#mini-calendar th:last-child {
+  border-top-right-radius: 7px;
+}
+#mini-calendar tr:last-child td:first-child {
+  border-bottom-left-radius: 7px;
+}
+#mini-calendar tr:last-child td:last-child {
+  border-bottom-right-radius: 7px;
+}
+#mini-calendar th,
+#mini-calendar td {
+  background: #fff;
+  padding: 3px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+#mini-calendar th {
+  color: #fff;
+  background: #4F616B;
+  vertical-align: top;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+#mini-calendar td {
+  width: 14.3%;
+  height: 70px;
+  vertical-align: top;
+}
+#mini-calendar td.calendar-day-off {
+  background: #F4F3F2;
+  color: #555;
+}
+#mini-calendar td.calendar-holiday,
+#mini-calendar td.calendar-sun {
+  color: #CE2727;
+  background: #FCF3F3;
+}
+#mini-calendar td.calendar-sat {
+  color: #54AFC8;
+  background: #F5FBFE;
+}
+#mini-calendar .calendar-day-number {
+  font-style: normal;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  padding: 0 3px;
+  line-height: 1.2;
+}
+#mini-calendar td.calendar-holiday .day,
+#mini-calendar td.calendar-sun .day {
+  color: #DF0D2D;
+}
+#mini-calendar td.calendar-sat .day {
+  color: #2574D3;
+}
+#mini-calendar td span {
+  font-size: 11px;
+  line-height: 1.3;
+  display: block;
+}
+#mini-calendar [class*=calendar-label] {
+  font-size: 11px;
+  line-height: 1.3;
+  color: #000;
+  background: #FCEBCF;
+  border: solid 1px #D2AC8E;
+  display: block;
+  padding: 3px;
+  margin-top: 3px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+}
+#mini-calendar td span.calendar-label-red {
+  background-color: #FCCFD1;
+  border-color: #D28EA6;
+}
+#mini-calendar td span.calendar-label-blue {
+  background-color: #CFE4FC;
+  border-color: #8E9BD2;
+}
+#mini-calendar td span.calendar-label-green {
+  background-color: #E5FCCF;
+  border-color: #99C170;
+}
+#mini-calendar td.calendar-none {
+  background: #FBFAF7;
+}
+#mini-calendar td.calendar-today {
+  background: #FEFBDA;
+}
+#mini-calendar-vertical table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 4px solid #B89970;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+#mini-calendar-vertical table th {
+  width: 10%;
+  padding: 7px 5px 7px 10px;
+  font-size: 129%;
+  white-space: nowrap;
+  font-weight: normal;
+}
+#mini-calendar-vertical table td {
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+#mini-calendar-vertical table th span {
+  font-size: 77%;
+  margin-left: 4px;
+}
+
 /*
 loading
+http://on-ze.com/archives/510
 */
+
+#loading-view {
+ width: 100%;
+ height: 100%;
+ z-index: 114514;
+ position: fixed;
+ top: 0;
+ left: 0;
+ background-color: #000000;
+ filter: alpha(opacity=45);
+ -moz-opacity: 0.5;
+ -khtml-opacity: 0.5;
+ opacity: 0.5;
+ background-position: center center;
+ background-repeat: no-repeat;
+ background-attachment: fixed;
+}
+
 .rotate-image {
   -webkit-animation: spin 1.5s linear infinite;
   -moz-animation: spin 1.5s linear infinite;
@@ -63,16 +327,15 @@ lib Tablesorter
 http://developmentor.lrlab.to/postal/jquery/jquery.tablesorter/basic1.html
 */
 table.sortable thead tr .header {
-  background-image: url(../public/image/tablesort_bg.gif);
   background-repeat: no-repeat;
   background-position: center right;
   cursor: pointer;
 }
 table.sortable thead tr .headerSortUp {
-  background-image: url(../image/tablesort_asc.gif);
+  background-image: url(/image/tablesort_asc.gif);
 }
 table.sortable thead tr .headerSortDown {
-  background-image: url(../image/tablesort_desc.gif);
+  background-image: url(/image/tablesort_desc.gif);
 }
 table.sortable thead tr .headerSortDown, table.sortable thead tr .headerSortUp {
   background-color: #8dbdd8;
@@ -433,8 +696,6 @@ http://xdsoft.net/jqplugins/datetimepicker/
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_other_month.xdsoft_disabled {
-	opacity: 0.2;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar td:hover,

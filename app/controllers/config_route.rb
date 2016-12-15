@@ -1,4 +1,5 @@
 require_relative './march'
+require_relative '../models/user_attr'
 require_relative '../models/twitter'
 
 class ConfigRoute < March
@@ -6,6 +7,9 @@ class ConfigRoute < March
   # get '/config' - ユーザ設定ページ
   #--------------------------------------------------------------------
   get '/' do
+
+    #ログインユーザのみアクセス可能
+    @current_user or redirect '/auth/login'
 
     #TwitterAPIからのリダイレクト
     if params[:oauth_token] && verifier = params[:oauth_verifier]
@@ -20,10 +24,12 @@ class ConfigRoute < March
     # Twitterの認証状態を取得
     twitter = @current_user['twitter_info']
     if twitter
+      user_attr = UserAttr.new(@current_user['id'])
       @twitter_authed = true
-      Util.debug twitter
       @twitter_username = twitter[:username]
       @twitter_icon = twitter[:icon]
+      @tweet_karaoke_format = user_attr.get_tweet_karaoke_format
+      @tweet_history_format = user_attr.get_tweet_history_format
     end
 
     # 設定変更のメッセージ
@@ -71,6 +77,13 @@ class ConfigRoute < March
     elsif params[:remove_oauth]
       Util.write_secret(username , nil)
       flash[:mod_config_result] = 'Twitter連携を解除しました'
+      redirect '/config/'
+    # TweetFormatの変更リクエスト
+    elsif params[:modify_format]
+      user_attr = UserAttr.new(@current_user['id'])
+      user_attr.set_tweet_karaoke_format(params[:karaoke_format])
+      user_attr.set_tweet_history_format(params[:history_format])
+      flash[:mod_config_result] = 'ツイートフォーマットを変更しました'
       redirect '/config/'
     end
     erb :config

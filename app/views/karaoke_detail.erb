@@ -1,8 +1,8 @@
 <!-- PC -->
 <% if Util.is_pc? %>
   <!-- カラオケタイトル -->
-  <div style="margin-bottom: 20px">
-    <h3 class='inline'><%= h @karaoke['name'] %></h3>
+  <div style="margin-bottom: 20px; margin-top: -10px">
+    <h2><%= h @karaoke['name'] %></h2>
   </div>
 
   <!-- カラオケ 基本情報 -->
@@ -25,7 +25,7 @@
         <td class='center cell-date'><%= date(@karaoke['datetime']) %></td>
         <td class='center'><%= @karaoke['plan'] %></td>
         <td class='center'><%= h @karaoke['store_full_name'] %></td>
-        <td class='center'><%= @karaoke['product_name'] %></td>
+        <td class='center'><%= @karaoke['product_full_name'] %></td>
         <td class='center'><%= @karaoke.histories.count %></td>
         <% if @current_user %>
         <td class='center'>
@@ -176,8 +176,8 @@
 <% else %>
 <div class="center">
   <!-- カラオケタイトル -->
-  <div style="margin-bottom: 10px">
-    <h2 class="inline"><%= h @karaoke['name'] %></h3>
+  <div style="margin-bottom: 10px; margin-top: -10px">
+    <h2><%= h @karaoke['name'] %></h2>
   </div>
 
   <!-- カラオケ基本情報 -->
@@ -197,7 +197,7 @@
       </tr>
       <tr>
         <th>機種</th>
-        <td><%= @karaoke['product_name'] %></td>
+        <td><%= @karaoke['product_full_name'] %></td>
       </tr>
       <tr>
         <th>歌唱数</th>

@@ -13,6 +13,7 @@ require_relative 'twitter'
 require_relative 'friend'
 require_relative 'pager'
 require_relative 'tag'
+require_relative 'user_attr'
 
 class User < Base
 
@@ -33,6 +34,12 @@ class User < Base
     @params and @params['twitter_info'] = Twitter.user_info(@params['username'])
   end
 
+  # userattr - UserAttrクラスを生成
+  #---------------------------------------------------------------------
+  def userattr
+    return UserAttr.new(@params['id'])
+  end
+
   # histories - ユーザの歌唱履歴と関連情報を取得
   #---------------------------------------------------------------------
   def histories(opt = {})
@@ -47,7 +54,7 @@ class User < Base
 
     # 歌唱履歴を全て取得し、場号を振る
     db = DB.new(
-      :SELECT => ['song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
+      :SELECT => ['id' , 'song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
       :FROM => 'history' ,
       :WHERE_IN => ['attendance' , attend_ids.length],
       :SET => attend_ids ,
@@ -107,7 +114,7 @@ class User < Base
     attended_id_list = attends.map {|a| a['karaoke']}
 
     # ユーザが参加したkaraokeIDから、karaokeの詳細情報取得
-    all_karaoke_info = Karaoke.list_all(:with_attendance => true)
+    all_karaoke_info = Karaoke.list_all(:with_attendance => true , :with_sang_count => true)
     attended_karaoke_info = all_karaoke_info.select do |karaoke|
       attended_id_list.include?(karaoke['id'])
     end
@@ -184,9 +191,10 @@ class User < Base
   def get_max_score
     db = DB.new(
       :SELECT => {
+        'history.id' => 'id',
         'history.song' => 'song',
         'history.score_type' => 'score_type',
-        'history.score' => 'score'
+        'history.score' => 'score',
       } ,
       :FROM => 'history' ,
       :JOIN => ['history' , 'attendance'] ,
@@ -423,25 +431,34 @@ class User < Base
   #---------------------------------------------------------------------
   def tweet(text)
     if twitter = self.twitter_account
-      twitter.tweet(text)
+      result = twitter.tweet(text)
     end
-    return twitter
+    return result
+  end
+
+  # tweet_format - ツイートフォーマットにユーザ情報を埋め込む
+  #--------------------------------------------------------------------
+  def tweet_format(format)
+    format.gsub!(/\$\$username\$\$/ , @params['screenname'])
+    return format
   end
 
   # tweet_karaoke - ツイッターにカラオケについてツイートする
   #--------------------------------------------------------------------
-  def tweet_karaoke(karaoke_id , tweet_text = "")
-    tweet = "#{@params['screenname']}さんがカラオケに行きました"
-    url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}#{tweet_text}")
+  def tweet_karaoke(karaoke , tweet_text = "")
+    format = self.userattr.get_tweet_karaoke_format
+    format = self.tweet_format(format)
+    format = karaoke.tweet_format(format)
+    self.tweet("#{format}\n#{tweet_text}")
   end
 
   # tweet_history - ツイッターに歌唱履歴についてツイートする
   #--------------------------------------------------------------------
-  def tweet_history(karaoke_id , history , tweet_text = "")
-    tweet = "#{history['song_name']}(#{history['artist_name']})を歌いました"
-    url = Util.url('karaoke' , 'detail' , karaoke_id)
-    self.tweet("#{tweet} #{url}#{tweet_text}")
+  def tweet_history(history , tweet_text = "")
+    format = self.userattr.get_tweet_history_format
+    format = self.tweet_format(format)
+    format = history.tweet_format(format)
+    self.tweet("#{format}\n#{tweet_text}")
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得
@@ -514,8 +531,12 @@ class User < Base
 
     # 並び順を設定
     sc = opt[:sort_category]
-    song_list[:list].sort! {|a , b| b[sc] <=> a[sc]}
-    opt[:sort_order] == 'asc' and song_list[:list].reverse!
+    if sc == 'random'
+      song_list[:list].shuffle!
+    else
+      song_list[:list].sort! {|a , b| b[sc] <=> a[sc]}
+      opt[:sort_order] == 'asc' and song_list[:list].reverse!
+    end
 
     # [オプション] ページャで戻すデータ量を制限
     song_list[:num] = song_list[:list].size

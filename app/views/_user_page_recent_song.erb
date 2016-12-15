@@ -1,5 +1,5 @@
 <div class="recent_sang_area">
-  <h3>最近歌った曲</h3>
+  <h4>最近歌った曲</h4>
 </div>
 <!-- 最近歌った曲情報 -->
 <% if @histories.size > 0 %>
@@ -8,6 +8,7 @@
     <tr>
       <th>曲</th>
       <th>歌手</th>
+      <th></th>
     </tr>
   </thead>
   <tbody style="background-color: white">
@@ -15,6 +16,7 @@
       <tr>
         <td><%= song_link history['song'], history['song_name'] %></td>
         <td><%= artist_link history['artist_id'], history['artist_name'] %></td>
+        <td><%= history_link history['id'] %></td>
       </tr>
     <% end %>
     </tr>

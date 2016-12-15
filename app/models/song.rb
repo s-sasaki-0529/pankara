@@ -18,12 +18,15 @@ class Song < Base
   # name_to_object - 曲名と歌手名の組み合わせからsongオブジェクトを戻す
   #---------------------------------------------------------------------
   def self.name_to_object(song_name , artist_name)
-    DB.new(
+    id = DB.new(
+      :SELECT => {'song.id' => 'id'},
       :FROM => 'song',
       :JOIN => ['song' , 'artist'] ,
       :WHERE => ['song.name = ?' , 'artist.name = ?'] ,
       :SET => [song_name , artist_name]
-    ).execute_row
+    ).execute_column
+    id or return nil
+    return Song.new(id)
   end
 
   # list - クラスメソッド 楽曲の一覧を取得
@@ -31,6 +34,7 @@ class Song < Base
   # opt[:name_like] - String 楽曲名で部分検索
   # opt[:artist_info] - Bool 歌手情報を取得するか
   # opt[:want_hash] - Bool song_idをkeyにしたハッシュに変換
+  # opt[:null] - 動画URLが設定されていない楽曲を抽出
   #--------------------------------------------------------------------
   def self.list(opt = {})
     db = DB.new(:FROM => 'song')
@@ -53,6 +57,11 @@ class Song < Base
     if word = opt[:name_like]
       db.where('song.name like ?')
       db.set("%#{word}%")
+    end
+
+    # 動画URLが設定されていない楽曲のみ
+    if opt[:null]
+      db.where('song.url is NULL')
     end
 
     # opt[:songs]の順番を維持
@@ -207,6 +216,7 @@ class Song < Base
         'karaoke.datetime' => 'datetime' ,
         'user.username' => 'username' ,
         'user.screenname' => 'user_screenname' ,
+        'history.id' => 'history_id',
         'history.songkey' => 'songkey' ,
         'history.score_type' => 'score_type' ,
         'history.score' => 'score'

@@ -28,12 +28,14 @@
         <th>曲</th>
         <th>歌手</th>
         <th>採点方法</th>
+        <th></th>
       </tr>
       <tr>
         <td><%= h @max_score['score'] %>点</td>
         <td><%= song_link @max_score['song'], @max_score['song_name']%></td>
         <td><%= artist_link @max_score['artist'], @max_score['artist_name'] %></td>
         <td><%= @max_score['scoretype_name'] %></td>
+        <td><%= history_link(@max_score['id']) %></td>
       </tr>
     </tbody>
   </table>

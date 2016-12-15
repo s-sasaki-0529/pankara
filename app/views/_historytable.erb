@@ -17,7 +17,7 @@
   <tbody>
     <% @histories.each_with_index do |history , idx| %>
     <tr>
-      <td class='center'><%= idx + 1 %></td>
+      <td class='center'><%= history_link(history['history_id'] , {:icon => false , :text => (idx + 1)}) %></td>
       <td class='center' width='<%= Util.is_pc? ? 150 : 32 %>'>
         <% if Util.is_pc? %>
           <%= user_link history['userinfo']['username'], history['userinfo']['screenname'] %>

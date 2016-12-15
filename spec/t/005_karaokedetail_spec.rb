@@ -69,6 +69,10 @@ describe 'カラオケ詳細ページ' , :js => true do
       examine_songlink('Dragon Night' , 'SEKAI NO OWARI' , url)
       examine_artistlink('サイキックラバー' , url)
     end
+    it '歌唱履歴詳細' do
+      link '67'
+      examine_historylink 'へたれ' , '祝本番環境リリースカラオケ' , 'イドラのサーカス'
+    end
   end
   describe 'Attendnaceの編集' do
     it '値段' do
@@ -128,5 +132,9 @@ describe 'カラオケ詳細ページ' , :js => true do
     click_on '登録'; wait_for_ajax
     new_num = `zenra mysql -se "select count(history.id) from history"`
     expect(old_num).to eq new_num
+  end
+  it '直近のカラオケ' do
+    visit '/karaoke/recent'
+    current_path_is '/karaoke/detail/62'
   end
 end

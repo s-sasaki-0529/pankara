@@ -1,11 +1,11 @@
-<select id="score_type_selecter" name="<%= @select_name %>">
-  <% @score_type_list.each do |score_type| %>
-    <% if @current_score_type == score_type['id'].to_s %>
-    <option value="<%= score_type['id'] %>" selected>
-    <% else %>
-    <option value="<%= score_type['id'] %>">
-    <% end %>
-      <%= score_type['brand'] %> <%= score_type['name'] %>
-    </option>
+<select class="selectpicker" id="score_type_selecter" name="<%= @select_name %>">
+  <% @score_type_list.each do |brand , st| %>
+    <optgroup label="<%= brand %>">
+      <% st.each do |s| %>
+        <option value="<%= s['id'] %>" <%= @current_score_type == s['id'].to_s ? 'selected' : '' %>>
+          <%= s['name'] %>
+        </option>
+      <% end %>
+    </optgroup>
   <% end %>
 </select>

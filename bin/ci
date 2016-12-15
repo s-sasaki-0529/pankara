@@ -36,6 +36,9 @@ cd $MARCHDIR
 bundle exec ruby "bin/scripts/set_config.rb" set run_mode ci
 bundle exec ruby "bin/scripts/set_config.rb" unset auto_login
 
+# メンテナンスモードも解除しておく
+zenra maintenance
+
 if [ -n "$VALUE_B" ]; then
   # ベンチマークテストを実施
   bundle exec rspec spec/t/900_benchmark_spec.rb -e "$VALUE_B"

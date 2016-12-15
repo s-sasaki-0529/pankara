@@ -11,7 +11,7 @@ end
 def sang_count_chart(user , song)
   login user
   visit "/song/#{song}"; wait_for_ajax
-  json = evaluate_script("$('#sang_count_chart_json').text();")
+  json = ejs("$('#sang_count_chart_json').text();")
   info = Util.to_hash(json)
   return Util.array_to_hash(info , '_month' , true)
 end
@@ -20,7 +20,7 @@ end
 def score_chart(user , song)
   login user
   visit "/song/#{song}"; wait_for_ajax
-  json = evaluate_script("$('#score_bar_chart_json').text();")
+  json = ejs("$('#score_bar_chart_json').text();")
   scores = Util.to_hash(json)["scores"]
   return Util.array_to_hash(scores , 'name' , true)
 end
@@ -157,7 +157,7 @@ describe '楽曲詳細ページ' , :js => true do
       islack '歌唱履歴がありません'
       history = table_to_hash('song_detail_table_user')
       expect(history.size).to eq 14
-      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他,85.00'
+      expect(history[9]['tostring']).to eq '2016-03-05,祝本番環境リリースカラオケ,ないと,0,その他,85.00,'
     end
     it '他のユーザだけが歌っている楽曲' do
       login 'sa2knight'
@@ -166,7 +166,14 @@ describe '楽曲詳細ページ' , :js => true do
       islack 'あなたの'
       history = table_to_hash('song_detail_table_all')
       expect(history.size).to eq 1
-      expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,'
+      expect(history[0]['tostring']).to eq '2016-01-08,新年初カラオケ,ウォーリー,0,,,'
+    end
+    it '楽曲詳細画面へのリンク' do
+      login 'sa2knight'
+      visit '/song/197'
+      iscontain 'IN MY DREAM'
+      visit all('.history-link')[0]['href']
+      examine_historylink('ないと' , 'ないととともちん10回目' , 'IN MY DREAM')
     end
   end
 
@@ -241,8 +248,7 @@ describe '楽曲詳細ページ' , :js => true do
       if mode == 2
         click_on '登録'; wait_for_ajax
         click_on '終了';
-        visit '/'
-        find('#recent_karaoke_link').click
+        visit '/karaoke/recent'
       end
       wait_for_ajax
     end
@@ -288,15 +294,56 @@ describe '楽曲詳細ページ' , :js => true do
     end
   end
 
+  describe 'URLで歌手名を指定して詳細画面へ移動' do
+    def exam(song , artist , result = true)
+      visit URI.escape("/song?name=#{song}&artist=#{artist}")
+      if result
+        iscontain "#{song} / #{artist}"
+      else
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+    describe '該当あり' do
+      it '曲名がアルファベットのみ' do
+        exam('MISTAKE' , 'ナナホシ管弦楽団')
+      end
+      it '曲名が空白含むアルファベットのみ' do
+        exam('IN MY DREAM' , '真行寺 恵理')
+      end
+      it '曲名が日本語' do
+        exam('地球最後の告白を' , 'kemu')
+      end
+    end
+    describe '該当なし' do
+      it 'アーティスト該当あり　曲名該当なし' do
+        exam('盆踊りフィーバーナイト' , 'BUMP OF CHICKEN' , false)
+      end
+      it 'アーティスト該当なし　曲名該当あり' do
+        exam('天体観測' , '地球のはじまり' , false)
+      end
+      it 'アーティスト該当なし　曲名該当なし' do
+        exam('ずんどこほいでいきましょか' , 'ザ・ボンバーズ' , false)
+      end
+      it 'パラメータ指定なし' do
+        visit '/artist'
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+      it 'パラメータ空文字' do
+        visit '/artist?name=&artist='
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+  end
+
   describe '歌う曲に迷ったら' do
     it 'ログイン済み' do
       login 'sa2knight'
-      visit '/song/'
+      visit '/song/random'
       expect(!!current_path.match(%r|/song/[0-9]+|)).to eq true
     end
     it 'ログインなし' do
       logout
-      visit '/song/'
+      visit '/song/random'
       expect(!!current_path.match(%r|/song/[0-9]+|)).to eq true
     end
   end

@@ -8,45 +8,39 @@
   <% if Util.is_smartphone? %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <% end %>
-  <link rel="stylesheet" href="/css/plugines.css?<%= Util.filemtime('css/plugines.css') %>" type="text/css">
+  <link rel="stylesheet" href="<%= Util.url_with_filemtime('/css/plugines.css') %>" type="text/css">
   <link rel="stylesheet" href="/jquery-ui-1.12.1.custom/jquery-ui.min.css?" type="text/css">
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" type="text/css">
   <link rel="stylesheet" href="/c3js/c3.css" type="text/css">
-  <link rel="stylesheet" href="/jquery_alerts/jquery.alerts.css" type="text/css">
-  <link rel="stylesheet" href="/css/march.css?<%= Util.filemtime('css/march.css') %>" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" />
+  <link rel="stylesheet" href="<%= Util.url_with_filemtime('/css/march.css') %>" type="text/css">
   <% if Util.is_smartphone? %><link rel="stylesheet" href="/css/sp.css" type="text/css"><% end %>
   <script src="/script/jquery-2.2.0.min.js"></script> <!-- jQuery本体-->
   <script src="/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> <!-- jQueryUI -->
   <script src="/c3js/c3.min.js"></script> <!-- グラフ描画要C3.JS -->
   <script src="/d3js/d3.min.js"></script> <!-- データ可視化ライブラリ D3.JS -->
-  <script src="/jquery_lib/jquery.simplyscroll.min.js"></script> <!-- バスタオルスクリプト -->
-  <script src="/jquery_lib/tablesort/jquery.tablesorter.min.js"></script> <!-- テーブルソートスクリプト-->
-  <script src="/jquery_lib/jquery.datetimepicker.js"></script><!-- 日時入力UI -->
-  <script src="/jquery_alerts/jquery.alerts.js"></script><!-- アラートスクリプト -->
-  <script src="/jquery_lib/jquery.minicalendar.js"></script> <!-- カレンダー -->
-  <script src="/script/zenra.js?<%= Util.filemtime('script/zenra.js') %>"></script> <!-- 全裸スクリプト -->
+  <script src="<%= Util.url_with_filemtime('/script/plugins.js') %>"></script> <!-- 各種追加ライブラリ -->
+  <script src="<%= Util.url_with_filemtime('/script/zenra.js') %>"></script> <!-- 全裸スクリプト -->
   <link rel="shortcut icon" href="/image/favicon.ico" />
   <title>パンダリンのカラオケランド(β版テスト期間中)</title>
   <!-- JavaScriptへの値の受け渡 -->
   <script>
-    <% if Util.is_pc? %>
-      zenra.ispc = true;
-    <% else %>
-      zenra.ispc = false;
-    <% end %>
+    zenra.ispc = <%= Util.is_pc?.to_s %>;
+    zenra.runMode = '<%= Util.run_mode %>';
     <% if @current_user %>
       zenra.currentUser = {
         id: <%= @current_user['id'] %>,
         username: "<%= @current_user['username'] %>",
         screenname: "<%= @current_user['screenname'] %>"
-      }
+      };
     <% end %>
   </script>
 </head>
 <body>
 <div class="container">
   <!-- メインメニューバー -->
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <% unless @HIDEHEADMENU %>
+  <nav class="navbar navbar-default navbar-fixed-top <%= @maintenance ? 'navbar-maintenance' : '' %> ">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarEexample">
@@ -57,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="/">🐼パンカラ!</a>
       </div>
-      
+
       <div class="collapse navbar-collapse" id="navbarEexample">
         <ul class="nav navbar-nav">
           <li class="dropdown">
@@ -68,12 +62,12 @@
               <li><a href="/karaoke/list">全てのカラオケ一覧</a></li>
               <% if @current_user %>
               <li><a href="/karaoke/user/">あなたのカラオケ一覧</a></li>
+              <li><a href="/karaoke/recent">直近のカラオケ</a></li>
               <li><a href="/user/songlist">あなたの持ち歌一覧</a></li>
               <li><a href="/history/list">あなたの歌唱履歴</a></li>
               <% end %>
               <li><a href="/search/tag_list">タグ一覧</a></li>
-              <li><a href="/artist">アーティスト一覧</a></li>
-              <li><a href="/song/">歌う曲に迷ったら</a></li>
+              <li><a href="/song/random">歌う曲に迷ったら</a></li>
             </ul>
           </li>
           <% if @current_user %>
@@ -140,6 +134,7 @@
       </div>
     </div>
   </nav>
+  <% end %>
   <!-- コンテンツのインクルード-->
   <%= yield %>
 </div>

@@ -1,5 +1,6 @@
 <% if @histories.size > 0 %>
 <h4>よく歌うアーティストベスト１０</h4>
 <div id="user_sang_artists_chart"></div>
+<div class='hidden' id="user_sang_artists_chart_json"></div>
 <script>zenra.createFavoriteArtistsPieChart('#user_sang_artists_chart' , "<%= @user['username'] %>");</script>
 <% end %>

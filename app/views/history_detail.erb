@@ -1,0 +1,52 @@
+<div class='color-box-content'>
+
+<h3>歌唱履歴詳細</h3>
+
+<table id='history_detail' class='table table-bordered'>
+  <tr>
+    <th>ユーザー</th>
+    <td><%= user_icon(@user['user_name']) %><%= @user['user_screenname'] %></td>
+  </tr>
+  <tr>
+    <th>カラオケ名</th>
+    <td><%= h @karaoke['name'] %></td>
+  </tr>
+  <tr>
+    <th>日時</th>
+    <td><%= @karaoke['datetime'] %></td>
+  </tr>
+  <tr>
+    <th>時間</th>
+    <td><%= @karaoke['plan'] %></td>
+  </tr>
+  <tr>
+    <th>店舗</th>
+    <td><%= @karaoke['store_full_name'] %></td>
+  </tr>
+  <tr>
+    <th>機種名</th>
+    <td><%= @karaoke['product_full_name'] %></td>
+  </tr>
+  <tr>
+    <th>曲名</th>
+    <td><%= @history['song_name'] %></td>
+  </tr>
+  <tr>
+    <th>歌手名</th>
+    <td><%= @history['artist_name'] %></td>
+  </tr>
+  <tr>
+    <th>キー</th>
+    <td><%= @history['songkey'] %></td>
+  </tr>
+  <tr>
+    <th>採点方法</th>
+    <td><%= @history['score_type_name'] %></td>
+  </tr>
+  <tr>
+    <th>得点</th>
+    <td><%= @history['score'] %></td>
+  </tr>
+</table>
+
+</div>

@@ -1,7 +1,6 @@
 # 各種ページに大量のアクセスを行い、経過時間を評価するためのスクリプト
 # ただし、計測は実時間を用い貯め、CPU時間、IO待ち時間を含んでしまうため参考程度とする
 
-require 'uri'
 require_relative '../rbase'
 include Rbase
 

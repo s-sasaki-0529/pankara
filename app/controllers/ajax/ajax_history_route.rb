@@ -1,4 +1,5 @@
 require_relative 'ajax_route'
+require_relative '../../models/history'
 
 class AjaxHistoryRoute < AjaxRoute
 
@@ -30,7 +31,7 @@ class AjaxHistoryRoute < AjaxRoute
       return error('歌手名を入力してください')
     end
     info = @current_user.register_history(karaoke_id , history)
-    twitter and @current_user.tweet_history(karaoke_id , history , params[:tweet_text])
+    twitter and @current_user.tweet_history(History.new(info[:history_id]) , params[:tweet_text])
     return success(info)
   end
 
@@ -59,6 +60,7 @@ class AjaxHistoryRoute < AjaxRoute
     arg['artist_name'] == "" and return error('歌手名を入力してください')
     result = history.modify(arg.dup)
     result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , tweet_text)
+    twitter and @current_user.tweet_history(history , params[:tweet_text])
     return result ? success : error('modify failed')
   end
 

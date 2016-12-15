@@ -1,5 +1,5 @@
 <div class="recent_karaoke_area">
-  <h3>最近のカラオケ</h3>
+  <h4>最近のカラオケ</h4>
 </div>
 <!-- 最近のカラオケ情報 -->
 <% if @karaoke_list.size > 0 %>
@@ -12,7 +12,7 @@
   </thead>
   <tbody style="background-color: white">
     <% @karaoke_list.each do |karaoke| %>
-      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+      <tr onclick="zenra.visit('/karaoke/detail/<%= karaoke['id'] %>')">
         <td class="center cell_date"><%= date(karaoke['datetime']) %></td>
         <td class='center'><%= h karaoke['name'] %></td>
       </tr>

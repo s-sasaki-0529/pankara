@@ -1,3 +1,4 @@
+require 'uri'
 require 'spec_helper'
 require_relative '../app/models/util'
 module Rbase
@@ -92,11 +93,20 @@ module Rbase
     referer and visit referer
   end
 
-  # カラオケ名にカラオケ詳細ページへのリンクが設定されているかを確認する
+  # カラオケ名にカラオケ詳細ページへのリンクが設定されているかを検証する
   def examine_karaokelink(name , referer = nil)
     link name
-    expect(page.all('h3')[0].text).to eq name
+    expect(page.all('h2')[0].text).to eq name
     referer and visit referer
+  end
+
+  # 歌唱履歴詳細画面へのリンクが設定されているかを検証する
+  def examine_historylink(user_name , karaoke_name , song_name)
+    iscontain '歌唱履歴詳細'
+    table = table_to_array('history_detail')
+    expect(table[0][1]).to eq user_name
+    expect(table[1][1]).to eq karaoke_name
+    expect(table[6][1]).to eq song_name
   end
 
   # 現在のパスを検証
@@ -135,10 +145,17 @@ module Rbase
     page.all('.thumbnail').collect {|element| element['src']}
   end
 
-  # JavaScriptを実行
+  # JavaScriptを実行(戻り値を取らないが高速)
   def js(script)
     execute_script script
     wait_for_ajax
+  end
+
+  # JavaScriptを実行(戻り値を取るが低速)
+  def ejs(script)
+    result = evaluate_script script
+    wait_for_ajax
+    return result
   end
 
   # JavaScriptの非同期処理が完了するまで待機

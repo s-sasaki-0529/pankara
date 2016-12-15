@@ -13,7 +13,7 @@ describe '歌手詳細ページ' , :js => true do
 
   def to_hash(id)
     js = "$('##{id}').text();"
-    json = evaluate_script(js)
+    json = ejs(js)
     return Util.to_hash(json)
   end
 
@@ -108,4 +108,40 @@ describe '歌手詳細ページ' , :js => true do
       examine_songlink(song , 'BUMP OF CHICKEN' , url)
     end
   end
+
+  describe 'URLで歌手名を指定して詳細画面へ移動' do
+    def exam(name , result = true)
+      visit URI.escape("/artist?name=#{name}")
+      if result
+        iscontain name
+      else
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+    describe '該当あり' do
+      it '歌手名がアルファベットのみ' do
+        exam('kemu')
+      end
+      it '歌手名が空白含むアルファベットのみ' do
+        exam('BUMP OF CHICKEN')
+      end
+      it '歌手名が日本語' do
+        exam('涼宮ハルヒ')
+      end
+    end
+    describe '該当なし' do
+      it '該当する歌手名なし' do
+        exam('ずんどこずんどこ' , false)
+      end
+      it 'パラメータ指定なし' do
+        visit '/artist'
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+      it 'パラメータが空' do
+        visit '/artist?name='
+        iscontain 'お探しのページは見つかりませんでした'
+      end
+    end
+  end
+
 end

@@ -1,9 +1,7 @@
-
-<% if Util.is_pc? %><h1><% end %>
-  <% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧
-<% if Util.is_pc? %></h1><% end %>
+<h2 class='pack'><% if @target_user %><%= h @target_user['screenname'] %>さんの<% end %>カラオケ一覧</h2>
 
 <% if @karaoke_list.size > 0 %>
+  <div class='right'>全<span id="karaoke_num"><%= @karaoke_list.size %></span>件</div>
   <table id="karaokelist_table" class="table sortable table-hover linkcursor">
     <thead>
       <tr>
@@ -15,6 +13,7 @@
         <th>機種</th>
         <% end %>
         <th>メンバー</th>
+        <th class='center' width='60'>曲数</th>
         <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
           <th class='center' width="60">通知</th>
         <% end %>
@@ -22,7 +21,7 @@
     </thead>
     <tbody>
       <% @karaoke_list.each do |karaoke| %>
-      <tr onclick="location.href='/karaoke/detail/<%= karaoke['id'] %>'">
+      <tr onclick="zenra.visit('/karaoke/detail/<%= karaoke['id'] %>')">
         <td class='cell-date'><%= date(karaoke['datetime']) %></td>
         <td><%= h karaoke['name'] %></td>
         <% if Util.is_pc? %>
@@ -37,10 +36,12 @@
             <% if Util.is_pc? %>
               <%= user_icon member['username'] , 32 , 32 %>
             <% else %>
-              <%= user_icon member['username'] , 24 , 24 %>
+              <%= user_icon member['username'] , 16 , 16 %>
             <% end %>
           <% end %>
         </td>
+        <!-- 登録楽曲数 -->
+        <td class='center'><%= karaoke['sang_count'] %></td>
         <!-- 通知アイコン列 -->
         <% if Util.is_pc? && @target_user && @current_user && @target_user['username'] == @current_user['username'] %>
         <td class='center' width="60">

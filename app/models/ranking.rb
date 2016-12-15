@@ -16,10 +16,18 @@ class Ranking < Base
     user = opt[:user] || nil
 
     # history/attendanceテーブルを対象にランキングを取得
+    # Todo: karaoke.datetimeのために３テーブルJOINはなんか嫌だな
     db = DB.new(
-      :SELECT => ['user' , 'song' , 'score_type' , 'score'] ,
+      :SELECT => {
+        'karaoke.datetime' => 'datetime' ,
+        'attendance.user' => 'user' ,
+        'history.song' => 'song' ,
+        'history.id' => 'history_id' ,
+        'history.score_type' => 'score_type' ,
+        'history.score' => 'score'
+      } ,
       :FROM => 'history' ,
-      :JOIN => ['history' , 'attendance'] ,
+      :JOIN => [['history' , 'attendance'] , ['attendance' , 'karaoke']] ,
       :WHERE => ['score_type = ?' , 'score IS NOT NULL'] ,
       :OPTION => ['ORDER BY score DESC' , "limit #{limit}"] ,
       :SET => score_type

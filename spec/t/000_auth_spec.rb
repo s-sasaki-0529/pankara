@@ -38,14 +38,13 @@ describe '認証系ページ' do
   end
   it 'ログイン成功時に直前のページにリダイレクト' do
     visit '/auth/logout'
-    visit '/artist/'
-    iscontain 'アーティスト一覧'
+    visit '/karaoke/list'
     link 'ログイン'
     current_path_is "/auth/login"
     fill_in 'username' , with: 'march_user'
     fill_in 'password' , with: 'march_user'
     find('#login_button').click
-    iscontain 'アーティスト一覧'
+    expect(current_path).to eq '/karaoke/list'
   end
   it 'ログイン中にログイン画面アクセスでトップにリダイレクト' do
     login 'march_user'

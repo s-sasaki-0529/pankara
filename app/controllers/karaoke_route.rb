@@ -6,7 +6,7 @@ class KaraokeRoute < March
   # get '/karaoke/list' - 全カラオケ記録を一覧表示
   #---------------------------------------------------------------------
   get '/list/?' do
-    @karaoke_list = Karaoke.list_all({:with_attendance => true})
+    @karaoke_list = Karaoke.list_all({:with_attendance => true , :with_sang_count => true})
     erb :karaokelist
   end
 
@@ -14,6 +14,15 @@ class KaraokeRoute < March
   #---------------------------------------------------------------------
   get '/user/?' do
     @current_user and redirect "/karaoke/user/#{@current_user['username']}"
+  end
+
+  # get '/karaoke/recent' - ログイン中ユーザの前回のカラオケを表示
+  #--------------------------------------------------------------------
+  get '/recent/?' do
+    @current_user or raise Sinatra::NotFound
+    recent_karaoke = @current_user.get_karaoke(1)[0]
+    recent_karaoke or raise Sinatra::NotFound
+    redirect "/karaoke/detail/#{recent_karaoke['id']}"
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示

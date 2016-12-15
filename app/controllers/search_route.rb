@@ -41,7 +41,7 @@ class SearchRoute < March
   # get '/search/tag/' - タグ検索
   # 現在は楽曲のみにタグが振られていることを想定
   #--------------------------------------------------------------------
-  get '/tag/' do
+  get '/tag/?' do
     @tag = params[:tag] || ""
     @song_list = []
     @columns = Util.is_pc? ? 3 : 1

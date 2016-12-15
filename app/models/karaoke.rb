@@ -25,7 +25,9 @@ class Karaoke < Base
     @params or return nil
 
     product = Product.new(@params['product'])
-    @params['product_name'] = "#{product.params['brand']}(#{product.params['product']})"
+    @params['product_brand'] = product.params['brand']
+    @params['product_name'] = product.params['product']
+    @params['product_full_name'] = "#{product.params['brand']}(#{product.params['product']})"
 
     store = Store.new(@params['store'])
     @params['store_name'] = store.params['name']
@@ -79,6 +81,12 @@ class Karaoke < Base
     Util.write_log('event' , "【カラオケ削除】#{@params}")
     @params = nil
     return true
+  end
+
+  # url - カラオケ詳細画面のURLを取得
+  #--------------------------------------------------------------------
+  def url
+    Util.url('karaoke' , 'detail' , @params['id'])
   end
 
   # get_members - カラオケに参加しているユーザ一覧を取得する
@@ -165,6 +173,16 @@ class Karaoke < Base
     @params['members'] = users_info.values
   end
 
+  # tweet_format - 歌唱履歴についてツイートするフォーマットを生成する
+  #--------------------------------------------------------------------
+  def tweet_format(format)
+    format.gsub!(/\$\$name\$\$/ , @params['name'])
+    format.gsub!(/\$\$store\$\$/ , @params['store_full_name'])
+    format.gsub!(/\$\$product\$\$/ , @params['product_full_name'])
+    format.gsub!(/\$\$url\$\$/ , self.url)
+    return format
+  end
+
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
   #---------------------------------------------------------------------
   def self.list_all(opt = {})
@@ -189,10 +207,28 @@ class Karaoke < Base
       :OPTION => 'ORDER BY datetime DESC'
     ).execute_all
 
+    # 参加者情報を取得
     if opt[:with_attendance]
       list.each do |karaoke|
         k = Karaoke.new(karaoke['id'] , {:id_only => true})
         karaoke['members'] = k.get_members
+      end
+    end
+
+    # 楽曲登録数を取得
+    if opt[:with_sang_count]
+      counts_array = DB.new(
+        :SELECT => {
+          'attendance.karaoke' => 'karaoke_id',
+          'count(history.id)' => 'sang_count',
+        },
+        :FROM => 'history' ,
+        :JOIN => ['history' , 'attendance'] ,
+        :OPTION => 'GROUP BY attendance.karaoke'
+      ).execute_all
+      counts_hash = Util.array_to_hash(counts_array , 'karaoke_id' , true)
+      list.each do |karaoke|
+        karaoke['sang_count'] = counts_hash[karaoke['id']] ? counts_hash[karaoke['id']]['sang_count'] : 0
       end
     end
     return list

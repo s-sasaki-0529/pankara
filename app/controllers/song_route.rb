@@ -4,9 +4,9 @@ require_relative '../models/score_type'
 
 class SongRoute < March
 
-  # get '/song' - ランダムで１曲表示
+  # get '/song/random' - ランダムで１曲表示
   #--------------------------------------------------------------------
-  get '/' do
+  get '/random' do
     # 楽曲一覧を取得する。ログイン済みの場合そのユーザが歌った曲からのみ
     song_ids = []
     @current_user and song_ids = @current_user.histories.map {|h| h['song']}.uniq
@@ -17,7 +17,26 @@ class SongRoute < March
     redirect "/song/#{song_ids.sample}"
   end
 
-  # get '/song/:id' - 曲情報を表示
+  # get '/song/null' - URL列が設定されていない楽曲一覧を表示(管理者向け)
+  #---------------------------------------------------------------------
+  get '/null' do
+    @null_songs = Song.list(:null => true , :artist_info => true)
+    erb :null_songs
+  end
+
+  # get '/song' - 楽曲情報を表示(歌手名と曲名をパラメータで指定)
+  #---------------------------------------------------------------------
+  get '/' do
+    name = params[:name]
+    artist = params[:artist]
+    if name && name.size > 0 && artist && artist.size > 0 && song = Song.name_to_object(name , artist)
+      redirect "/song/#{song['id']}"
+    else
+      raise Sinatra::NotFound
+    end
+  end
+
+  # get '/song/:id' - 楽曲情報を表示(URLで曲IDを指定)
   #---------------------------------------------------------------------
   get '/:id' do
     score_type = 1 #現在は仮で固定

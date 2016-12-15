@@ -34,6 +34,11 @@ class Util
       FOLLOWED = 1
       NONE = 0
     end
+    class Maintenance
+      ACCEPT = 2
+      CLOSE = 1
+      OPEN = 0
+    end
   end
 
   # set_request - リクエスト情報を設定
@@ -69,7 +74,6 @@ class Util
   # write_access_log - アクセスログを生成する
   #--------------------------------------------------------------------
   def self.write_access_log(user)
-    @@request.xhr? and return # ajaxリクエストはログに残さない
     @@request.path.scan(/\./).empty? or return  #静的ファイルへのアクセスは除外
     username = user.nil? ? '' : user['username']
     params = []
@@ -104,6 +108,20 @@ class Util
     return ! Util.is_smartphone?
   end
 
+  # maintenance_status - 現在メンテナンス中かを取得
+  #---------------------------------------------------------------------
+  def self.maintenance_status
+    mt = Util.read_config('maintenance')
+    if mt && mt != ""
+      if mt == @@request.ip
+        return Util::Const::Maintenance::ACCEPT
+      else
+        return Util::Const::Maintenance::CLOSE
+      end
+    end
+    return Util::Const::Maintenance::OPEN
+  end
+
   # url - URLを生成する
   #---------------------------------------------------------------------
   def self.url(*path)
@@ -131,6 +149,14 @@ class Util
       end
     end
     return url
+  end
+
+  # get_get_param - 現在のURLのGETパラメータを取得する
+  #----------------------------------------------------------------------
+  def self.get_get_param(key)
+    url = @@request.url.dup
+    matched = url.scan(/#{key}=(.+?)(&.+|$)/)
+    return matched.empty? ? '' : matched[0][0]
   end
 
   # send_mail - メールを送信する
@@ -376,6 +402,15 @@ class Util
     return monthly_data
   end
 
+  # date_diff - ２つの日付の日数差を求める
+  # to/fromは、下記のフォーマットに従った日時を表す文字列
+  #---------------------------------------------------------------------
+  def self.date_diff(to , from)
+    format = '%Y-%m-%d %H:%M:%S'
+    diff = DateTime.strptime(to , format) - DateTime.strptime(from , format)
+    return diff.to_i
+  end
+
   # make_questions - SQLで用いる"? , ? , ?" みたいなのを生成する
   #---------------------------------------------------------------------
   def self.make_questions(num)
@@ -399,6 +434,13 @@ class Util
   def self.filemtime(filepath)
     file = File::stat("#{PUBLIC}/#{filepath}")
     file.mtime.to_i.to_s
+  end
+
+  # url_with_filemtime - 指定したファイルパスに、更新日時を付与して戻す
+  #--------------------------------------------------------------------
+  def self.url_with_filemtime(filepath)
+    mtime = Util.filemtime(filepath)
+    return "#{filepath}?#{mtime}"
   end
 
   # run_mode - 現在のrun modeを取得

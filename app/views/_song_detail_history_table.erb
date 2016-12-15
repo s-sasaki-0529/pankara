@@ -3,29 +3,27 @@
 <table id='<%= @info_id %>' class='song-detail-history-table table sortable'>
   <thead>
     <th class='center cell-date'>日付</th>
-    <% if Util.is_pc? %><th class='center'>内容</th><% end %>
+    <th class='center'>内容</th>
     <th class='center'>ユーザ</th>
     <% if Util.is_pc? %>
     <th class='center'>キー</th>
     <th class='center'>採点</th>
     <th class='center'>得点</th>
     <% end %>
+    <th class='center'></th>
   </thead>
   <tbody>
     <% @info.each do |i| %>
     <tr>
-      <% if Util.is_pc? %>
       <td class='center cell-date'><%= date(i['datetime']) %></td>
       <td class='center'><%= karaoke_link i['karaoke_id'] , i['karaoke_name'] %>
-      <% else %>
-      <td class='center cell-date'><%= karaoke_link i['karaoke_id'] , date(i['datetime']) %></td>
-      <% end %>
-      <td class='center' width='140'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
+      <td class='center' width='110'><%= user_link(i['username'] , i['user_screenname'] , true , 24) %></td>
       <% if Util.is_pc? %>
       <td class='center' width='60'><%= i['songkey'] %></td>
       <td class='center' width='100'><%= i['scoretype_name'] %></td>
       <td class='center' width='8%'><%= h i['score'] %></td>
       <% end %>
+      <td class='center'><%= history_link i['history_id'] %></td>
     </tr>
     <% end %>
   </tbody>

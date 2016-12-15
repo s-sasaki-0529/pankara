@@ -90,6 +90,21 @@ class March < Sinatra::Base
         return "<a href=/playlist?songs=#{param}>#{name}</a>"
       end
     end
+    def history_link(history , opt = {})
+      opt[:icon] === false or opt[:icon] = true
+      opt[:colorbox] === false or opt[:colorbox] = true
+      if opt[:icon]
+        size = opt[:size] || '16'
+        img = "<img src='/image/information.png' width=#{size}>"
+        opt[:text] = img
+        opt[:icon] = false
+        return history_link(history , opt)
+      else
+        text = opt[:text] || '詳細'
+        _class = opt[:colorbox] ? 'color-box history-link' : 'history-link'
+        return "<a class='#{_class}' href=/history/detail/#{history}>#{text}</a>"
+      end
+    end
     def user_icon(username , width = 32 , height = 32)
       username = h username
       src = Util.icon_file(username)
@@ -112,17 +127,27 @@ class March < Sinatra::Base
   # before - 全てのURLにおいて初めに実行される
   #---------------------------------------------------------------------
   before do
+
     # 自動ログイン(debug用)
     if (!session[:logined] && user = Util.read_config('auto_login'))
       session[:logined] = user
     end
-
     @current_user = User.new(session[:logined]) if session[:logined]
 
     #セション情報、リクエストパラメータをUtilクラスで参照できるようにする
     Util.set_session session
     Util.set_request request
     Util.write_access_log(@current_user)
+
+    # メンテナンス中の場合リダイレクト
+    status = Util.maintenance_status
+    unless status == Util::Const::Maintenance::OPEN
+      @maintenance = true
+      if status == Util::Const::Maintenance::CLOSE
+        raise Sinatra::NotFound
+      end
+    end
+
   end
 
 end

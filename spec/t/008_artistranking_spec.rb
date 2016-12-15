@@ -29,19 +29,11 @@ describe '楽曲ランキング機能' do
     examine_artistlink('BUMP OF CHICKEN' , url)
     examine_artistlink('雪音クリス' , url)
   end
-  
+
   it 'あなたのランキングへの切り替え' do
-    link 'あなたのランキングへ'
+    visit "#{url}?showmine=true"
     tables = table_to_hash('artistranking_table')
-    expect(tables[4]['tostring']).to eq '5,40mP,29,11,2.64'
-    link '全体のランキングへ'
-  end
-  
-  it 'あなたのランキングへの切り替えリンク' do
-    iscontain 'あなたのランキングへ'
-    logout
-    visit url
-    islack 'あなたのランキングへ'
+    expect(tables[4]['tostring']).to eq '5,40mP,29'
   end
 
 end

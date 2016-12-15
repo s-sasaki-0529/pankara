@@ -6,14 +6,17 @@ class AjaxDialogRoute < AjaxRoute
   #---------------------------------------------------------------------
   get '/karaoke' do
     @products = Product.list
+    @show_twitter = params['mode'] == 'create'
     @twitter = @current_user ? @current_user['twitter_info'] : nil
     erb :_input_karaoke
   end
 
-  # get '/ajax/dialog/history - 歌唱履歴の入力画面を表示
+  # get '/ajax/dialog/karaoke/:karaoke_id/history - 歌唱履歴の入力画面を表示
   #---------------------------------------------------------------------
-  get '/history' do
-    @score_type = ScoreType.List
+  get '/karaoke/:karaoke_id/history' do
+    karaoke = Karaoke.new(params[:karaoke_id])
+    @score_type = ScoreType.List(:product => karaoke['product_brand'])
+    @show_twitter = params['mode'] == 'create'
     @twitter = @current_user ? @current_user['twitter_info'] : nil
     erb :_input_history
   end
@@ -22,6 +25,13 @@ class AjaxDialogRoute < AjaxRoute
   #--------------------------------------------------------------------
   get '/song' do
     erb :_input_song
+  end
+
+  # get '/ajax/dialog/twitter/description' - ツイッター連携に関する説明
+  #--------------------------------------------------------------------
+  get '/twitter/description' do
+    @HIDEHEADMENU = true
+    erb :_twitter_description
   end
 
 end

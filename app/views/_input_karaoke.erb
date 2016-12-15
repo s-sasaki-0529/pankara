@@ -1,17 +1,16 @@
 <div style="display: none">
-  
   <div id="input_karaoke" class="input_dialog" title="カラオケの入力">
-    <div>
-      <label for="name">カラオケ名:</label>
-      <input id="name" placeholder="(例) 久しぶりのサークルカラオケ！" type="text" name="name" value="" size="33" maxlength="30"/>
+    <div class='form-group'>
+      <label class='control-label' for="name">カラオケ名</label>
+      <input class='form-control' id="name" placeholder="(例) 久しぶりのサークルカラオケ！" type="text" name="name" value="" size="33" maxlength="30"/>
     </div>
-    <div>
-      <label for="datetime">日時:</label>
-      <input id="datetime"name="datetime" type="datetime" value="" size="33" <% if Util.is_smartphone? %>readonly<% end %>/>
+    <div class='form-group'>
+      <label class='control-label' for="datetime">日時</label>
+      <input class='form-control' id="datetime"name="datetime" type="datetime" value="" size="33" readonly/>
     </div>
-    <div>
-      <label for="plan">時間:</label>
-      <p><select id="plan" name="plan">
+    <div class='form-group'>
+      <label class='control-label' for="plan">時間</label>
+      <select class='form-control' id="plan" name="plan">
         <option value="0.5">00時間30分</option>
         <option value="1">01時間00分</option>
         <option value="1.5">01時間30分</option>
@@ -28,7 +27,7 @@
         <option value="7">07時間00分</option>
         <option value="7.5">07時間30分</option>
         <option value="8">08時間00分</option>
-        <option value="8.5">08時間30分</option>  
+        <option value="8.5">08時間30分</option>
         <option value="9">09時間00分</option>
         <option value="9.5">09時間30分</option>
         <option value="10">10時間00分</option>
@@ -36,35 +35,33 @@
         <option value="11">11時間00分</option>
         <option value="11.5">11時間30分</option>
         <option value="12">12時間00分</option>
-      </select></p>
+      </select>
     </div>
-    <div>
-      <label for="store">店:</label>
-      <input id="store" placeholder="(例) カラオケ館" type="text" name="store" value="" size="33"/>
+    <div class='form-group'>
+      <label class='control-label' for="store">店</label>
+      <input class='form-control' id="store" placeholder="(例) カラオケ館" type="text" name="store" value="" size="33"/>
     </div>
-    <div>
-      <label for="branch">店舗:</label>
-      <input id="branch" placeholder="(例) 盛岡大通店" type="text" name="branch" value="" size="33"/>
+    <div class='form-group'>
+      <label class='control-label' for="branch">店舗</label>
+      <input class='form-control' id="branch" placeholder="(例) 盛岡大通店" type="text" name="branch" value="" size="33"/>
     </div>
-    <div>
-      <label for="product">機種:</label>
-      <p><select id="product" name="product">
+    <div class='form-group'>
+      <label class='control-label' for="product">機種</label>
+      <select class='form-control' id="product" name="product">
         <% @products.each do |product| %>
           <option value="<%= product['id'] %>">
             <%= product['brand'] %> <%= product['product'] %>
           </option>
         <% end%>
-      </select></p>
+      </select>
     </div>
-    <% if @twitter %>
-    <div>
+    <% if @show_twitter && @twitter %>
+    <div class='form-group'>
       <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
       <label for="tweet-checkbox"> ツイートする:</label>
     </div>
     <div id="tweet_text_area" class="form-group hidden">
-      <label for="tweet_text">ツイート内容</label>
       <textarea class="form-control tweet-text size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
-      <span class='right' id="tweet_text_count"></span>
     </div>
     <% end %>
     <div id="buttons">

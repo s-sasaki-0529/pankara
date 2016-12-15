@@ -1,7 +1,38 @@
+/* =========================================
+ * 共通クラス
+ * ========================================= */
+
 /*ヘッダメニューを表示するために、全てのページは上70px空ける*/
 body {
   padding-top: 70px;
   background-image: url("../image/bg2.png");
+}
+
+/*見出し要素*/
+h1,h2,h3,h4 {
+  background: #dcd3b2;
+  color: #94846a;
+  width: 100%;
+  border-radius: 0 30px 30px 0 / 0 30px 30px 0;
+  box-shadow: 0 1px 10px 0 #94846a;
+  text-shadow: 0 0 5px;
+  padding: 10px;
+  text-align: center;
+}
+h1,h2,h3,h4 .pack {
+  margin-top: -10px;
+}
+h1,h2,h3,h4 .unpack {
+  margin-top: 10px;
+}
+
+/*システムメッセージ領域*/
+.system-msg {
+  width: 99%;
+  color: #666;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: solid 4px #aaa;
 }
 
 /*ヘッダメニューのz-indexを上書き*/
@@ -30,6 +61,13 @@ tr *.cell-datetime {
   cursor: pointer;
 }
 
+/*aタグで囲ったものと同じスタイル*/
+.link {
+  color: #0080c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /*半透明の要素*/
 .translucent {
   opacity: 0.5;
@@ -44,11 +82,6 @@ tr *.cell-datetime {
 .center {
   text-align: center;
   vertical-align: center;
-}
-
-/*要素を右寄せにする*/
-.right {
-  float: right;
 }
 
 /*要素をインラインにする*/
@@ -86,7 +119,19 @@ p.mini {
   font-size: 13px;
 }
 
-/*トップ画面 タイムライン領域 */
+/* オンカーソル時にポインタを切り替えたい要素用クラス */
+.pointer {
+  cursor: pointer
+}
+
+/* color-boxで表示するコンテンツ */
+div.color-box-content {
+  margin-top: -55px;
+}
+
+/* ============================================
+ * トップページ: タイムライン関係
+ * ============================================*/
 #div_timelines {
   height: 310px;
   border: 1px solid;
@@ -97,7 +142,9 @@ p.mini {
   text-align: left;
 }
 
-/*トップ画面　バスタオル*/
+/* ============================================
+ * トップページ: バスタオル
+ * ===========================================*/
 #bathtowel_div {
   position: fixed;
   left: 0px;
@@ -114,14 +161,18 @@ p.mini {
   text-align: center;
 }
 
-/*ログイン画面の更新情報エリア*/
+/* =============================================
+ * トップページ: 更新情報エリア
+ * =============================================*/
 #update_information {
   resize: none;
   width: 100%;
   height: 200px;
 }
 
-/*トップ画面 ログインユーザのアイコン領域*/
+/* =============================================
+ * トップページ: ユーザ情報
+ * =============================================*/
 #top_my_icon {
   border: 1px solid;
   width: 96px;
@@ -129,7 +180,9 @@ p.mini {
   margin: auto;
 }
 
-/*カラオケ詳細画面*/
+/* =============================================
+ * カラオケ詳細画面
+ * =============================================*/
 .karaoke-result-block {
   margin: 10px 0px 10px 50px;
   border-radius: 10px;    /* CSS3草案 */
@@ -158,7 +211,9 @@ p.mini {
   color: black !important;
 }
 
-/* 履歴入力画面の配置調整クラス */
+/* =============================================
+ * 入力用ダイアログ
+ * =============================================*/
 .input_dialog div {
   margin-top: 10px;
 }
@@ -180,22 +235,16 @@ p.mini {
   margin-right: 20px;
 }
 
-/* ユーザ登録画面の入力フォーム調整クラス */
+/* =============================================
+ * ユーザ登録ページ
+ * =============================================*/
 .user_registration_table tr {
   height: 30px;
 }
 
-/* オンカーソル時にポインタを切り替えたい要素用クラス */
-.pointer {
-  cursor: pointer
-}
-
-/*楽曲詳細画面のアイコン*/
-.song-detail-icon {
-  margin 0px 0px 5px 8px;
-  width: 28px;
-}
-
+/* =============================================
+ * 楽曲詳細画面
+ * =============================================*/
 /*楽曲詳細画面の歌唱履歴タブ*/
 #history_tabs {
   font-size: 14px;
@@ -208,6 +257,12 @@ p.mini {
 }
 .song-detail-history-table > tbody > tr > td {
   padding: 8px;
+}
+
+/*楽曲詳細画面のアイコン*/
+.song-detail-icon {
+  margin 0px 0px 5px 8px;
+  width: 28px;
 }
 
 /*楽曲詳細画面のタグ一覧*/
@@ -224,17 +279,9 @@ p.mini {
   padding: 4px;
 }
 
-/*ユーザページのテーブル表示*/
-.recent_karaoke_area {
-  border-bottom: 1px solid rgb(255,255,204);
-  background-color: rgb(255,255,204);
-}
-
-.recent_sang_area {
-  border-bottom: 1px solid rgb(255,165,0);
-  background-color: rgb(255,165,0);
-}
-
+/* =============================================
+ * ユーザーページ
+ * =============================================*/
 #most_sang_song_table > tbody > tr > td {
   font-size: 15px;
 }
@@ -242,23 +289,21 @@ p.mini {
 #max_score_table > tbody > tr > td {
   font-size: 15px;
 }
-
-/*ユーザページのユーザアイコン表示枠*/
 #user_icon {
   border: 1px solid;
   width: 96px;
   height: 96px;
   margin: auto;
 }
-
-/*ユーザページの「もっと見る」リンク*/
 .userpage-more-link {
   position: absolute;
   margin-top: -20px;
   right: 12px;
 }
 
-/*プレイリストの楽曲一覧テーブル*/
+/* =============================================
+ * プレイリストページ
+ * =============================================*/
 #playlist_table {
   height: 650px;
   overflow-y: scroll;
@@ -267,190 +312,231 @@ p.mini {
   background-color: #d3d3d3;
 }
 
-/* 持ち歌一覧の歌唱履歴登録アイコン */
+/* =============================================
+ * 持ち歌一覧ページ
+ * =============================================*/
 .songlist-add-icon {
   width: 20px;
   margin-top: -5px;
 }
 
-/*ローディングビュー*/
+/* ============================================
+ * 設定画面
+ * ============================================*/
+.config {
+  width: 50%;
+}
+.config-content-header {
+  line-height: 36px;
+  background-color: #999999;
+  width: 100%;
+  padding-left: 8px;
+  padding-right: 24px;
+  border: #eeeeee solid 2px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: white;
+}
+.config-content-body {
+  margin-top: -2px;
+  padding: 20px 5px 0px 20px;
+  width: 100%;
+  border: #eeeeee solid 2px;
+  border-left-bottom-radius: 3px;
+  border-right-bottom-radius: 3px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #FEFEFE;
+}
+.config-content-body #usericon {
+  float: left;
+}
+.config-content-body #userinfo {
+  float: left;
+  margin-left: 10px;
+}
+.config-content-body #user_screenname {
+  font-size: 24px;
+}
+.config-content-body #iconuploader {
+  clear: both;
+}
 
+.config-content-body #twitter_format textarea {
+  width: 100%;
+  resize: none;
+}
+
+.config-content-body .submit-block {
+  text-align: right;
+}
+
+.config-content-body .submit-block button {
+  margin-top: 10px;
+}.
+
+/* =======================================
+ * ローディングビュー
+ * =======================================*/
 #loading-view {
- /* 領域の位置やサイズに関する設定 */
  width: 100%;
  height: 100%;
  z-index: 114514;
  position: fixed;
  top: 0;
  left: 0;
- /* 背景関連の設定 */
  background-color: #000000;
  filter: alpha(opacity=45);
- -moz-opacity: 0.25;
- -khtml-opacity: 0.25;
- opacity: 0.25;
+ -moz-opacity: 0.5;
+ -khtml-opacity: 0.5;
+ opacity: 0.5;
  background-position: center center;
  background-repeat: no-repeat;
  background-attachment: fixed;
 }
 
-
 /* ========================================
- * #mini-calendar
+ * カレンダー関連
  * ========================================*/
 .calendar-head {
   text-align: center;
 }
-
 #mini-calendar .calendar-year-month {
-	text-align: center;
-	font-size: 24px;
+  text-align: center;
+  font-size: 24px;
 }
 #mini-calendar table {
-	width: 100%;
-	border-spacing: 0;
-	border-left: 1px solid #ccc;
-	border-top: 1px solid #ccc;
-	margin-bottom: 0;
-	border-collapse: separate;
-	border-radius: 7px;
+  width: 100%;
+  border-spacing: 0;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-radius: 7px;
 }
-
-/* radius */
 #mini-calendar th:first-child {
-	border-top-left-radius: 7px;
+  border-top-left-radius: 7px;
 }
 #mini-calendar th:last-child {
-	border-top-right-radius: 7px;
+  border-top-right-radius: 7px;
 }
 #mini-calendar tr:last-child td:first-child {
-	border-bottom-left-radius: 7px;
+  border-bottom-left-radius: 7px;
 }
 #mini-calendar tr:last-child td:last-child {
-	border-bottom-right-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
 #mini-calendar th,
 #mini-calendar td {
-	background: #fff;
-	padding: 3px;
-	border-bottom: 1px solid #ccc;
-	border-right: 1px solid #ccc;
+  background: #fff;
+  padding: 3px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }
 #mini-calendar th {
-	color: #fff;
-	background: #4F616B;
-	vertical-align: top;
-	padding-top: 7px;
-	padding-bottom: 7px;
+  color: #fff;
+  background: #4F616B;
+  vertical-align: top;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
-/*
-#mini-calendar th.calendar-sun {
-	color: #DF0D2D;
-	background: #F8E4E4;
-}
-#mini-calendar th.calendar-sat {
-	color: #2574D3;
-	background: #E2F3FC;
-}
-*/
 #mini-calendar td {
-	width: 14.3%;
-	height: 70px;
-	vertical-align: top;
+  width: 14.3%;
+  height: 70px;
+  vertical-align: top;
 }
 #mini-calendar td.calendar-day-off {
-	background: #F4F3F2;
-	color: #555;
+  background: #F4F3F2;
+  color: #555;
 }
 #mini-calendar td.calendar-holiday,
 #mini-calendar td.calendar-sun {
-	color: #CE2727;
-	background: #FCF3F3;
+  color: #CE2727;
+  background: #FCF3F3;
 }
 #mini-calendar td.calendar-sat {
-	color: #54AFC8;
-	background: #F5FBFE;
+  color: #54AFC8;
+  background: #F5FBFE;
 }
-
 #mini-calendar .calendar-day-number {
-	font-style: normal;
-	font-family: "Helvetica Neue", Arial, sans-serif;
-	font-weight: bold;
-	font-size: 16px;
-	display: block;
-	padding: 0 3px;
-	line-height: 1.2;
+  font-style: normal;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  padding: 0 3px;
+  line-height: 1.2;
 }
 #mini-calendar td.calendar-holiday .day,
 #mini-calendar td.calendar-sun .day {
-	color: #DF0D2D;
+  color: #DF0D2D;
 }
 #mini-calendar td.calendar-sat .day {
-	color: #2574D3;
+  color: #2574D3;
 }
 #mini-calendar td span {
-	font-size: 11px;
-	line-height: 1.3;
-	display: block;
+  font-size: 11px;
+  line-height: 1.3;
+  display: block;
 }
 #mini-calendar [class*=calendar-label] {
-	font-size: 11px;
-	line-height: 1.3;
-	color: #000;
-	background: #FCEBCF;
-	border: solid 1px #D2AC8E;
-	display: block;
-	padding: 3px;
-	margin-top: 3px;
-	border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	-o-border-radius: 4px;
-	-ms-border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #000;
+  background: #FCEBCF;
+  border: solid 1px #D2AC8E;
+  display: block;
+  padding: 3px;
+  margin-top: 3px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
 }
 #mini-calendar td span.calendar-label-red {
-	background-color: #FCCFD1;
-	border-color: #D28EA6;
+  background-color: #FCCFD1;
+  border-color: #D28EA6;
 }
 #mini-calendar td span.calendar-label-blue {
-	background-color: #CFE4FC;
-	border-color: #8E9BD2;
+  background-color: #CFE4FC;
+  border-color: #8E9BD2;
 }
 #mini-calendar td span.calendar-label-green {
-	background-color: #E5FCCF;
-	border-color: #99C170;
+  background-color: #E5FCCF;
+  border-color: #99C170;
 }
-/* 何もない日 */
 #mini-calendar td.calendar-none {
-	background: #FBFAF7;
+  background: #FBFAF7;
 }
 #mini-calendar td.calendar-today {
-	background: #FEFBDA;
+  background: #FEFBDA;
 }
-
-/* モバイル用縦型カレンダー */
 #mini-calendar-vertical table {
-	width: 100%;
-	border-collapse: collapse;
-	border-spacing: 0;
-	border: 4px solid #B89970;
-	margin-bottom: 0;
-	line-height: 1.5;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 4px solid #B89970;
+  margin-bottom: 0;
+  line-height: 1.5;
 }
 #mini-calendar-vertical table th {
-	width: 10%;
-	padding: 7px 5px 7px 10px;
-	/*width: 50px;*/
-	font-size: 129%;
-	white-space: nowrap;
-	font-weight: normal;
+  width: 10%;
+  padding: 7px 5px 7px 10px;
+  font-size: 129%;
+  white-space: nowrap;
+  font-weight: normal;
 }
 #mini-calendar-vertical table td {
-	width: auto;
-	height: auto;
-	vertical-align: middle;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
 }
 #mini-calendar-vertical table th span {
-	font-size: 77%;
-	margin-left: 4px;
+  font-size: 77%;
+  margin-left: 4px;
 }
+

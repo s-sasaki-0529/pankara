@@ -1,6 +1,6 @@
-<h2>
+<h1 class='unpack'>
   <%= h @artist['name'] %>
-</h2>
+</h1>
 
 <p id="wiki" class="hidden">
   <span id="summary"></span>
@@ -9,19 +9,19 @@
 
 <!-- PC -->
 <% if Util.is_pc? %>
-<div class="row">
-  <div id="chart_column" class="col-xs-3">
+<div style="margin-top: 50px">
+  <div id="chart_column" class="col-sm-3">
     <%= erb :_artist_detail_songs_chart %>
     <%= erb :_artist_detail_sang_count_chart %>
   </div>
-  <div id="song_list_column" class="col-xs-9">
+  <div id="song_list_column" class="col-sm-9">
     <%= erb :_artist_detail_songlist %>
   </div>
 </div>
 
 <!-- スマートフォン -->
 <% else %>
-<div class="row">
+<div style="margin-top: 50px">
   <%= erb :_artist_detail_songlist %>
   <%= erb :_artist_detail_songs_chart %>
   <%= erb :_artist_detail_sang_count_chart %>
@@ -34,9 +34,16 @@
 <script>
 $(function(){
   // 楽曲ごとの歌唱回数円グラフを描画
+  var artist = '<%= @artist['name'] %>';
   var json = $('#songs_chart_json').text();
   var data = zenra.parseJSON(json);
-  zenra.createPieChart('#artist_songs_chart' , data);
+  var links = {};
+  data.forEach(function(o) {
+    song = o[0];
+    links[song] = '/song?name=' + encodeURIComponent(song) + '&artist=' + encodeURIComponent(artist);
+  });
+  delete links['その他'];
+  zenra.createPieChart('#artist_songs_chart' , data , {links: links});
 
   // 月ごとの歌唱回数の棒グラフを描画
   zenra.createMonthlySangCountBarChart('/ajax/artist/tally/monthly/count' , <%= @artist['id'] %> , "#sang_count_chart");

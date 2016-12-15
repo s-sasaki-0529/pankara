@@ -1,7 +1,22 @@
 <% if @current_user %>
-  <% if @showmine %>
-  <a href="<%= Util.add_get_params(:showmine => false) %>">全体のランキングへ</a>
-  <% else %>
-  <a href="<%= Util.add_get_params(:showmine => true) %>">あなたのランキングへ</a>
-  <% end %>
+<fieldset>
+  <div id="ranking-mode-toggle" class="switch-toggle switch-ios">
+    <input id="all" name="mode" type="radio" >
+    <label for="all">全体のランキング</label>
+    <input id="user" name="mode" type="radio" <%= Util.get_get_param('showmine') == 'true' ? 'checked' : '' %>>
+    <label for="user">あなたのランキング</label>
+    <a></a>
+  </div>
+</fieldset>
+<script>
+$(function() {
+  $('#ranking-mode-toggle').change(function() {
+    var mode = $('#ranking-mode-toggle input:checked').prop('id');
+    var showMineURL = "<%= Util.add_get_params(:showmine => true) %>";
+    var showAllURL = "<%= Util.add_get_params(:showmine => false) %>";
+    var moveURL = (mode == 'user') ? showMineURL : showAllURL; 
+    setTimeout(function() { location.href = moveURL; } , 300);
+  });
+});
+</script>
 <% end %>

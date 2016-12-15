@@ -1,6 +1,6 @@
-<h3>
+<h2>
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
-</h3>
+</h2>
 <% if @pager && @pager.page_num > 1 %>
   <p class="right" id="range"><%= @song_list[:num] %> 曲中<%= @show_from %>~<%= @show_to %>曲目を表示中</p>
 <% elsif @song_list[:num] > 0 %>
@@ -30,6 +30,7 @@
     <option value="sang_count" <% if @sort_category == "sang_count" %> selected <% end %>>歌唱回数</option>
     <option value="song_name" <% if @sort_category == "song_name" %> selected <% end %>>曲名</option>
     <option value="artist_name" <% if @sort_category == "artist_name" %> selected <% end %>>アーティスト名</option>
+    <option value="random" <% if @sort_category == "random" %> selected <% end %>>ランダム</option>
   </select>
   <select id="sort_order" name="sort_order" class=<% if Util.is_smartphone? %><%= 'form-control' %><% end %>>
     <option value="desc" <% if @sort_order == 'desc' %> selected <% end %>>降順</option>
