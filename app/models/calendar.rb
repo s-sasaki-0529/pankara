@@ -9,12 +9,7 @@ class Calendar < Base
 
   # 年月を指定してオブジェクトを作成。指定なしの場合本日になる
   #--------------------------------------------------------------------
-  def initialize(user , year = nil , month = nil)
-    if year.nil? || month.nil?
-      now = Time.now
-      year = now.year
-      month = now.month
-    end
+  def initialize(user , year , month)
     @user = user
     @year = year
     @month = month
