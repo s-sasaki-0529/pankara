@@ -1,22 +1,70 @@
+<div class='ranking-config'>
+  <div class='ranking-toggle-label'>集計項目</div>
+  <fieldset>
+    <div id="ranking-type-toggle" class="switch-toggle switch-ios">
+      <input id="song" value="song" name="type" type="radio" checked>
+      <label for="song">楽曲</label>
+      <input id="artist" value="artist" name="type" type="radio" <%= @type == 'artist' ? 'checked' : '' %>>
+      <label for="artist">歌手</label>
+      <input id="score" value="score" name="type" type="radio" <%= @type == 'score' ? 'checked' : '' %>>
+      <label for="score">得点</label>
+      <a></a>
+    </div>
+  </fieldset>
+</div>
+
 <% if @current_user %>
-<fieldset>
-  <div id="ranking-mode-toggle" class="switch-toggle switch-ios">
-    <input id="all" name="mode" type="radio" >
-    <label for="all">全体のランキング</label>
-    <input id="user" name="mode" type="radio" <%= Util.get_get_param('showmine') == 'true' ? 'checked' : '' %>>
-    <label for="user">あなたのランキング</label>
-    <a></a>
-  </div>
-</fieldset>
+<div class='ranking-config'>
+  <div class='ranking-toggle-label'>集計対象</div>
+  <fieldset>
+    <div id="ranking-mode-toggle" class="switch-toggle switch-ios">
+      <input id="all" value="0" name="mode" type="radio" checked>
+      <label for="all">全体のランキング</label>
+      <input id="user" value="1" name="mode" type="radio" <%= Util.get_get_param('showmine') == '1' ? 'checked' : '' %>>
+      <label for="user">あなたのランキング</label>
+      <a></a>
+    </div>
+  </fieldset>
+</div>
+<% end %>
+
+<% if @type != 'score' %>
+<div class='ranking-config'>
+  <div class='ranking-toggle-label'>１カラオケ複数歌唱曲を集計に</div>
+  <fieldset>
+    <div id="ranking-distinct-toggle" class="switch-toggle switch-ios">
+      <input id="yes" value="0" name="include" type="radio" checked>
+      <label for="yes">含める</label>
+      <input id="no" value="1" name="include" type="radio" <%= Util.get_get_param('distinct') == '1' ? 'checked' : '' %>>
+      <label for="no">含めない</label>
+      <a></a>
+    </div>
+  </fieldset>
+</div>
+<% end %>
+
+<hr/>
+
 <script>
 $(function() {
-  $('#ranking-mode-toggle').change(function() {
-    var mode = $('#ranking-mode-toggle input:checked').prop('id');
-    var showMineURL = "<%= Util.add_get_params(:showmine => true) %>";
-    var showAllURL = "<%= Util.add_get_params(:showmine => false) %>";
-    var moveURL = (mode == 'user') ? showMineURL : showAllURL; 
-    setTimeout(function() { location.href = moveURL; } , 300);
+  var currentType = '<%= @type %>';
+  $('.switch-toggle input[type=radio]').change(function() {
+    var type = $('#ranking-type-toggle input:checked').val();
+    var mode = $('#ranking-mode-toggle input:checked').val();
+    var url = '/ranking/' + type + '?showmine=' + mode;
+
+    /* 得点ランキングの場合、採点モード情報を付与 */
+    if (type == 'score') {
+      var currentScoreType = $('#score_type_selecter').val() || 1;
+      url += '&score_type=' + currentScoreType;
+    } 
+    /* 楽曲ランキング、アーティストランキングの場合、複数歌唱を含めるかの情報を付与 */
+    else {
+      var distinct = $('#ranking-distinct-toggle input:checked').val() || 1;
+      url += '&distinct=' + distinct;
+    }
+    setTimeout(function() { location.href = url; } , 300);
+    zenra.getLoader().show();
   });
 });
 </script>
-<% end %>

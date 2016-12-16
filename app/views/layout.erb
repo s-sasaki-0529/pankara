@@ -63,11 +63,10 @@
               <% if @current_user %>
               <li><a href="/karaoke/user/">あなたのカラオケ一覧</a></li>
               <li><a href="/karaoke/recent">直近のカラオケ</a></li>
-              <li><a href="/user/songlist">あなたの持ち歌一覧</a></li>
-              <li><a href="/history/list">あなたの歌唱履歴</a></li>
+              <li><a href="/user/songlist">持ち歌一覧</a></li>
+              <li><a href="/history/list">歌唱履歴</a></li>
+              <li><a href="/ranking/song">ランキング</a></li>
               <% end %>
-              <li><a href="/search/tag_list">タグ一覧</a></li>
-              <li><a href="/song/random">歌う曲に迷ったら</a></li>
             </ul>
           </li>
           <% if @current_user %>
@@ -80,19 +79,7 @@
               <li><a href="#" onclick="register.createSong();">楽曲を新規登録</a></li>
             </ul>
           </li>
-
           <% end %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              ランキング <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="/ranking/artist">アーティストランキング</a></li>
-              <li><a href="/ranking/song">楽曲ランキング</a></li>
-              <li><a href="/ranking/score">得点ランキング</a></li>
-            </ul>
-          </li>
-
           <% if @current_user %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

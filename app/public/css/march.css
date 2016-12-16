@@ -321,6 +321,19 @@ div.color-box-content {
 }
 
 /* ============================================
+ * ランキングページ
+ * ===========================================*/
+.ranking-config {
+  padding: .25em 0 .5em .75em;
+  border-left: 6px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+.ranking-config .ranking-toggle-label {
+  font-weight: bold;
+}
+
+/* ============================================
  * 設定画面
  * ============================================*/
 .config {

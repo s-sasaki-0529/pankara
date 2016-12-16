@@ -7,21 +7,17 @@ class RankingRoute < March
   # GETでshowmineが指定されている時、ログイン中ユーザを戻す
   #--------------------------------------------------------------------
   def target_user
-    @showmine = params[:showmine] == 'true'
+    @showmine = params[:showmine] == '1'
     @target_user = @showmine && @current_user ? @current_user : nil
     return @target_user
   end
 
-  # get '/ranking/score/?' - 得点ランキングを表示
-  #-------------------------------------------------------------------
-  get '/score/?' do
-    redirect '/ranking/score/1' #取り急ぎデフォルトはJOY全国採点
-  end
-
-  # get '/ranking/score/:score_type - 指定した採点モードの得点ランキングを表示
+  # get '/ranking/score - 得点ランキングを表示
   #--------------------------------------------------------------------
-  get '/score/:score_type' do
-    @current_score_type = params[:score_type]
+  get '/score' do
+    @type = 'score'
+    @current_score_type = params[:score_type] || 1
+    Util.debug params[:score_type]
     param = {:score_type => @current_score_type , :user => target_user}
     @scores = Ranking.score(param)
     @score_type = ScoreType.id_to_name(@current_score_type , :hash => true)
@@ -36,6 +32,7 @@ class RankingRoute < March
   # get '/ranking/song' - 楽曲の歌唱回数ランキングを表示
   #---------------------------------------------------------------------
   get '/song' do
+    @type = 'song'
     @songs = Ranking.sang_count({
       :user => target_user ,
       :distinct => params[:distinct] && params[:distinct] == '1'
@@ -46,6 +43,7 @@ class RankingRoute < March
   # get '/ranking/artist' - 歌手別の歌唱回数ランキングを表示
   #---------------------------------------------------------------------
   get '/artist' do
+    @type = 'artist'
     @artists = Ranking.artist_sang_count({
       :user => target_user ,
       :distinct => params[:distinct] && params[:distinct] == '1'

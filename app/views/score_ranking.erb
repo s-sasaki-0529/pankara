@@ -1,8 +1,6 @@
 <h2>得点ランキング</h2>
-<div class='right'>
-  <p><%= erb :_ranking_mode_link %></p>
-  <p><%= erb :_score_type_selecter %></p>
-</div>
+<%= erb :_ranking_mode_link %>
+<%= erb :_score_type_selecter %>
 <% if @scores.empty? %>
 <p id="nondata">該当データなし</p>
 <% else %>
@@ -56,6 +54,12 @@
 var attr = $('#score_type_selecter');
 attr.change(function() {
   var selectedID = attr.val();
-  zenra.visit(selectedID);
+  if (location.href.indexOf('score_type=') == -1) {
+    var newURL = location.href.replace(/score_type=\d/ , 'score_type=' + selectedID);
+  } else {
+    var newURL = location.href + '&score_type=' + selectedID;
+  }
+  zenra.getLoader().show();
+  setTimeout(function() { location.href = newURL; } , 100);
 });
 </script>
