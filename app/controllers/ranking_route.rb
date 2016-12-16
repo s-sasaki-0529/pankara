@@ -17,7 +17,6 @@ class RankingRoute < March
   get '/score' do
     @type = 'score'
     @current_score_type = params[:score_type] || 1
-    Util.debug params[:score_type]
     param = {:score_type => @current_score_type , :user => target_user}
     @scores = Ranking.score(param)
     @score_type = ScoreType.id_to_name(@current_score_type , :hash => true)
