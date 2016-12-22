@@ -21,7 +21,7 @@ describe 'カラオケ詳細ページ' , :js => true do
     it 'カラオケ概要' do
       iscontain '祝本番環境リリースカラオケ'
       des_table = table_to_hash('karaoke_detail_description')
-      expect(des_table[0]['tostring']).to eq '2016-03-05,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
+      expect(des_table[0]['tostring']).to eq '2016-03-05 11:00:00,7.0,カラオケの鉄人 銀座店,その他(その他),75,,'
     end
     describe 'タブの切り替え' do
       it 'ヒトカラの場合「全員」タブは表示されない' do

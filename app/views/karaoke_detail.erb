@@ -9,7 +9,7 @@
   <table id="karaoke_detail_description" class='table'>
     <thead style="background-color: rgb(255,255,204)">
       <tr>
-        <th class='center cell-date'>日時</th>
+        <th class='center cell-datetime'>日時</th>
         <th class='center cell-number'>時間</th>
         <th class='center'>お店</th>
         <th class='center'>機種</th>
@@ -22,7 +22,7 @@
     </thead>
     <tbody style="background-color: white">
       <tr>
-        <td class='center cell-date'><%= date(@karaoke['datetime']) %></td>
+        <td class='center cell-date'><%= @karaoke['datetime'] %></td>
         <td class='center'><%= @karaoke['plan'] %></td>
         <td class='center'><%= h @karaoke['store_full_name'] %></td>
         <td class='center'><%= @karaoke['product_full_name'] %></td>
@@ -185,7 +185,7 @@
     <table class="table">
       <tr>
         <th>日時</th>
-        <td class='cell-date'><%= date(@karaoke['datetime']) %></td>
+        <td class='cell-datetime'><%= @karaoke['datetime'] %></td>
       </tr>
       <tr>
         <th>時間</th>
