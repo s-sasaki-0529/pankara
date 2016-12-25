@@ -427,13 +427,24 @@ class User < Base
   end
 
   # tweet - ツイッターに投稿する。設定、認証状態の確認も行う
-  # 戻り値 Tweeted: 成功 Ineffective: 設定無効 InvalidAuth: 認証エラー
   #---------------------------------------------------------------------
   def tweet(text)
     if twitter = self.twitter_account
       result = twitter.tweet(text)
+    else
+      return 1
     end
-    return result
+    if result.has_key?('errors') && err_code = result['errors'].first['code']
+      if err_code == 261
+        return 2
+      elsif err_code == 186
+        return 3
+      end
+    end
+    unless result.has_key?('created_at')
+      return 4
+    end
+    return 0
   end
 
   # tweet_format - ツイートフォーマットにユーザ情報を埋め込む

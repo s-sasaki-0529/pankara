@@ -1308,6 +1308,9 @@ var register = (function() {
       zenra.post('/ajax/karaoke/create' , data , {
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
+          if (karaoke.tweet_error) {
+            alert(karaoke.tweet_error);
+          }
           input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=create' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
@@ -1400,6 +1403,9 @@ var register = (function() {
       zenra.post('/ajax/history/create' , data , {
         sync: true,
         success: function(sangInfo) {
+          if (sangInfo.tweet_error) {
+            alert(sangInfo.tweet_error);
+          }
           var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。';
           if (sangInfo.sang_count >= 2) {
             mes += 'あなたがこの曲を歌うのは、' + sangInfo.since + '日ぶり、' + sangInfo.sang_count + '回目です!';
