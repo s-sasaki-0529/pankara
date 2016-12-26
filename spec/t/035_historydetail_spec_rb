@@ -1,0 +1,31 @@
+require_relative '../rbase'
+include Rbase
+
+# テスト用データベース構築
+init = proc do
+  `zenra init -d 2016_12_25_20_06`
+end
+
+# 定数定義
+url = '/history/detail/2550'
+
+# テスト実行
+describe '歌唱履歴詳細画面' do
+  before(:all , &init)
+  before do
+    visit url
+  end
+  it '表示内容' do
+    content = %w(
+      ないと ないととともちん16回目 2016-12-18 22:00:00 7.0  まねきねこ 亀戸駅北口店 JOYSOUND(MAX)
+      サクラサクミライコイユメ  yozuka* 3 分析採点 85.34
+    )
+    iscontain content
+  end
+  it 'リンク' do
+    examine_userlink 'ないと' , url
+    examine_karaokelink 'ないととともちん16回目' , url
+    examine_songlink 'サクラサクミライコイユメ' , 'yozuka*' , url
+    examine_artistlink 'yozuka*' , url
+  end
+end

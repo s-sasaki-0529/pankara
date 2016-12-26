@@ -23,6 +23,7 @@ class History < Base
   def set_song_info
     songInfo = Song.new(@params['song']).params
     @params['song_name'] = songInfo['name']
+    @params['artist_id'] = songInfo['artist']
     @params['artist_name'] = songInfo['artist_name']
     @params['url'] = songInfo['url']
   end

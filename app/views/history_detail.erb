@@ -5,11 +5,11 @@
 <table id='history_detail' class='table table-bordered'>
   <tr>
     <th>ユーザー</th>
-    <td><%= user_icon(@user['user_name']) %><%= @user['user_screenname'] %></td>
+    <td><%= user_link(@user['user_name'] , @user['user_screenname']) %></td>
   </tr>
   <tr>
     <th>カラオケ名</th>
-    <td><%= h @karaoke['name'] %></td>
+    <td><%= karaoke_link(@karaoke['id'] , @karaoke['name']) %></td>
   </tr>
   <tr>
     <th>日時</th>
@@ -29,11 +29,11 @@
   </tr>
   <tr>
     <th>曲名</th>
-    <td><%= @history['song_name'] %></td>
+    <td><%= song_link(@history['song'] , @history['song_name']) %></td>
   </tr>
   <tr>
     <th>歌手名</th>
-    <td><%= @history['artist_name'] %></td>
+    <td><%= artist_link(@history['artist_id'] , @history['artist_name']) %></td>
   </tr>
   <tr>
     <th>キー</th>
@@ -50,3 +50,10 @@
 </table>
 
 </div>
+
+<script>
+$(function() {
+  var target = zenra.ispc ? '_blank' : '_parent';
+  $('#history_detail a').prop('target' , target);
+});
+</script>
