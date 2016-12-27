@@ -300,6 +300,11 @@ div.color-box-content {
   margin-top: -20px;
   right: 12px;
 }
+#user_page_songlist {
+  height: 234px;
+  overflow-y: scroll;
+  background-color: white;
+}
 
 /* =============================================
  * プレイリストページ

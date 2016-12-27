@@ -1,0 +1,41 @@
+<div class="user_page_songlist">
+  <h4>主な持ち歌</h4>
+</div>
+<% if @songlist.size > 0 %>
+<div id="user_page_songlist">
+  <table class='table'>
+    <tbody>
+      <% @songlist.each_with_index do |song , idx| %>
+        <tr>
+          <td id="thumbnail_<%= idx %>" class='center' width='40%'>
+            <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
+            <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
+            <script>
+            zenra.createThumbnail(
+              "<%= idx %>" ,
+              "<%= song['song_id'] %>" ,
+              "<%= youtube_image song['song_url'] %>" ,
+              "100%",
+              "auto"
+            );
+            </script>
+          </td>
+          <td>
+            <p class="mini">
+              <%= song_link song['song_id'] , song['song_name'] %>
+            </p>
+            <p class="mini"><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+            <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
+            <p class="mini">
+              最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<p class="right"><a href="/user/songlist/<%= @user['username'] %>?sort_category=sang_count">もっと見る</a></p>
+<% else %>
+  持ち歌がありません
+<% end %>

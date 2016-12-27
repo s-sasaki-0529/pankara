@@ -17,13 +17,22 @@
       </div>
   </div>
 
+  <div class="row">
+    <div class="col-xs-6">
+      <%= erb :_user_page_song_list %>
+    </div>
+    <div class="col-xs-6">
+      <%= erb :_user_page_recent_song %>
+    </div>
+  </div>
+
   <div id="recent" class="row">
     <div class="col-xs-6">
-      <%= erb :_user_page_recent_karaoke %>
+      友達一覧予定地
     </div>
 
     <div class="col-xs-6">
-      <%= erb :_user_page_recent_song %>
+      <%= erb :_user_page_recent_karaoke %>
     </div>
   </div>
 <% else %>

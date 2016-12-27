@@ -507,6 +507,7 @@ class User < Base
 
     # historyから重複を排除
     songs_hash = {}
+    # Todo: 関連カラオケ情報も取得しているのは無駄
     histories = self.histories(:song_info => true)
     histories.each {|h| songs_hash[h['song_id']] = h}
     song_list[:list] = songs_hash.values
@@ -547,6 +548,11 @@ class User < Base
     else
       song_list[:list].sort! {|a , b| b[sc] <=> a[sc]}
       opt[:sort_order] == 'asc' and song_list[:list].reverse!
+    end
+
+    # [オプション] 表示件数を制限
+    if limit = opt[:limit]
+      song_list[:list] = song_list[:list][0..limit]
     end
 
     # [オプション] ページャで戻すデータ量を制限

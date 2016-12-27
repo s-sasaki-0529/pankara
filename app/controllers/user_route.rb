@@ -22,6 +22,7 @@ class UserRoute < March
     @karaoke_list = @user.get_karaoke 5
     @most_sang_song = @user.get_most_sang_song
     @max_score = @user.get_max_score
+    @songlist = @user.songlist(:sort_category => 'sang_count' , :limit => 10)[:list]
     # 集計情報を自動で表示するオプション
     @show_aggregate = params[:show_aggregate]
     erb :user_page
