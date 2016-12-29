@@ -2,7 +2,7 @@
 # Validate - 対象テキストを検証するクラス
 #----------------------------------------------------------------------
 class Validate
-  
+
   # is_datetime? - March標準の日付時刻フォーマットに沿っているかを戻す
   #--------------------------------------------------------------------
   def self.is_datetime?(datetime)
@@ -12,7 +12,7 @@ class Validate
       false
     end
   end
-  
+
   # is_in_range? - 文字数が指定した範囲内かを戻す
   #---------------------------------------------------------------------
   def self.is_in_range?(str , min , max)
@@ -42,7 +42,7 @@ class Validate
       false
     end
   end
-  
+
   # is_password? - March標準のパスワードのフォーマットに沿っているかを戻す
   #--------------------------------------------------------------------
   def self.is_password?(password)
@@ -52,5 +52,5 @@ class Validate
       false
     end
   end
-  
+
 end

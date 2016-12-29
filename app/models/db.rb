@@ -210,7 +210,7 @@ class DB
     st = self.execute
     return st.fetch_hash
   end
-  
+
   # execute_all - SQLを実行し、結果をハッシュ配列の形式で戻す
   #---------------------------------------------------------------------
   def execute_all
