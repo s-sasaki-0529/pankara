@@ -300,7 +300,7 @@ div.color-box-content {
   margin-top: -20px;
   right: 12px;
 }
-#user_page_songlist {
+.user-page-info-table {
   height: 234px;
   overflow-y: scroll;
   background-color: white;

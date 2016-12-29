@@ -231,7 +231,7 @@ class User < Base
   # friend_list - 友達関係のユーザ一覧を取得
   # statusを指定した場合、そのstatusのユーザのみ絞り込む
   #---------------------------------------------------------------------
-  def friend_list(status = nil)
+  def friend_list(status = nil , opt = {})
     friend_list = Friend.get_status(@params['id'])
     friend_info = User.id_to_name(friend_list.keys)
     friend_list.each do |userid , status|
@@ -239,10 +239,12 @@ class User < Base
     end
 
     if status
-      return friend_info.select {|k ,v| v['status'] == status}
-    else
-      return friend_info
+      friend_info = friend_info.select {|k ,v| v['status'] == status}
     end
+    if opt[:want_array]
+      friend_info = friend_info.values if friend_info.class == Hash
+    end
+    friend_info
   end
 
   # timeline - 友達の最近のカラオケを取得する
