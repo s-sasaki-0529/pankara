@@ -90,11 +90,10 @@ describe 'プレイリスト機能' , :js => true do
     it '動画の存在しない楽曲は除外される' do
       `zenra mysql -e "update song set url = NULL where id < 50"`
       visit '/history/list/worry'
-      history_num = table_to_hash('history_table').map {|h| h['動画']}.select {|u| u != '未登録'}.count
       link '動画を連続再生'
       iscontain '再生リスト(12曲)'
       playlist_num = table_to_array('playlist_tabel_main').count
-      expect(history_num).to eq playlist_num
+      expect(playlist_num).to eq 12
     end
     it '順番をシャッフルする' do #奇跡が起こってシャッフル前後で並び順が同じになった場合、テストは落ちる
       visit '/history/list/worry'
