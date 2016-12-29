@@ -341,16 +341,16 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
   var defaultHeight = zenra.ispc ? 90 : 45;
   var width = _width || defaultWidth;
   var height = _height || defaultHeight;
-  if (image != "未登録") {
-    var $img = $('<img>').attr('src' , image);
-    var song = $('#song_name_' + idx).text();
-    var artist = $('#artist_name_' + idx).text();
-    $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
-    $img.attr('id' , 'thumbnails_' + idx).attr('info' , song + ' (' + artist + ')');
+  var $img = $('<img>').attr('src' , image);
+  var song = $('#song_name_' + idx).text();
+  var artist = $('#artist_name_' + idx).text();
+  $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
+  $img.attr('id' , 'thumbnails_' + idx).attr('info' , song + ' (' + artist + ')');
 
-    // iPhoneでのclickイベントについて
-    // http://blog.webcreativepark.net/2012/12/25-134858.html
-    $img.on('click' , function(){});
+  // iPhoneでのclickイベントについて
+  // http://blog.webcreativepark.net/2012/12/25-134858.html
+  $img.on('click' , function(){});
+  if (image != "/image/noimage.jpg") {
     $("body").on("click" , '#thumbnails_' + idx , function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
       var player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
@@ -359,11 +359,8 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
         zenra.visit('/song/' + id);
       });
     });
-    $('#thumbnail_' + idx).append($img);
-  } else {
-    var $altText = $("<div>").text('未登録').css('width' , width).css('height' , height).css('line-height' , height + 'px');
-    $('#thumbnail_' + idx).append($altText);
   }
+  $('#thumbnail_' + idx).append($img);
 };
 
 /*
@@ -458,7 +455,7 @@ var moshikashite = function(arg_id , arg_source) {
   var id = arg_id;
   var source = arg_source;
   var minLength = 2;
-  
+
   $('#' + id).autocomplete({
     source: source ,
     minLength: minLength
@@ -505,7 +502,7 @@ var moshikashite = function(arg_id , arg_source) {
   */
   this.setSource = function(arg_source) {
     source = arg_source;
-    
+
     $('#' + id).autocomplete(
       'option' ,
       'source' ,
@@ -520,11 +517,11 @@ var moshikashite = function(arg_id , arg_source) {
   this.setStandardMoshikashite = function(arg_source) {
     if (arg_source)
       this.setSource(arg_source);
-   
+
     minLength = 2;
     this.setOption('minLength' , minLength);
   };
-  
+
   /*
   setNoNeedInputMoshikashite - 文字の入力がなくてももしかしてリストを表示できるように設定する　必要ならSourceも設定する
   source: もしかしてリストのソース用配列
@@ -532,14 +529,14 @@ var moshikashite = function(arg_id , arg_source) {
   this.setNoNeedInputMoshikashite = function(arg_source) {
     if (arg_source)
       this.setSource(arg_source);
-    
+
     minLength = 0;
     this.setOption('minLength' , minLength);
   };
-  
+
   function extractSoruce(input_value) {
     var extractedSource = [];
-    
+
     for (var i = 0; i < source.length; i++) {
       if (source[i].charAt(0) == input_value.toLowerCase() || 
           source[i].charAt(0) == input_value.toUpperCase()) {
@@ -619,13 +616,13 @@ var dialog = function(title , dialog_id , width , height) {
         $('#' + id).tooltip('disable');
         zenra.getLoader().hide();
       });
-    
+
       //オプション: タイトルバーにオンマウス時のカーソル
       $('.ui-dialog-title').css('cursor' , opt.title_cursor || '');
-    
+
       dialog.html(div);
     };
-    
+
     /*
     close - ダイアログを閉じる
     */
@@ -640,22 +637,22 @@ var dialog = function(title , dialog_id , width , height) {
     this.transition = function(url , id , opt) {
       opt = opt || {};
       var func_at_load = opt.func_at_load || function(){};
-    
+
       var div = $('#' + this.dialog_id);
-    
+
       jQuery.removeData(div);
       div.load(url + " #" + id , function(date , status) {
         func_at_load();
         $('#' + id).tooltip('disable');
       });
     };
-    
+
     /*
     setEvent - ダイアログにイベントを設定する
     */
     this.setEvent = function(event_obj) {
       var dialog_events = ['beforeClose' , 'close'];
-    
+
       var events = {};
       Object.keys(event_obj).forEach(function(key) {
         for (var i = 0; i < dialog_events.length; i++) {
@@ -665,7 +662,7 @@ var dialog = function(title , dialog_id , width , height) {
           }
         }
       });
-    
+
       var div = $('#' + this.dialog_id);
       div.dialog(events);
     };
@@ -712,7 +709,7 @@ var bathtowel = {
   cookieオブジェクト -クッキーに関する制御全般-
 */
 var cookie = {
- 
+
   /*[Method] クッキーを設定する*/
   setCookie : function(name , value) {
     document.cookie = name + '=' + encodeURIComponent(value);
@@ -721,19 +718,19 @@ var cookie = {
   /*[Method] クッキーを連想配列にして取得する*/
   getCookies : function() {
     var result = [];
-  
+
     var all_cookies = document.cookie;
     if (all_cookies === '') {
       return;
     }
-  
+
     var cookies = all_cookies.split('; ');
     for (var i = 0; i < cookies.length; i++) {
       var cookie = cookies[i].split('=');
-  
+
       result[cookie[0]] = decodeURIComponent(cookie[1]);
     }
-  
+
     return result;
   } ,
 
@@ -743,16 +740,16 @@ var cookie = {
     if (all_cookies === '') {
       return false;
     }
-  
+
     cookies = all_cookies.split('; ');
     for (var i = 0; i < cookies.length; i++) {
       var cookie = cookies[i].split('=');
-  
+
       if (cookie[0] == name) {
         return true;
       }
     }
-  
+
     return false;
   }
 
@@ -793,7 +790,7 @@ var register = (function() {
 
       return true;
     }
-    
+
     return false;
   }
 
@@ -814,7 +811,7 @@ var register = (function() {
     $('#seekbar').slider('value' , history.songkey);
     $('#score_type').val(history.score_type);
     $('#score').val(history.score);
-    
+
     if (history.score_type > 0) {
       $('#score_area').show();
     }
@@ -825,10 +822,10 @@ var register = (function() {
     $('#price').val(attendance.price);
     $('#memo').val(attendance.memo);
   }
-  
+
   /*[method] カラオケ入力画面用ウィジェットを作成する*/
   function createWidgetForKaraoke() {
-    
+
     // お店のもしかしてリスト作成
     zenra.post('/ajax/store/list' , {} , {
       success: function(response) {
@@ -954,7 +951,7 @@ var register = (function() {
   function createInputSongEvent() {
     $('#song').blur(function() {
       var temp_artist_list = [];
-      
+
       // 曲名を入力すると歌手名を自動入力する
       if ($('#artist').val() === '') {
         for (var id in song_obj) {
@@ -964,7 +961,7 @@ var register = (function() {
             }
           }
         }
-        
+
         if (temp_artist_list.length === 1) {
           $('#artist').val(temp_artist_list[0]);
         }
@@ -984,7 +981,7 @@ var register = (function() {
           }
         }
       }
-      
+
       if (temp_artist_list.length > 0) {
         artist_moshikashite.setNoNeedInputMoshikashite(temp_artist_list);
       }
@@ -1014,7 +1011,7 @@ var register = (function() {
       else {
         song_moshikashite.setStandardMoshikashite(song_list);
       }
-      
+
       autoInputSongKey();
     });
   }
@@ -1047,7 +1044,7 @@ var register = (function() {
     $('#buttons').append(button2);
     $('#buttons').append(button3);
   }
-  
+
   /*[method] 参加情報入力画面用の要素を作成する*/
   function createElementForEditAttendance(karaoke_id , action) {
     var action_button = $('<input>').attr('id' , 'action_button').attr('type' , 'button');
@@ -1068,7 +1065,7 @@ var register = (function() {
     buttons.append(action_button);
     buttons.append(cancel_button);
   }
-  
+
   /*[method] 歌唱履歴編集画面用の要素を作成する*/
   function createElementForEditHistory(karaoke_id , history_id) {
     $('#button1').attr('onclick' , 'register.submitHistoryEditRequest(' + karaoke_id + ' , ' + history_id + ');').val('保存');
@@ -1077,7 +1074,7 @@ var register = (function() {
     button3.attr('onclick' , 'register.closeDialog();').val('キャンセル').addClass('form-control btn btn-default');
     $('#buttons').append(button3);
   }
-    
+
   /*[method] 入力されたカラオケデータを取得する*/
   function getKaraokeData() {
     var data = {
@@ -1098,7 +1095,7 @@ var register = (function() {
     }
     return data;
   }
-    
+
   /*[method] 入力された歌唱履歴データを取得する*/
   function getHistoryData() {
     var data = {
@@ -1117,7 +1114,7 @@ var register = (function() {
     }
     return data;
   }
-  
+
   /*[method] 入力された参加情報データを取得する*/
   function getAttendanceData() {
     var data = {
@@ -1127,7 +1124,7 @@ var register = (function() {
 
     return data;
   }
-  
+
   /*[method] 採点方法にクッキーの値を設定する*/
   function setScoreTypeFromCookie() {
     if (cookie.isExist('score_type')) {
@@ -1171,7 +1168,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 歌唱履歴入力画面を表示する*/
     createHistory : function(karaoke_id , opt) {
       opt = opt || {};
@@ -1258,7 +1255,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 参加情報編集画面を表示する*/
     editAttendance : function(karaoke_id) {
       zenra.post('/ajax/user/karaoke/attendance' , {id: karaoke_id} , {
@@ -1300,7 +1297,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] カラオケ情報登録リクエストを送信する*/
     submitKaraokeRegistrationRequest : function() {
       var data = getKaraokeData();
@@ -1358,7 +1355,7 @@ var register = (function() {
     /*[Method] 参加情報編集リクエストを送信する*/
     submintAttendanceEditRequest : function(karaoke_id) {
       var json_data = zenra.toJSON(getAttendanceData());
-      
+
       zenra.post('/ajax/attendance/modify/', {id: karaoke_id, params: json_data} , {
         sync: true,
         success: function() {
@@ -1498,7 +1495,7 @@ var register = (function() {
         }
       });
     } ,
-    
+
     /*[Method] 入力ダイアログを閉じる*/
     closeDialog : function() {
       input_dialog.close();

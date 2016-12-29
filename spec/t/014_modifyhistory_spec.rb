@@ -41,7 +41,7 @@ describe 'Historyの編集/削除' , :js => true do
       visit url
       iscontain('変更後の曲名')
       islack('1/3の純情な感情')
-      expect(table_string(8)).to eq '9,ないと,未登録,変更後の曲名,変更後の歌手名,0,その他,100.00,'
+      expect(table_string(8)).to eq '9,ないと,,変更後の曲名,変更後の歌手名,0,その他,100.00,'
 
       #削除
       login 'unagipai'
