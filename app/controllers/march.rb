@@ -52,7 +52,7 @@ class March < Sinatra::Base
       if id && id != "" && id != nil
         "http://i.ytimg.com/vi/#{id}/mqdefault.jpg"
       else
-        "未登録"
+        "/image/noimage.jpg"
       end
     end
     def user_link(username, screenname , with_icon = true , size = 32 , with_break = nil)
