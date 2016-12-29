@@ -341,16 +341,16 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
   var defaultHeight = zenra.ispc ? 90 : 45;
   var width = _width || defaultWidth;
   var height = _height || defaultHeight;
-  if (image != "未登録") {
-    var $img = $('<img>').attr('src' , image);
-    var song = $('#song_name_' + idx).text();
-    var artist = $('#artist_name_' + idx).text();
-    $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
-    $img.attr('id' , 'thumbnails_' + idx).attr('info' , song + ' (' + artist + ')');
+  var $img = $('<img>').attr('src' , image);
+  var song = $('#song_name_' + idx).text();
+  var artist = $('#artist_name_' + idx).text();
+  $img.css('width' , width).css('height' , height).css('cursor' , 'pointer');
+  $img.attr('id' , 'thumbnails_' + idx).attr('info' , song + ' (' + artist + ')');
 
-    // iPhoneでのclickイベントについて
-    // http://blog.webcreativepark.net/2012/12/25-134858.html
-    $img.on('click' , function(){});
+  // iPhoneでのclickイベントについて
+  // http://blog.webcreativepark.net/2012/12/25-134858.html
+  $img.on('click' , function(){});
+  if (image != "/image/noimage.jpg") {
     $("body").on("click" , '#thumbnails_' + idx , function() {
       var opt = {title_cursor: 'pointer' , draggable: false}; 
       var player_dialog = new dialog($img.attr('info') , 'player_dialog' , 600);
@@ -359,11 +359,8 @@ zenra.createThumbnail = function(idx , id , image , _width , _height) {
         zenra.visit('/song/' + id);
       });
     });
-    $('#thumbnail_' + idx).append($img);
-  } else {
-    var $altText = $("<div>").text('未登録').css('width' , width).css('height' , height).css('line-height' , height + 'px');
-    $('#thumbnail_' + idx).append($altText);
   }
+  $('#thumbnail_' + idx).append($img);
 };
 
 /*
