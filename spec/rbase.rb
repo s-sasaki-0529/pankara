@@ -18,6 +18,7 @@ module Rbase
 
   # 指定した文字列がページ内に含まれていることを検証する
   def iscontain(contents)
+    islack "You're seeing this error because you have enabled the show_exceptions setting."
     contents = [contents] if contents.kind_of?(String)
     contents.each do |content|
       expect(page).to have_content content
