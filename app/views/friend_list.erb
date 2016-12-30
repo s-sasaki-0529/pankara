@@ -19,4 +19,8 @@
   <%= erb :_user_list %>
 <% end %>
 
+<% if @friends.empty? && @follows.empty? && @followers.empty? %>
+  <p>友達がいません</p>
+<% end %>
+
 <% end %>

@@ -108,14 +108,14 @@ class UserRoute < March
   get '/friend/list/:username/?' do
     @user = User.new(params[:username])
     @user.exist? or raise Sinatra::NotFound
-    friends_hash = @user.friend_list
+    friend_list = @user.friend_list(nil , :want_array => true)
 
     # 友達
-    @friends = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FRIEND}
+    @friends = friend_list.select {|f| f['status'] == Util::Const::Friend::FRIEND}
     # 申請中
-    @follows = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FOLLOW}
+    @follows = friend_list.select {|f| f['status'] == Util::Const::Friend::FOLLOW}
     # 承認待ち
-    @followers = friends_hash.values.select {|f| f['status'] == Util::Const::Friend::FOLLOWED}
+    @followers = friend_list.select {|f| f['status'] == Util::Const::Friend::FOLLOWED}
     erb :friend_list
   end
 

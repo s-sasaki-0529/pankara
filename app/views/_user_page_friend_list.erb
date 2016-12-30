@@ -1,5 +1,9 @@
 <h4>友達一覧</h4>
-<div class='user-page-info-table'>
-  <%= erb :_user_list %>
-</div>
-<p class="right"><a href="/user/friend/list/<%= @user['username'] %>">もっと見る</a></p>
+<% if @users.size > 0 %>
+  <div class='user-page-info-table' id='user_page_friend_list'>
+    <%= erb :_user_list %>
+  </div>
+  <p class="right"><a href="/user/friend/list/<%= @user['username'] %>">もっと見る</a></p>
+<% else %>
+<p>友達がいません</p>
+<% end %>
