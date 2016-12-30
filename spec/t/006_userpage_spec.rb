@@ -4,53 +4,7 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init`
-  User.create('unagipai' , 'unagipai' , 'ちゃら')
-  score_type = {'brand' => 'JOYSOUND' , 'name' => '全国採点'}
-
-  register = Register.new(User.new('unagipai'))
-  register.with_url = false
-  karaoke_id = register.create_karaoke(
-    '2015-12-26 20:00:00' , 'ユーザページテスト用カラオケ1' , 3 ,
-    {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
-    {'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
-  )
-  register.attend_karaoke(1500 , 'ユーザページテスト用attend1')
-  register.create_history('千の夜をこえて' ,  'Aqua Timez' , 0 , score_type , 72)
-  register.create_history('心絵' , 'ロードオブメジャー' , 0 , score_type , 82)
-
-  karaoke_id = register.create_karaoke(
-    '2015-12-28 24:00:00' , 'ユーザページテスト用カラオケ2' , 2 ,
-    {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
-    {'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
-  )
-  register.attend_karaoke(1500 , 'ユーザページテスト用attend2')
-  register.create_history('決意の朝に' , 'Aqua Timez' , 0 , score_type , 76.3)
-
-  karaoke_id = register.create_karaoke(
-    '2016-01-01 01:00:00' , 'ユーザページテスト用カラオケ3' , 2 ,
-    {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
-    {'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
-  )
-  register.attend_karaoke(1500 , 'ユーザページテスト用attend3')
-  register.create_history('つぼみ' , 'Aqua Timez' , 0 , score_type , 59)
-  register.create_history('Butter-Fly' , '和田光司' , 0 , score_type , 70)
-
-  karaoke_id = register.create_karaoke(
-    '2016-01-12 12:00:00' , 'ユーザページテスト用カラオケ4' , 2 ,
-    {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
-    {'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
-  )
-  register.attend_karaoke(1500 , 'ユーザページテスト用attend4')
-  register.create_history('Butter-Fly' , '和田光司' , 0 , score_type , 80)
-
-  karaoke_id = register.create_karaoke(
-    '2016-12-26 20:00:00' , 'ユーザページテスト用カラオケ5' , 2 ,
-    {'name' => 'カラオケ館' , 'branch' => '盛岡店'} ,
-    {'brand' => 'JOYSOUND' , 'product' => 'MAX'} ,
-  )
-  register.attend_karaoke(1500 , 'ユーザページテスト用attend5')
-  register.create_history('夏空' , 'Galileo Galilei' , 0 , score_type , 76)
+  `zenra init -d 2016_12_28_04_00`
 end
 
 # 定数定義
@@ -59,44 +13,56 @@ url = '/user/userpage/unagipai'
 # テスト実行
 describe 'ユーザページ機能' do
   before(:all,&init)
-  it '最近のカラオケが正常に表示されるか' do
+  before do
     login 'unagipai'
     visit url
+  end
+  it '最近のカラオケが正常に表示されるか' do
     karaoke_table = table_to_hash('recent_karaoke_table')
     expect(karaoke_table.length).to eq 5
-    expect(karaoke_table[0]['tostring']).to eq '2016-12-26,ユーザページテスト用カラオケ5'
+    expect(karaoke_table[0]['tostring']).to eq '2016-09-22,夜のOJTとカラオケ'
   end
   it '最近歌った曲が正常に表示されるか' do
-    login 'unagipai'
-    visit url
     karaoke_table = table_to_hash('recent_sang_table')
     expect(karaoke_table.length).to eq 5
-    expect(karaoke_table[0]['tostring']).to eq '夏空,Galileo Galilei,'
+    expect(karaoke_table[0]['tostring']).to eq 'Love So Sweet,嵐,'
     all('.history-link')[1].click
-    examine_historylink('ちゃら' , 'ユーザページテスト用カラオケ5' , '夏空')
+    examine_historylink('ちゃら' , '夜のOJTとカラオケ' , 'Love So Sweet')
+  end
+  it '友達一覧が正常に表示されるか' do
+    friends = table_to_array('users_table')
+    expect(friends.length).to eq 5
+    expect(friends[0][0]).to eq 'ないと'
+    expect(friends[1][0]).to eq 'ともちん'
+    expect(friends[2][0]).to eq 'へたれ'
+    expect(friends[3][0]).to eq 'にゃんでれ'
+    expect(friends[4][0]).to eq 'さっちー'
+  end
+  it '持ち歌一覧が正常に表示されるか' do
+    songlist = table_to_array('user_page_songlist')
+    expect(songlist.length).to eq 10
+    expect(songlist[0][0]).to eq 'はなまるぴっぴはよいこだけ A応P'
+    expect(songlist[1][0]).to eq 'サークルゲーム Galileo Galilei'
+    expect(songlist[-1][0]).to eq 'トリセツ 西野かな'
   end
   it '各種集計が正常に表示されるか' do
-    login 'unagipai'
-    visit url
     most_sang_song_table = table_to_hash('most_sang_song_table')
-    expect(most_sang_song_table[0]['tostring']).to eq '2回,Butter-Fly,和田光司'
+    expect(most_sang_song_table[0]['tostring']).to eq '4回,ドラマチック,Base Ball Bear'
     max_score_table = table_to_hash('max_score_table')
-    expect(max_score_table[0]['tostring']).to eq '82.00点,心絵,ロードオブメジャー,全国採点,'
+    expect(max_score_table[0]['tostring']).to eq '94.00点,リンちゃんなう！,オワタP,その他,'
     all('.history-link')[0].click
-    examine_historylink('ちゃら' , 'ユーザページテスト用カラオケ1' , '心絵')
+    examine_historylink('ちゃら' , '祝本番環境リリースカラオケ' , 'リンちゃんなう！')
   end
   it 'リンクが正常に登録されているか' , :js => true do
-    login 'unagipai'
-    visit url
     id_to_element('recent_karaoke_table').find('tbody').all('tr')[0].click #最近のカラオケ一行目をクリックし、Javascriptで画面遷移
-    iscontain 'ユーザページテスト用カラオケ5'
+    iscontain %w(2016-09-22 夜のOJTとカラオケ)
     visit url
     examine_songlink('夏空', 'Galileo Galilei', url)
     examine_artistlink('Galileo Galilei', url)
-    examine_artistlink('和田光司', url)
-    examine_artistlink('Aqua Timez', url)
-    examine_songlink('心絵', 'ロードオブメジャー', url)
-    examine_artistlink('ロードオブメジャー', url)
+    examine_artistlink('嵐', url)
+    examine_artistlink('浦島太郎', url)
+    examine_songlink('はなまるぴっぴはよいこだけ', 'A応P', url)
+    examine_userlink('ないと' , url)
   end
   describe 'よく歌うアーティストベスト10' , :js => true do
     before do
@@ -105,7 +71,7 @@ describe 'ユーザページ機能' do
     end
     it '歌唱履歴が存在する場合' do
       result = ejs("$('#user_sang_artists_chart_json').text();")
-      expect(result).to eq '[["Aqua Timez",42.9],["和田光司",28.6],["ロードオブメジャー",14.3],["Galileo Galilei",14.3]]'
+      expect(result).to eq '[["Aqua Timez",17.6],["Galileo Galilei",17.6],["放課後ティータイム",13.7],["ロードオブメジャー",7.8],["A応P",7.8],["嵐",7.8],["Base Ball Bear",7.8],["槇原敬之",7.8],["和田光司",5.9],["西野かな",5.9]]'
     end
   end
 end

@@ -3,7 +3,7 @@
 </div>
 <% if @songlist.size > 0 %>
 <div class='user-page-info-table'>
-  <table class='table'>
+  <table id="user_page_songlist" class='table'>
     <tbody>
       <% @songlist.each_with_index do |song , idx| %>
         <tr>

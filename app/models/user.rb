@@ -199,7 +199,7 @@ class User < Base
       :FROM => 'history' ,
       :JOIN => ['history' , 'attendance'] ,
       :WHERE => 'attendance.user = ?' ,
-      :OPTION => ['ORDER BY score DESC', 'LIMIT 1'],
+      :OPTION => ['ORDER BY score DESC , song DESC', 'LIMIT 1'],
       :SET => @params['id'] ,
     )
     @max_score_history = db.execute_row
@@ -554,7 +554,7 @@ class User < Base
 
     # [オプション] 表示件数を制限
     if limit = opt[:limit]
-      song_list[:list] = song_list[:list][0..limit]
+      song_list[:list] = song_list[:list][0 , limit]
     end
 
     # [オプション] ページャで戻すデータ量を制限
