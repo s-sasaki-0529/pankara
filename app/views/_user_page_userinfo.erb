@@ -2,4 +2,4 @@
 <div id="user_icon">
   <%= user_icon @user['username'] , '100%' , '100%' %>
 </div>
-<a class='pointer' onclick="zenra.showAggregateDialog('<%= @user['username'] %>')">集計情報を表示</a>
+<a class='pointer color-box' data-width='50%' href="/user/aggregate/<%= @user['username'] %>">集計情報を表示</a>

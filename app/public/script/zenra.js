@@ -3,11 +3,16 @@ $(function(){
   //tablesort
   $('.sortable').tablesorter();
   //colorbox
-  $('.color-box').colorbox({
-    iframe: true,
-    width: zenra.ispc ? '75%' : '95%',
-    height: zenra.ispc ? '75%' : '95%',
-    opacity: 0.5
+  $('.color-box').each(function(i , e) {
+    var defaultSize = zenra.ispc ? '75%' : '95%';
+    var width = $(e).data('width') || defaultSize;
+    var height = $(e).data('height') || defaultSize;
+    $(e).colorbox({
+      iframe: true,
+      width: width,
+      height: height ,
+      opacity: 0.5
+    });
   });
   //submit時にローディング画面描画
   $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });

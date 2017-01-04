@@ -8,15 +8,15 @@ init = proc do
 end
 
 # テスト実行
-describe '集計情報表示機能' , :js => true do
+describe '集計情報表示機能' do
 
   before(:all , &init)
-  
+
   it '歌唱履歴のあるユーザ' do
     login 'sa2knight'
-    visit '/user/userpage'; wait_for_ajax
+    visit '/user/userpage'
     iscontain '集計情報を表示'
-    js "zenra.showAggregateDialog('sa2knight')"
+    visit '/user/aggregate/sa2knight'
     iscontain ['カラオケ記録' , '歌唱記録' , '機種別集計' , '採点別集計' , 'その他']
     expect(table_to_hash('karaoke_aggregate_table')[0]['tostring']).to eq '総カラオケ時間,110.5 時間'
     expect(table_to_hash('sang_aggregate_table')[1]['tostring']).to eq '持ち歌手数,150 組'
@@ -27,9 +27,9 @@ describe '集計情報表示機能' , :js => true do
 
   it '歌唱履歴のないユーザ' do
     login 'test_user'
-    visit '/user/userpage'; wait_for_ajax
+    visit '/user/userpage'
     iscontain '集計情報を表示'
-    js "zenra.showAggregateDialog('test_user')"
+    visit '/user/aggregate/test'
     iscontain ['カラオケ記録' , '歌唱記録' , '機種別集計' , '採点別集計' , 'その他']
     expect(table_to_hash('karaoke_aggregate_table')[1]['tostring']).to eq '総出費,0 円'
     expect(table_to_hash('sang_aggregate_table')[1]['tostring']).to eq '持ち歌手数,0 組'

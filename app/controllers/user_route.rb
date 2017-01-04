@@ -119,4 +119,14 @@ class UserRoute < March
     erb :friend_list
   end
 
+  # get '/user/aggregate/:username/?' - 指定したユーザの集計情報
+  #--------------------------------------------------------------------
+  get '/aggregate/:username' do
+    user = User.new(params[:username])
+    user or return error('invalid user id')
+    @agg = user.aggregate
+    @HIDEHEADMENU = true
+    erb :user_aggregate
+  end
+
 end

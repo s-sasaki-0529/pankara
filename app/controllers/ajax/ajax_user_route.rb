@@ -12,15 +12,6 @@ class AjaxUserRoute < AjaxRoute
     return success(:id => karaoke['id'] , :name => karaoke['name'])
   end
 
-  # post '/ajax/user/aggregate/?' - 指定したユーザの集計情報
-  #--------------------------------------------------------------------
-  get '/:user/aggregate/dialog' do
-    user = User.new(params[:user])
-    user or return error('invalid user id')
-    @agg = user.aggregate
-    erb :_aggregate
-  end
-
   # post '/ajax/user/artist/favorite/?' - ログインユーザの主に歌うアーティスト１０組を戻す
   #--------------------------------------------------------------------
   post '/artist/favorite/?' do
