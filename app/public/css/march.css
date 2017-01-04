@@ -306,6 +306,10 @@ div.color-box-content {
   background-color: white;
 }
 
+#aggregate td {
+  text-align: left;
+}
+
 /* =============================================
  * プレイリストページ
  * =============================================*/

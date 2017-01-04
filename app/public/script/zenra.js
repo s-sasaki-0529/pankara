@@ -4,9 +4,12 @@ $(function(){
   $('.sortable').tablesorter();
   //colorbox
   $('.color-box').each(function(i , e) {
-    var defaultSize = zenra.ispc ? '75%' : '95%';
-    var width = $(e).data('width') || defaultSize;
-    var height = $(e).data('height') || defaultSize;
+    var width = zenra.ispc ? '75%' : '95%';
+    var height = zenra.ispc ? '75%' : '95%';
+    if (zenra.ispc) {
+      var width = $(e).data('width') || width;
+      var height = $(e).data('height') || height;
+    }
     $(e).colorbox({
       iframe: true,
       width: width,

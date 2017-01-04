@@ -122,9 +122,10 @@ class UserRoute < March
   # get '/user/aggregate/:username/?' - 指定したユーザの集計情報
   #--------------------------------------------------------------------
   get '/aggregate/:username' do
-    user = User.new(params[:username])
-    user or return error('invalid user id')
-    @agg = user.aggregate
+    @user = User.new(params[:username])
+    @user or return error('invalid user id')
+    @agg = @user.aggregate(:year => params[:year])
+    @year = params[:year]
     @HIDEHEADMENU = true
     erb :user_aggregate
   end

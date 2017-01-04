@@ -1,4 +1,19 @@
 <div id="aggregate" class="color-box-content" title="集計情報">
+
+  <div>
+    <fieldset>
+      <div id="user-aggregate-year" class="switch-toggle switch-ios">
+        <input id="all" value="" name="year" type="radio" checked>
+        <label for="all">総合</label>
+        <input id="2017" value="2017" name="year" type="radio" <%= @year == '2017' ? 'checked' : '' %>>
+        <label for="2017">2017</label>
+        <input id="2016" value="2016" name="year" type="radio" <%= @year == '2016' ? 'checked' : '' %>>
+        <label for="2016">2016</label>
+        <a></a>
+      </div>
+    </fieldset>
+  </div>
+
   <h3>カラオケ記録</h3>
   <table id="karaoke_aggregate_table" class="table table-hover">
     <tr>
@@ -130,16 +145,20 @@
       <td><%= @agg['score_type7_avg'] %> 点</td>
     </tr>
   </table>
-
-  <h3>その他</h3>
-  <table id="other_aggregate_table" class="table table-hover">
-    <tr>
-      <td>友達の数</td>
-      <td><%= @agg['friend_num'] %> 人</td>
-    </tr>
-    <tr>
-      <td>ボカロ率</td>
-      <td><%= @agg['vocaloid_rate'] %> % (<%= @agg['vocaloid_num'] %> 曲)</td>
-    </tr>
-  </table>
 </div>
+
+<script>
+$(function() {
+  var currentType = '<%= @year %>';
+  var user = '<%= @user["username"] %>';
+  $('.switch-toggle input[type=radio]').change(function() {
+    var year = $('#user-aggregate-year input:checked').val();
+    var url = '/user/aggregate/' + user;
+    if (year != "") {
+      url += '?year=' + year;
+    }
+    setTimeout(function() { location.href = url; } , 300);
+    zenra.getLoader().show();
+  });
+});
+</script>

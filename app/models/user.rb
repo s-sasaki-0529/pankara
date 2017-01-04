@@ -43,7 +43,6 @@ class User < Base
   # histories - ユーザの歌唱履歴と関連情報を取得
   #---------------------------------------------------------------------
   def histories(opt = {})
-
     # attendance / karaoke 一覧を取得
     attend_info = self.attend_ids(:want_karaoke => true)
     attend_info.size > 0 or return []
@@ -52,7 +51,7 @@ class User < Base
     ak_map = {}
     attend_ids.each_with_index {|a,i| ak_map[a] = karaoke_ids[i]}
 
-    # 歌唱履歴を全て取得し、場号を振る
+    # 歌唱履歴を全て取得し、番号を振る
     db = DB.new(
       :SELECT => ['id' , 'song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
       :FROM => 'history' ,
@@ -84,6 +83,10 @@ class User < Base
         h.merge!(songs_info[song] || {})
         h.merge!(karaoke_info[karaoke] || {})
       end
+    end
+    # [オプション] カラオケ登録年でフィルタリング
+    if year = opt[:year]
+      histories.select! {|h| h['karaoke_datetime'].to_s =~ /^#{opt[:year]}/}
     end
     return histories
   end
@@ -141,11 +144,11 @@ class User < Base
       :OPTION => ['GROUP BY song', 'ORDER BY counter DESC, history.created_at DESC']
     ).execute_row
 
-		unless @most_sang_song.nil?  
-			get_song @most_sang_song
-		else
-			@most_sang_song = {}
-		end
+    unless @most_sang_song.nil?
+      get_song @most_sang_song
+    else
+      @most_sang_song = {}
+    end
 
     return @most_sang_song
   end
@@ -491,13 +494,19 @@ class User < Base
 
   # total_spending - 総出費を取得
   #--------------------------------------------------------------------
-  def total_spending
-    DB.new({
-      :SELECT => {'sum(price)' => 'sum'},
+  def total_spending(opt = {})
+    db = DB.new({
+      :SELECT => {'sum(attendance.price)' => 'sum'},
       :FROM => 'attendance',
-      :WHERE => 'user = ?',
+      :JOIN => ['attendance' , 'karaoke'],
+      :WHERE => 'attendance.user = ?',
       :SET => @params['id']
-    }).execute_column
+    })
+    if opt[:year]
+      db.where('DATE_FORMAT(datetime , "%Y") = ?')
+      db.set(opt[:year])
+    end
+    db.execute_column
   end
 
   # songlist - ユーザの持ち歌一覧を取得
@@ -587,7 +596,7 @@ class User < Base
     end
 
     result = {}
-    histories = self.histories(:song_info => true)
+    histories = self.histories(:song_info => true , :year => opt[:year])
 
     # カラオケ回数
     result['karaoke_num'] = histories.map {|h| h['karaoke_id']}.uniq.count
@@ -600,7 +609,7 @@ class User < Base
     # 総歌唱回数
     result['sang_count'] = histories.count
     # 総出費
-    result['total_spending'] = self.total_spending || 0
+    result['total_spending'] = self.total_spending(:year => opt[:year]) || 0
 
     # 総カラオケ時間
     attend2plan = {}
@@ -610,7 +619,7 @@ class User < Base
     # リピート率
     songs = histories.map {|h| h['song']}
     repeat_songs = songs.select {|s| songs.index(s) != songs.rindex(s)}.uniq
-    result['repeat_rate'] = (repeat_songs.size.to_f / songs.uniq.size.to_f * 100).round(2)
+    result['repeat_rate'] = repeat_songs.empty? ? 0 : (repeat_songs.size.to_f / songs.uniq.size.to_f * 100).round(2)
 
     # 機種別の利用回数と歌唱回数
     attend2product = {}
@@ -629,16 +638,6 @@ class User < Base
       result["score_type#{i}_avg"] = aggregate[:avg]
       result["score_type#{i}_num"] = aggregate[:num]
     end
-
-    # 友達数
-    result["friend_num"] = self.friend_list.count
-
-    # VOCALOID楽曲歌唱率
-    vcl_ids = Tag.search('s' , 'VOCALOID')
-    vcl_num = 0
-    histories.map {|h| h['song']}.each {|s| vcl_ids.include?(s) and vcl_num += 1}
-    result["vocaloid_num"] = vcl_num
-    result["vocaloid_rate"] = vcl_num == 0 ? 0 : (vcl_num.to_f / histories.count.to_f * 100).round(2)
 
     return result
   end
