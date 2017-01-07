@@ -14,7 +14,9 @@ $(function(){
       iframe: true,
       width: width,
       height: height ,
-      opacity: 0.5
+      opacity: 0.5,
+      onOpen: function() { zenra.noScroll(); },
+      onClosed: function() { zenra.returnScroll(); },
     });
   });
   //submit時にローディング画面描画
@@ -594,11 +596,13 @@ var dialog = function(title , dialog_id , width , height) {
         resizable: opt.resizable || false ,
         draggable: opt.draggable === false ? false : true ,
         close: function(event) {
+          if (funcs.close) {
+            funcs.close();
+          }
           $(this).dialog('destroy');
           $(event.target).remove();
         } ,
         beforeClose: funcs.beforeClose ,
-        close: funcs.close ,
       });
       var div = $('<div></div>');
       div.load(url + " #" + id , function(date , status) {
@@ -1861,6 +1865,27 @@ zenra.scrollToTop = function () {
 zenra.scrollToBottom = function () {
   $('html, body').animate({scrollTop: $(this).height()},'fast');
 };
+
+/*スクロールを禁止する*/
+zenra.noScroll = function() {
+  if (zenra.ispc) {
+    var scroll_event = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
+    $('body').css('overflow' , 'hidden');
+    $(document).on(scroll_event,function(e){e.preventDefault();});
+    //$(document).on('touchmove.noScroll', function(e) {e.preventDefault();});
+  }
+};
+
+/*スクロールを解禁する*/
+zenra.returnScroll = function() {
+  if (zenra.ispc) {
+    var scroll_event = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
+    $('body').css('overflow' , 'auto');
+    $(document).off(scroll_event);
+    //$(document).off('.noScroll');
+  }
+};
+
 
 /*GETパラメータをキーを取得して取得*/
 zenra.getParam = function (key) {
