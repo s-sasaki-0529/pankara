@@ -50,7 +50,7 @@ class March < Sinatra::Base
     end
     def youtube_image(id)
       if id && id != "" && id != nil
-        "http://i.ytimg.com/vi/#{id}/mqdefault.jpg"
+        "https://i.ytimg.com/vi/#{id}/mqdefault.jpg"
       else
         "/image/noimage.jpg"
       end
