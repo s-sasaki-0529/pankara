@@ -7,7 +7,6 @@
       <th>歌手名</th>
       <th class='center sp-width-40'>回数</th>
       <th class='center sp-width-40'>曲数</th>
-      <th class='center sp-width-70'>１曲あたり</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +16,6 @@
       <td><%= artist_link artist['id'], artist['name'] %></td>
       <td class='center'><%= artist['count'] %></td>
       <td class='center'><%= artist['song_num'] %></td>
-      <td class='center'><%= h(artist['count'].to_f / artist['song_num'].to_f) %></td>
     </tr>
     <% end %>
   </tbody>

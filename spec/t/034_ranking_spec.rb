@@ -46,19 +46,19 @@ describe 'ランキング' do
     url = '/ranking/artist'
     it '全体の' do
       visit url
-      examine(table_name , 49 , '50,風鳴翼,13,5,2.60')
+      examine(table_name , 49 , '50,風鳴翼,13,5')
     end
     it 'あなたの' do
       visit "#{url}?showmine=1"
-      examine(table_name , 49 , '50,放課後ティータイム,7,6,1.17')
+      examine(table_name , 49 , '50,放課後ティータイム,7,6')
     end
     it '重複を含まない' do
       visit "#{url}?distinct=1"
-      examine(table_name , 49 , '50,malo,10,1,10.00')
+      examine(table_name , 49 , '50,malo,10,1')
     end
     it '重複を含まないあなたの' do
       visit "#{url}?showmine=1&distinct=1"
-      examine(table_name , 49 , '50,放課後ティータイム,6,6,1.00')
+      examine(table_name , 49 , '50,放課後ティータイム,6,6')
     end
     it 'リンク' do
       visit url
