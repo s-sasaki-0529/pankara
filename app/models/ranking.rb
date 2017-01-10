@@ -14,6 +14,7 @@ class Ranking < Base
     score_type = opt[:score_type] || 1
     limit = opt[:limit] || 20
     user = opt[:user] || nil
+    year = opt[:year] || nil
 
     # history/attendanceテーブルを対象にランキングを取得
     # Todo: karaoke.datetimeのために３テーブルJOINはなんか嫌だな
@@ -37,6 +38,11 @@ class Ranking < Base
       attends = user.attend_ids
       db.where_in(['history.attendance' , attends.length])
       db.set(attends)
+    end
+    # 期間指定がある場合その年のみを対象に
+    if year
+      db.where('DATE_FORMAT(karaoke.datetime , "%Y") = ?')
+      db.set(year)
     end
 
     ranking = db.execute_all
@@ -74,6 +80,12 @@ class Ranking < Base
       db.where_in(['attendance' , attend_ids.length])
       db.set(attend_ids)
     end
+
+    # [オプション] 特定期間の歌唱階数のみで集計
+    if year = opt[:year]
+      db.where('DATE_FORMAT(history.created_at , "%Y") = ?')
+      db.set(year)
+    end
     songs = db.execute_all
 
     # [オプション] 同じカラオケ、同じユーザの歌唱を重複カウントしない
@@ -109,6 +121,13 @@ class Ranking < Base
       db.where_in(['history.attendance' , attends.length])
       db.set(attends)
     end
+
+    # [オプション] 特定期間の歌唱階数のみで集計
+    if year = opt[:year]
+      db.where('DATE_FORMAT(history.created_at , "%Y") = ?')
+      db.set(year)
+    end
+
     histories = db.execute_all
 
     # 集計用にアーティストIDのみを抜き出す

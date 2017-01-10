@@ -13,6 +13,21 @@
   </fieldset>
 </div>
 
+<div class='ranking-config'>
+  <div class='ranking-toggle-label'>集計期間</div>
+  <fieldset>
+    <div id="ranking-year-toggle" class="switch-toggle switch-ios">
+      <input id="allyear" value="" name="year" type="radio" checked>
+      <label for="allyear">全期間</label>
+      <input id="2017" value="2017" name="year" type="radio" <%= @year == '2017' ? 'checked' : '' %>>
+      <label for="2017">2017年</label>
+      <input id="2016" value="2016" name="year" type="radio" <%= @year == '2016' ? 'checked' : '' %>>
+      <label for="2016">2016年</label>
+      <a></a>
+    </div>
+  </fieldset>
+</div>
+
 <% if @current_user %>
 <div class='ranking-config'>
   <div class='ranking-toggle-label'>集計対象</div>
@@ -50,8 +65,9 @@ $(function() {
   var currentType = '<%= @type %>';
   $('.switch-toggle input[type=radio]').change(function() {
     var type = $('#ranking-type-toggle input:checked').val();
+    var year = $('#ranking-year-toggle input:checked').val();
     var mode = $('#ranking-mode-toggle input:checked').val();
-    var url = '/ranking/' + type + '?showmine=' + mode;
+    var url = '/ranking/' + type + '?showmine=' + mode + '&year=' + year;
 
     /* 得点ランキングの場合、採点モード情報を付与 */
     if (type == 'score') {
