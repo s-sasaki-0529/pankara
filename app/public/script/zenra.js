@@ -473,8 +473,12 @@ zenra.localStorage = (function() {
   }
 
   function setJSON(key , obj) {
-    var json = zenra.toJSON(obj);
-    set(key , json);
+    if (key && obj) {
+      var json = zenra.toJSON(obj);
+      set(key , json);
+    } else {
+      console.log('set json error');
+    }
   }
 
   function get(key) {

@@ -3,7 +3,7 @@
     <div class="col-sm-3">
       <% if @login_message %><p class='red'><%= @login_message %></p><% end %>
       <h3>パンカラにログイン</h3>
-      <form method="POST">
+      <form method="POST" autocomplete="off">
         <div class='form-group'>
           <label class='control-label'>ユーザ名:</label>
           <input class='form-control' type="text" name="username">
@@ -13,6 +13,9 @@
           <input class='form-control' type="password" name="password">
         </div>
         <div class='form-group'>
+          <div class='checkbox'>
+            <label><input type='checkbox' name='autocomplete'>IDとパスワードを記憶する</label>
+          </div>
           <input class='form-control btn btn-default' type="submit" id="login_button" value="ログイン">
           <input type="hidden" name="callback" value="<%= @callback %>">
           <%= csrftoken %>
@@ -62,3 +65,28 @@
   </div>
   <%= erb :_bathtowel %>
 </div>
+
+<script>
+$(function() {
+  var $name = $('input[name=username]');
+  var $pw = $('input[name=password]');
+  var $cb = $('input[name=autocomplete]');
+  var autocomplete = zenra.localStorage.getJSON('autocomplete');
+  if (autocomplete) {
+    $name.val(autocomplete.name);
+    $pw.val(autocomplete.pw);
+    $cb.prop('checked' , true);
+  }
+  $('input[type=submit]').click(function() {
+    if ($cb.prop('checked')) {
+      console.log('OKOK');
+      zenra.localStorage.setJSON('autocomplete' , {
+        name: $name.val(),
+        pw: $pw.val()
+      });
+    } else {
+      zenra.localStorage.remove('autocomplete');
+    }
+  });
+});
+</script>
