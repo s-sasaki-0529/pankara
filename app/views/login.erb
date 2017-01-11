@@ -3,14 +3,14 @@
     <div class="col-sm-3">
       <% if @login_message %><p class='red'><%= @login_message %></p><% end %>
       <h3>パンカラにログイン</h3>
-      <form method="POST" autocomplete="off">
+      <form method="POST">
         <div class='form-group'>
           <label class='control-label'>ユーザ名:</label>
-          <input class='form-control' type="text" name="username">
+          <input class='form-control' type="text" name="username" autocomplete="off">
         </div>
         <div class='form-group'>
           <label class='control-label'>パスワード:</label>
-          <input class='form-control' type="password" name="password">
+          <input class='form-control' type="password" name="password" autocomplete="off">
         </div>
         <div class='form-group'>
           <div class='checkbox'>
@@ -76,10 +76,13 @@ $(function() {
     $name.val(autocomplete.name);
     $pw.val(autocomplete.pw);
     $cb.prop('checked' , true);
+  } else {
+    $name.val('');
+    $pw.val('');
+    $cb.prop('checked' , false);
   }
   $('input[type=submit]').click(function() {
     if ($cb.prop('checked')) {
-      console.log('OKOK');
       zenra.localStorage.setJSON('autocomplete' , {
         name: $name.val(),
         pw: $pw.val()
