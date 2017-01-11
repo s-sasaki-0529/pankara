@@ -457,6 +457,93 @@ zenra.createNameGuideLines = function () {
 };
 
 /*
+  localStorage - localStorageのラッパー
+*/
+zenra.localStorage = (function() {
+  var supported = ('localStorage' in window) && window['localStorage'] !== null;
+
+  function set(key , val) {
+    localStorage.setItem(key , val);
+  }
+
+  function setObject(obj) {
+    for (key in obj) {
+      set(key , obj[key]);
+    }
+  }
+
+  function setJSON(key , obj) {
+    var json = zenra.toJSON(obj);
+    set(key , json);
+  }
+
+  function get(key) {
+    return localStorage.getItem(key);
+  }
+
+  function getObject(keys) {
+    var obj = {};
+    keys.forEach(function(key) {
+      obj[key] = get(key);
+    });
+    return obj;
+  }
+
+  function getJSON(key) {
+    var json = get(key);
+    return zenra.parseJSON(json);
+  }
+
+  function clear() {
+    localStorage.clear();
+  }
+
+  function remove(keys) {
+    keys.forEach(function(key) {
+      localStorage.removeItem(key);
+    });
+  }
+
+  var funcs = {
+    set: function() {
+      if (arguments.length == 1 && zenra.isObject(arguments[0])) {
+        setObject(arguments[0]);
+      } else if(arguments.length == 2) {
+        set(arguments[0] , arguments[1]);
+      }
+    },
+    get: function(key) {
+      if (zenra.isArray(key)) {
+        return getObject(key);
+      } else {
+        return get(key);
+      }
+    },
+    setJSON: setJSON,
+    getJSON: getJSON,
+    remove: function(arg) {
+      if (arguments.length == 0) {
+        clear();
+      } else if (zenra.isArray(arg)) {
+        remove(arg);
+      } else {
+        remove([arg]);
+      }
+    }
+  };
+
+  // ブラウザがWebStorageをサポートしていない場合は空関数で上書きして戻す
+  if (supported) {
+    return funcs;
+  } else {
+    for (f in funcs) {
+      funcs[f] = zenra.nop;
+    }
+    return funcs;
+  }
+})();
+
+/*
   moshikashiteオブジェクト -もしかしてリスト制御用オブジェクト-
   id: InputエレメントのID
   source: もしかしてリストのソース用配列
@@ -1924,4 +2011,14 @@ zenra.formatDate = function (date, format) {
     for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
   }
   return format;
+};
+
+/* 引数が配列であるか */
+zenra.isArray = function(arg) {
+  return Array.isArray(arg);
+};
+
+/* 引数がオブジェクト(配列でない)であるか */
+zenra.isObject = function(arg) {
+  return typeof(arg) === 'object' && ! zenra.isArray(arg);
 };
