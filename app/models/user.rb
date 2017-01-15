@@ -280,6 +280,7 @@ class User < Base
   # authenticate - クラスメソッド ユーザのIDとパスワードを検証する
   #---------------------------------------------------------------------
   def self.authenticate(name , pw)
+    pw = Util.md5digest(pw)
     db = DB.new(:FROM => 'user' , :WHERE => ['username = ?' , 'password = ?'] , :SET => [name , pw])
     db.execute_row
   end
@@ -294,6 +295,7 @@ class User < Base
     db.execute_row and return Util.error('そのユーザ名はすでに使われています。' , 'hash')
     Util.create_user_icon(name)
 
+    pw = Util.md5digest(pw)
     DB.new(
       :INSERT => ['user' , ['username' , 'password' , 'screenname']] ,
       :SET => [name , pw , screenname] ,

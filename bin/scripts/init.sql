@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(16) NOT NULL COMMENT 'ログイン用ユーザID',
-  `password` VARCHAR(16) NOT NULL COMMENT 'ログイン用パスワード',
+  `password` VARCHAR(32) NOT NULL COMMENT 'ログイン用パスワード',
   `screenname` VARCHAR(16) NOT NULL COMMENT '画面表示用ユーザ名',
   `created_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)

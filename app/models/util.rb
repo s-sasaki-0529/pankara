@@ -10,6 +10,7 @@ require 'yaml'
 require 'wikipedia'
 require 'gmail'
 require 'fastimage'
+require 'digest/md5'
 #require 'searchbing'
 
 MAILADDR = 'pandarin.karaoke@gmail.com'
@@ -468,6 +469,12 @@ class Util
   def self.error(mes , type = 'json')
     e = {:result => 'error' , :info => mes}
     type == 'json' ? Util.to_json(e) : e
+  end
+
+  # md5digest - 文字列をmd5でハッシュ化した文字列を戻す
+  #---------------------------------------------------------------------
+  def self.md5digest(text)
+    Digest::MD5.hexdigest(text)
   end
 
   # write_log - ログを生成する
