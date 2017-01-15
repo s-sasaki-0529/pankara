@@ -19,17 +19,17 @@ describe '認証系ページ' do
     islack [mes1 , mes2]
   end
   it '不正ログインパターン' do
-    login 'failed_user'
+    login 'failed_user' , 'failed_pw'
     current_path_is "/auth/login"
     iscontain mes1
     islack mes2
   end
   it '正常ログインパターン' do
-    login 'march_user'
+    login 'march_user' , 'march_user'
     current_path_is "/"
   end
   it 'ログアウト' do
-    login 'march_user'
+    login 'march_user' , 'march_user'
     current_path_is "/"
     visit '/auth/logout'
     current_path_is "/auth/login"
@@ -47,7 +47,7 @@ describe '認証系ページ' do
     expect(current_path).to eq '/karaoke/list'
   end
   it 'ログイン中にログイン画面アクセスでトップにリダイレクト' do
-    login 'march_user'
+    login 'march_user' , 'march_user'
     visit '/auth/login'
     expect(page.current_path).to eq '/'
   end

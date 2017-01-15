@@ -4,7 +4,7 @@ require_relative '../app/models/util'
 module Rbase
 
   # ログインする
-  def login(id , pw = id)
+  def login(id , pw = '')
     visit '/auth/logout'
     fill_in 'username' , with: id
     fill_in 'password' , with: pw
