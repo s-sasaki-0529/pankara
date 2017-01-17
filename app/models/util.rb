@@ -136,7 +136,7 @@ class Util
   # url - URLを生成する
   #---------------------------------------------------------------------
   def self.url(*path)
-    url = "http://#{@@request.host}"
+    url = "https://#{@@request.host}"
     if @@request.port != 80
       url += ":#{@@request.port}"
     end
