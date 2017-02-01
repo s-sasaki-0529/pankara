@@ -12,7 +12,7 @@ describe '認証系ページ' do
   before(:all,&init)
   mes1 = 'IDまたはパスワードが正しいかチェックしてください'
   mes2 = 'ログアウトが完了しました'
-  
+
   it '画面表示' do
     visit '/'
     current_path_is "/auth/login"

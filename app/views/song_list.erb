@@ -68,3 +68,16 @@
 <p class='right'><%= playlist_link @song_list[:list].select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
 
 <%= erb :_pager %>
+
+<script>
+$(function() {
+  $('input[name=reset]').click(function() {
+    zenra.localStorage.remove('songlist_query');
+  });
+  if (zenra.getParam('submit')) {
+    zenra.localStorage.set('songlist_query' , location.search);
+  } else if (zenra.localStorage.get('songlist_query')) {
+    location.href = location.pathname + zenra.localStorage.get('songlist_query');
+  }
+});
+</script>
