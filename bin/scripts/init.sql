@@ -166,6 +166,7 @@ CREATE TABLE `history` (
   `attendance` INTEGER NOT NULL COMMENT '参加番号',
   `song` INTEGER NOT NULL COMMENT '曲番号',
   `songkey` INTEGER NULL DEFAULT 0 COMMENT 'キー設定',
+  `satisfaction_level` INTEGER NULL DEFAULT NULL COMMENT '満足度',
   `score_type` INTEGER NULL DEFAULT NULL COMMENT '採点モード',
   `score` FLOAT NULL DEFAULT NULL COMMENT '点数',
   `created_at` TIMESTAMP NOT NULL,
