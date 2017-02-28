@@ -375,6 +375,7 @@ class User < Base
     register = Register.new(self)
     register.set_karaoke karaoke_id
     register.attend_karaoke
+    history['satisfaction_level'] > 0 || history['satisfaction_level'] = nil
     if history['score_type'] > 0
       score_type = ScoreType.id_to_name(history['score_type'], :hash => true)
     else
@@ -386,7 +387,8 @@ class User < Base
       history['song_name'],
       history['artist_name'],
       history['songkey'],
-      score_type , 
+      history['satisfaction_level'],
+      score_type ,
       history['score']
     )
   end

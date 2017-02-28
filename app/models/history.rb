@@ -45,8 +45,12 @@ class History < Base
       arg['score'] = nil
     end
 
+    if arg['satisfaction_level'].to_i == 0
+      arg['satisfaction_level'] = nil
+    end
+
     arg.select! do |k , v|
-      ['attendance' , 'song' , 'songkey' , 'score_type' , 'score'].include?(k)
+      ['attendance' , 'song' , 'songkey' , 'satisfaction_level' ,  'score_type' , 'score'].include?(k)
     end
 
     DB.new(

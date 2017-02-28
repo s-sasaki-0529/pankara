@@ -3,7 +3,7 @@ include Rbase
 
 
 init = proc do
-  `zenra init -d 2016_04_29_04_00`
+  `zenra init -d 2017_02_27_00_28`
 end
 
 def table_string(row)
