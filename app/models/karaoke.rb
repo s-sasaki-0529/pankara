@@ -120,6 +120,7 @@ class Karaoke < Base
         'history.created_at' => 'history_datetime' ,
         'history.attendance' => 'history_attendance' ,
         'history.song' => 'song' ,
+        'history.satisfaction_level' => 'satisfaction_level',
         'history.songkey' => 'songkey' ,
         'history.score_type' => 'score_type' ,
         'history.score' => 'score',
