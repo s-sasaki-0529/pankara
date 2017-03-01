@@ -1,0 +1,9 @@
+#/bin/bash
+ls -1 backup | while read b
+do
+  MYSQLPW=$(bundle exec ruby bin/scripts/load_mysql_password.rb)
+  FILEPATH="backup/$b"
+  zenra init -d $b
+  zenra mysql -e "alter table history add satisfaction_level INTEGER NULL DEFAULT NULL COMMENT '満足度' after songkey;"
+  mysqldump --single-transaction -u root --password=$MYSQLPW march >> $FILEPATH
+done
