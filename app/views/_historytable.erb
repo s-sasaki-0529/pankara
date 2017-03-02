@@ -8,6 +8,7 @@
       <th class='center'>歌手</th>
       <% if Util.is_pc? %>
       <th class='center' width='100'>キー</th>
+      <th class='center' width='100'>満足度</th>
       <th class='center' width='100'>採点</th>
       <th class='cell-number' width='100'>得点</th>
       <% end %>
@@ -26,10 +27,10 @@
           <span class='hidden'><%= history['userinfo']['screenname'] %></span>
         <% end %>
      </td>
-      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
+      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 120 : 80 %>'>
         <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
         <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
-        <script> 
+        <script>
           zenra.createThumbnail(
             '<%= "#{@tag}_#{idx}" %>' ,
             "<%= history['song_id'] %>" ,
@@ -42,6 +43,7 @@
       <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
       <% if Util.is_pc? %>
         <td class='center' width='100'><%= history['songkey'] %></td>
+        <td class='center' width='100'><%= history['satisfaction_level'] || '-' %></td>
         <td class='center' width='100'><%= history['scoretype_name'] %></td>
         <td class='center' width='100'><%= h history['score'] %></td>
       <% end %>

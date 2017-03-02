@@ -912,6 +912,7 @@ var register = (function() {
     $('#song').val(history.song_name);
     $('#artist').val(history.artist_name);
     $('#seekbar').slider('value' , history.songkey);
+    $('#satisfaction_level').val(history.satisfaction_level);
     $('#score_type').val(history.score_type);
     $('#score').val(history.score);
 
@@ -1205,6 +1206,7 @@ var register = (function() {
       song_name: $('#song').val() ,
       artist_name: $('#artist').val() ,
       songkey: $('#seekbar').slider('value') ,
+      satisfaction_level: $('#satisfaction_level').val() ,
       score: $('#score').val() ,
       score_type: $('#score_type').val() ,
     };

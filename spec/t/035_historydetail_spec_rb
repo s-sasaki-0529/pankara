@@ -18,7 +18,7 @@ describe '歌唱履歴詳細画面' do
   it '表示内容' do
     content = %w(
       ないと ないととともちん16回目 2016-12-18 22:00:00 7.0  まねきねこ 亀戸駅北口店 JOYSOUND(MAX)
-      サクラサクミライコイユメ  yozuka* 3 分析採点 85.34
+      サクラサクミライコイユメ  yozuka* 3 - 分析採点 85.34
     )
     iscontain content
   end

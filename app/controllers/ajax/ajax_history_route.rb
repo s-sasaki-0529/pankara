@@ -21,6 +21,7 @@ class AjaxHistoryRoute < AjaxRoute
     history['song_name'] = params[:song_name]
     history['artist_name'] = params[:artist_name]
     history['songkey'] = params[:songkey]
+    history['satisfaction_level'] = params[:satisfaction_level].to_i
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
     twitter = params[:twitter]

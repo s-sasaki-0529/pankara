@@ -40,8 +40,25 @@
     <td><%= @history['songkey'] %></td>
   </tr>
   <tr>
+    <th>満足度</th>
+    <td>
+      <% if @history['satisfaction_level'] %>
+      <% @history['satisfaction_level'].times do |i| %>
+        ★
+      <% end %>
+      <% (10 - @history['satisfaction_level']).times do |i| %>
+        ☆
+      <% end %>
+      <% else %>
+        -
+      <% end %>
+    </td>
+  </tr>
+  <tr>
     <th>採点方法</th>
-    <td><%= @history['score_type_name'] %></td>
+    <td>
+      <%= @history['score_type_name'] %>
+    </td>
   </tr>
   <tr>
     <th>得点</th>

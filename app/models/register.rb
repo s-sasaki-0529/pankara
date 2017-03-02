@@ -81,7 +81,7 @@ class Register < Base
 
   # create_history - 歌唱履歴を作成する
   #---------------------------------------------------------------------
-  def create_history(song , artist ,  key = 0 , score_type=nil , score=nil)
+  def create_history(song , artist ,  key = 0 , satisfaction_level=nil, score_type=nil , score=nil)
     @attendance or return
     key = key.to_i
     score and score = score.to_f
@@ -100,8 +100,8 @@ class Register < Base
     song_id = create_song(artist_id , artist , song)
     scoretype_id = get_scoretype(score_type)
     history_id = DB.new(
-      :INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'score_type' , 'score']] ,
-      :SET => [@attendance , song_id , key , scoretype_id , score] ,
+      :INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'satisfaction_level', 'score_type' , 'score']] ,
+      :SET => [@attendance , song_id , key , satisfaction_level, scoretype_id , score] ,
     ).execute_insert_id
 
     # log生成
