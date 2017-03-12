@@ -882,6 +882,7 @@ var register = (function() {
     $('#score').val('');
     $('#tweet-checkbox').prop('checked' , false);
     $('#tweet_text_area').addClass('hidden');
+    $('#satisfaction_level').val('');
     song_moshikashite.setStandardMoshikashite(song_list);
     artist_moshikashite.setStandardMoshikashite(artist_list);
   }
