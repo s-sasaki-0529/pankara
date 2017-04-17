@@ -169,6 +169,15 @@ class Karaoke < Base
           member['max_score'] = scores.max
           member['avg_score'] = scores.inject(0.0) {|r,h| r += h} / scores.size
         end
+        # 平均満足度
+        satisfaction_total = membersHistory.inject(0.0) do |r,h|
+          if h['satisfaction_level']
+            r += h['satisfaction_level']
+          else
+            r += 0
+          end
+        end
+        member['satisfaction_level'] = satisfaction_total / membersHistory.size
       end
     end
     @params['members'] = users_info.values

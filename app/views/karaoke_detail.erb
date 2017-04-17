@@ -136,6 +136,10 @@
         </div>
       </div>
       <div class="row">
+        <div class="karaoke-result-block center col-xs-2">
+          <p class='description'>平均満足度</p>
+          <span id="satisfaction_level<%= member['userid'] %>" class="result orange"><%= h member['satisfaction_level'] %></span>
+        </div>
         <% if @current_user and @current_user['id'] == member['userid'] %>
         <div class="karaoke-result-block center pointer col-xs-2" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
         <% else %>
@@ -146,9 +150,9 @@
           <span class='orange'><% if member['price'] %>円<% end %></span>
         </div>
         <% if @current_user and @current_user['id'] == member['userid'] %>
-        <div class="karaoke-result-block karaoke-memo-block pointer center col-xs-8" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
+        <div class="karaoke-result-block karaoke-memo-block pointer center col-xs-6" onclick="register.editAttendance(<%= @karaoke['id'] %>);">
         <% else %>
-        <div class="karaoke-result-block karaoke-memo-block center col-xs-8">
+        <div class="karaoke-result-block karaoke-memo-block center col-xs-6">
         <% end %>
           <p class='description'>感想</p>
           <span id="memo_<%= member['userid'] %>" class='result orange'><%= member['memo'] ? member['memo'] : '未登録' %></span>
@@ -308,6 +312,12 @@
                 採点なし
               <% end %>
             </span>
+          </td>
+        </tr>
+        <tr>
+          <th class='center'>平均満足度</th>
+          <td class='center'>
+            <span class='orange'><%= h member['satisfaction_level'] %></span>
           </td>
         </tr>
         <tr>
