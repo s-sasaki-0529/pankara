@@ -4,49 +4,50 @@
 </p>
 <% if @histories.size > 0 %>
   <%= erb :_pager %>
-  <table id="history_table" class="table sortable table-hover linkcursor">
-    <thead>
-      <tr>
-        <th class='center'>No</th>
-        <th class='center cell-date'>日時</th>
-        <th class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>動画</th>
-        <th class='center'>曲名</th>
-        <th class='center'>歌手名</th>
-        <% if Util.is_pc? %>
-        <th class='center'>キー</th>
-        <th class='center'>満足度</th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @histories.each do |history| %>
-      <tr>
-        <td class='center'>
-          <%= history_link(history['id'] , {:icon => false , :text => history['number']}) %>
-        </td>
-        <td class='center cell-date'><%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %></td>
-        <td width='<%= Util.is_pc? ? 160 : 80 %>' id='thumbnail_<%= "#{history['number']}" %>' class='center'>
-          <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
-          <span id="artist_name_<%= history["number"] %>" class="hidden"><%= h history["artist_name"] %></span>
-          <script>
-            zenra.createThumbnail(
-              '<%= "#{history["number"]}" %>' ,
-              "<%= history['song_id'] %>" ,
-              "<%= youtube_image history['song_url'] %>" ,
-              "<%= history['song_url'] %>"
-            )
-          </script>
-        </td>
-        <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
-        <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
-        <% if Util.is_pc? %>
-        <td class='center'><%= history['songkey'] %></td>
-        <td class='center'><%= history['satisfaction_level'] %></td>
-        <% end %>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div id='history_tables'>
+    <% @histories.each do |history| %>
+      <table class="table history-table">
+        <tbody>
+          <tr>
+            <!-- 番号 -->
+            <td class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
+              <%= history_link(history['id'] , {:icon => false , :text => history['number']}) %>
+            </td>
+            <!-- カラオケ情報 -->
+            <td colspan="2">
+              <%= karaoke_link history['karaoke_id'] , date(history['karaoke_datetime']) %>
+            </td>
+          </tr>
+          <tr>
+            <!-- サムネイル -->
+            <td id='thumbnail_<%= "#{history['number']}" %>' width='<%= Util.is_pc? ? 160 : 80 %>' rowspan="2">
+              <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
+              <span id="artist_name_<%= history["number"] %>" class="hidden"><%= h history["artist_name"] %></span>
+              <script>
+                zenra.createThumbnail(
+                  '<%= "#{history["number"]}" %>' ,
+                  "<%= history['song_id'] %>" ,
+                  "<%= youtube_image history['song_url'] %>" ,
+                  "<%= history['song_url'] %>"
+                )
+              </script>
+            </td>
+            <!-- 曲名/歌手名 -->
+            <td colspan="2">
+              <%= song_link history['song_id'], history['song_name'] %>
+              /
+              <%= artist_link history['artist_id'], history['artist_name'] %>
+            </td>
+          </tr>
+          <!-- キーと満足度 -->
+          <tr>
+            <td>キー: <%= history['songkey'] %></td>
+            <td><%= satisfaction_stars history['satisfaction_level'] %></td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
   <p class='right'><%= playlist_link @histories.select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
   <%= erb :_pager %>
 <% else %>
