@@ -73,7 +73,7 @@ describe 'プレイリスト機能' , :js => true do
   describe 'プレイリストの生成' do
     it '全ての楽曲がリストに含まれている' do
       visit '/history/list/worry'
-      history_num = table_to_hash('history_table').count
+      history_num = page.all('.history-table').count
       link '動画を連続再生'
       iscontain '再生リスト(19曲)'
       playlist_num = table_to_array('playlist_tabel_main').count
@@ -81,7 +81,7 @@ describe 'プレイリスト機能' , :js => true do
     end
     it '楽曲が重複している場合ユニークに' do
       visit '/history/list/sa2knight'
-      history_num = table_to_hash('history_table').map {|h| h['曲名']}.uniq.count
+      history_num = page.all('.history-table').map {|h| h.all('td')[3].text}.uniq.count
       link '動画を連続再生'
       iscontain '再生リスト(41曲)'
       playlist_num = table_to_array('playlist_tabel_main').count
