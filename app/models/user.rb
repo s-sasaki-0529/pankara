@@ -53,7 +53,7 @@ class User < Base
 
     # 歌唱履歴を全て取得し、番号を振る
     db = DB.new(
-      :SELECT => ['id' , 'song' , 'songkey' , 'attendance' , 'score_type' , 'score'],
+      :SELECT => ['id' , 'song' , 'songkey' , 'attendance' , 'score_type' , 'score', 'satisfaction_level'],
       :FROM => 'history' ,
       :WHERE_IN => ['attendance' , attend_ids.length],
       :SET => attend_ids ,

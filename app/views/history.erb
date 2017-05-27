@@ -12,7 +12,10 @@
         <th class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>動画</th>
         <th class='center'>曲名</th>
         <th class='center'>歌手名</th>
-        <th class='center'>KEY</th>
+        <% if Util.is_pc? %>
+        <th class='center'>キー</th>
+        <th class='center'>満足度</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -36,7 +39,10 @@
         </td>
         <td class='center'><%= song_link history['song_id'], history['song_name'] %></td>
         <td class='center'><%= artist_link history['artist_id'], history['artist_name'] %></td>
+        <% if Util.is_pc? %>
         <td class='center'><%= history['songkey'] %></td>
+        <td class='center'><%= history['satisfaction_level'] %></td>
+        <% end %>
       </tr>
       <% end %>
     </tbody>
