@@ -6,36 +6,52 @@ init = proc do
   `zenra init -d 2017_05_24_04_00`
 end
 
-# 定数定義
-url = '/history/list/sa2knight'
+# 定数
+url = 'http://localhost:8080/history/list/sa2knight'
 
 # テスト実行
 describe '歌唱履歴ページ' do
 
   before(:all,&init)
-  before { visit url }
-
-  it '表示内容' do
-    table = table_to_hash('history_table')
-    expect(table.length).to eq 50
-    expect(table[0]['tostring']).to eq "1873,2017-05-21,Stage of the ground BUMP OF CHICKEN,Stage of the ground,BUMP OF CHICKEN,0,8"
-    expect(table[1]['tostring']).to eq "1872,2017-05-21,flyby BUMP OF CHICKEN,flyby,BUMP OF CHICKEN,0,7"
-    expect(table[2]['tostring']).to eq "1871,2017-05-21,メルト supercell,メルト,supercell,0,9"
+  before do
+    visit url
   end
 
-  it 'リンク' do
-    examine_songlink('コノハの世界事情' , 'じん' , url)
-    examine_artistlink('Neru' , url)
-    link '1854'
-    examine_historylink('ないと' , '珍しく昼間に' , '君じゃなきゃダメみたい')
+  # 満足度を☆表記で取得
+  def satisfaction_stars(satisfaction_level = nil)
+    satisfaction_level or return '-'
+    stars = ''
+    satisfaction_level.times {|i| stars += '★'}
+    (10 - satisfaction_level).times {|i| stars += '☆'}
+    return stars
+  end
+
+  # 歌唱履歴を評価
+  def examine(row, num, date, song, artist, key, satisfaction)
+    selector = ".history-table:nth-child(#{row}) td"
+    expect(page.all(selector)[0].text).to eq num
+    expect(page.all(selector)[1].text).to eq date
+    expect(page.all(selector)[3].text).to eq "#{song} / #{artist}"
+    expect(page.all(selector)[4].text).to eq "キー: #{key}"
+    expect(page.all(selector)[5].text).to eq satisfaction_stars(satisfaction)
+  end
+
+  it '表示' do
+    examine(1, '1873', '2017-05-21', 'Stage of the ground', 'BUMP OF CHICKEN', 0, 8)
+    examine(3, '1871', '2017-05-21', 'メルト', 'supercell', 0, 9)
   end
 
   it 'ページング' do
-    visit '?page=38'
-    table = table_to_hash('history_table')
-    expect(table.length).to eq 23
-    expect(table[-5]['tostring']).to eq "5,2016-01-03,PONPONPON きゃりーぱみゅぱみゅ,PONPONPON,きゃりーぱみゅぱみゅ,-3,"
-    expect(find('#range').text).to eq '1873 曲中 1851 〜 1873 曲目を表示中'
+    visit '?page=2'
+    examine(1, '1823', '2017-05-14', 'ベストピクチャー', 'BUMP OF CHICKEN', 0, 5)
+    examine(2, '1822', '2017-05-14', 'ブラック★ロックシューター', 'supercell', 4, 7)
+  end
+
+  it 'リンク' do
+    examine_songlink('全力少年', 'スキマスイッチ', url)
+    examine_artistlink('doriko', url)
+    link '1867'
+    examine_historylink('ないと', '珍しく昼間に', 'インビジブル')
   end
 
 end
