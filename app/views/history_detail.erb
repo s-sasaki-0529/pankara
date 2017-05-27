@@ -41,18 +41,7 @@
   </tr>
   <tr>
     <th>満足度</th>
-    <td>
-      <% if @history['satisfaction_level'] %>
-      <% @history['satisfaction_level'].times do |i| %>
-        ★
-      <% end %>
-      <% (10 - @history['satisfaction_level']).times do |i| %>
-        ☆
-      <% end %>
-      <% else %>
-        -
-      <% end %>
-    </td>
+    <td><%= satisfaction_stars @history['satisfaction_level'] %></td>
   </tr>
   <tr>
     <th>採点方法</th>

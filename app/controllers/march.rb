@@ -105,6 +105,13 @@ class March < Sinatra::Base
         return "<a class='#{_class}' href=/history/detail/#{history}>#{text}</a>"
       end
     end
+    def satisfaction_stars(satisfaction_level = nil)
+      satisfaction_level or return '-'
+      stars = ''
+      satisfaction_level.times {|i| stars += '★'}
+      (10 - satisfaction_level).times {|i| stars += '☆'}
+      return stars
+    end
     def user_icon(username , width = 32 , height = 32)
       username = h username
       src = Util.icon_file(username)

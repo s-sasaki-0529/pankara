@@ -3,28 +3,36 @@ include Rbase
 
 # テスト用データベース構築
 init = proc do
-  `zenra init -d 2016_12_25_20_06`
+  `zenra init -d 2017_05_24_04_00`
 end
-
-# 定数定義
-url = '/history/detail/2550'
 
 # テスト実行
 describe '歌唱履歴詳細画面' do
   before(:all , &init)
-  before do
-    visit url
-  end
-  it '表示内容' do
-    content = %w(
-      ないと ないととともちん16回目 2016-12-18 22:00:00 7.0  まねきねこ 亀戸駅北口店 JOYSOUND(MAX)
-      サクラサクミライコイユメ  yozuka* 3 - 分析採点 85.34
-    )
-    iscontain content
+  describe '表示内容' do
+    it '採点/満足度なし' do
+      visit '/history/detail/100'
+      content = %w(
+        ともちん ないととともちん２回目 2016-01-17 14:50:00 3.0 歌広場 亀戸店
+        JOYSOUND(CROSSO) Magenta Another Sky 原田ひとみ -
+      )
+      iscontain content
+    end
+    it '採点/満足度あり' do
+      visit '/history/detail/3000'
+      content = %w(
+        ないと 気持ち久々 2017-02-26 12:08:00 7.0 歌広場 亀戸店
+        DAM(Premier DAM) ようこそジャパリパークへ どうぶつビスケッツ×PPP -3
+        ★★★★★★★★☆☆ 精密採点 74.00
+      )
+      iscontain content
+    end
   end
   it 'リンク' do
+    url = '/history/detail/2550'
+    visit url
     examine_userlink 'ないと' , url
-    examine_karaokelink 'ないととともちん16回目' , url
+    examine_karaokelink 'ないととともちん１７回目' , url
     examine_songlink 'サクラサクミライコイユメ' , 'yozuka*' , url
     examine_artistlink 'yozuka*' , url
   end
