@@ -43,4 +43,9 @@ else
 fi
 
 # URLがリンク切れかを検知し、リンク切れの場合はNULLをセットする
-bundle exec ruby "bin/scripts/setNullToSongURL.rb"
+mes "SongURLがNULLの楽曲を検知し、再設定します"
+if [ "$FLAG_V" -eq 1 ]; then
+  bundle exec ruby "bin/scripts/updateSongURL.rb"
+else
+  bundle exec ruby "bin/scripts/updateSongURL.rb" > /dev/null
+fi
