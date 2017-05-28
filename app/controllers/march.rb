@@ -107,9 +107,8 @@ class March < Sinatra::Base
     end
     def satisfaction_stars(satisfaction_level = nil)
       satisfaction_level or return '-'
-      stars = ''
-      satisfaction_level.times {|i| stars += '★'}
-      (10 - satisfaction_level).times {|i| stars += '☆'}
+      stars = '★' * satisfaction_level
+      stars += '☆' * (10 - satisfaction_level)
       return stars
     end
     def user_icon(username , width = 32 , height = 32)
