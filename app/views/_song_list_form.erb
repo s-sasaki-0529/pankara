@@ -1,0 +1,52 @@
+<form method="GET">
+  <div class='form-group'>
+  <label for="filter">絞込み</label>
+  <select id="filter_category" name="filter_category" class='form-control'>
+    <option value="song" <% if @filter_category == "song" %> selected <% end %>>曲名</option>
+    <option value="artist" <% if @filter_category == "artist" %> selected <% end %>>アーティスト名</option>
+    <option value="tag" <% if @filter_category == "tag" %> selected <% end %>>タグ名</option>
+  </select>
+  <input  class='form-control' type="text" size="<% if Util.is_pc? %>20<% else %>10<% end %>" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
+  </div>
+
+  <div class='form-group'>
+  <label>並び順</label>
+  <select id="sort_category" name="sort_category" class='form-control'>
+    <option value="last_sang_datetime" <% if @sort_category == "last_sang_datetime" %> selected <% end %>>最後に歌った日</option>
+    <option value="first_sang_datetime" <% if @sort_category == "first_sang_datetime" %> selected <% end %>>初めて歌った日</option>
+    <option value="sang_count" <% if @sort_category == "sang_count" %> selected <% end %>>歌唱回数</option>
+    <option value="song_name" <% if @sort_category == "song_name" %> selected <% end %>>曲名</option>
+    <option value="artist_name" <% if @sort_category == "artist_name" %> selected <% end %>>アーティスト名</option>
+    <option value="random" <% if @sort_category == "random" %> selected <% end %>>ランダム</option>
+  </select>
+  <select id="sort_order" name="sort_order" class='form-control'>
+    <option value="desc" <% if @sort_order == 'desc' %> selected <% end %>>降順</option>
+    <option value="asc" <% if @sort_order == 'asc' %> selected <% end %>>昇順</option>
+  </select>
+  </div>
+
+  <div class='form-group'>
+  <label>表示件数</label>
+  <select id="pagenum" name="pagenum" class='form-control'>
+    <option value="24" <% if @pagenum == 24 %> selected <% end %>>24</option>
+    <option value="48" <% if @pagenum == 48 %> selected <% end %>>48</option>
+    <option value="72" <% if @pagenum == 72 %> selected <% end %>>72</option>
+    <option value="96" <% if @pagenum == 96 %> selected <% end %>>96</option>
+    <option value="120" <% if @pagenum == 120 %> selected <% end %>>120</option>
+  </select>
+  </div>
+
+  <% if @current_user && @current_user['username'] != @user['username'] %>
+  <div class='form-group checkbox'>
+  <label for="common">
+    <input type="checkbox" name="common" id="common" <% if @common %>checked<% end %>>あなたと共通の持ち歌のみ
+  </label>
+  </div>
+  <% end %>
+  <div class='form-group'>
+  <input class='btn btn-default' type="submit" value="表示" name="submit">
+  <input class='btn btn-default' type="submit" value="リセット" name="reset">
+  </div>
+
+  <% csrftoken %>
+</form>
