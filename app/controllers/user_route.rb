@@ -91,6 +91,9 @@ class UserRoute < March
     else
       @show_to = (@pager.current_page - 1) * @pagenum + @song_list[:list].size
     end
+
+    # localStorageに検索条件を保存するキー
+    @local_storage_key = 'songlist_query'
     erb :song_list
   end
 

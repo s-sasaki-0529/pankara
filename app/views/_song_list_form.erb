@@ -1,4 +1,5 @@
 <form method="GET">
+  <!-- 曲名 or 歌手名 or タグ で絞込 -->
   <div class='form-group'>
   <label for="filter">絞込み</label>
   <select id="filter_category" name="filter_category" class='form-control'>
@@ -9,6 +10,7 @@
   <input  class='form-control' type="text" size="<% if Util.is_pc? %>20<% else %>10<% end %>" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
   </div>
 
+  <!-- 並び順を指定 -->
   <div class='form-group'>
   <label>並び順</label>
   <select id="sort_category" name="sort_category" class='form-control'>
@@ -25,6 +27,7 @@
   </select>
   </div>
 
+  <!-- 表示件数 -->
   <div class='form-group'>
   <label>表示件数</label>
   <select id="pagenum" name="pagenum" class='form-control'>
@@ -36,6 +39,7 @@
   </select>
   </div>
 
+  <!-- 共通の持ち歌 -->
   <% if @current_user && @current_user['username'] != @user['username'] %>
   <div class='form-group checkbox'>
   <label for="common">
@@ -50,3 +54,17 @@
 
   <% csrftoken %>
 </form>
+
+<script>
+$(function() {
+  var localStorageKey = '<%= @local_storage_key %>';
+  $('input[name=reset]').click(function() {
+    zenra.localStorage.remove(localStorageKey);
+  });
+  if (zenra.getParam('submit')) {
+    zenra.localStorage.set(localStorageKey, location.search);
+  } else if (zenra.localStorage.get(localStorageKey)) {
+    location.href = location.pathname + zenra.localStorage.get(localStorageKey);
+  }
+});
+</script>
