@@ -35,6 +35,12 @@ describe '歌唱履歴ページ' do
     expect(page.all(selector)[5].text).to eq satisfaction_stars(satisfaction)
   end
 
+  # 歌唱履歴の満足度のみを評価
+  def examine_satisfaction(row, satisfaction = nil)
+    selector = ".history-table:nth-child(#{row}) td"
+    expect(page.all(selector)[5].text).to eq satisfaction_stars(satisfaction)
+  end
+
   it '歌唱履歴表示' do
     iscontain '1873 曲中 1 〜 24 曲目を表示中'
     examine(1, '1873', '2017-05-21', 'Stage of the ground', 'BUMP OF CHICKEN', 0, 8)
@@ -76,6 +82,28 @@ describe '歌唱履歴ページ' do
       iscontain '1873 曲中 1 〜 120 曲目を表示中'
       visit '?pagenum=120&page=16'
       iscontain '1873 曲中 1801 〜 1873 曲目を表示中'
+    end
+    it '満足度(等しい)' do
+      visit '?filter_satisfaction=9&filter_satisfaction_class=eq&pagenum=120'
+      iscontain '51 曲中 1 〜 51 曲目を表示中'
+      1.upto(51) {|i| examine_satisfaction(i, 9)}
+    end
+    it '満足度(以上)' do
+      visit '?filter_satisfaction=9&filter_satisfaction_class=gt&pagenum=24'
+      iscontain '56 曲中 1 〜 24 曲目を表示中'
+      examine(1, '1871', '2017-05-21', 'メルト', 'supercell', 0, 9)
+      examine(5, '1854', '2017-05-21', '君じゃなきゃダメみたい', 'オーイシマサヨシ', 0, 10)
+    end
+    it '満足度(未満)' do
+      visit '?filter_satisfaction=3&filter_satisfaction_class=lt&pagenum=24'
+      iscontain '3 曲中 1 〜 3 曲目を表示中'
+      examine(1, '1600', '2017-03-05', 'アスノヨゾラ哨戒班', 'Orangestar', 4, 2)
+      examine(2, '1560', '2017-02-26', 'サンドリヨン', 'Dios/シグナルP', 0, 2)
+    end
+    it '満足度と曲名混合' do
+      visit '?filter_category=artist&filter_word=BUMP+OF+CHICKEN&filter_satisfaction=10&filter_satisfaction_class=eq'
+      iscontain '1 曲中 1 〜 1 曲目を表示中'
+      examine(1, '1703', '2017-04-02', 'バトルクライ', 'BUMP OF CHICKEN', 0, 10)
     end
     it 'リセット' do
       click_on '表示'
