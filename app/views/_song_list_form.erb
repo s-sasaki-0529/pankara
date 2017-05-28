@@ -63,7 +63,7 @@
   </div>
 
   <!-- 共通の持ち歌 -->
-  <% if @current_user && @current_user['username'] != @user['username'] %>
+  <% if @show_common_form && @current_user && @current_user['username'] != @user['username'] %>
   <div class='form-group checkbox'>
   <label for="common">
     <input type="checkbox" name="common" id="common" <% if @common %>checked<% end %>>あなたと共通の持ち歌のみ

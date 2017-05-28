@@ -105,6 +105,10 @@ describe '歌唱履歴ページ' do
       iscontain '1 曲中 1 〜 1 曲目を表示中'
       examine(1, '1703', '2017-04-02', 'バトルクライ', 'BUMP OF CHICKEN', 0, 10)
     end
+    it '不要なフォームが表示されない' do
+      islack '並び順'
+      islack 'あなたと共通の持ち歌のみ'
+    end
     it 'リセット' do
       click_on '表示'
       expect(current_url == url).to eq false
