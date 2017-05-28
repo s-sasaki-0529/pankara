@@ -2,6 +2,10 @@
 <p class='right' id='range'>
   <%= @history_size %> 曲中 <%= @show_from %> 〜 <%= @show_to %> 曲目を表示中
 </p>
+
+<!-- 検索フォーム -->
+<%= erb :_song_list_form %>
+
 <% if @histories.size > 0 %>
   <%= erb :_pager %>
   <div id='history_tables'>

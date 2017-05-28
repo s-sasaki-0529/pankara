@@ -59,13 +59,7 @@ class UserRoute < March
     @pager = Pager.new(@pagenum , @page)
     opt[:pager] = @pager
 
-    # あなたと共通の持ち歌
-    if @current_user && @current_user['username'] != @user['username'] && params[:common]
-      @common = true
-      opt[:common] = @current_user
-    end
-
-    # 検索設定
+    # 検索ワード
     @filter_category = params[:filter_category]
     @filter_word = params[:filter_word]
     if @filter_category && @filter_word && @filter_word.size > 0
@@ -80,6 +74,12 @@ class UserRoute < March
     @sort_order = params[:sort_order] || 'desc'
     opt[:sort_category] = @sort_category
     opt[:sort_order] = @sort_order
+
+    # あなたと共通の持ち歌のみ表示
+    if @current_user && @current_user['username'] != @user['username'] && params[:common]
+      @common = true
+      opt[:common] = @current_user
+    end
 
     # 持ち歌リストを生成
     @song_list = @user.songlist(opt)

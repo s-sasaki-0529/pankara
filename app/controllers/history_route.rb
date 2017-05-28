@@ -26,24 +26,53 @@ class HistoryRoute < March
 
   # get '/history/list/:username - ユーザの歌唱履歴を表示
   #---------------------------------------------------------------------
-  get '/list/:username' do
+  get '/list/:username' do  # Todo 検索フォームの初期化が、持ち歌一覧の部分と同じなのであわせたい
 
-    # ページャ準備
-    page = params[:page] ? params[:page].to_i : 1
-    @pager = Pager.new(50 , page)
-    opt = {:pager => @pager , :song_info => true}
+    # User.historiesメソッドへのオプション
+    opt = {:song_info => true}
+
+    # 検索条件リセット
+    if params[:reset]
+      redirect "/history/list/#{params[:username]}"
+    end
+
+    # ページャ設定
+    @pagenum = params[:pagenum] ? params[:pagenum].to_i : 24
+    @page = params[:page] ? params[:page].to_i : 1
+    @pager = Pager.new(@pagenum , @page)
+    opt[:pager] = @pager
+
+    # 検索設定
+    @filter_category = params[:filter_category]
+    @filter_word = params[:filter_word]
+    if @filter_category && @filter_word && @filter_word.size > 0
+      opt[:filter_category] = @filter_category
+      opt[:filter_word] = @filter_word
+    else
+      @filter_category = @filter_word = nil
+    end
+
+    # 並び順
+    @sort_category = params[:sort_category] || 'first_sang_datetime'
+    @sort_order = params[:sort_order] || 'desc'
+    opt[:sort_category] = @sort_category
+    opt[:sort_order] = @sort_order
 
     # ユーザクラスから歌唱履歴を取得して一覧表示
     @user = User.new(params[:username])
     @user.exist? or raise Sinatra::NotFound
     @histories = @user.histories(opt)
 
-    # 表示範囲の情報
-    if @histories.size > 0
-      @history_size = @pager.data_num
-      @show_from = @pager.data_num - @histories[0]['number'].to_i + 1
-      @show_to = @pager.data_num - @histories[-1]['number'].to_i + 1
+    # 表示件数
+    @show_from = @pager.current_page * @pagenum - @pagenum + 1
+    if @pager.current_page < @pager.page_num
+      @show_to = @pager.current_page * @pagenum
+    else
+      @show_to = (@pager.current_page - 1) * @pagenum + @song_list[:list].size
     end
+
+    # 検索条件を保存するlocalStorageのキー
+    @local_storage_key = 'history_query'
 
     erb :history
 
