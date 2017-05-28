@@ -52,6 +52,12 @@ class HistoryRoute < March
       @filter_category = @filter_word = nil
     end
 
+    # 満足度でフィルタリング条件
+    @filter_satisfaction = params[:filter_satisfaction]
+    @filter_satisfaction_class = params[:filter_satisfaction_class]
+    opt[:filter_satisfaction] = @filter_satisfaction
+    opt[:filter_satisfaction_class] = @filter_satisfaction_class
+
     # 並び順
     @sort_category = params[:sort_category] || 'first_sang_datetime'
     @sort_order = params[:sort_order] || 'desc'
@@ -74,6 +80,7 @@ class HistoryRoute < March
 
     # 検索条件を保存するlocalStorageのキー
     @local_storage_key = 'history_query'
+    @show_satisfaction_form = true
 
     erb :history
 

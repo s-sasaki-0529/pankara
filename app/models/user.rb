@@ -82,13 +82,27 @@ class User < Base
     # [オプション] 曲名/歌手名/タグ名でフィルタリング
     if word = opt[:filter_word]
       category = opt[:filter_category]
-      if category == 'song'
-        histories = histories.select {|s| s['song_name'].match(/#{word}/i)}
-      elsif category == 'artist'
-        histories = histories.select {|s| s['artist_name'].match(/#{word}/i)}
-      elsif category == 'tag'
-        ids = Tag.search('s' , word)
-        histories = histories.select {|s| ids.include?(s['song_id'])}
+      case category
+        when 'song'
+          histories = histories.select {|s| s['song_name'].match(/#{word}/i)}
+        when 'artist'
+          histories = histories.select {|s| s['artist_name'].match(/#{word}/i)}
+        when 'tag'
+          ids = Tag.search('s' , word)
+          histories = histories.select {|s| ids.include?(s['song_id'])}
+      end
+    end
+
+    # [オプション] 満足度でフィルタリング
+    if filter_satisfaction = opt[:filter_satisfaction]
+      histories = histories.select {|s| s['satisfaction_level']}
+      case opt[:filter_satisfaction_class]
+        when 'eq'
+          histories = histories.select {|s| s['satisfaction_level'] == filter_satisfaction.to_i}
+        when 'gt'
+          histories = histories.select {|s| s['satisfaction_level'] >= filter_satisfaction.to_i}
+        when 'lt'
+          histories = histories.select {|s| s['satisfaction_level'] < filter_satisfaction.to_i}
       end
     end
 

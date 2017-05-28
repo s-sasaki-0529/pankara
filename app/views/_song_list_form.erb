@@ -1,14 +1,35 @@
 <form method="GET">
   <!-- 曲名 or 歌手名 or タグ で絞込 -->
   <div class='form-group'>
-  <label for="filter">絞込み</label>
+  <label for="filter">曲名/歌手名/タグ名で絞り込み</label>
   <select id="filter_category" name="filter_category" class='form-control'>
     <option value="song" <% if @filter_category == "song" %> selected <% end %>>曲名</option>
-    <option value="artist" <% if @filter_category == "artist" %> selected <% end %>>アーティスト名</option>
+    <option value="artist" <% if @filter_category == "artist" %> selected <% end %>>歌手名</option>
     <option value="tag" <% if @filter_category == "tag" %> selected <% end %>>タグ名</option>
   </select>
   <input  class='form-control' type="text" size="<% if Util.is_pc? %>20<% else %>10<% end %>" placeholder="絞込みワード" id="filter_word" name="filter_word" value="<%= @filter_word %>">
   </div>
+
+  <!-- 満足度で絞り込み -->
+  <% if @show_satisfaction_form %>
+  <div class="form-group">
+    <label>満足度</label>
+    <select id="filter_satisfaction" class="form-control" name="filter_satisfaction">
+      <option value=""></option>
+      <% 1.upto(10) do |i| %>
+      <option value="<%= i %>" <% if @filter_satisfaction == i.to_s %> selected <% end %>>
+        <%= satisfaction_stars i %>
+      </option>
+      <% end %>
+    </select>
+    <select id="filter_satisfaction_class" class="form-control" name="filter_satisfaction_class">
+      <option value=""></option>
+      <option value="eq" <% if @filter_satisfaction_class == "eq" %> selected <% end %>>に等しい</option>
+      <option value="gt" <% if @filter_satisfaction_class == "gt" %> selected <% end %>>以上</option>
+      <option value="lt" <% if @filter_satisfaction_class == "lt" %> selected <% end %>>未満</option>
+    </select>
+  </div>
+  <% end %>
 
   <!-- 並び順を指定 -->
   <% if @show_order_form %>
