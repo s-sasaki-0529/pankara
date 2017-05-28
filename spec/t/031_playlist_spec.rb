@@ -83,7 +83,7 @@ describe 'プレイリスト機能' , :js => true do
       visit '/history/list/sa2knight'
       history_num = page.all('.history-table').map {|h| h.all('td')[3].text}.uniq.count
       link '動画を連続再生'
-      iscontain '再生リスト(41曲)'
+      iscontain '再生リスト(22曲)'
       playlist_num = table_to_array('playlist_tabel_main').count
       expect(history_num).to eq playlist_num
     end

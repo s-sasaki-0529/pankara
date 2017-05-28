@@ -36,11 +36,11 @@ describe 'ページャ機能全般' , :js => true do
 
   it '末尾ページ' do
     all("#pager_last_page > a")[0].click
-    examine_page(5)
+    examine_page(9)
   end
 
   it '次のページ' do
-    1.upto(4) do |i|
+    1.upto(8) do |i|
       all("#pager_next_page > a")[0].click
       examine_page(i + 1)
     end

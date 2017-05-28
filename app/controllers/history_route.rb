@@ -55,8 +55,11 @@ class HistoryRoute < March
     # 満足度でフィルタリング条件
     @filter_satisfaction = params[:filter_satisfaction]
     @filter_satisfaction_class = params[:filter_satisfaction_class]
-    opt[:filter_satisfaction] = @filter_satisfaction
-    opt[:filter_satisfaction_class] = @filter_satisfaction_class
+    if @filter_satisfaction && @filter_satisfaction_class &&
+        @filter_satisfaction.size > 0 && @filter_satisfaction_class.size > 0
+      opt[:filter_satisfaction] = @filter_satisfaction
+      opt[:filter_satisfaction_class] = @filter_satisfaction_class
+    end
 
     # 並び順
     @sort_category = params[:sort_category] || 'first_sang_datetime'
