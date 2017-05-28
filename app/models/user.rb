@@ -62,12 +62,6 @@ class User < Base
     histories = db.execute_all
     histories.each_with_index {|h,i| h['number'] = histories.count - i}
 
-    if pager = opt[:pager] #ページャ利用
-      histories = pager.getData(histories)
-    elsif limit = opt[:limit] # ページャは利用しないが取得件数を制限
-      histories = histories[0 , limit]
-    end
-
     # カラオケ情報を取得、attendanceと関連付け
     if opt[:song_info]
       karaoke_info = Util.array_to_hash(Karaoke.list(:ids => karaoke_ids) , 'karaoke_id')
@@ -101,6 +95,13 @@ class User < Base
     # [オプション] カラオケ登録年でフィルタリング
     if year = opt[:year]
       histories.select! {|h| h['karaoke_datetime'].to_s =~ /^#{opt[:year]}/}
+    end
+
+    # [オプション] ページング
+    if pager = opt[:pager]
+      histories = pager.getData(histories)
+    elsif limit = opt[:limit] # ページャは利用しないが取得件数を制限
+      histories = histories[0 , limit]
     end
 
     return histories

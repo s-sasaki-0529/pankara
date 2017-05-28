@@ -52,6 +52,7 @@
       </table>
     <% end %>
   </div>
+  <div style="clear:both"></div> <!-- 歌唱履歴一覧のfloatリセット用 -->
   <p class='right'><%= playlist_link @histories.select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
   <%= erb :_pager %>
 <% else %>

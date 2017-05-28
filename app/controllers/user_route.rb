@@ -94,6 +94,8 @@ class UserRoute < March
 
     # localStorageに検索条件を保存するキー
     @local_storage_key = 'songlist_query'
+    @show_order_form = true
+
     erb :song_list
   end
 

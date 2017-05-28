@@ -11,6 +11,7 @@
   </div>
 
   <!-- 並び順を指定 -->
+  <% if @show_order_form %>
   <div class='form-group'>
   <label>並び順</label>
   <select id="sort_category" name="sort_category" class='form-control'>
@@ -26,6 +27,7 @@
     <option value="asc" <% if @sort_order == 'asc' %> selected <% end %>>昇順</option>
   </select>
   </div>
+  <% end %>
 
   <!-- 表示件数 -->
   <div class='form-group'>

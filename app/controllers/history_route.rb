@@ -62,13 +62,14 @@ class HistoryRoute < March
     @user = User.new(params[:username])
     @user.exist? or raise Sinatra::NotFound
     @histories = @user.histories(opt)
+    @history_size = @pager.data_num
 
     # 表示件数
-    @show_from = @pager.current_page * @pagenum - @pagenum + 1
+    @show_from = (@pager.current_page * @pagenum) - @pagenum + 1
     if @pager.current_page < @pager.page_num
       @show_to = @pager.current_page * @pagenum
     else
-      @show_to = (@pager.current_page - 1) * @pagenum + @song_list[:list].size
+      @show_to = (@pager.current_page - 1) * @pagenum + @histories.size
     end
 
     # 検索条件を保存するlocalStorageのキー
