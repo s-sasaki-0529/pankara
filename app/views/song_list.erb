@@ -1,6 +1,9 @@
+<!-- ヘッダー -->
 <h2>
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
 </h2>
+
+<!-- 表示件数情報 -->
 <% if @pager && @pager.page_num > 1 %>
   <p class="right" id="range"><%= @song_list[:num] %> 曲中<%= @show_from %>~<%= @show_to %>曲目を表示中</p>
 <% elsif @song_list[:num] > 0 %>
@@ -9,8 +12,8 @@
   <p class="right" id="range">楽曲が見つかりません</p>
 <% end %>
 
+<!-- 検索フォーム -->
 <%= erb :_pager %>
-
 <form method="GET">
   <div class='form-group'>
   <label for="filter">絞込み</label>
@@ -64,7 +67,10 @@
   <% csrftoken %>
 </form>
 
+<!-- 楽曲一覧 -->
 <%= erb :_song_list_table %>
+
+<!-- 連続再生へのリンク -->
 <p class='right'><%= playlist_link @song_list[:list].select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
 
 <%= erb :_pager %>
