@@ -1,4 +1,4 @@
-<h2><%= h @user['screenname'] %>さんの歌唱履歴</h2>
+<h2><%= user_link(@user['username'], @user['screenname']) %>さんの歌唱履歴</h2>
 <p class='right' id='range'>
   <%= @history_size %> 曲中 <%= @show_from %> 〜 <%= @show_to %> 曲目を表示中
 </p>
