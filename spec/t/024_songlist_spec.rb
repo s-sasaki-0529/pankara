@@ -12,7 +12,7 @@ end
 URL = '/user/songlist/sa2knight'
 
 # テスト実行
-describe '集計情報表示機能' , :js => true do
+describe '持ち歌一覧機能' , :js => true do
   
   before(:all , &init)
   before do

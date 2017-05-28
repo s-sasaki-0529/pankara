@@ -3,36 +3,23 @@
   <%= user_link @user['username'] , @user['screenname'] %> さんの楽曲一覧 
 </h2>
 
+<!-- 検索フォーム -->
+<%= erb :_song_list_form %>
+
 <!-- 表示件数情報 -->
 <% if @pager && @pager.page_num > 1 %>
   <p class="right" id="range"><%= @song_list[:num] %> 曲中<%= @show_from %>~<%= @show_to %>曲目を表示中</p>
 <% elsif @song_list[:num] > 0 %>
   <p class="right" id="range"><%= @song_list[:num] %> 曲表示中</p>
 <% else %>
-  <p class="right" id="range">楽曲が見つかりません</p>
+  <p id="range">楽曲が見つかりません</p>
 <% end %>
 
-<!-- 検索フォーム -->
-<%= erb :_pager %>
-<%= erb :_song_list_form %>
-
 <!-- 楽曲一覧 -->
+<%= erb :_pager %>
 <%= erb :_song_list_table %>
 
 <!-- 連続再生へのリンク -->
 <p class='right'><%= playlist_link @song_list[:list].select {|s| s['song_url']}.map {|s| s['song_id']} %></p>
 
 <%= erb :_pager %>
-
-<script>
-$(function() {
-  $('input[name=reset]').click(function() {
-    zenra.localStorage.remove('songlist_query');
-  });
-  if (zenra.getParam('submit')) {
-    zenra.localStorage.set('songlist_query' , location.search);
-  } else if (zenra.localStorage.get('songlist_query')) {
-    location.href = location.pathname + zenra.localStorage.get('songlist_query');
-  }
-});
-</script>

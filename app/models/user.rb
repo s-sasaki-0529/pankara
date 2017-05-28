@@ -84,10 +84,25 @@ class User < Base
         h.merge!(karaoke_info[karaoke] || {})
       end
     end
+
+    # [オプション] 曲名/歌手名/タグ名でフィルタリング
+    if word = opt[:filter_word]
+      category = opt[:filter_category]
+      if category == 'song'
+        histories = histories.select {|s| s['song_name'].match(/#{word}/i)}
+      elsif category == 'artist'
+        histories = histories.select {|s| s['artist_name'].match(/#{word}/i)}
+      elsif category == 'tag'
+        ids = Tag.search('s' , word)
+        histories = histories.select {|s| ids.include?(s['song_id'])}
+      end
+    end
+
     # [オプション] カラオケ登録年でフィルタリング
     if year = opt[:year]
       histories.select! {|h| h['karaoke_datetime'].to_s =~ /^#{opt[:year]}/}
     end
+
     return histories
   end
 
@@ -518,28 +533,23 @@ class User < Base
   # データ量次第で高負荷注意
   #--------------------------------------------------------------------
   def songlist(opt = {})
+
+    # User.historiesメソッドに渡すオプションを追記
+    opt[:song_info] = true
+
     # コントローラに返却するハッシュ
     song_list = {}
 
-    # historyから重複を排除
+    # 歌唱履歴を取得し、songIDでハッシュ化
+    # Todo カラオケ情報使わないのに取得していて無駄
     songs_hash = {}
-    # Todo: 関連カラオケ情報も取得しているのは無駄
-    histories = self.histories(:song_info => true)
+    histories = self.histories({
+      :song_info => true,
+      :filter_word     => opt[:filter_word],
+      :filter_category => opt[:filter_category],
+    })
     histories.each {|h| songs_hash[h['song_id']] = h}
     song_list[:list] = songs_hash.values
-
-    # [オプション] 検索
-    if word = opt[:filter_word]
-      category = opt[:filter_category]
-      if category == 'song'
-        song_list[:list] = song_list[:list].select {|s| s['song_name'].match(/#{word}/i)}
-      elsif category == 'artist'
-        song_list[:list] = song_list[:list].select {|s| s['artist_name'].match(/#{word}/i)}
-      elsif category == 'tag'
-        ids = Tag.search('s' , word)
-        song_list[:list] = song_list[:list].select {|s| ids.include?(s['song_id'])}
-      end
-    end
 
     # [オプション] あなたと共通の持ち歌
     if current_user = opt[:common]
