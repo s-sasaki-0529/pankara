@@ -65,6 +65,12 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     wait_for_ajax
   end
 
+  # 登録ボタンを押して、結果画面に遷移したら戻るボタンを押す
+  def click_buttons(*buttons)
+    buttons.each do |b|
+      click_on b; wait_for_ajax
+    end
+  end
 
   before(:all , &init)
   after :each do
@@ -90,8 +96,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
       input_history_with_data history_data, 1
-      click_on '登録'; wait_for_ajax
-      click_on '終了'; wait_for_ajax
+      click_buttons('登録', '戻る', '終了')
       karaoke = [
         '2016-02-20',
         '2.0',
@@ -116,14 +121,16 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
       input_history 1234 , 4567
-      click_on '登録'; wait_for_ajax
-      iscontain "song1234(artist4567)を登録しました。"
-      iscontain 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！'
+      click_buttons('登録'); wait_for_ajax
+      iscontain '歌唱履歴の登録に成功しました'
+      iscontain ['song1234', 'artist4567', '1回目']
+      click_buttons('戻る')
       3.times do |i|
         input_history 1234 , 4567
-        click_on '登録'; wait_for_ajax
-        iscontain "song1234(artist4567)を登録しました。"
-        iscontain "あなたがこの曲を歌うのは、0日ぶり、#{i + 2}回目です!"
+        click_buttons('登録')
+        iscontain '歌唱履歴の登録に成功しました'
+        iscontain ['song1234', 'artist4567', "#{i + 2}回目"]
+        click_buttons('戻る')
       end
     end
 
@@ -132,11 +139,9 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       js('register.submitKaraokeRegistrationRequest();');
       20.times do |i|
         input_history i
-        click_on '登録'
-        wait_for_ajax
+        click_buttons('登録', '戻る')
       end
-      click_on '登録'; wait_for_ajax
-      click_on '終了'; wait_for_ajax
+      click_buttons('終了')
       histories = []
       20.times do |i|
         histories.push "song#{i}"
@@ -185,14 +190,14 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it '曲名なし' do
         old_num = histories_num
         fill_in 'artist' , with: 'hogehoge'
-        click_on '登録'; wait_for_ajax
+        click_buttons('登録'); wait_for_ajax
         new_num = histories_num
         expect(old_num).to eq new_num
       end
       it '歌手名なし' do
         old_num = histories_num
         fill_in 'song' , with: 'fugafuga'
-        click_on '登録'; wait_for_ajax
+        click_buttons('登録'); wait_for_ajax
         new_num = histories_num
         expect(old_num).to eq new_num
       end
@@ -201,7 +206,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         fill_in 'artist' , with: 'fuga'
         select 'JOYSOUND 全国採点', from: 'score_type'
         fill_in 'score' , with: '0'
-        click_on '登録'; wait_for_ajax
+        click_buttons('登録'); wait_for_ajax
         is_null_score_last_history
       end
       it '採点方法なし' do
@@ -209,7 +214,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         fill_in 'artist' , with: 'fuga'
         select '', from: 'score_type'
         js("$('#score').val('100')");
-        click_on '登録'; wait_for_ajax
+        click_buttons('登録'); wait_for_ajax
         is_null_score_last_history
       end
     end
