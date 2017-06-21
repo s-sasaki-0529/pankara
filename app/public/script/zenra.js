@@ -156,7 +156,6 @@ zenra.loader = (function () {
     show: function () {
       calledCount++;
       $('#loading-view').show();
-      console.log(calledCount);
     } ,
     hide: function () {
       calledCount--;
@@ -164,7 +163,6 @@ zenra.loader = (function () {
         calledCount = 0;
         $('#loading-view').hide();
       }
-      console.log(calledCount);
     } ,
     hideForce: function () {
       cyalledCount = 0;
