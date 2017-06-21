@@ -59,7 +59,7 @@ attr.change(function() {
   } else {
     var newURL = location.href + '&score_type=' + selectedID;
   }
-  zenra.getLoader().show();
+  zenra.loader.show();
   setTimeout(function() { location.href = newURL; } , 100);
 });
 </script>

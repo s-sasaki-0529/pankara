@@ -19,8 +19,10 @@ $(function(){
       onClosed: function() { zenra.returnScroll(); },
     });
   });
+  //ローディングビュー初期化
+  zenra.loader.init();
   //submit時にローディング画面描画
-  $('input[type=submit],button[type=submit]').click(function () { zenra.getLoader().show(); });
+  $('input[type=submit],button[type=submit]').click(function () { zenra.loader.show(); });
 });
 
 /*呼び出して使用するメソッドを定義*/
@@ -45,7 +47,7 @@ zenra.post = function(url , data , opt) {
   };
   var sync = opt.sync === true ? true : false;
   if (sync) {
-    zenra.getLoader().show();
+    zenra.loader.show();
   }
   data.authenticity_token = $('#authenticity_token').val();
   $.ajax({
@@ -63,7 +65,9 @@ zenra.post = function(url , data , opt) {
     error: nwError ,
     complete: function () {
       complete();
-      zenra.getLoader().hide();
+      if (sync) {
+        zenra.loader.hide();
+      }
     }
   });
 };
@@ -127,35 +131,47 @@ zenra.prompt = function (message , initValue , title , callback) {
 
 /*
 loader - 読み込み中画面を生成
-zenra.getLoader().show() - 画面を表示
-zenra.getLoader().hide() - 画面を非表示
+showがN回連続して呼ばれた場合、hideもN回呼ばれなければ閉じられない
+ただしhideForceを呼び出すことで強制的に閉じることができる
 */
-zenra.getLoader = function () {
-  return (function () {
-    var $screen = $('<div>').prop('id' , 'loading-view');
-    var imageWidth = zenra.ispc ? 128 : 64;
-    var imageHeight = zenra.ispc ? 128 : 64;
-    var imageLeft = (window.innerWidth / 2) - (imageWidth / 2);
-    var imageTop = (window.innerHeight / 2) - (imageHeight / 2);
-    var $image = $('<img src="/image/loading_image.png" alt="loading">')
-      .addClass('rotate-image')
-      .css('position' , 'fixed')
-      .css('left' , imageLeft + 'px')
-      .css('top' , imageTop + 'px')
-      .css('width' , imageWidth + 'px')
-      .css('height' , imageHeight + 'px');
-    $screen.append($image).hide();
-    $('body').append($screen);
-    return {
-      show: function () {
-        $('#loading-view').show();
-      } ,
-      hide: function () {
+zenra.loader = (function () {
+  var $screen = $('<div>').prop('id' , 'loading-view');
+  var calledCount = 0;
+  var imageWidth = zenra.ispc ? 128 : 64;
+  var imageHeight = zenra.ispc ? 128 : 64;
+  var imageLeft = (window.innerWidth / 2) - (imageWidth / 2);
+  var imageTop = (window.innerHeight / 2) - (imageHeight / 2);
+  var $image = $('<img src="/image/loading_image.png" alt="loading">')
+    .addClass('rotate-image')
+    .css('position' , 'fixed')
+    .css('left' , imageLeft + 'px')
+    .css('top' , imageTop + 'px')
+    .css('width' , imageWidth + 'px')
+    .css('height' , imageHeight + 'px');
+  $screen.append($image).hide();
+  return {
+    init: function() {
+      $('body').append($screen);
+    } ,
+    show: function () {
+      calledCount++;
+      $('#loading-view').show();
+      console.log(calledCount);
+    } ,
+    hide: function () {
+      calledCount--;
+      if (calledCount <= 0) {
+        calledCount = 0;
         $('#loading-view').hide();
       }
-    };
-  })();
-};
+      console.log(calledCount);
+    } ,
+    hideForce: function () {
+      cyalledCount = 0;
+      $('#loading-view').hide();
+    }
+  };
+})();
 
 /*
 visit - 指定したURLに移動
@@ -163,7 +179,7 @@ visit - 指定したURLに移動
 */
 zenra.visit = function (url) {
   //バグが多いので一時的に無効
-  //zenra.getLoader().show();
+  //zenra.loader.show();
   location.href = url;
 };
 
@@ -672,7 +688,7 @@ var dialog = function(title , dialog_id , width , height) {
     id: URL内で取得する要素のID
     */
     this.show = function(url , id , opt) {
-      zenra.getLoader().show();
+      zenra.loader.show();
       opt = opt || {};
       var funcs = opt.funcs || {};
       var func_at_load = opt.func_at_load || function(){};
@@ -717,7 +733,7 @@ var dialog = function(title , dialog_id , width , height) {
         }
         func_at_load();
         $('#' + id).tooltip('disable');
-        zenra.getLoader().hide();
+        zenra.loader.hide();
       });
 
       //オプション: タイトルバーにオンマウス時のカーソル
@@ -1319,7 +1335,7 @@ var register = (function() {
               zenra.visit("/karaoke/detail/" + karaoke_id);
             }
           });
-          zenra.getLoader().hide();
+          zenra.loader.hide();
         } ,
         funcs: {
           beforeClose: beforeClose,
@@ -1410,8 +1426,8 @@ var register = (function() {
 
     /*[Method] 歌唱履歴編集画面を表示する*/
     editHistory : function(karaoke_id , history_id) {
-      zenra.getLoader().show();
       zenra.post('/ajax/history/detail' , {id: history_id} , {
+        sync: true,
         success: function(history) {
           input_dialog = new dialog('歌唱履歴編集' , 'input_dialog' , 470);
           input_dialog.show('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=edit' , 'input_history' , {
@@ -1432,8 +1448,8 @@ var register = (function() {
     /*[Method] カラオケ情報登録リクエストを送信する*/
     submitKaraokeRegistrationRequest : function() {
       var data = getKaraokeData();
-      zenra.getLoader().show();
       zenra.post('/ajax/karaoke/create' , data , {
+        sync: true,
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
           if (karaoke.tweet_error) {
@@ -1463,8 +1479,8 @@ var register = (function() {
     submitKaraokeEditRequest : function(karaoke_id) {
       var json_data = zenra.toJSON(getKaraokeData());
 
-      zenra.getLoader().show();
       zenra.post('/ajax/karaoke/modify/' , {id: karaoke_id , params: json_data} , {
+        sync: true,
         success: function() {
           zenra.visit('/karaoke/detail/' + karaoke_id);
         } ,
