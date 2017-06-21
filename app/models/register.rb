@@ -12,6 +12,7 @@ class Register < Base
   # initialize - インスタンスを生成する
   #---------------------------------------------------------------------
   def initialize(user = nil)
+    @user   = user
     @userid = user && user['id']
     @karaoke = nil
     @attendance = nil
@@ -88,34 +89,43 @@ class Register < Base
     song.strip!
     artist.strip!
 
-    # スコアは、score_typeが定義されており、0以外の得点が設定されてる場合のみ
+    # score_typeが定義されており、0以外の得点が設定されてる場合のみスコアを設定
     if score_type.nil? || score_type.to_s == "0" || score.nil? || score.to_i == 0
       score_type = nil
       score = nil
     end
-
     score or score_type = nil
 
+    # 楽曲/アーティスト/採点モードを取得または作成
     artist_id = create_artist(artist)
     song_id = create_song(artist_id , artist , song)
     scoretype_id = get_scoretype(score_type)
+
+    # 歌唱履歴を作成
     history_id = DB.new(
       :INSERT => ['history' , ['attendance' , 'song' , 'songkey' , 'satisfaction_level', 'score_type' , 'score']] ,
       :SET => [@attendance , song_id , key , satisfaction_level, scoretype_id , score] ,
     ).execute_insert_id
 
+    # 歌唱回数と、何回(何日)ぶりの歌唱かを取得
+    # Todo: この辺は歌唱履歴の登録と直接関係内から外側で実装するべき?
+    histories = Song.new(song_id).history_list(:target_user => @userid)
+    if histories.length >= 2
+      attends = @user.get_attends
+      current_attend_num = attends.index {|a| a['id'] == histories[0]['attendance_id']}
+      last_attend_num = attends.index {|a| a['id'] == histories[1]['attendance_id']}
+      since_karaoke = (current_attend_num && last_attend_num) ? last_attend_num - current_attend_num : 0
+      since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
+    else
+      since_karaoke = 0
+      since_days = 0
+    end
+
     # log生成
     log = "【歌唱履歴登録】#{@attendance} / #{song}(#{song_id}) / #{artist}(#{artist_id}) / #{score_type}(#{scoretype_id}) / #{key} / #{score}"
     Util.write_log('event' , log)
 
-    # 歌唱回数、最終歌唱日を戻す
-    histories = Song.new(song_id).history_list(:target_user => @userid)
-    if histories.length >= 2
-      since = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
-    else
-      since = 0
-    end
-    return {:history_id => history_id , :sang_count => histories.length , :since => since , :song => song , :artist => artist}
+    return {history_id: history_id, sang_count: histories.length, since_days: since_days, since_karaoke: since_karaoke, song: song, artist: artist}
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

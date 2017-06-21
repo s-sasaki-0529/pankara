@@ -121,15 +121,15 @@ class User < Base
     return histories
   end
 
-  # get_karaoke - limitを指定するとその行数だけ取得
+  # get_attends - ユーザのattend一覧
   #---------------------------------------------------------------------
-  def get_karaoke(limit = 0)
-    # 対象ユーザが参加したkaraokeのID一覧を取得
+  def get_attends(limit = 0)
     db = DB.new(
       :SELECT => {
+        'attendance.id'      => 'id',
         'attendance.karaoke' => 'karaoke' ,
-        'attendance.price' => 'price' ,
-        'attendance.memo' => 'memo'
+        'attendance.price'   => 'price' ,
+        'attendance.memo'    => 'memo'
       } ,
       :FROM => 'attendance' ,
       :JOIN => ['attendance' , 'karaoke'],
@@ -139,7 +139,14 @@ class User < Base
     opt = ['ORDER BY karaoke.datetime DESC']
     opt += ["LIMIT #{limit}"] if limit > 0
     db.option(opt)
-    attends = db.execute_all
+    db.execute_all
+  end
+
+  # get_karaoke - limitを指定するとその行数だけ取得
+  #---------------------------------------------------------------------
+  def get_karaoke(limit = 0)
+    # 対象ユーザが参加したkaraokeのID一覧を取得
+    attends = self.get_attends(limit)
 
     # priceまたはmemoが入力されていないkaraokeを控えておく
     incomplete_price = attends.select {|a| a['price'].nil?}.map {|a| a['karaoke']}
@@ -157,7 +164,6 @@ class User < Base
       incomplete_price.include?(karaoke['id']) and karaoke['incomplete_price'] = true
       incomplete_memo.include?(karaoke['id']) and karaoke['incomplete_memo'] = true
     end
-
     return attended_karaoke_info
   end
 

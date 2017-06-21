@@ -1088,7 +1088,11 @@ var register = (function() {
     $('#input_result .song-name').text(sangInfo.song);
     $('#input_result .artist-name').text(sangInfo.artist);
     $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
-    $('#input_result .since-info').text(sangInfo.since + '日ぶり');
+    if (sangInfo.since_days === 0) {
+      $('#input_result .since-info').text('初歌唱');
+    } else {
+      $('#input_result .since-info').text(sangInfo.since_days + '日(' + sangInfo.since_karaoke + 'カラオケ)ぶり');
+    }
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/

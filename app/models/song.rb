@@ -211,6 +211,7 @@ class Song < Base
   def history_list(opt = {})
     db = DB.new(
       :SELECT => {
+        'attendance.id' => 'attendance_id',
         'karaoke.id' => 'karaoke_id' ,
         'karaoke.name' => 'karaoke_name' ,
         'karaoke.datetime' => 'datetime' ,
