@@ -20,6 +20,9 @@ h4 {
 .table {
   font-size: 10px;
 }
+.table.sp-large {
+  font-size: 14px;
+}
 
 .cell-date {
   width: 70px;

@@ -41,6 +41,11 @@ h1,h2,h3,h4 .unpack {
   z-index: 99;
 }
 
+/* 改行禁止 */
+.nowrap {
+  white-space: nowrap;
+}
+
 /*セル内の数値*/
 tr *.cell-number {
   width: 5%;

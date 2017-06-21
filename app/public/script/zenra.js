@@ -1050,6 +1050,31 @@ var register = (function() {
       $('#artist').val(defaultValue.artist);
       autoInputSongKey();
     }
+
+    // 登録結果ビューの切り替えイベントの定義
+    $('#input_result_close_btn').off('click').on('click', function() {
+      toggleInputResultView(false);
+    });
+    $('#input_result').hide();
+  }
+
+  /* [method] 歌唱履歴登録結果ビューの表示状態を切り替える */
+  function toggleInputResultView(isOpen) {
+    if (isOpen) {
+      $('#input_result').show('slow');
+      $('#main_content').hide('slow');
+    } else {
+      $('#input_result').hide('slow');
+      $('#main_content').show('slow');
+    }
+  }
+
+  /* [method] 歌唱履歴登録結果ビューに登録結果を描画する */
+  function writeInputResultView(sangInfo) {
+    $('#input_result .song-name').text(sangInfo.song);
+    $('#input_result .artist-name').text(sangInfo.artist);
+    $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
+    $('#input_result .since-info').text(sangInfo.since + '日ぶり');
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/
@@ -1503,19 +1528,18 @@ var register = (function() {
       // 参加情報の登録リクエストを送信する
       register.submintAttendanceRegistrationRequest(karaoke_id);
 
+      // 歌唱履歴の登録リクエストをサーバに投げる
       zenra.post('/ajax/history/create' , data , {
         sync: true,
         success: function(sangInfo) {
+          // ツイートエラーの通知
           if (sangInfo.tweet_error) {
             alert(sangInfo.tweet_error);
           }
-          var mes = sangInfo.song + '(' + sangInfo.artist + ')' + 'を登録しました。';
-          if (sangInfo.sang_count >= 2) {
-            mes += 'あなたがこの曲を歌うのは、' + sangInfo.since + '日ぶり、' + sangInfo.sang_count + '回目です!';
-          } else {
-            mes += 'あなたがこの曲を歌うのは初めてです。また１曲持ち歌が増えましたね！';
-          }
-          $('#result').html('<p>' + mes + '</p>');
+          // 登録結果ビューの描画
+          writeInputResultView(sangInfo);
+          toggleInputResultView(true);
+          // 後処理
           if (! zenra.ispc) {
             zenra.scrollToTop();
             $('#song').blur();
