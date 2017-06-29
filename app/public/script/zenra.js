@@ -1088,6 +1088,7 @@ var register = (function() {
     $('#input_result .song-name').text(sangInfo.song);
     $('#input_result .artist-name').text(sangInfo.artist);
     $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
+    $('#input_result .total-sang-count').text(sangInfo.total_sang_count + '曲目')
     if (sangInfo.sang_count <= 1) {
       $('#input_result .since-info').text('初歌唱');
     } else {
