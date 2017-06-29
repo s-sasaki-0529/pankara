@@ -1088,7 +1088,7 @@ var register = (function() {
     $('#input_result .song-name').text(sangInfo.song);
     $('#input_result .artist-name').text(sangInfo.artist);
     $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
-    if (sangInfo.since_days === 0) {
+    if (sangInfo.sang_count <= 1) {
       $('#input_result .since-info').text('初歌唱');
     } else {
       $('#input_result .since-info').text(sangInfo.since_days + '日(' + sangInfo.since_karaoke + 'カラオケ)ぶり');

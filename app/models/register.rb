@@ -118,7 +118,7 @@ class Register < Base
       since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
     else
       since_karaoke = 0
-      since_days = 0
+      since_days = nil
     end
 
     # log生成
