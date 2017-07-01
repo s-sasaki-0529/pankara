@@ -19,6 +19,12 @@ $(function(){
       onClosed: function() { zenra.returnScroll(); },
     });
   });
+  //リンククリック時にローディングビューを表示
+  $('a').click(function() {
+    if ($(this).attr('href').indexOf('#') === -1) {
+      zenra.loader.show();
+    }
+  });
   //ローディングビュー初期化
   zenra.loader.init();
   //submit時にローディング画面描画
@@ -176,8 +182,7 @@ visit - 指定したURLに移動
 移動前にローディングビューを描画する
 */
 zenra.visit = function (url) {
-  //バグが多いので一時的に無効
-  //zenra.loader.show();
+  zenra.loader.show();
   location.href = url;
 };
 
