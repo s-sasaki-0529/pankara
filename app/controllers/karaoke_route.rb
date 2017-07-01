@@ -21,8 +21,11 @@ class KaraokeRoute < March
   get '/recent/?' do
     @current_user or raise Sinatra::NotFound
     recent_karaoke = @current_user.get_karaoke(1)[0]
-    recent_karaoke or raise Sinatra::NotFound
-    redirect "/karaoke/detail/#{recent_karaoke['id']}"
+    if recent_karaoke
+      redirect "/karaoke/detail/#{recent_karaoke['id']}"
+    else
+      redirect "/karaoke/user/"
+    end
   end
 
   # get '/karaoke/user/:username' - 特定ユーザのカラオケ記録を一覧表示
