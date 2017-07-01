@@ -20,7 +20,7 @@ $(function(){
     });
   });
   //リンククリック時にローディングビューを表示
-  $('a').click(function() {
+  $('a:not(.color-box)').click(function() {
     if ($(this).attr('href').indexOf('#') === -1) {
       zenra.loader.show();
     }
