@@ -662,7 +662,7 @@ class User < Base
     histories.each {|h| attend2product[h['attendance'] ] = h['karaoke_product']}
     plist = histories.map {|h| h['karaoke_product']}
     plist_uniq = attend2product.values
-    [1,2,3,4,5,6,7].each do |i|
+    [1,2,3,4,5,6,7,8].each do |i|
       result["product#{i}_num"] = product_count(plist_uniq , i)
       result["product#{i}_sang_count"] = product_count(plist , i)
     end
