@@ -124,12 +124,13 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       click_buttons('登録'); wait_for_ajax
       iscontain '歌唱履歴の登録に成功しました'
       iscontain ['song1234', 'artist4567', '初歌唱']
+      tmp_sang_count = find('.total-sang-count').text().to_i
       click_buttons('戻る')
       3.times do |i|
         input_history 1234 , 4567
         click_buttons('登録')
         iscontain '歌唱履歴の登録に成功しました'
-        iscontain ['song1234', 'artist4567', "#{i + 2}回目"]
+        iscontain ['song1234', 'artist4567', "#{i + 2}回目", "#{tmp_sang_count + i + 1}曲目"]
         click_buttons('戻る')
       end
     end
