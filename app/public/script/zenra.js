@@ -29,6 +29,12 @@ $(function(){
   zenra.loader.init();
   //submit時にローディング画面描画
   $('input[type=submit],button[type=submit]').click(function () { zenra.loader.show(); });
+  //Back Forward Cacheで戻った場合にローディングビューを消しておく
+  $(window).on('pageshow', function(event) {
+    if (event.originalEvent.persisted) {
+      zenra.loader.hideForce();
+    }
+  });
 });
 
 /*呼び出して使用するメソッドを定義*/
