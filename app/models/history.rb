@@ -4,6 +4,7 @@
 require_relative 'base'
 require_relative 'util'
 require_relative 'db'
+require_relative 'user'
 require_relative 'song'
 require_relative 'register'
 require_relative 'attendance'
@@ -71,6 +72,14 @@ class History < Base
     DB.new(:DELETE => 1 , :FROM => 'history' , :WHERE => 'id = ?' , :SET => @params['id']).execute
     Util.write_log('event' , "【歌唱履歴削除】#{@params} / #{song.params}")
     @params = nil
+  end
+
+  # user - 歌唱履歴を登録したユーザを取得
+  #--------------------------------------------------------------------
+  def user(opt = {})
+    user_id = Attendance.new(@params['attendance'])['user']
+    opt[:id_only] and return user_id
+    User.new(user_id)
   end
 
   # karaoke_url - 歌唱履歴が所属するカラオケのURLを取得
