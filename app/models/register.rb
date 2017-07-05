@@ -113,11 +113,14 @@ class Register < Base
     log = "【歌唱履歴登録】#{@attendance} / #{song}(#{song_id}) / #{artist}(#{artist_id}) / #{score_type}(#{scoretype_id}) / #{key} / #{score}"
     Util.write_log('event' , log)
 
+    history = History.new(history_id)
     return {
       history_id: history_id,
-      song: song,
-      artist: artist
-    }.merge(History.new(history_id).result)
+      song:       song,
+      artist:     artist,
+      score_type: history['score_type_name'],
+      score:      history['score'],
+    }.merge(history.result)
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す

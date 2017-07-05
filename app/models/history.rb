@@ -8,6 +8,7 @@ require_relative 'user'
 require_relative 'song'
 require_relative 'register'
 require_relative 'attendance'
+require_relative 'score_type'
 
 class History < Base
 
@@ -15,7 +16,10 @@ class History < Base
   #--------------------------------------------------------------------
   def initialize(id , withInfo = false)
     @params = DB.new.get('history' , id)
-    @params['score'] and @params['score'] = sprintf('%.2f',@params['score'])
+    if @params['score'] && @params['score_type']
+      @params['score'] = @params['score'].round(2)
+      @params['score_type_name'] = ScoreType.id_to_name(@params['score_type'])
+    end
     withInfo and self.set_song_info
   end
 
@@ -95,6 +99,8 @@ class History < Base
   def result(opt = {})
     user = self.user
     histories = Song.new(@params['song']).history_list(target_user: user['id'])
+
+    # 何(カラオケ/日)ぶりの歌唱か
     if histories.count >= 2
       since_karaoke = Attendance.get_difference_by_user(user['id'], histories[1]['attendance_id'], histories[0]['attendance_id'])
       since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
@@ -102,11 +108,22 @@ class History < Base
       since_karaoke = 0
       since_days    = 0
     end
+
+    # この曲の最高得点
+    if @params['score_type'] && @params['score']
+      max_score_history = histories.select {|h| h['score_type'] == @params['score_type'] && h['history_id'] != @params['id']}
+                    .max {|a, b| a['score'] <=> b['score']}
+      max_score = max_score_history ? ['score'].round(2) : nil
+    else
+      max_score = nil
+    end
+
     return {
       sang_count:       histories.count,
       total_sang_count: user.histories.count,
       since_days:       since_days,
       since_karaoke:    since_karaoke,
+      max_score:        max_score,
     }
   end
 

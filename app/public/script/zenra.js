@@ -1049,7 +1049,6 @@ var register = (function() {
     // 得点欄入力時のオートバリデーション
     $('#score').change(function() {
       var currentValue = $(this).val();
-      console.log(currentValue);
       var newValue = parseFloat(currentValue.replace(/[^(\d|.)]/g, ''));
       if (newValue === undefined || isNaN(newValue)) {
         $(this).val('');
@@ -1096,10 +1095,24 @@ var register = (function() {
 
   /* [method] 歌唱履歴登録結果ビューに登録結果を描画する */
   function writeInputResultView(sangInfo) {
+    // 曲名,歌手名,歌唱回数
     $('#input_result .song-name').text(sangInfo.song);
     $('#input_result .artist-name').text(sangInfo.artist);
     $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
     $('#input_result .total-sang-count').text(sangInfo.total_sang_count + '曲目')
+    // 採点情報
+    if (sangInfo.score_type && sangInfo.score) {
+      $('#input_result .score').text(sangInfo.score + '点(' + sangInfo.score_type + ')');
+      if (sangInfo.max_score) {
+        $('#input_result .max-score').text(sangInfo.max_score + '点(' + sangInfo.score_type + ')');
+      } else {
+        $('#input_result .max-score').text('初採点(' + sangInfo.score_type + ')');
+      }
+      $('#input_result .score-info').show();
+    } else {
+      $('#input_result .score-info').hide();
+    }
+    // 備考
     if (sangInfo.sang_count <= 1) {
       $('#input_result .since-info').text('初歌唱');
     } else {
