@@ -92,4 +92,22 @@ class Attendance < Base
     return karaoke_info
   end
 
+  # self.get_difference_by_user - ユーザIDと、2つのattendanceIDを指定し、その差を取得する
+  #---------------------------------------------------------------------
+  def self.get_difference_by_user(user_id, attend_from, attend_to)
+    attends = DB.new(
+      SELECT: {'attendance.id' => 'attendance_id'},
+      FROM: 'attendance',
+      JOIN: ['attendance', 'karaoke'],
+      WHERE: 'attendance.user = ?',
+      SET: [user_id]
+    ).execute_columns
+    attend_from_times = attends.index(attend_from)
+    attend_to_times   = attends.index(attend_to)
+    if attend_from_times && attend_to_times
+      return attend_to_times - attend_from_times
+    else
+      return nil
+    end
+  end
 end
