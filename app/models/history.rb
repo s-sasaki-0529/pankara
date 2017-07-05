@@ -113,7 +113,7 @@ class History < Base
     if @params['score_type'] && @params['score']
       max_score_history = histories.select {|h| h['score_type'] == @params['score_type'] && h['history_id'] != @params['id']}
                     .max {|a, b| a['score'] <=> b['score']}
-      max_score = max_score_history ? ['score'].round(2) : nil
+      max_score = max_score_history ? max_score_history['score'].round(2) : nil
     else
       max_score = nil
     end
