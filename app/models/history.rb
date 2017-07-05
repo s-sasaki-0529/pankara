@@ -79,7 +79,7 @@ class History < Base
   def user(opt = {})
     user_id = Attendance.new(@params['attendance'])['user']
     opt[:id_only] and return user_id
-    User.new(user_id)
+    User.new(id: user_id)
   end
 
   # karaoke_url - 歌唱履歴が所属するカラオケのURLを取得
@@ -87,6 +87,27 @@ class History < Base
   def karaoke_url
     karaoke_id = Attendance.new(@params['attendance'])['karaoke']
     return Karaoke.new(karaoke_id).url
+  end
+
+  # result - 歌唱履歴に関する各種集計結果を取得
+  # 計算コストが高いメソッドなので同時多数では呼ばないように
+  #--------------------------------------------------------------------
+  def result(opt = {})
+    user = self.user
+    histories = Song.new(@params['song']).history_list(target_user: user['id'])
+    if histories.count >= 2
+      since_karaoke = Attendance.get_difference_by_user(user['id'], histories[1]['attendance_id'], histories[0]['attendance_id'])
+      since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
+    else
+      since_karaoke = 0
+      since_days    = 0
+    end
+    return {
+      sang_count:       histories.count,
+      total_sang_count: user.histories.count,
+      since_days:       since_days,
+      since_karaoke:    since_karaoke,
+    }
   end
 
   # tweet_format - 歌唱履歴についてツイートするフォーマットを生成する

@@ -142,20 +142,6 @@ class User < Base
     db.execute_all
   end
 
-  # attends_to_karaoke_times - attend_idを指定し、それが何回目のカラオケかを取得する
-  # attend_idは配列で渡すことで、複数のattendanceに対して取得することができる
-  #----------------------------------------------------------------------
-  def attends_to_karaoke_times(target_attends)
-    user_attends = self.get_attends.reverse
-    karaoke_times = Hash.new
-    target_attends.class != Array and target_attends = [target_attends]
-    target_attends.each do |ta|
-      idx = user_attends.index {|ua| ua['id'] == ta}
-      karaoke_times[ta] = idx + 1
-    end
-    return karaoke_times
-  end
-
   # get_karaoke - limitを指定するとその行数だけ取得
   #---------------------------------------------------------------------
   def get_karaoke(limit = 0)

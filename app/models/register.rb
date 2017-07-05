@@ -109,34 +109,15 @@ class Register < Base
 
     # 歌唱回数と、何回(何日)ぶりの歌唱かを取得
 
-# Todo: 以下の集計ロジックはここで行うべきじゃない。Historyクラスなどに移動するべき
-    histories = Song.new(song_id).history_list(:target_user => @userid)
-    if histories.length >= 2
-      attends = @user.get_attends
-      current_attend_num = attends.index {|a| a['id'] == histories[0]['attendance_id']}
-      last_attend_num = attends.index {|a| a['id'] == histories[1]['attendance_id']}
-      since_karaoke = (current_attend_num && last_attend_num) ? last_attend_num - current_attend_num : 0
-      since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
-    else
-      since_karaoke = 0
-      since_days = nil
-    end
-    total_sang_count = @user.histories.count
-# 集計ここまで
-
     # log生成
     log = "【歌唱履歴登録】#{@attendance} / #{song}(#{song_id}) / #{artist}(#{artist_id}) / #{score_type}(#{scoretype_id}) / #{key} / #{score}"
     Util.write_log('event' , log)
 
     return {
       history_id: history_id,
-      sang_count: histories.length,
-      total_sang_count: total_sang_count,
-      since_days: since_days,
-      since_karaoke: since_karaoke,
       song: song,
       artist: artist
-    }
+    }.merge(History.new(history_id).result)
   end
 
   # create_artist - 歌手を新規登録。既出の場合IDを戻す
