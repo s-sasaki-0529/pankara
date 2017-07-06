@@ -50,6 +50,11 @@ module Rbase
     expect(page.find("#" + id).text).to eq text
   end
 
+  # 指定したclassを持つ要素のtextを検証する
+  def examine_text_by_class(_class , text)
+    expect(page.find("." + _class).text).to eq text
+  end
+
   # 指定したIDを持つ要素のvalueを検証する
   def examine_value(id , value)
     expect(page.find("#" + id).value).to eq value

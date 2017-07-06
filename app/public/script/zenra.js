@@ -1095,11 +1095,16 @@ var register = (function() {
 
   /* [method] 歌唱履歴登録結果ビューに登録結果を描画する */
   function writeInputResultView(sangInfo) {
-    // 曲名,歌手名,歌唱回数
+    // 曲名,歌手名,総歌唱回数
     $('#input_result .song-name').text(sangInfo.song);
     $('#input_result .artist-name').text(sangInfo.artist);
-    $('#input_result .sang-count').text(sangInfo.sang_count + '回目')
-    $('#input_result .total-sang-count').text(sangInfo.total_sang_count + '曲目')
+    $('#input_result .total-sang-count').text(sangInfo.total_sang_count + '曲目');
+    // 歌唱回数
+    if (sangInfo.sang_count >= 2) {
+      $('#input_result .sang-count').text(sangInfo.sang_count + '回目');
+    } else {
+      $('#input_result .sang-count').text('初歌唱');
+    }
     // 採点情報
     if (sangInfo.score_type && sangInfo.score) {
       $('#input_result .score').text(sangInfo.score + '点(' + sangInfo.score_type + ')');
