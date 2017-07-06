@@ -100,6 +100,7 @@ class Attendance < Base
       FROM: 'attendance',
       JOIN: ['attendance', 'karaoke'],
       WHERE: 'attendance.user = ?',
+      OPTION: 'ORDER BY karaoke.datetime',
       SET: [user_id]
     ).execute_columns
     attend_from_times = attends.index(attend_from)
