@@ -5,15 +5,15 @@ require_relative '../../app/models/db'
 require 'open-uri'
 
 def is404?(url)
-  Net::HTTP.get_response(URI.parse(url)).code == '404'
 end
 
-# 全ての楽曲に対してサムネイル画像を取得し、404だったものをリスト化
+# 全ての楽曲に対して、youtubeページにアクセスし、「申し訳ありません。」の有無を検証する
 songs = DB.new(:FROM => 'song').execute_all
 dead_links = []
 songs.each do |s|
-  image_url = "http://i.ytimg.com/vi/#{s['url']}/mqdefault.jpg"
-  if is404?(image_url)
+  image_url = "https://www.youtube.com/watch?v=#{s['url']}"
+  response = Net::HTTP.get_response(URI.parse(image_url))
+  if response.code == '404' || response.body.force_encoding("UTF-8").include?('申し訳ありません。')
     dead_links.push(s['id'])
   end
 end
