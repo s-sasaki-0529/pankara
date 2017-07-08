@@ -31,16 +31,6 @@ trash_artists.each do |id|
 end
 trash_artists.empty? or DB.new(:DELETE => 1 , :FROM => 'artist' , :WHERE_IN => ['id' , trash_artists.length] , :SET => trash_artists).execute
 
-# 一度も利用されていない店舗を削除
-stores = DB.new(:SELECT => 'id' , :FROM => 'store').execute_columns
-used_stores = DB.new(:SELECT => 'store' , :FROM => 'karaoke').execute_columns.uniq
-trash_stores = stores - used_stores
-trash_stores.each do |id|
-  store = Store.new(id)
-  puts "店舗削除 #{store['name']}(#{store['branch']})"
-end
-trash_stores.empty? or DB.new(:DELETE => 1 , :FROM => 'store' , :WHERE_IN => ["id" , trash_stores.length], :SET => trash_stores).execute
-
 # 登録から４８時間経過後も歌唱履歴が登録されていないカラオケを削除
 karaoke_list = DB.new(:SELECT => ['id' , 'name'] , :FROM => 'karaoke' , :WHERE => 'DATE_ADD(created_at, INTERVAL 48 HOUR) < NOW()').execute_all
 karaoke_list.each do |karaoke|
@@ -56,4 +46,14 @@ karaoke_list.each do |karaoke|
     end
   end
 end
+
+# 一度も利用されていない店舗を削除
+stores = DB.new(:SELECT => 'id' , :FROM => 'store').execute_columns
+used_stores = DB.new(:SELECT => 'store' , :FROM => 'karaoke').execute_columns.uniq
+trash_stores = stores - used_stores
+trash_stores.each do |id|
+  store = Store.new(id)
+  puts "店舗削除 #{store['name']}(#{store['branch']})"
+end
+trash_stores.empty? or DB.new(:DELETE => 1 , :FROM => 'store' , :WHERE_IN => ["id" , trash_stores.length], :SET => trash_stores).execute
 
