@@ -21,7 +21,7 @@ $(function(){
   });
   //リンククリック時にローディングビューを表示
   $('a:not(.color-box)').click(function() {
-    if ($(this).attr('href').indexOf('#') === -1) {
+    if ($(this).attr('href').indexOf('#') === -1 && $(this).attr('target') !== '_blank') {
       zenra.loader.show();
     }
   });
