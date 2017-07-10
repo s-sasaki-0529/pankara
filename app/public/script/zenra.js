@@ -1077,6 +1077,7 @@ var register = (function() {
 
     // 登録結果ビューの切り替えイベントの定義
     $('#input_result_close_btn').off('click').on('click', function() {
+      resetHistory();
       toggleInputResultView(false);
     });
     $('#input_result').hide();
@@ -1602,7 +1603,6 @@ var register = (function() {
       });
 
       cookie.setCookie('score_type' , $('#score_type').val());
-      resetHistory();
     } ,
 
     /*[Method] 楽曲新規登録リクエストを送信する*/
