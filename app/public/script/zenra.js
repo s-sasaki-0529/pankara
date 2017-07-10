@@ -1119,9 +1119,17 @@ var register = (function() {
       $('#input_result .score-info').hide();
     }
     // 備考
-    if (sangInfo.sang_count <= 1) {
+    if (sangInfo.sang_count === 1) {
+      // 初歌唱
       $('#input_result .since-info').text('初歌唱');
-    } else {
+    } else if (sangInfo.since_karaoke === 0) {
+      // 本日2回目以上
+      $('#input_result .since-info').text('本日' + sangInfo.todays_count + '回目');
+    } else if (sangInfo.since_karaoke === 1) {
+      // Nカラオケ連続
+      $('#input_result .since-info').text(sangInfo.continuous_karaoke_times + 'カラオケ連続' + sangInfo.since_days + '日ぶり');
+    }else {
+      // Nカラオケぶり
       $('#input_result .since-info').text(sangInfo.since_days + '日(' + sangInfo.since_karaoke + 'カラオケ)ぶり');
     }
   }

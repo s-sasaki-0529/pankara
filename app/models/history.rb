@@ -104,6 +104,19 @@ class History < Base
     if histories.count >= 2
       since_karaoke = Attendance.get_difference_by_user(user['id'], histories[1]['attendance_id'], histories[0]['attendance_id'])
       since_days = Util.date_diff(histories[0]['datetime'].to_s , histories[1]['datetime'].to_s)
+      # 何カラオケ連続か
+      if since_karaoke == 1
+        sang_attends = histories.map {|h| h['attendance_id']}.uniq
+        user_attends = user.get_attends(sang_attends.length).map {|a| a['id']}
+        if sang_attends == user_attends
+          continuous_karaoke_times = sang_attends.length
+        else
+          continuous_karaoke_times = sang_attends.each_with_index.find_index { |val, i| val != user_attends[i] }
+        end
+      # 本日何回目か
+      elsif since_karaoke == 0
+        todays_count = histories.select {|h| h['attendance_id'] == histories[0]['attendance_id']}.count
+      end
     else
       since_karaoke = 0
       since_days    = 0
@@ -124,6 +137,8 @@ class History < Base
       since_days:       since_days,
       since_karaoke:    since_karaoke,
       max_score:        max_score,
+      continuous_karaoke_times: continuous_karaoke_times,
+      todays_count:     todays_count,
     }
   end
 

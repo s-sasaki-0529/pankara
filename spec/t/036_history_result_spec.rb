@@ -122,7 +122,7 @@ describe '歌唱履歴登録結果', :js => true do
       createHistory(song: 'どっこい音頭ネオ', artist: '地球防衛軍')
       examine_text_by_class('since-info', '初歌唱')
     end
-    it '2回目以降は何日ぶりか正しく表示される' do
+    it '日を跨いで2回目以降は何日ぶりか正しく表示される' do
       createKaraoke(datetime: '2017-07-07 10:00')
       createHistory(song: 'ランプ', artist: 'BUMP OF CHICKEN')
       examine_text_by_class('since-info', '32日(5カラオケ)ぶり')
@@ -130,12 +130,38 @@ describe '歌唱履歴登録結果', :js => true do
       createHistory(song: 'PONPONPON', artist: 'きゃりーぱみゅぱみゅ')
       examine_text_by_class('since-info', '550日(59カラオケ)ぶり')
     end
-    it '同日に複数回歌唱した場合は0日(0カラオケ)ぶりと表示される' do
+    it '同日に複数回歌唱した場合は本日N回目と表示される' do
       createKaraoke
       createHistory(song: '少年の歌', artist: 'The Giant Banana')
       click_buttons('戻る')
       createHistory(song: '少年の歌', artist: 'The Giant Banana')
-      examine_text_by_class('since-info', '0日(0カラオケ)ぶり')
+      examine_text_by_class('since-info', '本日2回目')
+      click_buttons('戻る')
+      createHistory(song: '少年の歌', artist: 'The Giant Banana')
+      examine_text_by_class('since-info', '本日3回目')
+    end
+    it '複数カラオケ連続で同じ楽曲を登録した場合、Nカラオケ連続と表示される' do
+      createKaraoke(datetime: '2017-12-31 10:00')
+      createHistory(song: 'どっきゅん恋の戦争', artist: 'ともとも')
+      examine_text_by_class('since-info', '初歌唱')
+      visit '/'
+      createKaraoke(datetime: '2018-01-01 10:00')
+      createHistory(song: 'じゃがじゃがじゃん', artist: 'ぽんきっき')
+      examine_text_by_class('since-info', '初歌唱')
+      visit '/'
+      createKaraoke(datetime: '2018-01-03 10:00')
+      createHistory(song: 'じゃがじゃがじゃん', artist: 'ぽんきっき')
+      examine_text_by_class('since-info', '2カラオケ連続2日ぶり')
+      click_buttons('戻る')
+      createHistory(song: 'どっきゅん恋の戦争', artist: 'ともとも')
+      examine_text_by_class('since-info', '3日(2カラオケ)ぶり')
+      visit '/'
+      createKaraoke(datetime: '2018-01-10 10:00')
+      createHistory(song: 'じゃがじゃがじゃん', artist: 'ぽんきっき')
+      examine_text_by_class('since-info', '3カラオケ連続7日ぶり')
+      click_buttons('戻る')
+      createHistory(song: 'どっきゅん恋の戦争', artist: 'ともとも')
+      examine_text_by_class('since-info', '2カラオケ連続7日ぶり')
     end
   end
 
