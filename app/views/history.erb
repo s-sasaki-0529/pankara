@@ -44,13 +44,13 @@
           </tr>
           <!-- キーと満足度 -->
           <tr>
-            <td>キー: <%= history['songkey'] %></td>
+            <td class='nowrap'>キー: <%= history['songkey'] %></td>
             <td><%= satisfaction_stars history['satisfaction_level'] %></td>
           </tr>
           <!-- 採点情報 -->
           <tr>
             <% if history['score_type'] && history['score'] %>
-              <td><%= @score_type_names[history['score_type']]['name'] %></td>
+              <td class='nowrap'><%= @score_type_names[history['score_type']]['name'] %></td>
               <td><%= h history['score'] %></td>
             <% else %>
               <td colspan='2'>採点なし</td>
