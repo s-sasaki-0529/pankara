@@ -2,6 +2,7 @@ require_relative './march'
 require_relative '../models/user'
 require_relative '../models/pager'
 require_relative '../models/attendance'
+require_relative '../models/score_type'
 
 class HistoryRoute < March
 
@@ -80,6 +81,9 @@ class HistoryRoute < March
     else
       @show_to = (@pager.current_page - 1) * @pagenum + @histories.size
     end
+
+    # 採点モード一覧
+    @score_type_names = ScoreType.List
 
     # 検索条件を保存するlocalStorageのキー
     @local_storage_key = 'history_query'

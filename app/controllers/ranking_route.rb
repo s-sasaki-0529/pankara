@@ -33,7 +33,7 @@ class RankingRoute < March
     @score_type = ScoreType.id_to_name(@current_score_type , :hash => true)
     # brandで参照できる採点モード一覧
     @score_type_list = Hash.new {|h , k| h[k] = Array.new}
-    ScoreType.List.each do |st|
+    ScoreType.List(wantarray: true).each do |st|
       @score_type_list[st["brand"]].push(st)
     end
     erb :score_ranking
