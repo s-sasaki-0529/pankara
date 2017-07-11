@@ -45,7 +45,7 @@ class SongRoute < March
     @song.exist? or raise Sinatra::NotFound
     @sangcount    = @song.sangcount({:without_user => user})
     @history      = @song.history_list({:without_user => user})
-    @score_type_num = ScoreType.List.size
+    @score_type_num = ScoreType.List(wantarray: true).size
     if user
       @my_sangcount = @song.sangcount(:target_user => user)
       @my_history   = @song.history_list(:target_user => user)

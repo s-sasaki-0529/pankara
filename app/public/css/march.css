@@ -254,6 +254,9 @@ div.color-box-content {
   width: 50%;
   max-width: 50%;
 }
+.history-table img {
+  max-height: 100px;
+}
 .history-table:nth-child(even) {
   float: right;
 }

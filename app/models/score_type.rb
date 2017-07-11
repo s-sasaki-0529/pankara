@@ -24,9 +24,6 @@ class ScoreType < Base
       end
     end
 
-    # ハッシュに変換せずにそのまま取得
-    opt[:wantarray] and return score_types
-
     # idをkeyとしたハッシュに変換しておく
     score_types.each do |score_type|
       @@list[score_type['id']] = {
@@ -34,6 +31,10 @@ class ScoreType < Base
         'name' => score_type['name'] ,
       }
     end
+
+    # ハッシュに変換せずにそのまま取得
+    opt[:wantarray] and return score_types
+
     return @@list
   end
 
