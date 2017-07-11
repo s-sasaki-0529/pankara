@@ -15,8 +15,6 @@
             "<%= idx %>" ,
             "<%= song['song_id'] %>" ,
             "<%= youtube_image song['song_url'] %>" ,
-            "100%",
-            "auto"
           );
           </script>
         </td>
@@ -44,7 +42,6 @@
 <% else %>
 
 <!-- スマートフォン版 -->
-
 <table id="song_list_table" class='table'>
   <tbody>
     <% @song_list[:list].each_with_index do |song , idx| %>
@@ -52,12 +49,14 @@
         <td>
           <div class='row'>
             <div class='col-xs-12'>
-              <p class="center mini"><%= song_link song['song_id'] , song['song_name'] %></p>
-              <p class="center"><%= artist_link song['artist_id'] , song['artist_name'] %></p>
+              <p class="center mini">
+                <%= song_link song['song_id'] , song['song_name'] %>
+                /<%= artist_link song['artist_id'] , song['artist_name'] %>
+              </p>
             </div>
           </div>
           <div class='row'>
-            <div id="thumbnail_<%= idx %>" class='col-xs-6'>
+            <div id="thumbnail_<%= idx %>" class='col-xs-5'>
               <span id="song_name_<%= idx %>" class="hidden"><%= song["song_name"] %></span>
               <span id="artist_name_<%= idx %>" class="hidden"><%= song["artist_name"] %></span>
               <script>
@@ -65,12 +64,10 @@
                   "<%= idx %>" ,
                   "<%= song['song_id'] %>" ,
                   "<%= youtube_image song['song_url'] %>" ,
-                  "100%",
-                  "auto"
                 );
               </script>
             </div>
-            <div class='col-xs-6'>
+            <div class='col-xs-7'>
               <p class="mini">歌唱回数: <%= song['sang_count'] %></p>
               <p class="mini">
                 最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>

@@ -14,7 +14,7 @@
         <tbody>
           <tr>
             <!-- 番号 -->
-            <td class='center' width='<%= Util.is_pc? ? 160 : 80 %>'>
+            <td class='center' width='<%= Util.is_pc? ? 160 : 120 %>'>
               <%= history_link(history['id'] , {:icon => false , :text => history['number']}) %>
             </td>
             <!-- カラオケ情報 -->
@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <!-- サムネイル -->
-            <td id='thumbnail_<%= "#{history['number']}" %>' width='<%= Util.is_pc? ? 160 : 80 %>' rowspan="2">
+            <td id='thumbnail_<%= "#{history['number']}" %>' width='<%= Util.is_pc? ? 160 : 120 %>' rowspan="3">
               <span id="song_name_<%= history["number"] %>" class="hidden"><%= h history["song_name"] %></span>
               <span id="artist_name_<%= history["number"] %>" class="hidden"><%= h history["artist_name"] %></span>
               <script>
@@ -32,7 +32,6 @@
                   '<%= "#{history["number"]}" %>' ,
                   "<%= history['song_id'] %>" ,
                   "<%= youtube_image history['song_url'] %>" ,
-                  "<%= history['song_url'] %>"
                 )
               </script>
             </td>
@@ -47,6 +46,15 @@
           <tr>
             <td>キー: <%= history['songkey'] %></td>
             <td><%= satisfaction_stars history['satisfaction_level'] %></td>
+          </tr>
+          <!-- 採点情報 -->
+          <tr>
+            <% if history['score_type'] && history['score'] %>
+              <td><%= @score_type_names[history['score_type']]['name'] %></td>
+              <td><%= h history['score'] %></td>
+            <% else %>
+              <td colspan='2'>採点なし</td>
+            <% end %>
           </tr>
         </tbody>
       </table>

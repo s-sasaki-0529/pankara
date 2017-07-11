@@ -13,8 +13,8 @@
   <tbody>
     <% @songs.each_with_index do |song , rank| %>
     <tr>
-      <td class='center' width='100px'><%= rank + 1 %></td>
-      <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'160'<% else %>'80'<% end %>>
+      <td class='center' width='50px'><%= rank + 1 %></td>
+      <td id="thumbnail_<%= rank %>" class='center' width=<% if Util.is_pc? %>'200'<% else %>'80'<% end %>>
         <span id="song_name_<%= rank %>" class="hidden"><%= h song["song_name"] %></span>
         <span id="artist_name_<%= rank %>" class="hidden"><%= h song["artist_name"] %></span>
         <script>

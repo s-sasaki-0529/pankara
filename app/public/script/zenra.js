@@ -372,8 +372,8 @@ zenra.scoreBarChart = (function() {
 createThumbnail - youtubeのサムネイルを生成する
 */
 zenra.createThumbnail = function(idx , id , image , _width , _height) {
-  var defaultWidth = zenra.ispc ? 160 : 80;
-  var defaultHeight = zenra.ispc ? 90 : 45;
+  var defaultWidth = '100%';
+  var defaultHeight = 'auto';
   var width = _width || defaultWidth;
   var height = _height || defaultHeight;
   var $img = $('<img>').attr('src' , image);
