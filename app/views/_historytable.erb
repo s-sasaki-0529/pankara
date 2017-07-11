@@ -27,7 +27,7 @@
           <span class='hidden'><%= history['userinfo']['screenname'] %></span>
         <% end %>
      </td>
-      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 120 : 80 %>'>
+      <td id='thumbnail_<%= "#{@tag}_#{idx}" %>' class='center' width='<%= Util.is_pc? ? 120 : 64 %>'>
         <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
         <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
         <script>
@@ -35,7 +35,6 @@
             '<%= "#{@tag}_#{idx}" %>' ,
             "<%= history['song_id'] %>" ,
             "<%= youtube_image history['song_url'] %>" ,
-            "<%= history['song_url'] %>"
           )
         </script>
       </td>
