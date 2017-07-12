@@ -79,6 +79,11 @@ class User < Base
       end
     end
 
+    # 対応するカラオケの日時でソート
+    histories = histories.sort do |a, b|
+      b["karaoke_datetime"].to_s <=> a["karaoke_datetime"].to_s
+    end
+
     # [オプション] 曲名/歌手名/タグ名でフィルタリング
     if word = opt[:filter_word]
       category = opt[:filter_category]
@@ -117,7 +122,6 @@ class User < Base
     elsif limit = opt[:limit] # ページャは利用しないが取得件数を制限
       histories = histories[0 , limit]
     end
-
     return histories
   end
 
