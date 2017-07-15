@@ -4,12 +4,12 @@
   <% else %>
     <% @timeline.each do |tl| %>
       <div class="div-timeline">
-        <p>
+        <p class="abstruct">
           <%= user_link tl['userinfo']['username'] , tl['userinfo']['screenname'] %>
           さんがカラオケに行きました!
         </p>
-        <p>
-          <%= karaoke_link(tl['karaoke_id'] , "#{tl['datetime']} #{tl['name']}") %>
+        <p class="detail">
+          <%= karaoke_link(tl['karaoke_id'] , "[#{tl['datetime']}] #{tl['name']}") %>
         </p>
         <hr>
       </div>

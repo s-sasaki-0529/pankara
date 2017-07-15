@@ -138,13 +138,17 @@ div.color-box-content {
  * トップページ: タイムライン関係
  * ============================================*/
 #div_timelines {
-  height: 310px;
-  border: 1px solid;
+  height: 360px;
   overflow: scroll;
+  background-color: white;
 }
-.div-timeline {
+#div_timelines .div-timeline {
   padding: 5px 10px 5px 10px;
   text-align: left;
+}
+.div-timeline .abstruct {
+}
+.div-timeline .detail {
 }
 
 /* ============================================

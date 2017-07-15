@@ -293,8 +293,10 @@ class User < Base
   # timeline - 友達の最近のカラオケを取得する
   #---------------------------------------------------------------------
   def timeline(limit = 10)
+    # 友達一覧の取得
     friends = self.friend_list(Util::Const::Friend::FRIEND)
     friends.empty? and return []
+    # 友達が参加しているカラオケの一覧を取得
     timeline = DB.new(
       :SELECT => {
         'attendance.karaoke' => 'karaoke_id' ,
@@ -310,7 +312,7 @@ class User < Base
       :SET => friends.keys ,
       :OPTION => ["ORDER BY karaoke.datetime DESC" , "LIMIT #{limit}"]
     ).execute_all
-
+    # カラオケ情報に友達の情報を付与
     timeline.each do |row|
       row['userinfo'] = friends[row['user_id']]
     end
