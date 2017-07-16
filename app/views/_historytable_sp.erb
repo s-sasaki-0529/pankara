@@ -1,0 +1,46 @@
+<h3>歌唱履歴</h3>
+<ul class="history-table-sp list-group">
+  <% @histories.each_with_index do |history, idx| %>
+  <li class="history list-group-item">
+    <div class="header">
+      <div class="user">
+        <%= icon_link history['userinfo']['username'] %>
+      </div>
+      <div class="song">
+        <%= "#{idx + 1}: " %>
+        <%= song_link history['song_id'], history['song_name'] %> /
+        <%= artist_link history['artist_id'], history['artist_name'] %>
+      </div>
+    </div>
+    <div class="body">
+      <div class="youtube">
+        <span id="song_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["song_name"] %></span>
+        <span id="artist_name_<%= "#{@tag}_#{idx}" %>" class="hidden"><%= h history["artist_name"] %></span>
+        <div id="thumbnail_<%= "#{@tag}_#{idx}" %>"></div>
+        <script>
+        zenra.createThumbnail(
+          '<%= "#{@tag}_#{idx}" %>' ,
+          "<%= history['song_id'] %>" ,
+          "<%= youtube_image history['song_url'] %>" ,
+          "110px",
+        )
+        </script>
+      </div>
+      <div class="info">
+        <ul>
+          <li>キー: <%= history['songkey'] %></li>
+          <li>満足度: <span class="statistics-level"><%= (satisfaction_stars history['satisfaction_level']) or '未登録' %></span></li>
+          <li>採点結果: <%= score_result history['scoretype_name'], history['score'] %></li>
+        </ul>
+      </div>
+    </div>
+    <div class="edit">
+      <button class="btn btn-primary btn-sm"><%= history_link(history['history_id'] , {:icon => false , :text => '詳細'}) %></button>
+      <% if @current_user && @current_user['username'] == history['userinfo']['username'] %>
+      <button class="btn btn-success btn-sm" onclick="register.editHistory(<%= @karaoke['id'] %> , <%= history['history_id'] %>)">編集</button>
+      <% end %>
+    </div>
+  </li>
+  <% end %>
+</ul>
+<p class="orange mini">※ 得点順に並び替えなどは、PCまたはタブレットからページを開くと確認することができます</p>

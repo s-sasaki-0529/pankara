@@ -41,7 +41,7 @@
   </tr>
   <tr>
     <th>満足度</th>
-    <td><%= satisfaction_stars @history['satisfaction_level'] %></td>
+    <td><%= (satisfaction_stars @history['satisfaction_level']) or '未登録' %></td>
   </tr>
   <tr>
     <th>採点方法</th>

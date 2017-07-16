@@ -45,7 +45,7 @@
           <!-- キーと満足度 -->
           <tr>
             <td class='nowrap'>キー: <%= history['songkey'] %></td>
-            <td><%= satisfaction_stars history['satisfaction_level'] %></td>
+            <td><%= (satisfaction_stars history['satisfaction_level']) or '' %></td>
           </tr>
           <!-- 採点情報 -->
           <tr>

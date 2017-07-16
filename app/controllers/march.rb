@@ -105,8 +105,12 @@ class March < Sinatra::Base
         return "<a class='#{_class}' href=/history/detail/#{history}>#{text}</a>"
       end
     end
+    def score_result(score_type = nil, score = nil)
+      (score_type and score) or return '未採点'
+      %(#{score_type} #{h score}点)
+    end
     def satisfaction_stars(satisfaction_level = nil)
-      satisfaction_level or return '-'
+      satisfaction_level or return false
       stars = '★' * satisfaction_level
       stars += '☆' * (10 - satisfaction_level)
       return stars

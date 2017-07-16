@@ -17,6 +17,10 @@ h4 {
   font-size: 13px;
 }
 
+th {
+  white-space: nowrap;
+}
+
 .table {
   font-size: 10px;
 }
@@ -85,6 +89,45 @@ h4 {
 
 .karaoke_detail_info > table > tbody > tr > td {
   background-color: white;
+}
+.history-table-sp {
+  text-align: left;
+}
+.history-table-sp .history {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.history-table-sp .user {
+  float: left;
+  margin-right: 15px;
+}
+.history-table-sp .song {
+  font-size: 110%;
+  font-weight: bold;
+  padding-top: 5px;
+}
+.history-table-sp .body {
+  clear: both;
+  margin-top: 15px;
+}
+.history-table-sp .youtube {
+  float: left;
+}
+.history-table-sp .info {
+  margin-left: 75px;
+}
+.history-table-sp .statistics-level {
+  font-size: 80%;
+  margin-top: 3px;
+}
+.history-table-sp .info ul{
+  list-style-type: none;
+}
+.history-table-sp .edit {
+  text-align: right;
+}
+.history-table-sp .edit a {
+  color: white;
 }
 
 /* =============================================

@@ -275,7 +275,7 @@
   <% @histories = @karaoke.histories %>
   <% @tag = "all" %>
   <div class="histories hidden" id="history_all">
-  <%= erb :_historytable %>
+  <%= erb :_historytable_sp %>
   </div>
 
   <!-- メンバーごとの歌唱履歴 -->
@@ -344,11 +344,10 @@
     <% @histories = @karaoke.histories.select {|h| h['userinfo']['userid'] == member['userid']} %>
     <% @tag = member['userid'] %>
     <div class='histories hidden' id="history_<%= member['userid'] %>">
-    <%= erb :_historytable %>
+    <%= erb :_historytable_sp %>
     </div>
   <% end %>
 </div>
-<p class="orange mini">※キー、採点モード、得点の一覧はPCまたはタブレットからページを開くと参照できます</p>
 
 <script>
 $(function() {
