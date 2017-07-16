@@ -137,7 +137,6 @@
         if (this.events[i].onclick) {
           (function(f) {
             calendarLabel.addClass('pointer').click(function() {
-              console.log('hoge');
               f();
             });
           })(this.events[i].onclick);
