@@ -50,7 +50,7 @@ $(function () {
       </div>
       <form method="POST" action="/config/twitter">
         <% if @twitter_authed %>
-          <p><img src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
+          <p><img class="user-icon" src="<%= @twitter_icon %>"> <%= @twitter_username %></p>
           <div id="twitter_format">
             <div class="config-content-body-title">カラオケ登録時のツイート内容</div>
             <textarea name="karaoke_format" style="width: 100%" maxlength="150"><%= @tweet_karaoke_format %></textarea>

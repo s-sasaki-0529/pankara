@@ -36,7 +36,7 @@
       </td>
       <td class='center'><%= date row['datetime'] %></td>
       <% end %>
-      <td class='center' width=110><%= user_link row['username'] , row['screenname'] %></td>
+      <td class='center nowrap' width=110><%= user_link row['username'] , row['screenname'] %></td>
       <td class='center'>
         <div class='ranking-song-name'><%= song_link row['song'], row['song_name'] %></div>
         <div class='ranking-artist-name'>(<%= artist_link row['artist_id'], row['artist_name'] %>)</div>

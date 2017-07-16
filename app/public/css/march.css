@@ -26,6 +26,11 @@ h1,h2,h3,h4 .unpack {
   margin-top: 10px;
 }
 
+/*ユーザアイコン*/
+.user-icon {
+  border-radius: 50%;
+}
+
 /*システムメッセージ領域*/
 .system-msg {
   width: 99%;
@@ -183,7 +188,6 @@ div.color-box-content {
  * トップページ: ユーザ情報
  * =============================================*/
 #top_my_icon {
-  border: 1px solid;
   width: 96px;
   height: 96px;
   margin: auto;
@@ -316,7 +320,6 @@ div.color-box-content {
   font-size: 15px;
 }
 #user_icon {
-  border: 1px solid;
   width: 96px;
   height: 96px;
   margin: auto;
