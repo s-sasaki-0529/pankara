@@ -14,7 +14,7 @@ describe '歌唱履歴詳細画面' do
       visit '/history/detail/100'
       content = %w(
         ともちん ないととともちん２回目 2016-01-17 14:50:00 3.0 歌広場 亀戸店
-        JOYSOUND(CROSSO) Magenta Another Sky 原田ひとみ -
+        JOYSOUND(CROSSO) Magenta Another Sky 原田ひとみ 未登録
       )
       iscontain content
     end

@@ -19,7 +19,7 @@ describe '歌唱履歴ページ' do
 
   # 満足度を☆表記で取得
   def satisfaction_stars(satisfaction_level = nil)
-    satisfaction_level or return '-'
+    satisfaction_level or return ''
     stars = '★' * satisfaction_level
     stars += '☆' * (10 - satisfaction_level)
     return stars
