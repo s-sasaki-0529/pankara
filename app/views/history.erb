@@ -56,6 +56,14 @@
               <td colspan='2'>採点なし</td>
             <% end %>
           </tr>
+          <!-- 歌唱履歴に登録 -->
+          <% if @current_user %>
+          <tr>
+            <td colspan='4'>
+              <button type="button" class="btn btn-success btn-mini btn-block" onclick="zenra.addHistoryToRecentKaraoke({idx: '<%= history["number"] %>'})">直近のカラオケに登録</button>
+            </td>
+          </tr>
+          <% end %>
         </tbody>
       </table>
     <% end %>

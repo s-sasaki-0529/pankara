@@ -73,7 +73,7 @@
                 最終歌唱日: <a class='lastSangKaraoke' href="/karaoke/detail/<%= song['last_sang_karaoke'] %>"><%= song['last_sang_datetime'] %></a>
               </p>
               <% if @current_user %>
-                <button type="button" class="btn btn-success" onclick="zenra.addHistoryToRecentKaraoke({idx: '<%= idx %>'})">歌唱履歴に登録</button>
+                <button type="button" class="btn btn-success" onclick="zenra.addHistoryToRecentKaraoke({idx: '<%= idx %>'})">直近のカラオケに登録</button>
               <% end %>
             </div>
           </div>

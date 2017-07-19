@@ -119,6 +119,23 @@ describe '歌唱履歴ページ' do
     end
   end
 
+  describe 'カラオケに登録', :js => true do
+    it 'ログインしてないとボタンが表示されない' do
+      cant_find('.btn-block')
+    end
+    it 'ログインしてるとボタンが表示される' do
+      login 'sa2knight'
+      visit url
+      class_to_elements('btn-block')[0].click(); wait_for_ajax;
+      expect(ejs('$("#song").val()')).to eq 'Stage of the ground' #何故かfindだと拾ってくれない
+      expect(ejs('$("#artist").val()')).to eq 'BUMP OF CHICKEN'
+      click_on '終了'; wait_for_ajax
+      class_to_elements('btn-block')[2].click(); wait_for_ajax;
+      expect(ejs('$("#song").val()')).to eq 'メルト'
+      expect(ejs('$("#artist").val()')).to eq 'supercell'
+    end
+  end
+
   it 'リンク' do
     examine_songlink('全力少年', 'スキマスイッチ', url)
     examine_artistlink('doriko', url)

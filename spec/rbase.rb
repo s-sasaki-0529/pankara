@@ -71,9 +71,8 @@ module Rbase
   end
 
   # 指定した要素が存在しないことを検証
-  # Todo すこぶる遅いので別な方法を考える
   def cant_find(selecter)
-    expect { find(selecter) }.to raise_error(Capybara::ElementNotFound)
+    expect(page.all(selecter).empty?).to eq true
   end
 
   # 曲名に楽曲詳細ページへのリンクが設定されているかを検証する

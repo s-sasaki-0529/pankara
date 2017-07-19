@@ -194,6 +194,8 @@ describe '持ち歌一覧機能' , :js => true do
       expect(history[-1]['tostring']).to eq '44,ないと,,ライアーダンス,DECO*27,5,-,,,'
     end
     it 'ログインしていないとアイコンが表示されない' do
+      logout
+      visit URL
       cant_find('.songlist-add-icon')
     end
   end
