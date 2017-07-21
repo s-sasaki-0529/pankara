@@ -40,6 +40,13 @@ class IndexRoute < March
     end
   end
 
+  # get '/update' - 更新履歴ページ
+  #---------------------------------------------------------------------
+  get '/update' do
+    @update_info = Util.read_update_info
+    erb :update
+  end
+
   # get '/contact' - お問い合わせページ
   #---------------------------------------------------------------------
   get '/contact' do
