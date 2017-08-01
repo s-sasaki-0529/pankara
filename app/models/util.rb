@@ -27,7 +27,7 @@ class Util
   @@session = nil
   @@request = nil
   @@run_mode = nil
-  @@chatwork = Chatwork.new
+  @@chatwork = nil
 
   # Const - 定数管理
   #---------------------------------------------------------------------
@@ -491,7 +491,14 @@ class Util
     File.open(filepath , 'a') do |f|
       f.puts "#{datetime},#{log}"
     end
-    type === 'event' and Util.run_mode === 'yshirt' and @@chatwork.sendMessage(log)
+    type === 'event' and Util.post_chatwork(log)
+  end
+
+  # post_chatwork - チャットワークに文字列を投稿する
+  #--------------------------------------------------------------------
+  def self.post_chatwork(text)
+    @@chatwork or @@chatwork = Chatwork.new(Util.read_config('chatwork_api_key'))
+    Util.run_mode === 'yshirt' and @@chatwork.sendMessage(text)
   end
 
   # debug - 標準出力
