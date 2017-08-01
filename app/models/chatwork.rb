@@ -6,6 +6,7 @@ require 'date'
 class Chatwork
 
   @@API_BASE = 'https://api.chatwork.com/v2'
+  @@ROOM_ID  = '79359850'
 
   # tokenを指定してオブジェクトを生成
   # tokenを省略した場合、環境変数を参照する
@@ -16,8 +17,8 @@ class Chatwork
   # ルームに新規メッセージを送信
   # room_id: 対象のroomID
   # body:    投稿する本文
-  def sendMessage(room_id, body)
-    url = '/rooms/' + room_id + '/messages'
+  def sendMessage(body)
+    url = '/rooms/' + @@ROOM_ID + '/messages'
     res = createHttpObject(url, :post, {:body => body})
     return res.body ? JSON.parse(res.body) : []
   end
@@ -48,11 +49,3 @@ class Chatwork
       end
     end
 end
-
-ROOM_ID  = '79359850'
-chatwork = Chatwork.new
-text = []
-while line = gets
-  text << line.chomp
-end
-chatwork.sendMessage(ROOM_ID, text.join("\n"))
