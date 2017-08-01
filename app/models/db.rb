@@ -237,7 +237,7 @@ class DB
     @params.each do |param|
       done_sql.sub!('?' , param.to_s)
     end
-    Util.write_log('sql' , done_sql)
+    #Util.write_log('sql' , done_sql) SQLログは膨大になりすぎるし振り返ったこともないので取らない
     db = connect
     st = db.prepare(@sql)
     st.execute(*@params)
