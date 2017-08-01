@@ -2,6 +2,7 @@
 # Util - 汎用ライブラリ
 #----------------------------------------------------------------------
 require_relative 'db'
+require_relative 'chatwork'
 require 'date'
 require 'uri'
 require 'open-uri'
@@ -26,6 +27,7 @@ class Util
   @@session = nil
   @@request = nil
   @@run_mode = nil
+  @@chatwork = Chatwork.new
 
   # Const - 定数管理
   #---------------------------------------------------------------------
@@ -486,10 +488,10 @@ class Util
       'event' => 'logs/event.log',
     }[type] or return
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-
     File.open(filepath , 'a') do |f|
       f.puts "#{datetime},#{log}"
     end
+    type === 'event' and Util.run_mode === 'yshirt' and @@chatwork.sendMessage(log)
   end
 
   # debug - 標準出力
