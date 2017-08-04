@@ -905,8 +905,6 @@ var register = (function() {
     $('#artist').val('');
     $('#seekbar').slider('value' , 0);
     $('#score').val('');
-    $('#tweet-checkbox').prop('checked' , false);
-    $('#tweet_text_area').addClass('hidden');
     $('#satisfaction_level').val('');
     song_moshikashite.setStandardMoshikashite(song_list);
     artist_moshikashite.setStandardMoshikashite(artist_list);
@@ -996,15 +994,6 @@ var register = (function() {
         },
       });
     }
-
-    //ツイートするチェックボックスのイベントを定義
-    $('#tweet-checkbox').change(function() {
-      if ($(this).prop('checked')) {
-        $('#tweet_text_area').removeClass('hidden');
-      } else {
-        $('#tweet_text_area').addClass('hidden');
-      }
-    });
   }
 
   /*[method] 歌唱履歴入力画面用ウィジェットを作成する*/
@@ -1056,15 +1045,6 @@ var register = (function() {
         $(this).val('100');
       } else {
         $(this).val(newValue);
-      }
-    });
-
-    // ツイートチェックボックスとツイート内容欄の開閉を同期
-    $('#tweet-checkbox').change(function() {
-      if ($(this).prop('checked')) {
-        $('#tweet_text_area').removeClass('hidden');
-      } else {
-        $('#tweet_text_area').addClass('hidden');
       }
     });
 
@@ -1274,12 +1254,6 @@ var register = (function() {
       price: $('#price').val() ,
       memo: $('#memo').val() ,
     };
-    if ($('#tweet-checkbox').prop('checked')) {
-      data.twitter = 1;
-      if ($('#tweet_textbox').val() !== "") {
-        data.tweet_text = '\n\n' + $('#tweet_textbox').val();
-      }
-    }
     return data;
   }
 
@@ -1293,13 +1267,6 @@ var register = (function() {
       score: $('#score').val() ,
       score_type: $('#score_type').val() ,
     };
-    if ($('#tweet-checkbox').prop('checked')) {
-      data.twitter = 1;
-      if ($('#tweet_textbox').val() !== "") {
-        data.tweet_text = '\n\n' + $('#tweet_textbox').val();
-        $('#tweet_textbox').val("");
-      }
-    }
     return data;
   }
 
@@ -1493,9 +1460,6 @@ var register = (function() {
         sync: true,
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
-          if (karaoke.tweet_error) {
-            alert(karaoke.tweet_error);
-          }
           input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=create' , 'input_history' , {
             func_at_load: function() {
               createWidgetForHistory();
@@ -1589,10 +1553,6 @@ var register = (function() {
       zenra.post('/ajax/history/create' , data , {
         sync: true,
         success: function(sangInfo) {
-          // ツイートエラーの通知
-          if (sangInfo.tweet_error) {
-            alert(sangInfo.tweet_error);
-          }
           // 登録結果ビューの描画
           writeInputResultView(sangInfo);
           toggleInputResultView(true);
