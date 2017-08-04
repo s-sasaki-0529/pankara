@@ -37,6 +37,7 @@ class AuthenticationRoute < March
     auth = User.authenticate(@params[:username] , @params[:password])
     if auth
       session[:logined] = @params[:username]
+      Util.write_log('event', "【ログイン】 #{@params[:username]}")
       redirect params[:callback]
     else
       flash[:login_message] = 'IDまたはパスワードが正しいかチェックしてください'
