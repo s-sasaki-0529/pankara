@@ -142,24 +142,6 @@ class History < Base
     }
   end
 
-  # tweet_format - 歌唱履歴についてツイートするフォーマットを生成する
-  #--------------------------------------------------------------------
-  def tweet_format(format)
-    @params['song_name'] or self.set_song_info
-    format.gsub!(/\$\$song\$\$/ , @params['song_name'])
-    format.gsub!(/\$\$artist\$\$/ , @params['artist_name'])
-    format.gsub!(/\$\$url\$\$/ , self.karaoke_url)
-    format.gsub!(/\$\$key\$\$/ ,@params['songkey'] >= 0 ? "+#{@params['songkey']}" : @params['songkey'].to_s)
-    if @params['score'] && @params['score_type']
-      format.gsub!(/\$\$score\$\$/ , @params['score'].to_s)
-      format.gsub!(/\$\$scoretype\$\$/ , ScoreType.id_to_name(@params['score_type']))
-    else
-      format.gsub!(/\$\$score\$\$/ , '未採点')
-      format.gsub!(/\$\$scoretype\$\$/ , '未採点')
-    end
-    return format
-  end
-
   # recent_song - 最近歌われた楽曲のリストを戻す
   #---------------------------------------------------------------------
   def self.recent_song(opt = {})

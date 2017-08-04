@@ -183,16 +183,6 @@ class Karaoke < Base
     @params['members'] = users_info.values
   end
 
-  # tweet_format - 歌唱履歴についてツイートするフォーマットを生成する
-  #--------------------------------------------------------------------
-  def tweet_format(format)
-    format.gsub!(/\$\$name\$\$/ , @params['name'])
-    format.gsub!(/\$\$store\$\$/ , @params['store_full_name'])
-    format.gsub!(/\$\$product\$\$/ , @params['product_full_name'])
-    format.gsub!(/\$\$url\$\$/ , self.url)
-    return format
-  end
-
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
   #---------------------------------------------------------------------
   def self.list_all(opt = {})

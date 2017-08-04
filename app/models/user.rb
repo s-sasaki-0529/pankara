@@ -9,7 +9,6 @@ require_relative 'user'
 require_relative 'score_type'
 require_relative 'product'
 require_relative 'register'
-require_relative 'twitter'
 require_relative 'friend'
 require_relative 'pager'
 require_relative 'tag'
@@ -31,7 +30,6 @@ class User < Base
     elsif id
       @params = DB.new(:FROM => 'user' , :WHERE => 'id = ?' , :SET => id).execute_row
     end
-    @params and @params['twitter_info'] = Twitter.user_info(@params['username'])
   end
 
   # userattr - UserAttrクラスを生成
@@ -464,64 +462,6 @@ class User < Base
     ).execute_row
 
     return attendance
-  end
-
-  # twitter_account - Twitter認証済みの場合のみ、Twitterオブジェクトを戻す
-  #--------------------------------------------------------------------
-  def twitter_account
-    twitter = Twitter.new(@params['username'])
-    if twitter && twitter.authed
-      @params['has_twitter'] = true
-      return twitter
-    else
-      return nil
-    end
-  end
-
-  # tweet - ツイッターに投稿する。設定、認証状態の確認も行う
-  #---------------------------------------------------------------------
-  def tweet(text)
-    if twitter = self.twitter_account
-      result = twitter.tweet(text)
-    else
-      return 1
-    end
-    if result.has_key?('errors') && err_code = result['errors'].first['code']
-      if err_code == 261
-        return 2
-      elsif err_code == 186
-        return 3
-      end
-    end
-    unless result.has_key?('created_at')
-      return 4
-    end
-    return 0
-  end
-
-  # tweet_format - ツイートフォーマットにユーザ情報を埋め込む
-  #--------------------------------------------------------------------
-  def tweet_format(format)
-    format.gsub!(/\$\$username\$\$/ , @params['screenname'])
-    return format
-  end
-
-  # tweet_karaoke - ツイッターにカラオケについてツイートする
-  #--------------------------------------------------------------------
-  def tweet_karaoke(karaoke , tweet_text = "")
-    format = self.userattr.get_tweet_karaoke_format
-    format = self.tweet_format(format)
-    format = karaoke.tweet_format(format)
-    self.tweet("#{format}\n#{tweet_text}")
-  end
-
-  # tweet_history - ツイッターに歌唱履歴についてツイートする
-  #--------------------------------------------------------------------
-  def tweet_history(history , tweet_text = "")
-    format = self.userattr.get_tweet_history_format
-    format = self.tweet_format(format)
-    format = history.tweet_format(format)
-    self.tweet("#{format}\n#{tweet_text}")
   end
 
   # search_songkey - 指定した楽曲の、前回歌唱時のキーを取得

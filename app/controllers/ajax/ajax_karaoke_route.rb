@@ -25,10 +25,6 @@ class AjaxKaraokeRoute < AjaxRoute
     if @current_user
       result = @current_user.register_karaoke(karaoke)
       if result
-        if params[:twitter]
-          tweet_result = @current_user.tweet_karaoke(Karaoke.new(result) , params[:tweet_text])
-          tweet_result == 0 or return success(karaoke_id: result , tweet_error: Util::Const::Twitter::Messages[tweet_result])
-        end
         return success(karaoke_id: result)
       else
         return error('カラオケの登録に失敗しました。管理者に問い合わせてください。')
@@ -53,8 +49,6 @@ class AjaxKaraokeRoute < AjaxRoute
     karaoke = Karaoke.new(params[:id])
     karaoke.params or return error('no record')
     arg = Util.to_hash(params[:params])
-    twitter = arg["twitter"]
-    tweet_text = arg["tweet_text"]
     result = karaoke.modify(arg)
     return result ? success : error('modify failed')
   end

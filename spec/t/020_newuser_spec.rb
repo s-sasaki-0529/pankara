@@ -43,8 +43,4 @@ describe '新規登録したユーザで各ページを閲覧' do
     iscontain '歌唱履歴がありません'
     iscontain '採点履歴がありません'
   end
-  it '設定画面' do
-    visit '/config'
-    iscontain 'まだ認証を行っていません'
-  end
 end

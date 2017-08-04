@@ -24,7 +24,6 @@ class AjaxHistoryRoute < AjaxRoute
     history['satisfaction_level'] = params[:satisfaction_level].to_i
     history['score'] = params[:score]
     history['score_type'] = params[:score_type].to_i
-    twitter = params[:twitter]
     # 歌手名/曲名は必須
     if history['song_name'].nil? || history['song_name'] == ''
       return error('曲名を入力してください')
@@ -32,10 +31,6 @@ class AjaxHistoryRoute < AjaxRoute
       return error('歌手名を入力してください')
     end
     info = @current_user.register_history(karaoke_id , history)
-    if twitter
-      tweet_result = @current_user.tweet_history(History.new(info[:history_id]) , params[:tweet_text])
-      tweet_result == 0 or info[:tweet_error] = Util::Const::Twitter::Messages[tweet_result]
-    end
     return success(info)
   end
 
@@ -58,13 +53,9 @@ class AjaxHistoryRoute < AjaxRoute
     @current_user.attend_ids.include?(history['attendance']) or return error ('あなたの歌唱履歴ではありません')
     history.params or return error('no record')
     arg = Util.to_hash(params[:params])
-    twitter = arg['twitter']
-    tweet_text = arg['tweet_text']
     arg['song_name'] == "" and return error('曲名を入力してください')
     arg['artist_name'] == "" and return error('歌手名を入力してください')
     result = history.modify(arg.dup)
-    result and twitter and @current_user and @current_user.tweet_history(params[:id] , arg , tweet_text)
-    twitter and @current_user.tweet_history(history , params[:tweet_text])
     return result ? success : error('modify failed')
   end
 
