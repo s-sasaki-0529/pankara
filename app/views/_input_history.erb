@@ -48,15 +48,6 @@
         <label class='control-label' for="score">得点</label>
         <input class='form-control' id="score" title="採点結果を入力してください。" type="text" name="score" value="" size="10"/>
       </div>
-      <% if @show_twitter && @twitter %>
-      <div>
-        <input type="checkbox" title="ツイートする場合はチェックを付けてください。" name="tweet" value="tweet" id="tweet-checkbox">
-        <label for="tweet-checkbox"> ツイートする</label>
-      </div>
-      <div id="tweet_text_area" class="form-group hidden">
-        <textarea class="form-control tweet-text size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
-      </div>
-      <% end %>
       <div class="form-group" id="buttons">
         <input class='form-control btn btn-default' id="button1" type="button" value="" />
         <input class='form-control btn btn-default' id="button2" type="button" value="" />

@@ -55,15 +55,6 @@
         <% end%>
       </select>
     </div>
-    <% if @show_twitter && @twitter %>
-    <div class='form-group'>
-      <input type="checkbox" name="tweet" value="tweet" id="tweet-checkbox">
-      <label for="tweet-checkbox"> ツイートする:</label>
-    </div>
-    <div id="tweet_text_area" class="form-group hidden">
-      <textarea class="form-control tweet-text size-fixed" id="tweet_textbox" name="tweet_text" cols="30" rows="3"></textarea>
-    </div>
-    <% end %>
     <div id="buttons">
       <input class="btn btn-default" id="button1" type="button" value="" />
     </div>
