@@ -86,6 +86,18 @@ class History < Base
     User.new(id: user_id)
   end
 
+  # songs_count_by_karaoke - その歌唱履歴がそのカラオケの中で何曲目か取得
+  #--------------------------------------------------------------------
+  def songs_count_by_karaoke
+    DB.new(
+      SELECT: {'COUNT(*)' => 'count'},
+      FROM:   'history',
+      WHERE:  ['attendance = ?', 'id < ?'],
+      OPTION: 'ORDER BY id',
+      SET:    [@params['attendance'], @params['id']]
+    ).execute_column + 1
+  end
+
   # karaoke_url - 歌唱履歴が所属するカラオケのURLを取得
   #--------------------------------------------------------------------
   def karaoke_url
@@ -139,7 +151,8 @@ class History < Base
       max_score:        max_score,
       continuous_karaoke_times: continuous_karaoke_times,
       todays_count:     todays_count,
-      karaoke_url:      self.karaoke_url
+      karaoke_url:      self.karaoke_url,
+      karaoke_songs_count: self.songs_count_by_karaoke
     }
   end
 

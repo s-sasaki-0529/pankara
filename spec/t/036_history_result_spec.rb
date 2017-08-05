@@ -116,6 +116,20 @@ describe '歌唱履歴登録結果', :js => true do
     end
   end
 
+  describe 'このカラオケで何曲目' do
+    it 'そのカラオケで何曲目かが表示される' do
+      createKaraoke
+      createHistory
+      examine_text_by_class('karaoke-sang-count', "1曲目")
+      click_buttons('戻る')
+      3.times do |i|
+        createHistory
+        examine_text_by_class('karaoke-sang-count', "#{2 + i}曲目")
+        click_buttons('戻る')
+      end
+    end
+  end
+
   describe '備考欄' do
     it '初回は初歌唱と表示される' do
       createKaraoke

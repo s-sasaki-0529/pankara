@@ -1112,6 +1112,9 @@ var register = (function() {
       // Nカラオケぶり
       $('#input_result .since-info').text(sangInfo.since_days + '日(' + sangInfo.since_karaoke + 'カラオケ)ぶり');
     }
+    // 今回のカラオケでの歌唱回数
+    $('#input_result .karaoke-sang-count').text(sangInfo.karaoke_songs_count + '曲目');
+
     // ツイートボタン生成
     zenra.appendTweetButton({
       text:  sangInfo.song + '(' + sangInfo.artist + ')を歌いました。',
