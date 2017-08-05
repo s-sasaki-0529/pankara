@@ -1112,6 +1112,11 @@ var register = (function() {
       // Nカラオケぶり
       $('#input_result .since-info').text(sangInfo.since_days + '日(' + sangInfo.since_karaoke + 'カラオケ)ぶり');
     }
+    // ツイートボタン生成
+    zenra.appendTweetButton({
+      text:  sangInfo.song + '(' + sangInfo.artist + ')を歌いました。',
+      url:   sangInfo.karaoke_url,
+    });
   }
 
   /*[method] 曲名入力に関するイベントを作成する*/
@@ -1748,6 +1753,26 @@ zenra.removeSongTag = function(user , id , tag) {
     zenra.post(url_to , data , opt);
   });
 };
+
+/*ツイートボタンを生成する*/
+zenra.appendTweetButton = function (params = {}) {
+  var url  = params['url'] || location.protocol + '//' + location.host;
+  var text = params['text'] || '';
+  $('.twitter-share-button').remove();
+  $('.tweet-button').hide();
+  var $a = $('<a href="https://twitter.com/share" class="twitter-share-button">ツイートする</a>')
+          .attr('data-lang', 'ja')
+          .attr('data-hashtags', 'pankara')
+          .attr('data-url', url)
+          .attr('data-text', text);
+  $('.tweet-button').css('margin-top', '-20px')
+                    .css('margin-bottom', '12px')
+                    .css('text-align', 'right')
+                    .append("<script src='"+ location.protocol + "//platform.twitter.com/widgets.js'>;<\/script>").append($a);
+  setTimeout(function() {
+    $('.tweet-button').show();
+  }, 500);  // スクリプト実行完了のラグを考慮
+}
 
 /*お問い合わせメールを送信する*/
 zenra.sendContactMail = function () {

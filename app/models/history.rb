@@ -139,6 +139,7 @@ class History < Base
       max_score:        max_score,
       continuous_karaoke_times: continuous_karaoke_times,
       todays_count:     todays_count,
+      karaoke_url:      self.karaoke_url
     }
   end
 
