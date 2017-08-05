@@ -1755,7 +1755,8 @@ zenra.removeSongTag = function(user , id , tag) {
 };
 
 /*ツイートボタンを生成する*/
-zenra.appendTweetButton = function (params = {}) {
+zenra.appendTweetButton = function (_params) {
+  var params = _params || {};
   var url  = params['url'] || location.protocol + '//' + location.host;
   var text = params['text'] || '';
   $('.twitter-share-button').remove();
