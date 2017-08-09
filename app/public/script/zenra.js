@@ -1778,7 +1778,7 @@ zenra.appendTweetButton = function (_params) {
                     .append("<script src='"+ location.protocol + "//platform.twitter.com/widgets.js'>;<\/script>").append($a);
   setTimeout(function() {
     $('.tweet-button').show();
-  }, 500);  // スクリプト実行完了のラグを考慮
+  }, 750);  // スクリプト実行完了のラグを考慮
 }
 
 /*お問い合わせメールを送信する*/
