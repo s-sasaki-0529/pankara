@@ -1091,6 +1091,9 @@ var register = (function() {
       $('#input_result .score').text(sangInfo.score + '点(' + sangInfo.score_type + ')');
       if (sangInfo.max_score) {
         $('#input_result .max-score').text(sangInfo.max_score + '点(' + sangInfo.score_type + ')');
+        if (sangInfo.score > sangInfo.max_score) {  // 最高得点更新
+          $('#input_result .score').css('color', 'red');
+        }
       } else {
         $('#input_result .max-score').text('初採点(' + sangInfo.score_type + ')');
       }
