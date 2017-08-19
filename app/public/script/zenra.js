@@ -1344,7 +1344,7 @@ var register = (function() {
           createWidgetForHistory(opt.defaultValue);
           setScoreTypeFromCookie();
 
-          $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
+          $('#button1').attr('click' , function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
           $('#button2').val('終了').on('click' , function() {
             if (opt.callback && opt.callback == '#') {
               input_dialog.close();
@@ -1477,7 +1477,7 @@ var register = (function() {
               if (! zenra.ispc) {
                 zenra.scrollToTop();
               }
-              $('#button1').attr('onclick' , 'register.submitHistoryRegistrationRequest("continue" , ' + karaoke_id + ');').val('登録');
+              $('#button1').on('click' , function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
               $('#button2').on('click' , function() { zenra.visit("/karaoke/detail/" + karaoke_id); }).val('終了');
             } ,
           });
@@ -1553,7 +1553,7 @@ var register = (function() {
     },
 
     /*[Method] 歌唱履歴登録リクエストを送信する*/
-    submitHistoryRegistrationRequest : function(action , karaoke_id) {
+    submitHistoryRegistrationRequest : function(karaoke_id) {
       var data = getHistoryData();
       data.karaoke_id = karaoke_id;
 
