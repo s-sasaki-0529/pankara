@@ -1314,7 +1314,7 @@ var register = (function() {
         func_at_load: function() {
           var s = zenra.formatDate(new Date() , 'YYYY-MM-DD hh:mm');
           createWidgetForKaraoke();
-          $('#button1').attr('onclick' , 'register.submitKaraokeRegistrationRequest();')
+          $('#button1').click(register.submitKaraokeRegistrationRequest)
           .val('次へ').addClass('form-control btn btn-default');
           $('#datetime').val(s);
         } ,
@@ -1344,7 +1344,7 @@ var register = (function() {
           createWidgetForHistory(opt.defaultValue);
           setScoreTypeFromCookie();
 
-          $('#button1').attr('click' , function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
+          $('#button1').click(function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
           $('#button2').val('終了').on('click' , function() {
             if (opt.callback && opt.callback == '#') {
               input_dialog.close();
@@ -1477,8 +1477,8 @@ var register = (function() {
               if (! zenra.ispc) {
                 zenra.scrollToTop();
               }
-              $('#button1').on('click' , function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
-              $('#button2').on('click' , function() { zenra.visit("/karaoke/detail/" + karaoke_id); }).val('終了');
+              $('#button1').click(function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
+              $('#button2').click(function() { zenra.visit("/karaoke/detail/" + karaoke_id); }).val('終了');
             } ,
           });
         } ,
