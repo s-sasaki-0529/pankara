@@ -1,58 +1,58 @@
 require_relative '../rbase'
 include Rbase
 
-# カラオケを作成
-def createKaraoke(option_params = {})
-  params = {
-    name:      'テスト用カラオケ',
-    datetime:  '2017-07-10 10:00',
-    plan:      '02時間00分',
-    store:     'カラオケ館',
-    branch:    '亀戸店',
-    product:   'JOYSOUND MAX',
-  }.merge(option_params)
-  js 'register.createKaraoke()'
-  fill_in 'name', with: params[:name]
-  js("$('#datetime').val('#{params[:datetime]}')")
-  select params[:plan], from: 'plan'
-  fill_in 'store', with: params[:store]
-  fill_in 'branch', with: params[:branch]
-  select params[:product], from: 'product'
-  js('register.submitKaraokeRegistrationRequest();')
-  js("$('#create_history_button').click();")
-end
-
-# 歌唱履歴を登録
-def createHistory(option_params = {})
-  params = {
-    song:       'サンプル曲名',
-    artist:     'サンプル歌手名',
-    satisfaction_level: '★★★★★☆☆☆☆☆',
-    score_type: 'JOYSOUND 分析採点',
-    score:      '88.72',
-  }.merge(option_params)
-  fill_in 'song',   with: params[:song]
-  fill_in 'artist', with: params[:artist]
-  select params[:satisfaction_level], from: 'satisfaction_level'
-  select params[:score_type], from: 'score_type'
-  params[:score_type].empty? or fill_in 'score', with: params[:score]
-  click_buttons('登録')
-end
-
-# ボタンをクリックする
-def click_buttons(*buttons)
-  buttons.each do |b|
-    click_on b; wait_for_ajax
-  end
-end
-
-# テスト用データベース構築
-init = proc do
-  `zenra init -d 2017_07_04_23_18`
-end
-
 # テスト実行
 describe '歌唱履歴登録結果', :js => true do
+
+  # カラオケを作成
+  def createKaraoke(option_params = {})
+    params = {
+      name:      'テスト用カラオケ',
+      datetime:  '2017-07-10 10:00',
+      plan:      '02時間00分',
+      store:     'カラオケ館',
+      branch:    '亀戸店',
+      product:   'JOYSOUND MAX',
+    }.merge(option_params)
+    js 'register.createKaraoke()'
+    fill_in 'name', with: params[:name]
+    js("$('#datetime').val('#{params[:datetime]}')")
+    select params[:plan], from: 'plan'
+    fill_in 'store', with: params[:store]
+    fill_in 'branch', with: params[:branch]
+    select params[:product], from: 'product'
+    js('register.submitKaraokeRegistrationRequest();')
+    js("$('#create_history_button').click();")
+  end
+
+  # 歌唱履歴を登録
+  def createHistory(option_params = {})
+    params = {
+      song:       'サンプル曲名',
+      artist:     'サンプル歌手名',
+      satisfaction_level: '★★★★★☆☆☆☆☆',
+      score_type: 'JOYSOUND 分析採点',
+      score:      '88.72',
+    }.merge(option_params)
+    fill_in 'song',   with: params[:song]
+    fill_in 'artist', with: params[:artist]
+    select params[:satisfaction_level], from: 'satisfaction_level'
+    select params[:score_type], from: 'score_type'
+    params[:score_type].empty? or fill_in 'score', with: params[:score]
+    click_buttons('登録')
+  end
+
+  # ボタンをクリックする
+  def click_buttons(*buttons)
+    buttons.each do |b|
+      click_on b; wait_for_ajax
+    end
+  end
+
+  # テスト用データベース構築
+  init = proc do
+    `zenra init -d 2017_07_04_23_18`
+  end
 
   # テスト実行時にデータベースを初期化
   before(:all , &init)
