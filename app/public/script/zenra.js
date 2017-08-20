@@ -1323,7 +1323,7 @@ var register = (function() {
           });
           $('#input_karaoke_result #close').click(function() {
             register.closeDialog();
-            zenra.visit('/karaoke/detail/' + karaoke.id);
+            zenra.visit(karaoke.url);
           });
         }
       });
