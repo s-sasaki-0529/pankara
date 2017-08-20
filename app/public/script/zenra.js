@@ -1305,10 +1305,14 @@ var register = (function() {
 
     /*[Method] カラオケ入力結果画面を表示する */
     showInputKaraokeResult: function(karaoke) {
-      input_dialog = new dialog('カラオケ登録結果', 'input_dialog', 600);
+      input_dialog = new dialog('カラオケ登録結果', 'input_dialog', 450);
       input_dialog.show('/ajax/dialog/karaoke', 'input_karaoke_result', {
         func_at_load: function() {
-          console.log(karaoke);
+          $('#input_karaoke_result .name').text(karaoke.name);
+          $('#input_karaoke_result .datetime').text(karaoke.datetime);
+          $('#input_karaoke_result .plan').text(karaoke.plan + ' 時間');
+          $('#input_karaoke_result .product').text(karaoke.product);
+          $('#input_karaoke_result .store').text(karaoke.store);
           $('#input_karaoke_result #create_history_button').click(function() {
             register.closeDialog();
             register.createHistory(karaoke.id);

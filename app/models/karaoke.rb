@@ -191,6 +191,7 @@ class Karaoke < Base
       id:       @params['id'],
       name:     @params['name'],
       datetime: @params['datetime'],
+      plan:     @params['plan'],
       product:  @params['product_full_name'],
       store:    @params['store_full_name']
     }
