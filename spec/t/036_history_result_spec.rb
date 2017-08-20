@@ -18,7 +18,8 @@ def createKaraoke(option_params = {})
   fill_in 'store', with: params[:store]
   fill_in 'branch', with: params[:branch]
   select params[:product], from: 'product'
-  js('register.submitKaraokeRegistrationRequest();');
+  js('register.submitKaraokeRegistrationRequest();')
+  js("$('#create_history_button').click();")
 end
 
 # 歌唱履歴を登録

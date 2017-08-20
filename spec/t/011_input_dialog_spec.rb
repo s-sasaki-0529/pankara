@@ -89,12 +89,14 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     it 'ダイアログの画面が正常に遷移されるか' do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
+      js("$('#create_history_button').click();");
       iscontain history_contents
     end
 
     it '入力内容が正しく登録されるか' do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
+      js("$('#create_history_button').click();");
       input_history_with_data history_data, 1
       click_buttons('登録', '戻る', '終了')
       karaoke = [
@@ -120,6 +122,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
     it '20件登録されるか' do
       input_karaoke
       js('register.submitKaraokeRegistrationRequest();');
+      js("$('#create_history_button').click();");
       20.times do |i|
         input_history i
         click_buttons('登録', '戻る')
@@ -153,6 +156,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         logout()
         js('register.createKaraoke();')
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         is_karaoke_register
       end
       it '日時バリデーションエラー' do
@@ -160,6 +164,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         js('register.createKaraoke();')
         js('$("#datetime").val("hogehoge")')
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         is_karaoke_register
       end
     end
@@ -168,6 +173,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
         login 'unagipai'
         js('register.createKaraoke();')
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         is_history_register
       end
       it '曲名なし' do
@@ -208,6 +214,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       before do
         input_karaoke
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
       end
       it 'プラスボタン' do
         expect(find('#slidervalue').text()).to eq '0'
@@ -227,16 +234,19 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       it 'JOYSOUNDの場合' do
         select 'JOYSOUND MAX', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他その他 その他'
       end
       it 'DAMの場合' do
         select 'DAM LIVE DAM', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         expect(ejs("$('#score_type option').text();")).to eq 'DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
       end
       it 'その他の場合' do
         select 'その他 その他', from: 'product'
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         expect(ejs("$('#score_type option').text();")).to eq 'JOYSOUND 全国採点JOYSOUND 分析採点JOYSOUND その他DAM ランキングバトルDAM 精密採点DAM その他その他 その他'
       end
     end
@@ -244,6 +254,7 @@ describe '履歴入力用ダイアログのテスト', :js => true do
       before do
         input_karaoke
         js('register.submitKaraokeRegistrationRequest();');
+        js("$('#create_history_button').click();");
         select 'JOYSOUND 全国採点', from: 'score_type'
       end
       it '採点モード指定なしの場合得点欄を表示しない' do

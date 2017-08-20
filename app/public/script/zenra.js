@@ -760,22 +760,6 @@ var dialog = function(title , dialog_id , width , height) {
     };
 
     /*
-    transition - ダイアログ内の画面を遷移する
-    */
-    this.transition = function(url , id , opt) {
-      opt = opt || {};
-      var func_at_load = opt.func_at_load || function(){};
-
-      var div = $('#' + this.dialog_id);
-
-      jQuery.removeData(div);
-      div.load(url + " #" + id , function(date , status) {
-        func_at_load();
-        $('#' + id).tooltip('disable');
-      });
-    };
-
-    /*
     setEvent - ダイアログにイベントを設定する
     */
     this.setEvent = function(event_obj) {
@@ -1308,9 +1292,6 @@ var register = (function() {
       input_dialog = new dialog('カラオケ新規作成' , 'input_dialog' , 450);
 
       input_dialog.show('/ajax/dialog/karaoke?mode=create' , 'input_karaoke' , {
-        funcs: {
-          beforeClose: beforeClose
-        } ,
         func_at_load: function() {
           var s = zenra.formatDate(new Date() , 'YYYY-MM-DD hh:mm');
           createWidgetForKaraoke();
@@ -1319,6 +1300,24 @@ var register = (function() {
           $('#datetime').val(s);
         } ,
         position: '50px',
+      });
+    } ,
+
+    /*[Method] カラオケ入力結果画面を表示する */
+    showInputKaraokeResult: function(karaoke) {
+      input_dialog = new dialog('カラオケ登録結果', 'input_dialog', 600);
+      input_dialog.show('/ajax/dialog/karaoke', 'input_karaoke_result', {
+        func_at_load: function() {
+          console.log(karaoke);
+          $('#input_karaoke_result #create_history_button').click(function() {
+            register.closeDialog();
+            register.createHistory(karaoke.karaoke_id);
+          });
+          $('#input_karaoke_result #close').click(function() {
+            register.closeDialog();
+            zenra.visit('/karaoke/detail/' + karaoke.karaoke_id);
+          });
+        }
       });
     } ,
 
@@ -1471,16 +1470,8 @@ var register = (function() {
         sync: true,
         success: function(karaoke) {
           var karaoke_id = karaoke.karaoke_id;
-          input_dialog.transition('/ajax/dialog/karaoke/' + karaoke_id + '/history?mode=create' , 'input_history' , {
-            func_at_load: function() {
-              createWidgetForHistory();
-              if (! zenra.ispc) {
-                zenra.scrollToTop();
-              }
-              $('#button1').click(function() { register.submitHistoryRegistrationRequest(karaoke_id) }).val('登録');
-              $('#button2').click(function() { zenra.visit("/karaoke/detail/" + karaoke_id); }).val('終了');
-            } ,
-          });
+          register.closeDialog();
+          register.showInputKaraokeResult(karaoke);
         } ,
         error: function(data) {
           alert(data);
