@@ -1311,11 +1311,11 @@ var register = (function() {
           console.log(karaoke);
           $('#input_karaoke_result #create_history_button').click(function() {
             register.closeDialog();
-            register.createHistory(karaoke.karaoke_id);
+            register.createHistory(karaoke.id);
           });
           $('#input_karaoke_result #close').click(function() {
             register.closeDialog();
-            zenra.visit('/karaoke/detail/' + karaoke.karaoke_id);
+            zenra.visit('/karaoke/detail/' + karaoke.id);
           });
         }
       });
@@ -1469,7 +1469,6 @@ var register = (function() {
       zenra.post('/ajax/karaoke/create' , data , {
         sync: true,
         success: function(karaoke) {
-          var karaoke_id = karaoke.karaoke_id;
           register.closeDialog();
           register.showInputKaraokeResult(karaoke);
         } ,

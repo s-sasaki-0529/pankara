@@ -25,7 +25,7 @@ class AjaxKaraokeRoute < AjaxRoute
     if @current_user
       result = @current_user.register_karaoke(karaoke)
       if result
-        return success(karaoke_id: result)
+        return success(result)
       else
         return error('カラオケの登録に失敗しました。管理者に問い合わせてください。')
       end

@@ -183,6 +183,19 @@ class Karaoke < Base
     @params['members'] = users_info.values
   end
 
+  # result - カラオケ登録に関する各種集計情報を取得
+  # 計算コストが高いメソッドなので同時多数では呼ばないように
+  #---------------------------------------------------------------------
+  def result(opt = {})
+    return {
+      id:       @params['id'],
+      name:     @params['name'],
+      datetime: @params['datetime'],
+      product:  @params['product_full_name'],
+      store:    @params['store_full_name']
+    }
+  end
+
   # list_all - カラオケ記録の一覧を全て取得し、店舗名まで取得する
   #---------------------------------------------------------------------
   def self.list_all(opt = {})

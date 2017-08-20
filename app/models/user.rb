@@ -394,7 +394,7 @@ class User < Base
     )
     if karaoke_id
       register_attendance(karaoke_id)
-      return karaoke_id
+      return Karaoke.new(karaoke_id).result
     else
       return false
     end
