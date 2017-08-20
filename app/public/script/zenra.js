@@ -1313,6 +1313,10 @@ var register = (function() {
           $('#input_karaoke_result .plan').text(karaoke.plan + ' 時間');
           $('#input_karaoke_result .product').text(karaoke.product);
           $('#input_karaoke_result .store').text(karaoke.store);
+          zenra.appendTweetButton({
+            text:  'カラオケ「' + karaoke.name + '」に参加しました',
+            url:   karaoke.url,
+          });
           $('#input_karaoke_result #create_history_button').click(function() {
             register.closeDialog();
             register.createHistory(karaoke.id);
@@ -1771,8 +1775,8 @@ zenra.appendTweetButton = function (_params) {
                     .css('text-align', 'right')
                     .append("<script src='"+ location.protocol + "//platform.twitter.com/widgets.js'>;<\/script>").append($a);
   setTimeout(function() {
-    $('.tweet-button').show();
-  }, 750);  // スクリプト実行完了のラグを考慮
+    $('.tweet-button').show('fast');
+  }, 1000);  // スクリプト実行完了のラグを考慮
 }
 
 /*お問い合わせメールを送信する*/

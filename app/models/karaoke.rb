@@ -193,7 +193,8 @@ class Karaoke < Base
       datetime: @params['datetime'],
       plan:     @params['plan'],
       product:  @params['product_full_name'],
-      store:    @params['store_full_name']
+      store:    @params['store_full_name'],
+      url:      self.url,
     }
   end
 
