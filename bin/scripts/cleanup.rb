@@ -8,17 +8,14 @@ require_relative "../../app/models/artist"
 require_relative "../../app/models/store"
 require_relative "../../app/models/karaoke"
 
-# 一度も歌われていなく、登録から１週間が経過したタグのない楽曲を削除
+# 一度も歌われていなく、登録から１週間が経過した楽曲を削除
 songs = DB.new(:SELECT => 'id' , :FROM => 'song' , :WHERE => 'DATE_ADD(created_at, INTERVAL 7 DAY) < NOW()').execute_columns
 history = DB.new(:SELECT => 'song' , :FROM => 'history').execute_columns.uniq
 no_sang_songs = songs - history
 no_sang_songs.each do |id|
   song = Song.new(id)
-  tags = song.tags
-  if tags.empty?
-    puts "楽曲削除 #{song['name']} (#{song['artist_name']})"
-    DB.new(:DELETE => 1 , :FROM => 'song' , :WHERE => 'id = ?' , :SET => song['id']).execute
-  end
+  puts "楽曲削除 #{song['name']} (#{song['artist_name']})"
+  DB.new(:DELETE => 1 , :FROM => 'song' , :WHERE => 'id = ?' , :SET => song['id']).execute
 end
 
 # 一曲も楽曲が無いアーティストを削除
