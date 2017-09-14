@@ -39,7 +39,7 @@ RSpec.configure do |config|
   Capybara.app = Rack::Builder.parse_file("config.ru").first
   Capybara.javascript_driver = :webkit  #HTMLレンダリングにはwebkitを用いる
   Capybara.default_max_wait_time = 10   #最大待ち時間は10秒
-  Capybara::Webkit.configure do |config|
-    config.block_unknown_urls           #GETに失敗した際のエラーメッセージを抑制
+  Capybara::Webkit.configure do |c|
+    c.block_unknown_urls                #GETに失敗した際のエラーメッセージを抑制
   end                                   #Youtubeのサムネイル取得に失敗することが多々あるため
 end
