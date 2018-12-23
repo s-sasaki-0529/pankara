@@ -19,7 +19,7 @@ class Pager
     @data_num = data.count
     @page_num = (data.count.to_f / @limit.to_f).ceil
     from = (@current_page - 1) * @limit
-    return data[from , @limit]
+    return data[from , @limit] || []
   end
 
 end
